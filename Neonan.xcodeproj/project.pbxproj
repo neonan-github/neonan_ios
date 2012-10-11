@@ -7,116 +7,164 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		347FA83716258537003C4001 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 347FA83616258537003C4001 /* UIKit.framework */; };
-		347FA83916258537003C4001 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 347FA83816258537003C4001 /* Foundation.framework */; };
-		347FA83B16258537003C4001 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 347FA83A16258537003C4001 /* CoreGraphics.framework */; };
-		347FA84116258537003C4001 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 347FA83F16258537003C4001 /* InfoPlist.strings */; };
-		347FA84316258537003C4001 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 347FA84216258537003C4001 /* main.m */; };
-		347FA84716258537003C4001 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 347FA84616258537003C4001 /* AppDelegate.m */; };
-		347FA84916258537003C4001 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 347FA84816258537003C4001 /* Default.png */; };
-		347FA84B16258537003C4001 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 347FA84A16258537003C4001 /* Default@2x.png */; };
-		347FA84D16258537003C4001 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 347FA84C16258537003C4001 /* Default-568h@2x.png */; };
-		347FA85016258537003C4001 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 347FA84F16258537003C4001 /* ViewController.m */; };
-		347FA85316258537003C4001 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 347FA85116258537003C4001 /* ViewController.xib */; };
+		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
+		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; };
+		53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFE16265E9400B0672C /* CoreGraphics.framework */; };
+		53816B0516265E9400B0672C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 53816B0316265E9400B0672C /* InfoPlist.strings */; };
+		53816B0716265E9400B0672C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53816B0616265E9400B0672C /* main.m */; };
+		53816B0B16265E9400B0672C /* NeonanAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 53816B0A16265E9400B0672C /* NeonanAppDelegate.m */; };
+		53816B0D16265E9400B0672C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 53816B0C16265E9400B0672C /* Default.png */; };
+		53816B0F16265E9400B0672C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53816B0E16265E9400B0672C /* Default@2x.png */; };
+		53816B1116265E9400B0672C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53816B1016265E9400B0672C /* Default-568h@2x.png */; };
+		53816B1D16265ED300B0672C /* NeonanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 53816B1C16265ED300B0672C /* NeonanViewController.m */; };
+		53816B24162661C800B0672C /* Navigator.m in Sources */ = {isa = PBXBuildFile; fileRef = 53816B23162661C800B0672C /* Navigator.m */; };
+		53816B2E16266F2500B0672C /* RootMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 53816B2D16266F2500B0672C /* RootMediator.m */; };
+		53816B3116266F3200B0672C /* TestMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 53816B3016266F3200B0672C /* TestMediator.m */; };
+		53816B331626726900B0672C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816B321626726900B0672C /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		347FA83216258537003C4001 /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		347FA83616258537003C4001 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		347FA83816258537003C4001 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		347FA83A16258537003C4001 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		347FA83E16258537003C4001 /* Neonan-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Neonan-Info.plist"; sourceTree = "<group>"; };
-		347FA84016258537003C4001 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		347FA84216258537003C4001 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		347FA84416258537003C4001 /* Neonan-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Neonan-Prefix.pch"; sourceTree = "<group>"; };
-		347FA84516258537003C4001 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		347FA84616258537003C4001 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		347FA84816258537003C4001 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		347FA84A16258537003C4001 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		347FA84C16258537003C4001 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		347FA84E16258537003C4001 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		347FA84F16258537003C4001 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		347FA85216258537003C4001 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		53816AFA16265E9400B0672C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		53816AFC16265E9400B0672C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		53816AFE16265E9400B0672C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		53816B0216265E9400B0672C /* Neonan-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Neonan-Info.plist"; sourceTree = "<group>"; };
+		53816B0416265E9400B0672C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		53816B0616265E9400B0672C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		53816B0816265E9400B0672C /* Neonan-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Neonan-Prefix.pch"; sourceTree = "<group>"; };
+		53816B0916265E9400B0672C /* NeonanAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NeonanAppDelegate.h; sourceTree = "<group>"; };
+		53816B0A16265E9400B0672C /* NeonanAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NeonanAppDelegate.m; sourceTree = "<group>"; };
+		53816B0C16265E9400B0672C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		53816B0E16265E9400B0672C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		53816B1016265E9400B0672C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		53816B1B16265ED300B0672C /* NeonanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeonanViewController.h; sourceTree = "<group>"; };
+		53816B1C16265ED300B0672C /* NeonanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NeonanViewController.m; sourceTree = "<group>"; };
+		53816B22162661C800B0672C /* Navigator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Navigator.h; sourceTree = "<group>"; };
+		53816B23162661C800B0672C /* Navigator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Navigator.m; sourceTree = "<group>"; };
+		53816B2C16266F2500B0672C /* RootMediator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootMediator.h; sourceTree = "<group>"; };
+		53816B2D16266F2500B0672C /* RootMediator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootMediator.m; sourceTree = "<group>"; };
+		53816B2F16266F3200B0672C /* TestMediator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMediator.h; sourceTree = "<group>"; };
+		53816B3016266F3200B0672C /* TestMediator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestMediator.m; sourceTree = "<group>"; };
+		53816B321626726900B0672C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		347FA82F16258537003C4001 /* Frameworks */ = {
+		53816AF316265E9400B0672C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				347FA83716258537003C4001 /* UIKit.framework in Frameworks */,
-				347FA83916258537003C4001 /* Foundation.framework in Frameworks */,
-				347FA83B16258537003C4001 /* CoreGraphics.framework in Frameworks */,
+				53816B331626726900B0672C /* QuartzCore.framework in Frameworks */,
+				53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */,
+				53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */,
+				53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		347FA82716258537003C4001 = {
+		53816AEB16265E9400B0672C = {
 			isa = PBXGroup;
 			children = (
-				347FA83C16258537003C4001 /* Neonan */,
-				347FA83516258537003C4001 /* Frameworks */,
-				347FA83316258537003C4001 /* Products */,
+				53816B1F16265FB100B0672C /* Classes */,
+				53816B2016265FB100B0672C /* Resources */,
+				53816B2116265FB100B0672C /* Support */,
+				53816B0016265E9400B0672C /* Neonan */,
+				53816AF916265E9400B0672C /* Frameworks */,
+				53816AF716265E9400B0672C /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		347FA83316258537003C4001 /* Products */ = {
+		53816AF716265E9400B0672C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				347FA83216258537003C4001 /* Neonan.app */,
+				53816AF616265E9400B0672C /* Neonan.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		347FA83516258537003C4001 /* Frameworks */ = {
+		53816AF916265E9400B0672C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				347FA83616258537003C4001 /* UIKit.framework */,
-				347FA83816258537003C4001 /* Foundation.framework */,
-				347FA83A16258537003C4001 /* CoreGraphics.framework */,
+				53816B321626726900B0672C /* QuartzCore.framework */,
+				53816AFA16265E9400B0672C /* UIKit.framework */,
+				53816AFC16265E9400B0672C /* Foundation.framework */,
+				53816AFE16265E9400B0672C /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		347FA83C16258537003C4001 /* Neonan */ = {
+		53816B0016265E9400B0672C /* Neonan */ = {
 			isa = PBXGroup;
 			children = (
-				347FA84516258537003C4001 /* AppDelegate.h */,
-				347FA84616258537003C4001 /* AppDelegate.m */,
-				347FA84E16258537003C4001 /* ViewController.h */,
-				347FA84F16258537003C4001 /* ViewController.m */,
-				347FA85116258537003C4001 /* ViewController.xib */,
-				347FA83D16258537003C4001 /* Supporting Files */,
+				53816B0916265E9400B0672C /* NeonanAppDelegate.h */,
+				53816B0A16265E9400B0672C /* NeonanAppDelegate.m */,
+				53816B0116265E9400B0672C /* Supporting Files */,
+				53816B1B16265ED300B0672C /* NeonanViewController.h */,
+				53816B1C16265ED300B0672C /* NeonanViewController.m */,
 			);
 			path = Neonan;
 			sourceTree = "<group>";
 		};
-		347FA83D16258537003C4001 /* Supporting Files */ = {
+		53816B0116265E9400B0672C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				347FA83E16258537003C4001 /* Neonan-Info.plist */,
-				347FA83F16258537003C4001 /* InfoPlist.strings */,
-				347FA84216258537003C4001 /* main.m */,
-				347FA84416258537003C4001 /* Neonan-Prefix.pch */,
-				347FA84816258537003C4001 /* Default.png */,
-				347FA84A16258537003C4001 /* Default@2x.png */,
-				347FA84C16258537003C4001 /* Default-568h@2x.png */,
+				53816B0216265E9400B0672C /* Neonan-Info.plist */,
+				53816B0316265E9400B0672C /* InfoPlist.strings */,
+				53816B0616265E9400B0672C /* main.m */,
+				53816B0816265E9400B0672C /* Neonan-Prefix.pch */,
+				53816B0C16265E9400B0672C /* Default.png */,
+				53816B0E16265E9400B0672C /* Default@2x.png */,
+				53816B1016265E9400B0672C /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		53816B1F16265FB100B0672C /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				53816B2B16266F1100B0672C /* views */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		53816B2016265FB100B0672C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		53816B2116265FB100B0672C /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				53816B22162661C800B0672C /* Navigator.h */,
+				53816B23162661C800B0672C /* Navigator.m */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		53816B2B16266F1100B0672C /* views */ = {
+			isa = PBXGroup;
+			children = (
+				53816B2C16266F2500B0672C /* RootMediator.h */,
+				53816B2D16266F2500B0672C /* RootMediator.m */,
+				53816B2F16266F3200B0672C /* TestMediator.h */,
+				53816B3016266F3200B0672C /* TestMediator.m */,
+			);
+			path = views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		347FA83116258537003C4001 /* Neonan */ = {
+		53816AF516265E9400B0672C /* Neonan */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 347FA85616258538003C4001 /* Build configuration list for PBXNativeTarget "Neonan" */;
+			buildConfigurationList = 53816B1416265E9400B0672C /* Build configuration list for PBXNativeTarget "Neonan" */;
 			buildPhases = (
-				347FA82E16258537003C4001 /* Sources */,
-				347FA82F16258537003C4001 /* Frameworks */,
-				347FA83016258537003C4001 /* Resources */,
+				53816AF216265E9400B0672C /* Sources */,
+				53816AF316265E9400B0672C /* Frameworks */,
+				53816AF416265E9400B0672C /* Resources */,
 			);
 			buildRules = (
 			);
@@ -124,90 +172,84 @@
 			);
 			name = Neonan;
 			productName = Neonan;
-			productReference = 347FA83216258537003C4001 /* Neonan.app */;
+			productReference = 53816AF616265E9400B0672C /* Neonan.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		347FA82916258537003C4001 /* Project object */ = {
+		53816AED16265E9400B0672C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = Neonan;
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = neonan;
 			};
-			buildConfigurationList = 347FA82C16258537003C4001 /* Build configuration list for PBXProject "Neonan" */;
+			buildConfigurationList = 53816AF016265E9400B0672C /* Build configuration list for PBXProject "Neonan" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 347FA82716258537003C4001;
-			productRefGroup = 347FA83316258537003C4001 /* Products */;
+			mainGroup = 53816AEB16265E9400B0672C;
+			productRefGroup = 53816AF716265E9400B0672C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				347FA83116258537003C4001 /* Neonan */,
+				53816AF516265E9400B0672C /* Neonan */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		347FA83016258537003C4001 /* Resources */ = {
+		53816AF416265E9400B0672C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				347FA84116258537003C4001 /* InfoPlist.strings in Resources */,
-				347FA84916258537003C4001 /* Default.png in Resources */,
-				347FA84B16258537003C4001 /* Default@2x.png in Resources */,
-				347FA84D16258537003C4001 /* Default-568h@2x.png in Resources */,
-				347FA85316258537003C4001 /* ViewController.xib in Resources */,
+				53816B0516265E9400B0672C /* InfoPlist.strings in Resources */,
+				53816B0D16265E9400B0672C /* Default.png in Resources */,
+				53816B0F16265E9400B0672C /* Default@2x.png in Resources */,
+				53816B1116265E9400B0672C /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		347FA82E16258537003C4001 /* Sources */ = {
+		53816AF216265E9400B0672C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				347FA84316258537003C4001 /* main.m in Sources */,
-				347FA84716258537003C4001 /* AppDelegate.m in Sources */,
-				347FA85016258537003C4001 /* ViewController.m in Sources */,
+				53816B0716265E9400B0672C /* main.m in Sources */,
+				53816B0B16265E9400B0672C /* NeonanAppDelegate.m in Sources */,
+				53816B1D16265ED300B0672C /* NeonanViewController.m in Sources */,
+				53816B24162661C800B0672C /* Navigator.m in Sources */,
+				53816B2E16266F2500B0672C /* RootMediator.m in Sources */,
+				53816B3116266F3200B0672C /* TestMediator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		347FA83F16258537003C4001 /* InfoPlist.strings */ = {
+		53816B0316265E9400B0672C /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				347FA84016258537003C4001 /* en */,
+				53816B0416265E9400B0672C /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		347FA85116258537003C4001 /* ViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				347FA85216258537003C4001 /* en */,
-			);
-			name = ViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		347FA85416258537003C4001 /* Debug */ = {
+		53816B1216265E9400B0672C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -223,19 +265,17 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				ONLY_ACTIVE_ARCH = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
-		347FA85516258537003C4001 /* Release */ = {
+		53816B1316265E9400B0672C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -244,14 +284,14 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		347FA85716258538003C4001 /* Debug */ = {
+		53816B1516265E9400B0672C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -263,7 +303,7 @@
 			};
 			name = Debug;
 		};
-		347FA85816258538003C4001 /* Release */ = {
+		53816B1616265E9400B0672C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -278,24 +318,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		347FA82C16258537003C4001 /* Build configuration list for PBXProject "Neonan" */ = {
+		53816AF016265E9400B0672C /* Build configuration list for PBXProject "Neonan" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				347FA85416258537003C4001 /* Debug */,
-				347FA85516258537003C4001 /* Release */,
+				53816B1216265E9400B0672C /* Debug */,
+				53816B1316265E9400B0672C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		347FA85616258538003C4001 /* Build configuration list for PBXNativeTarget "Neonan" */ = {
+		53816B1416265E9400B0672C /* Build configuration list for PBXNativeTarget "Neonan" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				347FA85716258538003C4001 /* Debug */,
-				347FA85816258538003C4001 /* Release */,
+				53816B1516265E9400B0672C /* Debug */,
+				53816B1616265E9400B0672C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 347FA82916258537003C4001 /* Project object */;
+	rootObject = 53816AED16265E9400B0672C /* Project object */;
 }
