@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34648C401627E74E00115082 /* HotListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C3F1627E74E00115082 /* HotListCell.m */; };
 		3493F1941626B10200277848 /* ATPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3493F1801626B10200277848 /* ATPagingView.m */; };
 		3499BE8D1626BED40084B838 /* GalleryContainerMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3499BE8C1626BED40084B838 /* GalleryContainerMediator.m */; };
 		3499BEFE1626E2430084B838 /* article_detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEF81626E2430084B838 /* article_detail.jpg */; };
@@ -35,6 +36,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		34648C3E1627E74E00115082 /* HotListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotListCell.h; sourceTree = "<group>"; };
+		34648C3F1627E74E00115082 /* HotListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotListCell.m; sourceTree = "<group>"; };
 		3493F17F1626B10200277848 /* ATPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATPagingView.h; sourceTree = "<group>"; };
 		3493F1801626B10200277848 /* ATPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPagingView.m; sourceTree = "<group>"; };
 		3499BE8B1626BED40084B838 /* GalleryContainerMediator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryContainerMediator.h; sourceTree = "<group>"; };
@@ -209,6 +212,8 @@
 				3499BE8C1626BED40084B838 /* GalleryContainerMediator.m */,
 				3499BF0F1627D2BE0084B838 /* VideoMediator.h */,
 				3499BF101627D2BE0084B838 /* VideoMediator.m */,
+				34648C3E1627E74E00115082 /* HotListCell.h */,
+				34648C3F1627E74E00115082 /* HotListCell.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -295,6 +300,7 @@
 				3499BE8D1626BED40084B838 /* GalleryContainerMediator.m in Sources */,
 				3499BF071626EB2D0084B838 /* StyledPageControl.m in Sources */,
 				3499BF111627D2BE0084B838 /* VideoMediator.m in Sources */,
+				34648C401627E74E00115082 /* HotListCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
