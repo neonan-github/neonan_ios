@@ -7,8 +7,9 @@
 //
 
 #import "Navigator.h"
+#import "SlideShowView.h"
 #import "ATPagingView.h"
 
-@interface GalleryContainerMediator : Mediator <ATPagingViewDelegate>
+@interface GalleryContainerMediator : Mediator <ATPagingViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end

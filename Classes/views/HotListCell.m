@@ -26,10 +26,10 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         self.descriptionLabel = [[[UILabel alloc] init] autorelease];
         self.dateLabel = [[[UILabel alloc] init] autorelease];
         
-        [self.contentView addSubview:_thumbnail];
-        [self.contentView addSubview:_titleLabel];
-        [self.contentView addSubview:_descriptionLabel];
-        [self.contentView addSubview:_dateLabel];
+        [self.contentView addSubview:self.thumbnail];
+        [self.contentView addSubview:self.titleLabel];
+        [self.contentView addSubview:self.descriptionLabel];
+        [self.contentView addSubview:self.dateLabel];
     }
     return self;
 }
@@ -46,14 +46,15 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     
     const float cellHeight = self.frame.size.height;
     const float cellWidth = self.frame.size.width;
+    const float contentHeight = cellHeight - kCellMarginTop - kCellMarginBottom;
     
     float x = kCellMarginLeft;
-    self.thumbnail.frame = CGRectMake(x, kCellMarginTop, 80, cellHeight - kCellMarginTop - kCellMarginBottom);
+    self.thumbnail.frame = CGRectMake(x, kCellMarginTop, 80, contentHeight);
     
     x += 80 + kCellMarginLeft;
-    self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x, cellHeight / 3);
-    self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + cellHeight / 3, cellWidth - x, cellHeight / 3);
-    self.dateLabel.frame = CGRectMake(x, kCellMarginTop + cellHeight * 2 / 3, cellWidth - x, cellHeight / 3);
+    self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x, contentHeight / 3);
+    self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight / 3, cellWidth - x, contentHeight / 3);
+    self.dateLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, cellWidth - x, contentHeight / 3);
 }
 
 - (void)dealloc {

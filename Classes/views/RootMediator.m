@@ -26,7 +26,7 @@
 
 - (void)test
 {
-    Mediator *test = [[[VideoMediator alloc] init] autorelease];
+    Mediator *test = [[[GalleryContainerMediator alloc] init] autorelease];
     [self pushMediator:test withAnimation:From_Right];
 }
 
