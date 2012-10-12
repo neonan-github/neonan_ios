@@ -7,14 +7,16 @@
 //
 
 #import "GalleryContainerMediator.h"
+#import "StyledPageControl.h"
 
 @interface GalleryContainerMediator ()
 @property (nonatomic, retain) ATPagingView *pagingView;
+@property (nonatomic, retain) StyledPageControl *pageControl;
 @property (nonatomic, retain) NSArray *images;
 @end
 
 @implementation GalleryContainerMediator
-@synthesize pagingView = _pagingView;
+@synthesize pagingView = _pagingView, pageControl = _pageControl;
 @synthesize images = _images;
 
 - (void)viewDidLoad
@@ -35,11 +37,14 @@
     [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [navBar addSubview:back];
     
-    ATPagingView *pagingView = [[[ATPagingView alloc] initWithFrame:CGRectMake(0, 40, 320, 100)] autorelease];
+    ATPagingView *pagingView = self.pagingView = [[[ATPagingView alloc] initWithFrame:CGRectMake(0, 40, 320, 100)] autorelease];
     pagingView.delegate = self;
     pagingView.horizontal = YES;
     [self addSubview:pagingView];
-    self.pagingView = pagingView;
+    
+    StyledPageControl *pageControl = self.pageControl = [[[StyledPageControl alloc] initWithFrame:CGRectMake(220, 120, 100, 20)] autorelease];
+    [pageControl setPageControlStyle:PageControlStyleDefault]; 
+    [self addSubview:pageControl];
     
     self.images = [[[NSArray alloc] initWithObjects:@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", nil] autorelease];
 }
@@ -49,6 +54,9 @@
     NSLog(@"==> @(Just for test): GalleryContainerMediator dealloc!!");
     self.pagingView = nil;
     self.pagingView.delegate = nil;
+    
+    self.pageControl = nil;
+    
     [super dealloc];
 }
 
@@ -71,20 +79,26 @@
 #pragma mark － ATPagingViewDelegate methods
 
 - (NSInteger)numberOfPagesInPagingView:(ATPagingView *)pagingView {
-    NSLog(@"numberOfPagesInPagingView:%u", self.images.count);
-    return self.images.count;
+    NSUInteger count = self.images.count;
+    [self.pageControl setNumberOfPages:count];
+    return count;
 }
 
 - (UIView *)viewForPageInPagingView:(ATPagingView *)pagingView atIndex:(NSInteger)index {
-    NSLog(@"viewForPageInPagingView");
     UIImageView *view = (UIImageView *)[pagingView dequeueReusablePage];
     if (view == nil) {
-        view = [[[UIImageView alloc] init] autorelease];        
+        view = [[[UIImageView alloc] init] autorelease];
+        view.clipsToBounds = YES;
+        view.contentMode = UIViewContentModeTop;
     }
     
     view.image = [UIImage imageNamed:[self.images objectAtIndex:index]];
     
     return view;
+}
+
+- (void)currentPageDidChangeInPagingView:(ATPagingView *)pagingView {
+    [self.pageControl setCurrentPage:pagingView.currentPageIndex];
 }
 
 @end
