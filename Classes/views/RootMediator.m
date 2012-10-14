@@ -9,6 +9,7 @@
 #import "RootMediator.h"
 #import "TestMediator.h"
 #import "GalleryContainerMediator.h"
+#import "VideoMediator.h"
 
 @implementation RootMediator
 
@@ -25,7 +26,7 @@
 
 - (void)test
 {
-    GalleryContainerMediator *test = [[[GalleryContainerMediator alloc] init] autorelease];
+    Mediator *test = [[[VideoMediator alloc] init] autorelease];
     [self pushMediator:test withAnimation:From_Right];
 }
 
