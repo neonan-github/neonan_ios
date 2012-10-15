@@ -8,9 +8,9 @@
 
 #import "HotListCell.h"
 
-const float kCellMarginLeft = 8;
-const float kCellMarginTop = 12;
-const float kCellMarginBottom = 12;
+static const float kCellMarginLeft = 8;
+static const float kCellMarginTop = 12;
+static const float kCellMarginBottom = 12;
 
 @implementation HotListCell
 @synthesize thumbnail = _thumbnail, titleLabel = _titleLabel,

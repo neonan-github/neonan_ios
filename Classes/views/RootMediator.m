@@ -10,6 +10,7 @@
 #import "TestMediator.h"
 #import "GalleryContainerMediator.h"
 #import "VideoMediator.h"
+#import "BabyListMediator.h"
 
 @implementation RootMediator
 
