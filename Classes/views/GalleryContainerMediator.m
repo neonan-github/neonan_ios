@@ -9,20 +9,25 @@
 #import "GalleryContainerMediator.h"
 #import "StyledPageControl.h"
 #import "HotListCell.h"
+#import "V8HorizontalPickerView.h"
 
 @interface GalleryContainerMediator ()
 @property (nonatomic, retain) SlideShowView *pagingView;
 @property (nonatomic, retain) StyledPageControl *pageControl;
+@property (nonatomic, retain) V8HorizontalPickerView *pickerView;
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) NSArray *images;
+@property (nonatomic, retain) NSArray *titles;
 @end
 
 @implementation GalleryContainerMediator
-@synthesize pagingView = _pagingView, pageControl = _pageControl, tableView = _tableView;
-@synthesize images = _images;
+@synthesize pagingView = _pagingView, pageControl = _pageControl, tableView = _tableView, pickerView = _pickerView;
+@synthesize images = _images, titles = _titles;
 
 - (void)viewDidLoad
 {
+    float layoutY = 0;
+    
     UILabel *navBar = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 40)] autorelease];
     navBar.text = @"自定义导航栏";
     navBar.backgroundColor = [UIColor colorWithWhite:0.8 alpha:1];
@@ -38,22 +43,36 @@
     [back setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
     [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [navBar addSubview:back];
+   
+    layoutY += 40;
+    V8HorizontalPickerView *pickerView = self.pickerView = [[[V8HorizontalPickerView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 30)] autorelease];
+    pickerView.backgroundColor   = [UIColor darkGrayColor];
+	pickerView.selectedTextColor = [UIColor whiteColor];
+	pickerView.textColor   = [UIColor grayColor];
+	pickerView.delegate    = self;
+	pickerView.dataSource  = self;
+	pickerView.elementFont = [UIFont boldSystemFontOfSize:14.0f];
+	pickerView.selectionPoint = CGPointMake(160, 0);
+    [self addSubview:pickerView];
     
-    SlideShowView *pagingView = self.pagingView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, 40, 320, 100)] autorelease];
+    layoutY += 30;
+    SlideShowView *pagingView = self.pagingView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 100)] autorelease];
     pagingView.delegate = self;
     pagingView.gapBetweenPages = 0;
     [self addSubview:pagingView];
     
-    StyledPageControl *pageControl = self.pageControl = [[[StyledPageControl alloc] initWithFrame:CGRectMake(220, 120, 100, 20)] autorelease];
+    StyledPageControl *pageControl = self.pageControl = [[[StyledPageControl alloc] initWithFrame:CGRectMake(220, layoutY + 100 - 20, 100, 20)] autorelease];
     [pageControl setPageControlStyle:PageControlStyleDefault]; 
     [self addSubview:pageControl];
     
-    UITableView *tableView = self.tableView = [[[UITableView alloc] initWithFrame:CGRectMake(0, 140, 320, 340) style:UITableViewStylePlain] autorelease];
+    layoutY += 100;
+    UITableView *tableView = self.tableView = [[[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 480 - layoutY) style:UITableViewStylePlain] autorelease];
     tableView.delegate = self;
     tableView.dataSource = self;
     [self addSubview:tableView];
     
-    self.images = [[[NSArray alloc] initWithObjects:@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", nil] autorelease];
+    self.titles = [[[NSArray alloc] initWithObjects:@"性情", @"生活", @"主页", @"财富", @"玩乐", nil] autorelease];
+    self.images = [[[NSArray alloc] initWithObjects:@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil] autorelease];
 }
 
 - (void)dealloc
@@ -63,6 +82,8 @@
     self.pagingView.delegate = nil;
     
     self.pageControl = nil;
+    self.pickerView = nil;
+    self.tableView = nil;
     
     [super dealloc];
 }
@@ -77,6 +98,9 @@
     NSLog(@"==> @(Just for test): GalleryContainerMediator Appear!!");
     [self.pagingView reloadData];
     [self.pagingView startAutoScroll:2];
+    
+    [self.pickerView reloadData];
+    [self.pickerView scrollToElement:0 animated:NO];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -108,6 +132,28 @@
 
 - (void)currentPageDidChangeInPagingView:(ATPagingView *)pagingView {
     [self.pageControl setCurrentPage:pagingView.currentPageIndex];
+}
+
+#pragma mark - HorizontalPickerView DataSource Methods
+- (NSInteger)numberOfElementsInHorizontalPickerView:(V8HorizontalPickerView *)picker {
+	return [self.titles count];
+}
+
+#pragma mark - HorizontalPickerView Delegate Methods
+- (NSString *)horizontalPickerView:(V8HorizontalPickerView *)picker titleForElementAtIndex:(NSInteger)index {
+	return [self.titles objectAtIndex:index];
+}
+
+- (NSInteger) horizontalPickerView:(V8HorizontalPickerView *)picker widthForElementAtIndex:(NSInteger)index {
+	CGSize constrainedSize = CGSizeMake(MAXFLOAT, MAXFLOAT);
+	NSString *text = [self.titles objectAtIndex:index];
+	CGSize textSize = [text sizeWithFont:[UIFont boldSystemFontOfSize:14.0f]
+					   constrainedToSize:constrainedSize
+						   lineBreakMode:UILineBreakModeWordWrap];
+	return textSize.width + 40.0f; // 20px padding on each side
+}
+
+- (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
 }
 
 #pragma mark － UITableViewDataSource methods

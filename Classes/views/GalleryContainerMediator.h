@@ -9,7 +9,9 @@
 #import "Navigator.h"
 #import "SlideShowView.h"
 #import "ATPagingView.h"
+#import "V8HorizontalPickerViewProtocol.h"
 
-@interface GalleryContainerMediator : Mediator <ATPagingViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface GalleryContainerMediator : Mediator <ATPagingViewDelegate, UITableViewDataSource, UITableViewDelegate,
+ V8HorizontalPickerViewDataSource, V8HorizontalPickerViewDelegate>
 
 @end
