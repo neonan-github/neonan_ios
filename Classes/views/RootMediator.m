@@ -27,7 +27,7 @@
 
 - (void)test
 {
-    Mediator *test = [[[BabyListMediator alloc] init] autorelease];
+    Mediator *test = [[[GalleryContainerMediator alloc] init] autorelease];
     [self pushMediator:test withAnimation:From_Right];
 }
 

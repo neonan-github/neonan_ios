@@ -74,6 +74,9 @@
     self.pagingView.delegate = nil;
     
     self.pageControl = nil;
+    
+    self.tableView.dataSource = nil;
+    self.tableView.delegate = nil;
     self.tableView = nil;
     
     [super dealloc];
@@ -143,9 +146,7 @@
     cell.descriptionLabel.text = [NSString stringWithFormat:@"description %u", indexPath.row];
     cell.dateLabel.font = [UIFont systemFontOfSize:12];
     cell.dateLabel.text = [NSString stringWithFormat:@"date %u", indexPath.row];
-    cell.playButton.backgroundColor = [UIColor greenColor];
-    [cell.playButton setImage:[UIImage imageNamed:[self.slideImages objectAtIndex:indexPath.row]] forState:UIControlStateNormal];
-    
+    cell.videoShots = self.slideImages;
     return cell;
     
 }

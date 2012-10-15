@@ -94,6 +94,9 @@
     
     self.pageControl = nil;
     self.pickerView = nil;
+    
+    self.tableView.dataSource = nil;
+    self.tableView.delegate = nil;
     self.tableView = nil;
     
     [super dealloc];

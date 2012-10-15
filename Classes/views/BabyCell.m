@@ -14,6 +14,7 @@ static const float kCellMarginBottom = 8;
 
 @interface BabyCell ()
 @property (nonatomic, retain) UIView *centerDivider;
+@property (nonatomic, retain) iCarousel *carousel;
 @end
 
 @implementation BabyCell
@@ -21,6 +22,8 @@ static const float kCellMarginBottom = 8;
 descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
 @synthesize centerDivider = _centerDivider;
 @synthesize playButton = _playButton;
+@synthesize carousel = _carousel;
+@synthesize videoShots = _videoShots;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -36,6 +39,9 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         self.centerDivider.backgroundColor = [UIColor lightGrayColor];
         
         self.playButton = [[[UIButton alloc] init] autorelease];
+        self.carousel = [[[iCarousel alloc] init] autorelease];
+        self.carousel.dataSource = self;
+        self.carousel.delegate = self;
         
         [self.contentView addSubview:self.thumbnail];
         [self.contentView addSubview:self.titleLabel];
@@ -43,13 +49,23 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         [self.contentView addSubview:self.dateLabel];
         [self.contentView addSubview:self.centerDivider];
         [self.contentView addSubview:self.playButton];
+        [self.contentView addSubview:self.carousel];
     }
     return self;
 }
 
+- (void)setVideoShots:(NSArray *)videoShots {
+    if (_videoShots != videoShots) {
+        [_videoShots release];
+        _videoShots = [videoShots retain];
+    }
+    
+    [self.carousel reloadData];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-    [super setSelected:selected animated:animated];
+//    [super setSelected:selected animated:animated];
     
     // Configure the view for the selected state
 }
@@ -73,7 +89,8 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     //center divider
     self.centerDivider.frame = CGRectMake(dividerX, kCellMarginTop, 1, contentHeight);
     
-    self.playButton.frame = CGRectMake(dividerX + 20, kCellMarginTop, cellWidth - dividerX - 20 * 2, contentHeight);
+    self.carousel.frame = CGRectMake(dividerX + 20, kCellMarginTop, cellWidth - dividerX - 20 * 2, contentHeight);
+    self.carousel.clipsToBounds = YES;
 }
 
 - (void)dealloc {
@@ -83,7 +100,60 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     self.dateLabel = nil;
     self.centerDivider = nil;
     self.playButton = nil;
+    
+    self.carousel.dataSource = nil;
+    self.carousel.delegate = nil;
+    self.carousel = nil;
+    
+    self.videoShots = nil;
+    
     [super dealloc];
+}
+
+#pragma mark - iCarouselDataSource methods
+
+- (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
+    return self.videoShots.count;
+}
+
+- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
+    UIImageView *imageView = nil;
+    
+    //create new view if no view is available for recycling
+    if (view == nil)
+    {
+        view = imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, carousel.frame.size.width - 20, carousel.frame.size.height)] autorelease];
+    }
+    else
+    {
+        imageView = (UIImageView *) view;
+    }
+    
+    imageView.image = [UIImage imageNamed:[self.videoShots objectAtIndex:index]];
+    
+    return view;
+}
+
+- (CGFloat)carousel:(iCarousel *)_carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
+{
+    //customize carousel display
+    switch (option)
+    {
+        case iCarouselOptionWrap:
+        {
+            //normally you would hard-code this to YES or NO
+            return NO;
+        }
+        case iCarouselOptionSpacing:
+        {
+            //add a bit of spacing between the item views
+            return value * 1.05f;
+        }
+        default:
+        {
+            return value;
+        }
+    }    
 }
 
 @end

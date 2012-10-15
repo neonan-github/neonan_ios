@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <iCarousel.h>
 
-@interface BabyCell : UITableViewCell
+@interface BabyCell : UITableViewCell <iCarouselDataSource, iCarouselDelegate>
 @property (nonatomic, retain) UIImageView *thumbnail;
 @property (nonatomic, retain) UILabel *titleLabel;
 @property (nonatomic, retain) UILabel *descriptionLabel;
 @property (nonatomic, retain) UILabel *dateLabel;
 @property (nonatomic, retain) UIButton *playButton;
+@property (nonatomic, retain) NSArray *videoShots;
 @end
