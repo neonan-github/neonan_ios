@@ -20,6 +20,7 @@
 		3499BF071626EB2D0084B838 /* StyledPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 3499BF061626EB2D0084B838 /* StyledPageControl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3499BF111627D2BE0084B838 /* VideoMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3499BF101627D2BE0084B838 /* VideoMediator.m */; };
 		3499BF131627D3F70084B838 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3499BF121627D3F70084B838 /* MediaPlayer.framework */; };
+		34C81B30162BB70D00DA093B /* V8HorizontalPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C81B2E162BB70D00DA093B /* V8HorizontalPickerView.m */; };
 		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
 		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; };
 		53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFE16265E9400B0672C /* CoreGraphics.framework */; };
@@ -56,6 +57,9 @@
 		3499BF0F1627D2BE0084B838 /* VideoMediator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoMediator.h; sourceTree = "<group>"; };
 		3499BF101627D2BE0084B838 /* VideoMediator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoMediator.m; sourceTree = "<group>"; };
 		3499BF121627D3F70084B838 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		34C81B2D162BB70D00DA093B /* V8HorizontalPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = V8HorizontalPickerView.h; sourceTree = "<group>"; };
+		34C81B2E162BB70D00DA093B /* V8HorizontalPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = V8HorizontalPickerView.m; sourceTree = "<group>"; };
+		34C81B2F162BB70D00DA093B /* V8HorizontalPickerViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = V8HorizontalPickerViewProtocol.h; sourceTree = "<group>"; };
 		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53816AFA16265E9400B0672C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		53816AFC16265E9400B0672C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -127,6 +131,16 @@
 			path = "iOS-StyledPageControl";
 			sourceTree = "<group>";
 		};
+		34C81B2C162BB70D00DA093B /* V8HorizontalPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				34C81B2D162BB70D00DA093B /* V8HorizontalPickerView.h */,
+				34C81B2E162BB70D00DA093B /* V8HorizontalPickerView.m */,
+				34C81B2F162BB70D00DA093B /* V8HorizontalPickerViewProtocol.h */,
+			);
+			path = V8HorizontalPickerView;
+			sourceTree = "<group>";
+		};
 		53816AEB16265E9400B0672C = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +210,7 @@
 		53816B2116265FB100B0672C /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				34C81B2C162BB70D00DA093B /* V8HorizontalPickerView */,
 				3499BF041626EB2D0084B838 /* iOS-StyledPageControl */,
 				3493F17E1626B10200277848 /* ATPagingView */,
 				53816B22162661C800B0672C /* Navigator.h */,
@@ -307,6 +322,7 @@
 				3499BF111627D2BE0084B838 /* VideoMediator.m in Sources */,
 				34648C401627E74E00115082 /* HotListCell.m in Sources */,
 				34648C68162833C000115082 /* SlideShowView.m in Sources */,
+				34C81B30162BB70D00DA093B /* V8HorizontalPickerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
