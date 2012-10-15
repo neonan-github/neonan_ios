@@ -10,6 +10,7 @@
 #import "StyledPageControl.h"
 #import "HotListCell.h"
 #import "V8HorizontalPickerView.h"
+#import <SVPullToRefresh.h>
 
 @interface GalleryContainerMediator ()
 @property (nonatomic, retain) SlideShowView *pagingView;
@@ -69,6 +70,13 @@
     UITableView *tableView = self.tableView = [[[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 480 - layoutY) style:UITableViewStylePlain] autorelease];
     tableView.delegate = self;
     tableView.dataSource = self;
+    [tableView addPullToRefreshWithActionHandler:^{
+        // refresh data
+        // call [tableView.pullToRefreshView stopAnimating] when done
+    }];
+    [tableView addInfiniteScrollingWithActionHandler:^{
+        // add data to data source, insert new cells into table view
+    }];
     [self addSubview:tableView];
     
     self.titles = [[[NSArray alloc] initWithObjects:@"性情", @"生活", @"主页", @"财富", @"玩乐", nil] autorelease];
