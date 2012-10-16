@@ -5,14 +5,13 @@
 //  Created by capricorn on 12-10-11.
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
-
-#import "GalleryContainerMediator.h"
+#import "MainMediator.h"
 #import "StyledPageControl.h"
 #import "HotListCell.h"
 #import "V8HorizontalPickerView.h"
 #import <SVPullToRefresh.h>
 
-@interface GalleryContainerMediator ()
+@interface MainMediator ()
 @property (nonatomic, retain) SlideShowView *pagingView;
 @property (nonatomic, retain) StyledPageControl *pageControl;
 @property (nonatomic, retain) V8HorizontalPickerView *pickerView;
@@ -21,7 +20,7 @@
 @property (nonatomic, retain) NSArray *titles;
 @end
 
-@implementation GalleryContainerMediator
+@implementation MainMediator
 @synthesize pagingView = _pagingView, pageControl = _pageControl, tableView = _tableView, pickerView = _pickerView;
 @synthesize images = _images, titles = _titles;
 

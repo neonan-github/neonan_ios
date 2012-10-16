@@ -10,7 +10,7 @@
 		34648C401627E74E00115082 /* HotListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C3F1627E74E00115082 /* HotListCell.m */; };
 		34648C68162833C000115082 /* SlideShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C67162833C000115082 /* SlideShowView.m */; };
 		3493F1941626B10200277848 /* ATPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3493F1801626B10200277848 /* ATPagingView.m */; };
-		3499BE8D1626BED40084B838 /* GalleryContainerMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3499BE8C1626BED40084B838 /* GalleryContainerMediator.m */; };
+		3499BE8D1626BED40084B838 /* MainMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3499BE8C1626BED40084B838 /* MainMediator.m */; };
 		3499BEFE1626E2430084B838 /* article_detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEF81626E2430084B838 /* article_detail.jpg */; };
 		3499BEFF1626E2430084B838 /* article_list.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEF91626E2430084B838 /* article_list.jpg */; };
 		3499BF001626E2430084B838 /* baby_detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEFA1626E2430084B838 /* baby_detail.jpg */; };
@@ -47,8 +47,8 @@
 		34648C67162833C000115082 /* SlideShowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideShowView.m; sourceTree = "<group>"; };
 		3493F17F1626B10200277848 /* ATPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATPagingView.h; sourceTree = "<group>"; };
 		3493F1801626B10200277848 /* ATPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPagingView.m; sourceTree = "<group>"; };
-		3499BE8B1626BED40084B838 /* GalleryContainerMediator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryContainerMediator.h; sourceTree = "<group>"; };
-		3499BE8C1626BED40084B838 /* GalleryContainerMediator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryContainerMediator.m; sourceTree = "<group>"; };
+		3499BE8B1626BED40084B838 /* MainMediator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMediator.h; sourceTree = "<group>"; };
+		3499BE8C1626BED40084B838 /* MainMediator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMediator.m; sourceTree = "<group>"; };
 		3499BEF81626E2430084B838 /* article_detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = article_detail.jpg; sourceTree = "<group>"; };
 		3499BEF91626E2430084B838 /* article_list.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = article_list.jpg; sourceTree = "<group>"; };
 		3499BEFA1626E2430084B838 /* baby_detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = baby_detail.jpg; sourceTree = "<group>"; };
@@ -238,8 +238,8 @@
 				53816B2D16266F2500B0672C /* RootMediator.m */,
 				53816B2F16266F3200B0672C /* TestMediator.h */,
 				53816B3016266F3200B0672C /* TestMediator.m */,
-				3499BE8B1626BED40084B838 /* GalleryContainerMediator.h */,
-				3499BE8C1626BED40084B838 /* GalleryContainerMediator.m */,
+				3499BE8B1626BED40084B838 /* MainMediator.h */,
+				3499BE8C1626BED40084B838 /* MainMediator.m */,
 				3499BF0F1627D2BE0084B838 /* VideoMediator.h */,
 				3499BF101627D2BE0084B838 /* VideoMediator.m */,
 				34648C3E1627E74E00115082 /* HotListCell.h */,
@@ -351,7 +351,7 @@
 				53816B2E16266F2500B0672C /* RootMediator.m in Sources */,
 				53816B3116266F3200B0672C /* TestMediator.m in Sources */,
 				3493F1941626B10200277848 /* ATPagingView.m in Sources */,
-				3499BE8D1626BED40084B838 /* GalleryContainerMediator.m in Sources */,
+				3499BE8D1626BED40084B838 /* MainMediator.m in Sources */,
 				3499BF071626EB2D0084B838 /* StyledPageControl.m in Sources */,
 				3499BF111627D2BE0084B838 /* VideoMediator.m in Sources */,
 				34648C401627E74E00115082 /* HotListCell.m in Sources */,
