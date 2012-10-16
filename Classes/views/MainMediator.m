@@ -12,7 +12,7 @@
 #import <SVPullToRefresh.h>
 
 @interface MainMediator ()
-@property (nonatomic, retain) SlideShowView *pagingView;
+@property (nonatomic, retain) SlideShowView *slideShowView;
 @property (nonatomic, retain) StyledPageControl *pageControl;
 @property (nonatomic, retain) V8HorizontalPickerView *pickerView;
 @property (nonatomic, retain) UITableView *tableView;
@@ -21,7 +21,7 @@
 @end
 
 @implementation MainMediator
-@synthesize pagingView = _pagingView, pageControl = _pageControl, tableView = _tableView, pickerView = _pickerView;
+@synthesize slideShowView = _slideShowView, pageControl = _pageControl, tableView = _tableView, pickerView = _pickerView;
 @synthesize images = _images, titles = _titles;
 
 - (void)viewDidLoad
@@ -56,10 +56,10 @@
     [self addSubview:pickerView];
     
     layoutY += 30;
-    SlideShowView *pagingView = self.pagingView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 100)] autorelease];
-    pagingView.dataSource = self;
-    pagingView.delegate = self;
-    [self addSubview:pagingView];
+    SlideShowView *slideShowView = self.slideShowView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 100)] autorelease];
+    slideShowView.dataSource = self;
+    slideShowView.delegate = self;
+    [self addSubview:slideShowView];
     
     StyledPageControl *pageControl = self.pageControl = [[[StyledPageControl alloc] initWithFrame:CGRectMake(220, layoutY + 100 - 20, 100, 20)] autorelease];
     [pageControl setPageControlStyle:PageControlStyleDefault]; 
@@ -88,8 +88,8 @@
     self.images = nil;
     self.titles = nil;
     
-    self.pagingView = nil;
-    self.pagingView.dataSource = nil;
+    self.slideShowView = nil;
+    self.slideShowView.dataSource = nil;
     
     self.pageControl = nil;
     self.pickerView = nil;
@@ -109,8 +109,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"==> @(Just for test): GalleryContainerMediator Appear!!");
-    [self.pagingView reloadData];
-    [self.pagingView startAutoScroll:2];
+    [self.slideShowView reloadData];
+    [self.slideShowView startAutoScroll:2];
     
     [self.pickerView reloadData];
     [self.pickerView scrollToElement:0 animated:NO];
@@ -119,7 +119,7 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     NSLog(@"==> @(Just for test): GalleryContainerMediator Disappear!!");
-    [self.pagingView stopAutoScroll];
+    [self.slideShowView stopAutoScroll];
 }
 
 #pragma mark - HorizontalPickerView DataSource Methods

@@ -13,7 +13,7 @@
 #import <SVPullToRefresh.h>
 
 @interface BabyListMediator ()
-@property (nonatomic, retain) SlideShowView *pagingView;
+@property (nonatomic, retain) SlideShowView *slideShowView;
 @property (nonatomic, retain) StyledPageControl *pageControl;
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) NSArray *slideImages;
@@ -42,10 +42,10 @@
     [navBar addSubview:back];
     
     layoutY += 40;
-    SlideShowView *pagingView = self.pagingView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 100)] autorelease];
-    pagingView.dataSource = self;
-    pagingView.delegate = self;
-    [self addSubview:pagingView];
+    SlideShowView *slideShowView = self.slideShowView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 100)] autorelease];
+    slideShowView.dataSource = self;
+    slideShowView.delegate = self;
+    [self addSubview:slideShowView];
     
     StyledPageControl *pageControl = self.pageControl = [[[StyledPageControl alloc] initWithFrame:CGRectMake(220, layoutY + 100 - 20, 100, 20)] autorelease];
     [pageControl setPageControlStyle:PageControlStyleDefault];
@@ -70,8 +70,8 @@
 - (void)dealloc
 {
     NSLog(@"==> @(Just for test): GalleryContainerMediator dealloc!!");
-    self.pagingView = nil;
-    self.pagingView.dataSource = nil;
+    self.slideShowView = nil;
+    self.slideShowView.dataSource = nil;
     
     self.pageControl = nil;
     
@@ -90,14 +90,14 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"==> @(Just for test): GalleryContainerMediator Appear!!");
-    [self.pagingView reloadData];
-    [self.pagingView startAutoScroll:2];
+    [self.slideShowView reloadData];
+    [self.slideShowView startAutoScroll:2];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     NSLog(@"==> @(Just for test): GalleryContainerMediator Disappear!!");
-    [self.pagingView stopAutoScroll];
+    [self.slideShowView stopAutoScroll];
 }
 
 #pragma mark - SlideShowViewDataSource methods
