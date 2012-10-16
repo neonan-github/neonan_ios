@@ -7,8 +7,9 @@
 //
 
 #import "Navigator.h"
-#import "ATPagingView.h"
+#import "SlideShowView.h"
 
-@interface BabyListMediator : Mediator <ATPagingViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface BabyListMediator : Mediator <SlideShowViewDataSource, SlideShowViewDelegate,
+    UITableViewDataSource, UITableViewDelegate>
 
 @end

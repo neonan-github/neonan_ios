@@ -57,8 +57,8 @@
     
     layoutY += 30;
     SlideShowView *pagingView = self.pagingView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 100)] autorelease];
+    pagingView.dataSource = self;
     pagingView.delegate = self;
-    pagingView.gapBetweenPages = 0;
     [self addSubview:pagingView];
     
     StyledPageControl *pageControl = self.pageControl = [[[StyledPageControl alloc] initWithFrame:CGRectMake(220, layoutY + 100 - 20, 100, 20)] autorelease];
@@ -89,7 +89,7 @@
     self.titles = nil;
     
     self.pagingView = nil;
-    self.pagingView.delegate = nil;
+    self.pagingView.dataSource = nil;
     
     self.pageControl = nil;
     self.pickerView = nil;
@@ -122,31 +122,6 @@
     [self.pagingView stopAutoScroll];
 }
 
-#pragma mark － ATPagingViewDelegate methods
-
-- (NSInteger)numberOfPagesInPagingView:(ATPagingView *)pagingView {
-    NSUInteger count = self.images.count;
-    [self.pageControl setNumberOfPages:count];
-    return count;
-}
-
-- (UIView *)viewForPageInPagingView:(ATPagingView *)pagingView atIndex:(NSInteger)index {
-    UIImageView *view = (UIImageView *)[pagingView dequeueReusablePage];
-    if (view == nil) {
-        view = [[[UIImageView alloc] init] autorelease];
-        view.clipsToBounds = YES;
-        view.contentMode = UIViewContentModeTop;
-    }
-    
-    view.image = [UIImage imageNamed:[self.images objectAtIndex:index]];
-    
-    return view;
-}
-
-- (void)currentPageDidChangeInPagingView:(ATPagingView *)pagingView {
-    [self.pageControl setCurrentPage:pagingView.currentPageIndex];
-}
-
 #pragma mark - HorizontalPickerView DataSource Methods
 - (NSInteger)numberOfElementsInHorizontalPickerView:(V8HorizontalPickerView *)picker {
 	return [self.titles count];
@@ -167,6 +142,32 @@
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
+}
+
+#pragma mark - SlideShowViewDataSource methods
+
+- (NSUInteger)numberOfItemsInSlideShowView:(SlideShowView *)slideShowView {
+    NSUInteger count = self.images.count;
+    [self.pageControl setNumberOfPages:count];
+    return count;
+}
+
+- (UIView *)slideShowView:(SlideShowView *)slideShowView viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
+    if (!view) {
+        view = [[[UIImageView alloc] init] autorelease];
+        view.clipsToBounds = YES;
+        view.contentMode = UIViewContentModeTop;
+    }
+    
+    ((UIImageView *)view).image = [UIImage imageNamed:[self.images objectAtIndex:index]];
+    
+    return view;
+}
+
+#pragma mark - SlideShowViewDelegate methods
+
+- (void)slideShowViewItemIndexDidChange:(SlideShowView *)slideShowView {
+    [self.pageControl setCurrentPage:slideShowView.carousel.currentItemIndex];
 }
 
 #pragma mark － UITableViewDataSource methods

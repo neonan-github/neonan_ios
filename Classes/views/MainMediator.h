@@ -11,7 +11,7 @@
 #import "ATPagingView.h"
 #import "V8HorizontalPickerViewProtocol.h"
 
-@interface MainMediator : Mediator <ATPagingViewDelegate, UITableViewDataSource, UITableViewDelegate,
+@interface MainMediator : Mediator <SlideShowViewDataSource, SlideShowViewDelegate, UITableViewDataSource, UITableViewDelegate,
  V8HorizontalPickerViewDataSource, V8HorizontalPickerViewDelegate>
 
 @end
