@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3446C89F162D680C0049B952 /* CircleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3446C89E162D680C0049B952 /* CircleHeaderView.m */; };
 		34648C401627E74E00115082 /* HotListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C3F1627E74E00115082 /* HotListCell.m */; };
 		34648C68162833C000115082 /* SlideShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C67162833C000115082 /* SlideShowView.m */; };
 		3493F1941626B10200277848 /* ATPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3493F1801626B10200277848 /* ATPagingView.m */; };
@@ -41,6 +42,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3446C89D162D680C0049B952 /* CircleHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleHeaderView.h; sourceTree = "<group>"; };
+		3446C89E162D680C0049B952 /* CircleHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleHeaderView.m; sourceTree = "<group>"; };
 		34648C3E1627E74E00115082 /* HotListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotListCell.h; sourceTree = "<group>"; };
 		34648C3F1627E74E00115082 /* HotListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotListCell.m; sourceTree = "<group>"; };
 		34648C66162833C000115082 /* SlideShowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideShowView.h; sourceTree = "<group>"; };
@@ -246,10 +249,12 @@
 				3499BF101627D2BE0084B838 /* VideoMediator.m */,
 				34648C3E1627E74E00115082 /* HotListCell.h */,
 				34648C3F1627E74E00115082 /* HotListCell.m */,
-				34648C66162833C000115082 /* SlideShowView.h */,
-				34648C67162833C000115082 /* SlideShowView.m */,
 				34C81B4D162BF78000DA093B /* BabyCell.h */,
 				34C81B4E162BF78000DA093B /* BabyCell.m */,
+				34648C66162833C000115082 /* SlideShowView.h */,
+				34648C67162833C000115082 /* SlideShowView.m */,
+				3446C89D162D680C0049B952 /* CircleHeaderView.h */,
+				3446C89E162D680C0049B952 /* CircleHeaderView.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -359,6 +364,7 @@
 				34C81B30162BB70D00DA093B /* V8HorizontalPickerView.m in Sources */,
 				34C81B48162BE86300DA093B /* BabyListMediator.m in Sources */,
 				34C81B4F162BF78000DA093B /* BabyCell.m in Sources */,
+				3446C89F162D680C0049B952 /* CircleHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

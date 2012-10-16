@@ -7,6 +7,7 @@
 //
 
 #import "TestMediator.h"
+#import "CircleHeaderView.h"
 
 @implementation TestMediator
 
@@ -27,6 +28,9 @@
     [back setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
     [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [navBar addSubview:back];
+    
+    CircleHeaderView *headerView = [[[CircleHeaderView alloc] initWithFrame:CGRectMake(0, 60, 320, 20)] autorelease];
+    [self addSubview:headerView];
 }
 
 - (void)dealloc
