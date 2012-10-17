@@ -8,25 +8,32 @@
 
 #import "BabyDetailMediator.h"
 #import "StyledPageControl.h"
+#import <FXLabel.h>
 
 @interface BabyDetailMediator ()
-
+@property (nonatomic, retain) UILabel *navigationBar;
 @property (nonatomic, retain) SlideShowView *slideShowView;
 @property (nonatomic, retain) StyledPageControl *pageControl;
+@property (nonatomic, retain) FXLabel *descriptionLabel;
 
 @property (nonatomic, retain) NSArray *slideImages;
 
 @end
 
 @implementation BabyDetailMediator
+@synthesize navigationBar = _navigationBar;
 @synthesize slideShowView = _slideShowView, pageControl = _pageControl;
 @synthesize slideImages = _slideImages;
+@synthesize descriptionLabel = _descriptionLabel;
 
 - (void)viewDidLoad
 {
-    float layoutY = 0;
+    SlideShowView *slideShowView = self.slideShowView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, 0, 320, 460)] autorelease];
+    slideShowView.dataSource = self;
+    slideShowView.delegate = self;
+    [self addSubview:slideShowView];
     
-    UILabel *navBar = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 40)] autorelease];
+    UILabel *navBar = self.navigationBar = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 40)] autorelease];
     navBar.text = @"自定义导航栏";
     navBar.backgroundColor = [UIColor colorWithWhite:0.8 alpha:1];
     navBar.textAlignment = NSTextAlignmentCenter;
@@ -42,14 +49,10 @@
     [back addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     [navBar addSubview:back];
     
-    layoutY += 40;
-    SlideShowView *slideShowView = self.slideShowView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 460 - layoutY)] autorelease];
-    slideShowView.dataSource = self;
-    slideShowView.delegate = self;
-    [self addSubview:slideShowView];
-    
-    UILabel *descriptionLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 460 - 85, 320, 85)] autorelease];
+    FXLabel *descriptionLabel = self.descriptionLabel = [[[FXLabel alloc] initWithFrame:CGRectMake(0, 460 - 85, 320, 85)] autorelease];
     descriptionLabel.numberOfLines = 0;
+    descriptionLabel.backgroundColor = [UIColor lightGrayColor];
+    descriptionLabel.textInsets = UIEdgeInsetsMake(10, 10, 10, 10);
     descriptionLabel.text = @"杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志。";
     [self addSubview:descriptionLabel];
     
@@ -59,6 +62,9 @@
     pageControl.coreSelectedColor = [UIColor blueColor];
     [self addSubview:pageControl];
     
+    UITapGestureRecognizer *recognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)] autorelease];
+    [slideShowView addGestureRecognizer:recognizer];
+
     self.slideImages = [[[NSArray alloc] initWithObjects:@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil] autorelease];
 }
 
@@ -70,6 +76,9 @@
 
     self.pageControl = nil;
     self.slideImages = nil;
+    
+    self.navigationBar = nil;
+    self.descriptionLabel = nil;
     
     [super dealloc];
 }
@@ -116,5 +125,13 @@
     [self.pageControl setCurrentPage:slideShowView.carousel.currentItemIndex];
 }
 
+#pragma mark - Private methods
+
+- (void)tap:(UITapGestureRecognizer *)recognizer {
+    NSLog(@"tap!!!");
+    BOOL hidden = !self.navigationBar.hidden;
+    self.navigationBar.hidden = hidden;
+    self.descriptionLabel.hidden = hidden;
+}
 
 @end
