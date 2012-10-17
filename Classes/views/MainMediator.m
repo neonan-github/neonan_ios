@@ -10,6 +10,7 @@
 #import "HotListCell.h"
 #import "V8HorizontalPickerView.h"
 #import <SVPullToRefresh.h>
+#import "CircleHeaderView.h"
 
 @interface MainMediator ()
 @property (nonatomic, retain) SlideShowView *slideShowView;
@@ -45,15 +46,17 @@
     [navBar addSubview:back];
    
     layoutY += 40;
-    V8HorizontalPickerView *pickerView = self.pickerView = [[[V8HorizontalPickerView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 30)] autorelease];
-    pickerView.backgroundColor   = [UIColor darkGrayColor];
-	pickerView.selectedTextColor = [UIColor whiteColor];
-	pickerView.textColor   = [UIColor grayColor];
-	pickerView.delegate    = self;
-	pickerView.dataSource  = self;
-	pickerView.elementFont = [UIFont boldSystemFontOfSize:14.0f];
-	pickerView.selectionPoint = CGPointMake(160, 0);
-    [self addSubview:pickerView];
+    CircleHeaderView *headerView = [[[CircleHeaderView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 30)] autorelease];
+    [self addSubview:headerView];
+//    V8HorizontalPickerView *pickerView = self.pickerView = [[[V8HorizontalPickerView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 30)] autorelease];
+//    pickerView.backgroundColor   = [UIColor darkGrayColor];
+//	pickerView.selectedTextColor = [UIColor whiteColor];
+//	pickerView.textColor   = [UIColor grayColor];
+//	pickerView.delegate    = self;
+//	pickerView.dataSource  = self;
+//	pickerView.elementFont = [UIFont boldSystemFontOfSize:14.0f];
+//	pickerView.selectionPoint = CGPointMake(160, 0);
+//    [self addSubview:pickerView];
     
     layoutY += 30;
     SlideShowView *slideShowView = self.slideShowView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 100)] autorelease];
@@ -78,12 +81,13 @@
     }];
     [self addSubview:tableView];
     
-    self.titles = [[[NSArray alloc] initWithObjects:@"性情", @"生活", @"主页", @"财富", @"玩乐", nil] autorelease];
+    headerView.titles = self.titles = [[[NSArray alloc] initWithObjects:@"性情", @"生活", @"主页", @"财富", @"玩乐", nil] autorelease];
+    [headerView reloadData];
     self.images = [[[NSArray alloc] initWithObjects:@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil] autorelease];
 }
 
 - (void)dealloc
-{
+{             
     NSLog(@"==> @(Just for test): GalleryContainerMediator dealloc!!");
     self.images = nil;
     self.titles = nil;
