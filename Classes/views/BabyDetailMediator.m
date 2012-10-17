@@ -64,6 +64,7 @@
     self.slideShowView = nil;
 
     self.pageControl = nil;
+    self.slideImages = nil;
     
     [super dealloc];
 }
