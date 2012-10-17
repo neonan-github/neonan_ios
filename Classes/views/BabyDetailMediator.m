@@ -31,6 +31,8 @@
     SlideShowView *slideShowView = self.slideShowView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, 0, 320, 460)] autorelease];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
+    UITapGestureRecognizer *recognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)] autorelease];
+    [slideShowView addGestureRecognizer:recognizer];
     [self addSubview:slideShowView];
     
     UILabel *navBar = self.navigationBar = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 40)] autorelease];
@@ -61,9 +63,6 @@
     pageControl.coreNormalColor = [UIColor whiteColor];
     pageControl.coreSelectedColor = [UIColor blueColor];
     [self addSubview:pageControl];
-    
-    UITapGestureRecognizer *recognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)] autorelease];
-    [slideShowView addGestureRecognizer:recognizer];
 
     self.slideImages = [[[NSArray alloc] initWithObjects:@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil] autorelease];
 }
@@ -128,10 +127,15 @@
 #pragma mark - Private methods
 
 - (void)tap:(UITapGestureRecognizer *)recognizer {
-    NSLog(@"tap!!!");
-    BOOL hidden = !self.navigationBar.hidden;
-    self.navigationBar.hidden = hidden;
-    self.descriptionLabel.hidden = hidden;
+    BOOL hidden = self.navigationBar.frame.origin.y >= 0;
+    float navigationBarDeltaY = -self.navigationBar.frame.size.height * (hidden ? 1 : 0);
+    float descriptionLabelDeltaY = self.descriptionLabel.frame.size.height * (hidden ? 1 : 0);
+    [UIView animateWithDuration:0.3 delay:0
+                        options:(hidden ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut)
+                     animations:^{
+        self.navigationBar.transform = CGAffineTransformMakeTranslation(0, navigationBarDeltaY);
+        self.descriptionLabel.transform = CGAffineTransformMakeTranslation(0, descriptionLabelDeltaY);
+    } completion:nil];
 }
 
 @end
