@@ -10,6 +10,8 @@
 
 @implementation CircleHeaderView
 @synthesize carousel = _carousel;
+@synthesize titles = _titles;
+@synthesize dataSource = _dataSource;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -24,8 +26,22 @@
         
         UIPanGestureRecognizer *recognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)] autorelease];
         [self addGestureRecognizer:recognizer];
+        
+        self.backgroundColor = [UIColor darkGrayColor];
     }
     return self;
+}
+
+- (void)dealloc {
+    self.carousel.dataSource = nil;
+    self.carousel.delegate = nil;
+    self.carousel = nil;
+    
+    self.titles = nil;
+    
+    self.dataSource = nil;
+    
+    [super dealloc];
 }
 
 - (void)reloadData {
@@ -42,19 +58,28 @@
 #pragma mark - iCarouselDataSource methods
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
-    return 10;
+    if (self.dataSource) {
+        return 0; //todo
+    }
+    
+    return self.titles.count;
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
+    if (self.dataSource) {
+        return nil;// todo
+    }
+    
     UILabel *label;
     if (!view) {
         label = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width / 4, self.frame.size.height)] autorelease];
         label.textAlignment = UITextAlignmentCenter;
+        label.backgroundColor = [UIColor clearColor];
     } else {
         label = (UILabel *)view;
     }
     
-    label.text = [NSString stringWithFormat:@"title%u", index];
+    label.text = [self.titles objectAtIndex:index];
     
     return label;
 }
