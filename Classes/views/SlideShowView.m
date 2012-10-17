@@ -20,7 +20,9 @@
     if ((self = [super initWithFrame:frame]))
     {
         self.carousel = [[[iCarousel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)] autorelease];
-        self.carousel.decelerationRate = 0.0f;// page scroll
+        self.carousel.decelerationRate = 0.0f;// carousel stops immediately when released
+        self.carousel.ignorePerpendicularSwipes = YES;
+//        self.carousel.scrollToItemBoundary = YES;
         self.carousel.stopAtItemBoundary = YES;
         self.carousel.bounces = NO;
         self.carousel.clipsToBounds = YES;
@@ -55,14 +57,15 @@
 - (void)startAutoScroll:(double)interval {
     self.slideInterval = interval;
     if (!self.slideTimer || self.slideTimer.timeInterval != interval) {
-        [self.slideTimer invalidate];
-        self.slideTimer = nil;
-    
-        self.slideTimer = [NSTimer scheduledTimerWithTimeInterval:interval
-                                                 target:self
-                                               selector:@selector(update)
-                                               userInfo:nil
-                                                repeats:YES];
+        [self stopAutoScroll];
+        
+        if (interval > 0) {
+            self.slideTimer = [NSTimer scheduledTimerWithTimeInterval:interval
+                                                               target:self
+                                                             selector:@selector(update)
+                                                             userInfo:nil
+                                                              repeats:YES];
+        }
     }
 }
 
@@ -99,6 +102,7 @@
 }
 
 - (void)carouselDidEndDecelerating:(iCarousel *)carousel {
+    NSLog(@"didEndDecelerating");
     [self startAutoScroll:self.slideInterval];
 }
 
@@ -107,15 +111,20 @@
 }
 
 - (void)carouselDidEndDragging:(iCarousel *)carousel willDecelerate:(BOOL)decelerate {
+    NSLog(@"didEndDragging decelerate:%@ offset:%f itemWidth:%f", (decelerate ? @"y" : @"n"), self.carousel.scrollOffset, self.carousel.itemWidth);
     if (!decelerate) {
         [self startAutoScroll:self.slideInterval];
-    }
+    } 
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
     if (self.delegate) {
         [self.delegate slideShowViewItemIndexDidChange:self];
     }
+}
+
+- (BOOL)carousel:(iCarousel *)carousel shouldSelectItemAtIndex:(NSInteger)index {
+    return NO;
 }
 
 - (CGFloat)carousel:(iCarousel *)_carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value

@@ -11,6 +11,7 @@
 #import "MainMediator.h"
 #import "VideoMediator.h"
 #import "BabyListMediator.h"
+#import "BabyDetailMediator.h"
 
 @implementation RootMediator
 
@@ -27,7 +28,7 @@
 
 - (void)test
 {
-    Mediator *test = [[[MainMediator alloc] init] autorelease];
+    Mediator *test = [[[BabyDetailMediator alloc] init] autorelease];
     [self pushMediator:test withAnimation:From_Right];
 }
 
