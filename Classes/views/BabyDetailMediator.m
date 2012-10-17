@@ -43,12 +43,17 @@
     [navBar addSubview:back];
     
     layoutY += 40;
-    SlideShowView *slideShowView = self.slideShowView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 480 - layoutY)] autorelease];
+    SlideShowView *slideShowView = self.slideShowView = [[[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 460 - layoutY)] autorelease];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
     [self addSubview:slideShowView];
     
-    StyledPageControl *pageControl = self.pageControl = [[[StyledPageControl alloc] initWithFrame:CGRectMake(0, 440, 320, 20)] autorelease];
+    UILabel *descriptionLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 460 - 85, 320, 85)] autorelease];
+    descriptionLabel.numberOfLines = 0;
+    descriptionLabel.text = @"杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志。";
+    [self addSubview:descriptionLabel];
+    
+    StyledPageControl *pageControl = self.pageControl = [[[StyledPageControl alloc] initWithFrame:CGRectMake(0, 435, 320, 20)] autorelease];
     [pageControl setPageControlStyle:PageControlStyleDefault];
     pageControl.coreNormalColor = [UIColor whiteColor];
     pageControl.coreSelectedColor = [UIColor blueColor];
