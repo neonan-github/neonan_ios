@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 #import "MainMediator.h"
-#import "StyledPageControl.h"
+#import "SMPageControl.h"
 #import "HotListCell.h"
 #import "V8HorizontalPickerView.h"
 #import <SVPullToRefresh.h>
@@ -14,7 +14,7 @@
 
 @interface MainMediator ()
 @property (nonatomic, retain) SlideShowView *slideShowView;
-@property (nonatomic, retain) StyledPageControl *pageControl;
+@property (nonatomic, retain) SMPageControl *pageControl;
 @property (nonatomic, retain) V8HorizontalPickerView *pickerView;
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) NSArray *images;
@@ -64,8 +64,9 @@
     slideShowView.delegate = self;
     [self addSubview:slideShowView];
     
-    StyledPageControl *pageControl = self.pageControl = [[[StyledPageControl alloc] initWithFrame:CGRectMake(220, layoutY + 100 - 20, 100, 20)] autorelease];
-    [pageControl setPageControlStyle:PageControlStyleDefault]; 
+    SMPageControl *pageControl = self.pageControl = [[[SMPageControl alloc] initWithFrame:CGRectMake(0, layoutY + 100 - 20, 310, 20)] autorelease];
+    pageControl.alignment = SMPageControlAlignmentRight;
+    pageControl.userInteractionEnabled = NO;
     [self addSubview:pageControl];
     
     layoutY += 100;

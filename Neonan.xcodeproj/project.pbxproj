@@ -28,6 +28,7 @@
 		34D4649A162FCAA500D8EE28 /* NSString+TruncateToWidth.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D46499162FCAA500D8EE28 /* NSString+TruncateToWidth.m */; };
 		34D4649D162FD3D200D8EE28 /* UILabel+dynamicSizeMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D4649C162FD3D200D8EE28 /* UILabel+dynamicSizeMe.m */; };
 		34D464D21630065C00D8EE28 /* UIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464D11630065C00D8EE28 /* UIHelper.m */; };
+		34D464E51630243900D8EE28 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464E41630243900D8EE28 /* SMPageControl.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
 		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; };
 		53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFE16265E9400B0672C /* CoreGraphics.framework */; };
@@ -82,6 +83,8 @@
 		34D4649C162FD3D200D8EE28 /* UILabel+dynamicSizeMe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+dynamicSizeMe.m"; sourceTree = "<group>"; };
 		34D464D01630065C00D8EE28 /* UIHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIHelper.h; sourceTree = "<group>"; };
 		34D464D11630065C00D8EE28 /* UIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIHelper.m; sourceTree = "<group>"; };
+		34D464E31630243900D8EE28 /* SMPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPageControl.h; sourceTree = "<group>"; };
+		34D464E41630243900D8EE28 /* SMPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPageControl.m; sourceTree = "<group>"; };
 		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53816AFA16265E9400B0672C /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		53816AFC16265E9400B0672C /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -179,6 +182,15 @@
 			path = helpers;
 			sourceTree = "<group>";
 		};
+		34D464E21630243900D8EE28 /* SMPageControl */ = {
+			isa = PBXGroup;
+			children = (
+				34D464E31630243900D8EE28 /* SMPageControl.h */,
+				34D464E41630243900D8EE28 /* SMPageControl.m */,
+			);
+			path = SMPageControl;
+			sourceTree = "<group>";
+		};
 		53816AEB16265E9400B0672C = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +263,7 @@
 		53816B2116265FB100B0672C /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				34D464E21630243900D8EE28 /* SMPageControl */,
 				34C81B2C162BB70D00DA093B /* V8HorizontalPickerView */,
 				3499BF041626EB2D0084B838 /* iOS-StyledPageControl */,
 				3493F17E1626B10200277848 /* ATPagingView */,
@@ -397,6 +410,7 @@
 				34D4649A162FCAA500D8EE28 /* NSString+TruncateToWidth.m in Sources */,
 				34D4649D162FD3D200D8EE28 /* UILabel+dynamicSizeMe.m in Sources */,
 				34D464D21630065C00D8EE28 /* UIHelper.m in Sources */,
+				34D464E51630243900D8EE28 /* SMPageControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
