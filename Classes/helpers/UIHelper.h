@@ -13,5 +13,4 @@
 
 + (void)view:(UIView *)view alignBottomTo:(float)bottom;
 
-+ (void)makeTextViewAlignCenter:(UITextView *)tv;
 @end

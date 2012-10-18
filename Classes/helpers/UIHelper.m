@@ -21,9 +21,4 @@
     view.frame = frame;
 }
 
-+ (void)makeTextViewAlignCenter:(UITextView *)tv {
-    CGFloat topCorrect = ([tv bounds].size.height - [tv contentSize].height * [tv zoomScale])/2.0;
-    topCorrect = ( topCorrect < 0.0 ? 0.0 : topCorrect );
-    tv.contentOffset = (CGPoint){.x = 0, .y = -topCorrect};
-}
 @end

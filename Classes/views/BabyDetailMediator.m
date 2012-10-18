@@ -12,8 +12,8 @@
 #import "UILabel+dynamicSizeMe.h"
 #import <HPGrowingTextView.h>
 
-static const float kDescriptionShrinkedLines = 3;
-static const float kDescriptionStretchedLines = 6;
+static const float kDescriptionShrinkedLines = 4;
+static const float kDescriptionStretchedLines = 7;
 
 @interface UnselectableTextView : UITextView
 @end
@@ -74,7 +74,7 @@ static const float kDescriptionStretchedLines = 6;
     UnselectableTextView *descriptionView = self.descriptionView = [[[UnselectableTextView alloc] initWithFrame:CGRectMake(0, 400, 320, 0)] autorelease];
     descriptionView.backgroundColor = [UIColor lightGrayColor];
     descriptionView.editable = NO;
-    descriptionView.scrollEnabled = NO;
+//    descriptionView.scrollEnabled = NO;
     self.description = @"杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志。杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志";
     descriptionView.text = [self.description stringByTruncatingToWidth:(self.descriptionView.contentSize.width - 16) * kDescriptionShrinkedLines withFont:descriptionView.font andEllipsis:@"…  "];
 //    [UIHelper fitScrollView:descriptionView withMaxHeight:kDescriptionStretchedLines * self.descriptionView.font.lineHeight];
@@ -122,8 +122,6 @@ static const float kDescriptionStretchedLines = 6;
     [self.slideShowView reloadData];
     [UIHelper fitScrollView:self.descriptionView withMaxHeight:kDescriptionStretchedLines * self.descriptionView.font.lineHeight];
     [UIHelper view:self.descriptionView alignBottomTo:460];
-//    self.descriptionView.contentInset = UIEdgeInsetsMake(8, 0, 0, 0);
-//    [UIHelper makeTextViewAlignCenter:self.descriptionView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
