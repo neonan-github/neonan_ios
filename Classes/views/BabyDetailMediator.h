@@ -10,5 +10,5 @@
 #import "SlideShowView.h"
 
 @interface BabyDetailMediator : Mediator<SlideShowViewDataSource, SlideShowViewDelegate>
-
+@property (nonatomic, copy) NSString *description;
 @end
