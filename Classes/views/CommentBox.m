@@ -73,6 +73,14 @@
 	[self.textView resignFirstResponder];
 }
 
+-(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+    BOOL inside = [super pointInside:point withEvent:event];
+    if (!inside) {
+        [self resignTextView];
+    }
+    return inside;
+}
+
 #pragma mark - HPGrowingTextViewDelegate methods
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height

@@ -170,6 +170,9 @@
 	CGRect containerFrame = self.commentBox.frame;
     containerFrame.origin.y = self.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
     
+    CGRect tableFrame = self.tableView.frame;
+    tableFrame.size.height = containerFrame.origin.y - tableFrame.origin.y;
+    
 	// animations settings
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationBeginsFromCurrentState:YES];
@@ -178,6 +181,7 @@
 	
 	// set views with new info
 	self.commentBox.frame = containerFrame;
+    self.tableView.frame = tableFrame;
 	
 	// commit animations
 	[UIView commitAnimations];
@@ -190,6 +194,9 @@
 	// get a rect for the textView frame
 	CGRect containerFrame = self.commentBox.frame;
     containerFrame.origin.y = self.bounds.size.height - containerFrame.size.height;
+    
+    CGRect tableFrame = self.tableView.frame;
+    tableFrame.size.height = containerFrame.origin.y - tableFrame.origin.y;
 	
 	// animations settings
 	[UIView beginAnimations:nil context:NULL];
@@ -199,6 +206,7 @@
     
 	// set views with new info
 	self.commentBox.frame = containerFrame;
+    self.tableView.frame = tableFrame;
 	
 	// commit animations
 	[UIView commitAnimations];
