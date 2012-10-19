@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		340A13321631070700E8D594 /* CommentListMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13311631070700E8D594 /* CommentListMediator.m */; };
+		340A13471631331900E8D594 /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13461631331900E8D594 /* CommentModel.m */; };
+		340A134A1631419600E8D594 /* CommentBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13491631419600E8D594 /* CommentBox.m */; };
+		340A134F163142F100E8D594 /* MessageEntryBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A134B163142F100E8D594 /* MessageEntryBackground.png */; };
+		340A1350163142F100E8D594 /* MessageEntryInputField.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A134C163142F100E8D594 /* MessageEntryInputField.png */; };
+		340A1351163142F100E8D594 /* MessageEntrySendButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A134D163142F100E8D594 /* MessageEntrySendButton.png */; };
+		340A1352163142F100E8D594 /* MessageEntrySendButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A134E163142F100E8D594 /* MessageEntrySendButtonPressed.png */; };
 		3446C89F162D680C0049B952 /* CircleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3446C89E162D680C0049B952 /* CircleHeaderView.m */; };
 		34648C401627E74E00115082 /* HotListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C3F1627E74E00115082 /* HotListCell.m */; };
 		34648C68162833C000115082 /* SlideShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C67162833C000115082 /* SlideShowView.m */; };
@@ -47,6 +54,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		340A13301631070700E8D594 /* CommentListMediator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListMediator.h; sourceTree = "<group>"; };
+		340A13311631070700E8D594 /* CommentListMediator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListMediator.m; sourceTree = "<group>"; };
+		340A13451631331900E8D594 /* CommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentModel.h; sourceTree = "<group>"; };
+		340A13461631331900E8D594 /* CommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentModel.m; sourceTree = "<group>"; };
+		340A13481631419600E8D594 /* CommentBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentBox.h; sourceTree = "<group>"; };
+		340A13491631419600E8D594 /* CommentBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentBox.m; sourceTree = "<group>"; };
+		340A134B163142F100E8D594 /* MessageEntryBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageEntryBackground.png; sourceTree = "<group>"; };
+		340A134C163142F100E8D594 /* MessageEntryInputField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageEntryInputField.png; sourceTree = "<group>"; };
+		340A134D163142F100E8D594 /* MessageEntrySendButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageEntrySendButton.png; sourceTree = "<group>"; };
+		340A134E163142F100E8D594 /* MessageEntrySendButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MessageEntrySendButtonPressed.png; sourceTree = "<group>"; };
 		3446C89D162D680C0049B952 /* CircleHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleHeaderView.h; sourceTree = "<group>"; };
 		3446C89E162D680C0049B952 /* CircleHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleHeaderView.m; sourceTree = "<group>"; };
 		34648C3E1627E74E00115082 /* HotListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotListCell.h; sourceTree = "<group>"; };
@@ -128,6 +145,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		340A132E1631069D00E8D594 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = controllers;
+			sourceTree = "<group>";
+		};
+		340A134416312D4400E8D594 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				340A13451631331900E8D594 /* CommentModel.h */,
+				340A13461631331900E8D594 /* CommentModel.m */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
 		3493F17E1626B10200277848 /* ATPagingView */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +173,10 @@
 		3499BEC01626DAAF0084B838 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				340A134B163142F100E8D594 /* MessageEntryBackground.png */,
+				340A134C163142F100E8D594 /* MessageEntryInputField.png */,
+				340A134D163142F100E8D594 /* MessageEntrySendButton.png */,
+				340A134E163142F100E8D594 /* MessageEntrySendButtonPressed.png */,
 				3499BEF81626E2430084B838 /* article_detail.jpg */,
 				3499BEF91626E2430084B838 /* article_list.jpg */,
 				3499BEFA1626E2430084B838 /* baby_detail.jpg */,
@@ -254,8 +291,10 @@
 		53816B1F16265FB100B0672C /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				34D46496162FCA7500D8EE28 /* helpers */,
+				340A134416312D4400E8D594 /* models */,
 				53816B2B16266F1100B0672C /* views */,
+				340A132E1631069D00E8D594 /* controllers */,
+				34D46496162FCA7500D8EE28 /* helpers */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -296,6 +335,10 @@
 				34648C67162833C000115082 /* SlideShowView.m */,
 				3446C89D162D680C0049B952 /* CircleHeaderView.h */,
 				3446C89E162D680C0049B952 /* CircleHeaderView.m */,
+				340A13301631070700E8D594 /* CommentListMediator.h */,
+				340A13311631070700E8D594 /* CommentListMediator.m */,
+				340A13481631419600E8D594 /* CommentBox.h */,
+				340A13491631419600E8D594 /* CommentBox.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -363,6 +406,10 @@
 				3499BF011626E2430084B838 /* baby_list.jpg in Resources */,
 				3499BF021626E2430084B838 /* home.jpg in Resources */,
 				3499BF031626E2430084B838 /* splash.jpg in Resources */,
+				340A134F163142F100E8D594 /* MessageEntryBackground.png in Resources */,
+				340A1350163142F100E8D594 /* MessageEntryInputField.png in Resources */,
+				340A1351163142F100E8D594 /* MessageEntrySendButton.png in Resources */,
+				340A1352163142F100E8D594 /* MessageEntrySendButtonPressed.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +458,9 @@
 				34D4649D162FD3D200D8EE28 /* UILabel+dynamicSizeMe.m in Sources */,
 				34D464D21630065C00D8EE28 /* UIHelper.m in Sources */,
 				34D464E51630243900D8EE28 /* SMPageControl.m in Sources */,
+				340A13321631070700E8D594 /* CommentListMediator.m in Sources */,
+				340A13471631331900E8D594 /* CommentModel.m in Sources */,
+				340A134A1631419600E8D594 /* CommentBox.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
