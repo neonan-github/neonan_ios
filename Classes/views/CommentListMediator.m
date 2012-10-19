@@ -8,6 +8,7 @@
 
 #import "CommentListMediator.h"
 #import "CommentModel.h"
+#import "CommentBox.h"
 #import <HPGrowingTextView.h>
 
 #define CELL_CONTENT_WIDTH 320.0f
@@ -15,6 +16,7 @@
 
 @interface CommentListMediator ()
 @property (nonatomic, retain) UITableView *tableView;
+@property (nonatomic, retain) CommentBox *commentBox;
 
 @property (nonatomic, retain) NSMutableArray *comments;
 @end
@@ -50,19 +52,8 @@
     tableView.delegate = self;
     [self addSubview:tableView];
     
-	HPGrowingTextView *textView = [[[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)] autorelease];
-    textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
-	textView.minNumberOfLines = 1;
-	textView.maxNumberOfLines = 6;
-	textView.returnKeyType = UIReturnKeyGo; //just as an example
-	textView.font = [UIFont systemFontOfSize:15.0f];
-	textView.delegate = self;
-    textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    textView.backgroundColor = [UIColor whiteColor];
-    
-    UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 460 - 40, 320, 40)] autorelease];
-    [containerView addSubview:textView];
-    [self addSubview:containerView];
+    CommentBox *commentBox = self.commentBox = [[[CommentBox alloc] initWithFrame:CGRectMake(0, 460 - 40, 320, 40)] autorelease];
+    [self addSubview:commentBox];
     
     self.comments = [[[NSMutableArray alloc] initWithCapacity:20] autorelease];
     for (NSUInteger i = 0; i < 20; i++) {
@@ -75,6 +66,7 @@
 {
     self.comments = nil;
     self.tableView = nil;
+    self.commentBox = nil;
     [super dealloc];
 }
 
@@ -85,12 +77,20 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"==> @(Just for test): TestMediator Appear!!");
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification 
+                                               object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    NSLog(@"==> @(Just for test): TestMediator Disappear!!");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark － UITableViewDataSource methods
@@ -112,8 +112,8 @@
     
     CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:14];
-    cell.textLabel.numberOfLines = comment.truncated ? 0 : 2;
-    cell.textLabel.lineBreakMode = comment.truncated ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
+    cell.textLabel.numberOfLines = comment.expanded ? 0 : 2;
+    cell.textLabel.lineBreakMode = comment.expanded ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
     cell.textLabel.text = [NSString stringWithFormat:@"%u %@", indexPath.row, comment.text];
     
     return cell;
@@ -126,7 +126,7 @@
     NSLog(@"didSelectRowAtIndexPath:%@", indexPath);
     
     CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
-    comment.truncated = !comment.truncated;
+    comment.expanded = !comment.expanded;
     
 	[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 	[tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:YES];
@@ -136,7 +136,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
-    if (!comment.truncated) {
+    if (!comment.expanded) {
         NSLog(@"xxx heightForRow:%u %f", indexPath.row, 44.0);
         return 44;
     }
@@ -151,6 +151,57 @@
     
     NSLog(@"yyy heightForRow:%u %f", indexPath.row, height + (4 * 2));
     return height + (4 * 2);
+}
+
+#pragma mark - Keyboard events handle
+
+//Code from Brett Schumann
+-(void) keyboardWillShow:(NSNotification *)note{
+    // get keyboard size and loctaion
+	CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self convertRect:keyboardBounds toView:nil];
+    
+	// get a rect for the textView frame
+	CGRect containerFrame = self.commentBox.frame;
+    containerFrame.origin.y = self.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+    
+	// animations settings
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+	
+	// set views with new info
+	self.commentBox.frame = containerFrame;
+	
+	// commit animations
+	[UIView commitAnimations];
+}
+
+-(void) keyboardWillHide:(NSNotification *)note{
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+	
+	// get a rect for the textView frame
+	CGRect containerFrame = self.commentBox.frame;
+    containerFrame.origin.y = self.bounds.size.height - containerFrame.size.height;
+	
+	// animations settings
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    
+	// set views with new info
+	self.commentBox.frame = containerFrame;
+	
+	// commit animations
+	[UIView commitAnimations];
 }
 
 @end

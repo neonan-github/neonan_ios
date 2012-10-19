@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <HPGrowingTextView.h>
 
-@interface CommentBox : UIView
-
+@interface CommentBox : UIView <HPGrowingTextViewDelegate>
+@property (nonatomic, retain) HPGrowingTextView *textView;
 @end
