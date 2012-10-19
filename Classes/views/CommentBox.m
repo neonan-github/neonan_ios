@@ -10,6 +10,7 @@
 
 @implementation CommentBox
 @synthesize textView = _textView;
+@synthesize doButton = _doButton;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -19,7 +20,7 @@
         textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
         
         textView.minNumberOfLines = 1;
-        textView.maxNumberOfLines = 6;
+        textView.maxNumberOfLines = 4;
         textView.returnKeyType = UIReturnKeyDefault;
         [textView.internalTextView setKeyboardAppearance:UIKeyboardAppearanceAlert];
         textView.font = [UIFont systemFontOfSize:15.0f];
@@ -27,13 +28,13 @@
         textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
         textView.backgroundColor = [UIColor whiteColor];
         
-        UIImage *rawEntryBackground = [UIImage imageNamed:@"MessageEntryInputField.png"];
+        UIImage *rawEntryBackground = [UIImage imageNamed:@"bg_comment_input.png"];
         UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
         UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
         entryImageView.frame = CGRectMake(5, 0, 248, 40);
         entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         
-        UIImage *rawBackground = [UIImage imageNamed:@"MessageEntryBackground.png"];
+        UIImage *rawBackground = [UIImage imageNamed:@"bg_comment_box.png"];
         UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
         imageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
@@ -46,12 +47,12 @@
         [self addSubview:textView];
         [self addSubview:entryImageView];
         
-        UIImage *sendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-        UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+        UIImage *sendBtnBackground = [[UIImage imageNamed:@"bg_comment_commit_normal.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+        UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"bg_comment_commit_highlighted.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
         
-        UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIButton *doneBtn = self.doButton = [UIButton buttonWithType:UIButtonTypeCustom];
         doneBtn.frame = CGRectMake(self.frame.size.width - 69, 8, 63, 27);
-        doneBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
+        doneBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         [doneBtn setTitle:@"Done" forState:UIControlStateNormal];
         
         [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
@@ -66,6 +67,15 @@
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     }
     return self;
+}
+
+- (void)dealloc {
+    self.textView = nil;
+    self.textView.delegate = nil;
+    
+    self.doButton = nil;
+    
+    [super dealloc];
 }
 
 -(void)resignTextView
@@ -91,6 +101,10 @@
     r.size.height -= diff;
     r.origin.y += diff;
 	self.frame = r;
+    
+    r = self.doButton.frame;
+    r.origin.y -= diff / 2;
+    self.doButton.frame = r;
 }
 
 

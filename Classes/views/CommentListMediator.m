@@ -10,6 +10,7 @@
 #import "CommentModel.h"
 #import "CommentBox.h"
 #import <HPGrowingTextView.h>
+#import "CommentCell.h"
 
 #define CELL_CONTENT_WIDTH 320.0f
 #define CELL_CONTENT_MARGIN 10.0f
@@ -104,17 +105,18 @@
     
     static NSString *cellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        cell = [[[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
-    cell.textLabel.font = [UIFont systemFontOfSize:14];
-    cell.textLabel.numberOfLines = comment.expanded ? 0 : 2;
-    cell.textLabel.lineBreakMode = comment.expanded ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
-    cell.textLabel.text = [NSString stringWithFormat:@"%u %@", indexPath.row, comment.text];
+    cell.commentLabel.font = [UIFont systemFontOfSize:14];
+    cell.commentLabel.textColor = [UIColor blackColor];
+    cell.commentLabel.numberOfLines = comment.expanded ? 0 : 2;
+    cell.commentLabel.lineBreakMode = comment.expanded ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
+    cell.commentLabel.text = [NSString stringWithFormat:@"%u %@", indexPath.row, comment.text];
     
     return cell;
     
@@ -138,7 +140,7 @@
     CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
     if (!comment.expanded) {
         NSLog(@"xxx heightForRow:%u %f", indexPath.row, 44.0);
-        return 44;
+        return 80;
     }
     
     NSString *text = [NSString stringWithFormat:@"%u %@", indexPath.row, comment.text];;

@@ -11,4 +11,5 @@
 
 @interface CommentBox : UIView <HPGrowingTextViewDelegate>
 @property (nonatomic, retain) HPGrowingTextView *textView;
+@property (nonatomic, retain) UIButton *doButton;
 @end
