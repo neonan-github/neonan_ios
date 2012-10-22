@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "NeonanViewController.h"
+#import "MainController.h"
 
-@interface NeonanAppDelegate : UIResponder <UIApplicationDelegate> {
-    NeonanViewController *_rootViewController;
-}
+@interface NeonanAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) UINavigationController *navController;
 
 @end

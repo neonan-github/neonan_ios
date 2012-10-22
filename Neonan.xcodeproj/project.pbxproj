@@ -18,6 +18,7 @@
 		3446C89F162D680C0049B952 /* CircleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3446C89E162D680C0049B952 /* CircleHeaderView.m */; };
 		34648C401627E74E00115082 /* HotListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C3F1627E74E00115082 /* HotListCell.m */; };
 		34648C68162833C000115082 /* SlideShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C67162833C000115082 /* SlideShowView.m */; };
+		3466147F1634EE4B00B1FF5A /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3466147E1634EE4B00B1FF5A /* MainController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3493F1941626B10200277848 /* ATPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3493F1801626B10200277848 /* ATPagingView.m */; };
 		3499BE8D1626BED40084B838 /* MainMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3499BE8C1626BED40084B838 /* MainMediator.m */; };
 		3499BEFE1626E2430084B838 /* article_detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEF81626E2430084B838 /* article_detail.jpg */; };
@@ -42,7 +43,7 @@
 		53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFE16265E9400B0672C /* CoreGraphics.framework */; };
 		53816B0516265E9400B0672C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 53816B0316265E9400B0672C /* InfoPlist.strings */; };
 		53816B0716265E9400B0672C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53816B0616265E9400B0672C /* main.m */; };
-		53816B0B16265E9400B0672C /* NeonanAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 53816B0A16265E9400B0672C /* NeonanAppDelegate.m */; };
+		53816B0B16265E9400B0672C /* NeonanAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 53816B0A16265E9400B0672C /* NeonanAppDelegate.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		53816B0D16265E9400B0672C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 53816B0C16265E9400B0672C /* Default.png */; };
 		53816B0F16265E9400B0672C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53816B0E16265E9400B0672C /* Default@2x.png */; };
 		53816B1116265E9400B0672C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 53816B1016265E9400B0672C /* Default-568h@2x.png */; };
@@ -73,6 +74,8 @@
 		34648C3F1627E74E00115082 /* HotListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotListCell.m; sourceTree = "<group>"; };
 		34648C66162833C000115082 /* SlideShowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideShowView.h; sourceTree = "<group>"; };
 		34648C67162833C000115082 /* SlideShowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideShowView.m; sourceTree = "<group>"; };
+		3466147D1634EE4B00B1FF5A /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
+		3466147E1634EE4B00B1FF5A /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
 		3493F17F1626B10200277848 /* ATPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATPagingView.h; sourceTree = "<group>"; };
 		3493F1801626B10200277848 /* ATPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPagingView.m; sourceTree = "<group>"; };
 		3499BE8B1626BED40084B838 /* MainMediator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMediator.h; sourceTree = "<group>"; };
@@ -151,6 +154,8 @@
 		340A132E1631069D00E8D594 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3466147D1634EE4B00B1FF5A /* MainController.h */,
+				3466147E1634EE4B00B1FF5A /* MainController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -467,6 +472,7 @@
 				340A13471631331900E8D594 /* CommentModel.m in Sources */,
 				340A134A1631419600E8D594 /* CommentBox.m in Sources */,
 				340A1372163170BE00E8D594 /* CommentCell.m in Sources */,
+				3466147F1634EE4B00B1FF5A /* MainController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

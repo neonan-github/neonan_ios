@@ -10,22 +10,17 @@
 
 @implementation NeonanAppDelegate
 
-- (void)dealloc
-{
-    [_rootViewController release];
-    [_window release];
-    [super dealloc];
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    _rootViewController = [[NeonanViewController alloc] init];
-    [self.window addSubview:_rootViewController.view];
-    [_rootViewController launch];
+    self.navController = [[UINavigationController alloc] init];
+    [self.window addSubview:self.navController.view];
+    
+    UIViewController *controller = [[MainController alloc] init];
+    [self.navController pushViewController:controller animated:NO];
     
     [self.window makeKeyAndVisible];
     return YES;
@@ -33,7 +28,7 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    [_rootViewController enterBackground];
+//    [_rootViewController enterBackground];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -44,7 +39,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    [_rootViewController enterForeground];
+//    [_rootViewController enterForeground];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -54,7 +49,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [_rootViewController exit];
+//    [_rootViewController exit];
 }
 
 @end
