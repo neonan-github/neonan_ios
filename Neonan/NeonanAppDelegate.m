@@ -10,6 +10,7 @@
 #import "BabyListController.h"
 #import "BabyDetailController.h"
 #import "CommentListController.h"
+#import <PrettyKit.h>
 
 @implementation NeonanAppDelegate
 
@@ -21,7 +22,13 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
+    PrettyNavigationBar *navigationBar = [[PrettyNavigationBar alloc] init];
+    navigationBar.topLineColor = [UIColor blackColor];
+    navigationBar.bottomLineColor = [UIColor blackColor];
+    navigationBar.gradientStartColor = [UIColor blackColor];
+    navigationBar.gradientEndColor = [UIColor blackColor];
     self.navController = [[UINavigationController alloc] init];
+    [self.navController setValue:navigationBar forKeyPath:@"navigationBar"];
     self.window.rootViewController = self.navController;
     
     UIViewController *controller = [[CommentListController alloc] init];

@@ -1,7 +1,7 @@
+PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
 HEADER_SEARCH_PATHS = ${PODS_HEADERS_SEARCH_PATHS}
 ALWAYS_SEARCH_USER_PATHS = YES
-OTHER_LDFLAGS = -ObjC -framework QuartzCore
+PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/FXLabel" "${PODS_ROOT}/BuildHeaders/HPGrowingTextView" "${PODS_ROOT}/BuildHeaders/NSLogger" "${PODS_ROOT}/BuildHeaders/PrettyKit" "${PODS_ROOT}/BuildHeaders/SVPullToRefresh" "${PODS_ROOT}/BuildHeaders/iCarousel"
 PODS_ROOT = ${SRCROOT}/Pods
-PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/FXLabel" "${PODS_ROOT}/BuildHeaders/HPGrowingTextView" "${PODS_ROOT}/BuildHeaders/SVPullToRefresh" "${PODS_ROOT}/BuildHeaders/iCarousel"
-PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/FXLabel" "${PODS_ROOT}/Headers/HPGrowingTextView" "${PODS_ROOT}/Headers/SVPullToRefresh" "${PODS_ROOT}/Headers/iCarousel"
-PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
+OTHER_LDFLAGS = -ObjC -framework CFNetwork -framework CoreGraphics -framework QuartzCore -framework SystemConfiguration -framework UIKit
+PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/FXLabel" "${PODS_ROOT}/Headers/HPGrowingTextView" "${PODS_ROOT}/Headers/NSLogger" "${PODS_ROOT}/Headers/PrettyKit" "${PODS_ROOT}/Headers/SVPullToRefresh" "${PODS_ROOT}/Headers/iCarousel"
