@@ -12,12 +12,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
     self.navController = [[UINavigationController alloc] init];
-    [self.window addSubview:self.navController.view];
+    self.window.rootViewController = self.navController;
     
     UIViewController *controller = [[MainController alloc] init];
     [self.navController pushViewController:controller animated:NO];
