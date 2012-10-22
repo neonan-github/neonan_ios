@@ -9,9 +9,9 @@
 #import "MainController.h"
 #import "SMPageControl.h"
 #import "HotListCell.h"
-#import "V8HorizontalPickerView.h"
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
+#import "BabyDetailController.h"
 #import <SVPullToRefresh.h>
 
 @interface MainController ()
@@ -169,6 +169,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 80;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UIViewController *controller = [[BabyDetailController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

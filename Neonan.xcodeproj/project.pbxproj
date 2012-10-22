@@ -23,6 +23,7 @@
 		346614D81635179500B1FF5A /* UnselectableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614D71635179500B1FF5A /* UnselectableTextView.m */; };
 		346614DB163521C500B1FF5A /* CommentListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614DA163521C500B1FF5A /* CommentListController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		346614DD1635397D00B1FF5A /* down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 346614DC1635397D00B1FF5A /* down_arrow.png */; };
+		346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614ED1635489B00B1FF5A /* FoldableTextBox.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3493F1941626B10200277848 /* ATPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3493F1801626B10200277848 /* ATPagingView.m */; };
 		3499BEFE1626E2430084B838 /* article_detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEF81626E2430084B838 /* article_detail.jpg */; };
 		3499BEFF1626E2430084B838 /* article_list.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEF91626E2430084B838 /* article_list.jpg */; };
@@ -81,6 +82,8 @@
 		346614D9163521C500B1FF5A /* CommentListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListController.h; sourceTree = "<group>"; };
 		346614DA163521C500B1FF5A /* CommentListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListController.m; sourceTree = "<group>"; };
 		346614DC1635397D00B1FF5A /* down_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_arrow.png; sourceTree = "<group>"; };
+		346614EC1635489B00B1FF5A /* FoldableTextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoldableTextBox.h; sourceTree = "<group>"; };
+		346614ED1635489B00B1FF5A /* FoldableTextBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoldableTextBox.m; sourceTree = "<group>"; };
 		3493F17F1626B10200277848 /* ATPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATPagingView.h; sourceTree = "<group>"; };
 		3493F1801626B10200277848 /* ATPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPagingView.m; sourceTree = "<group>"; };
 		3499BEF81626E2430084B838 /* article_detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = article_detail.jpg; sourceTree = "<group>"; };
@@ -327,14 +330,16 @@
 				34648C3F1627E74E00115082 /* HotListCell.m */,
 				34C81B4D162BF78000DA093B /* BabyCell.h */,
 				34C81B4E162BF78000DA093B /* BabyCell.m */,
+				340A1370163170BE00E8D594 /* CommentCell.h */,
+				340A1371163170BE00E8D594 /* CommentCell.m */,
 				34648C66162833C000115082 /* SlideShowView.h */,
 				34648C67162833C000115082 /* SlideShowView.m */,
 				3446C89D162D680C0049B952 /* CircleHeaderView.h */,
 				3446C89E162D680C0049B952 /* CircleHeaderView.m */,
+				346614EC1635489B00B1FF5A /* FoldableTextBox.h */,
+				346614ED1635489B00B1FF5A /* FoldableTextBox.m */,
 				340A13481631419600E8D594 /* CommentBox.h */,
 				340A13491631419600E8D594 /* CommentBox.m */,
-				340A1370163170BE00E8D594 /* CommentCell.h */,
-				340A1371163170BE00E8D594 /* CommentCell.m */,
 				346614D61635179500B1FF5A /* UnselectableTextView.h */,
 				346614D71635179500B1FF5A /* UnselectableTextView.m */,
 			);
@@ -459,6 +464,7 @@
 				346614D51635138700B1FF5A /* BabyDetailController.m in Sources */,
 				346614D81635179500B1FF5A /* UnselectableTextView.m in Sources */,
 				346614DB163521C500B1FF5A /* CommentListController.m in Sources */,
+				346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

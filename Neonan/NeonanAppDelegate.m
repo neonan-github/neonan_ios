@@ -27,11 +27,12 @@
     navigationBar.bottomLineColor = [UIColor blackColor];
     navigationBar.gradientStartColor = [UIColor blackColor];
     navigationBar.gradientEndColor = [UIColor blackColor];
+    
     self.navController = [[UINavigationController alloc] init];
     [self.navController setValue:navigationBar forKeyPath:@"navigationBar"];
     self.window.rootViewController = self.navController;
     
-    UIViewController *controller = [[CommentListController alloc] init];
+    UIViewController *controller = [[MainController alloc] init];
     [self.navController pushViewController:controller animated:NO];
     
 //    [(NeonanViewController *)controller launch];

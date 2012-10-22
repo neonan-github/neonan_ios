@@ -18,9 +18,7 @@ static const float kDescriptionStretchedLines = 7;
 @property (nonatomic, unsafe_unretained) UILabel *navigationBar;
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
-@property (nonatomic, unsafe_unretained) UILabel *descriptionLabel;
-@property (nonatomic, unsafe_unretained) UIScrollView *descriptionContainer;
-@property (nonatomic, unsafe_unretained) UnselectableTextView *descriptionView;
+@property (nonatomic, unsafe_unretained) FoldableTextBox *textBox;
 
 @property (nonatomic, strong) NSArray *slideImages;
 @property (nonatomic, strong) NSString *description;
@@ -41,16 +39,11 @@ static const float kDescriptionStretchedLines = 7;
     [slideShowView addGestureRecognizer:tapRecognizer];
     [self.view addSubview:slideShowView];
     
-    UnselectableTextView *descriptionView = self.descriptionView = [[UnselectableTextView alloc] initWithFrame:CGRectMake(0, 356, 320, 0)];
-    descriptionView.backgroundColor = [UIColor lightGrayColor];
-    descriptionView.editable = NO;
-    //    descriptionView.scrollEnabled = NO;
-    descriptionView.text = [self.description stringByTruncatingToWidth:(self.descriptionView.contentSize.width - 16) * kDescriptionShrinkedLines withFont:descriptionView.font andEllipsis:@"…  "];
-    //    [UIHelper fitScrollView:descriptionView withMaxHeight:kDescriptionStretchedLines * self.descriptionView.font.lineHeight];
-    //    [UIHelper view:descriptionView alignBottomTo:460];
-    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-    [descriptionView addGestureRecognizer:tapRecognizer];
-    [self.view addSubview:descriptionView];
+    FoldableTextBox *textBox = self.textBox = [[FoldableTextBox alloc] initWithFrame:CGRectMake(0, 384, 320, 0)];
+    textBox.frame = CGRectMake(0, 384, 320, [textBox getSuggestedHeight]);
+    textBox.delegate = self;
+    textBox.insets = UIEdgeInsetsMake(0, 10, 25, 20);
+    [self.view addSubview:textBox];
     
     SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, 390, 320, 20)];
     pageControl.userInteractionEnabled = NO;
@@ -73,9 +66,8 @@ static const float kDescriptionStretchedLines = 7;
     
     self.pageControl = nil;
     
-    self.descriptionLabel = nil;
-    self.descriptionView = nil;
-    self.descriptionContainer = nil;
+    self.textBox.delegate = nil;
+    self.textBox = nil;
 }
 
 - (void)viewDidUnload
@@ -94,8 +86,7 @@ static const float kDescriptionStretchedLines = 7;
     [super viewWillAppear:animated];
     
     [self.slideShowView reloadData];
-    [UIHelper fitScrollView:self.descriptionView withMaxHeight:kDescriptionStretchedLines * self.descriptionView.font.lineHeight];
-    [UIHelper view:self.descriptionView alignBottomTo:356];
+    self.textBox.expanded = NO;
 }
 
 #pragma mark - SlideShowViewDataSource methods
@@ -125,29 +116,11 @@ static const float kDescriptionStretchedLines = 7;
     [self.pageControl setCurrentPage:slideShowView.carousel.currentItemIndex];
 }
 
-#pragma mark - Private methods
+#pragma mark - FoldableTextBoxDelegate methods
 
-- (void)tap:(UITapGestureRecognizer *)recognizer {
-    NSLog(@"touched view:%@", recognizer.view);
-    
-    if (recognizer.view == self.descriptionView) {
-        BOOL shrinked = !self.descriptionView.scrollEnabled;
-        self.descriptionView.text = self.descriptionView.scrollEnabled ? [self.description stringByTruncatingToWidth:(self.descriptionView.contentSize.width - 16) * kDescriptionShrinkedLines withFont:self.descriptionView.font andEllipsis:@"…  "] : self.description;
-        [self.descriptionView scrollsToTop];
-        self.descriptionView.scrollEnabled = shrinked;
-        [UIHelper fitScrollView:self.descriptionView withMaxHeight:kDescriptionStretchedLines * self.descriptionView.font.lineHeight];
-        [UIHelper view:self.descriptionView alignBottomTo:460];
-    } else {
-        BOOL hidden = self.navigationBar.frame.origin.y >= 0;
-        float navigationBarDeltaY = -self.navigationBar.frame.size.height * (hidden ? 1 : 0);
-        float descriptionViewDeltaY = self.descriptionView.frame.size.height * (hidden ? 1 : 0);
-        [UIView animateWithDuration:0.3 delay:0
-                            options:(hidden ? UIViewAnimationOptionCurveEaseIn : UIViewAnimationOptionCurveEaseOut)
-                         animations:^{
-                             self.navigationBar.transform = CGAffineTransformMakeTranslation(0, navigationBarDeltaY);
-                             self.descriptionView.transform = CGAffineTransformMakeTranslation(0, descriptionViewDeltaY);
-                         } completion:nil];
-    }
+- (void)onFrameChanged:(CGRect)frame {
+    frame.origin.y = 416 - frame.size.height;
+    self.textBox.frame = frame;
 }
 
 @end

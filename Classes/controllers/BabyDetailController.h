@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SlideShowView.h"
+#import "FoldableTextBox.h"
 
-@interface BabyDetailController : UIViewController<SlideShowViewDataSource, SlideShowViewDelegate>
+@interface BabyDetailController : UIViewController<SlideShowViewDataSource, SlideShowViewDelegate,
+FoldableTextBoxDelegate>
 
 @end
