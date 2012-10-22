@@ -21,4 +21,11 @@
     view.frame = frame;
 }
 
++ (NSUInteger)computeContentLines:(NSString *)content withWidth:(CGFloat)width andFont:(UIFont *)font {
+    CGSize constraint = CGSizeMake(width, 20000.0f);
+    CGSize size = [content sizeWithFont:font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    
+    return  (NSUInteger)(size.height / font.lineHeight);
+}
+
 @end

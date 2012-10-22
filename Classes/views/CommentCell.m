@@ -14,8 +14,12 @@ static const float kGap = 8;
 @implementation CommentCell
 @synthesize userNameLabel, timeLabel, commentLabel, arrowView;
 
-+ (float)getCellMargin {
-    return kMargin;
++ (CGFloat)getContentWidth:(CGFloat)width {
+    return width - kMargin * 2;
+}
+
++ (CGFloat)getFixedPartHeight {
+    return kMargin * 2 + 15 + kGap;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -24,13 +28,17 @@ static const float kGap = 8;
     if (self) {
         // Initialization code
         float layoutY = kMargin;
-        self.userNameLabel = [[[UILabel alloc] initWithFrame:CGRectMake(kMargin, layoutY, 200, 15)] autorelease];
-        self.timeLabel = [[[UILabel alloc] initWithFrame:CGRectMake(kMargin + 200, layoutY, 320 - kMargin - 200, 15)] autorelease];
+        self.userNameLabel = [[[UILabel alloc] init] autorelease];
         
-        self.arrowView = [[[UIImageView alloc] initWithFrame:CGRectMake(265, self.frame.size.height - kMargin, 15, 10)] autorelease];
+        self.timeLabel = [[[UILabel alloc] init] autorelease];
+        self.timeLabel.textAlignment = NSTextAlignmentRight;
         
-        layoutY += kGap;
-        self.commentLabel = [[[UILabel alloc] initWithFrame:CGRectMake(kMargin, layoutY, 320 - kMargin * 2, self.frame.size.height - (kMargin + kGap) * 2)] autorelease];
+        self.arrowView = [[[UIImageView alloc] init] autorelease];
+        self.arrowView.image = [UIImage imageNamed:@"down_arrow.png"];
+        
+        layoutY += kGap + 15;
+        self.commentLabel = [[[UILabel alloc] init] autorelease];
+        self.commentLabel.textAlignment = NSTextAlignmentLeft;
         
         [self addSubview:self.userNameLabel];
         [self addSubview:self.timeLabel];
@@ -40,17 +48,19 @@ static const float kGap = 8;
     return self;
 }
 
+
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     
     float layoutY = kMargin;
     self.userNameLabel.frame = CGRectMake(kMargin, layoutY, 200, 15);
-    self.timeLabel.frame = CGRectMake(kMargin + 200, layoutY, 320 - kMargin - 200, 15);
+    self.timeLabel.frame = CGRectMake(kMargin + 200, layoutY, 320 - kMargin - 200 - kMargin, 15);
     
-    self.arrowView.frame = CGRectMake(265, self.frame.size.height - kMargin, 15, 10);
+    self.arrowView.frame = CGRectMake(320 - kMargin - 22, self.frame.size.height - kMargin, 15, 10);
     
-    layoutY += kGap;
-    self.commentLabel.frame = CGRectMake(kMargin, layoutY, 320 - kMargin * 2, self.frame.size.height - (kMargin + kGap) * 2);
+    layoutY += kGap + 15;
+    self.commentLabel.frame = CGRectMake(kMargin, layoutY, 320 - kMargin * 2, self.frame.size.height - [CommentCell getFixedPartHeight]);
 }
 
 - (void)dealloc {

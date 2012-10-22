@@ -14,5 +14,6 @@
 @property (nonatomic, retain) UILabel *commentLabel;
 @property (nonatomic, retain) UIImageView *arrowView;
 
-+ (float)getCellMargin;
++ (CGFloat)getContentWidth:(CGFloat)width;
++ (CGFloat)getFixedPartHeight;
 @end

@@ -15,5 +15,6 @@
 @property (nonatomic, copy) NSString *time;
 
 @property (nonatomic, assign) BOOL expanded;
+@property (nonatomic, assign) BOOL expandable;
 
 @end

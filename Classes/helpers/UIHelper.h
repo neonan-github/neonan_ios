@@ -13,4 +13,6 @@
 
 + (void)view:(UIView *)view alignBottomTo:(float)bottom;
 
++ (NSUInteger)computeContentLines:(NSString *)content withWidth:(CGFloat)width andFont:(UIFont *)font;
+
 @end

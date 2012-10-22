@@ -9,6 +9,7 @@
 #import "NeonanAppDelegate.h"
 #import "BabyListController.h"
 #import "BabyDetailController.h"
+#import "CommentListController.h"
 
 @implementation NeonanAppDelegate
 
@@ -23,8 +24,10 @@
     self.navController = [[UINavigationController alloc] init];
     self.window.rootViewController = self.navController;
     
-    UIViewController *controller = [[BabyDetailController alloc] init];
+    UIViewController *controller = [[CommentListController alloc] init];
     [self.navController pushViewController:controller animated:NO];
+    
+//    [(NeonanViewController *)controller launch];
     
     [self.window makeKeyAndVisible];
     return YES;
