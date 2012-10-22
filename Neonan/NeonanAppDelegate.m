@@ -7,6 +7,7 @@
 //
 
 #import "NeonanAppDelegate.h"
+#import "BabyListController.h"
 
 @implementation NeonanAppDelegate
 
@@ -21,7 +22,7 @@
     self.navController = [[UINavigationController alloc] init];
     self.window.rootViewController = self.navController;
     
-    UIViewController *controller = [[MainController alloc] init];
+    UIViewController *controller = [[BabyListController alloc] init];
     [self.navController pushViewController:controller animated:NO];
     
     [self.window makeKeyAndVisible];
