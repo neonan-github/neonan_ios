@@ -76,9 +76,13 @@
 {
     self.slideShowView.delegate = nil;
     self.slideShowView.dataSource = nil;
+    self.slideShowView = nil;
+    
+    self.pageControl = nil;
     
     self.tableView.delegate = nil;
     self.tableView.dataSource = nil;
+    self.tableView = nil;
 }
 
 - (void)viewDidUnload

@@ -11,18 +11,10 @@
 #import "NSString+TruncateToWidth.h"
 #import "UILabel+dynamicSizeMe.h"
 #import <HPGrowingTextView.h>
+#import "UnselectableTextView.h"
 
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
-
-@interface UnselectableTextView : UITextView
-@end
-
-@implementation UnselectableTextView
-- (BOOL)canBecomeFirstResponder {
-    return NO;
-}
-@end
 
 @interface BabyDetailMediator ()
 @property (nonatomic, retain) UILabel *navigationBar;

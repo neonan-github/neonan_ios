@@ -20,6 +20,8 @@
 		34648C68162833C000115082 /* SlideShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C67162833C000115082 /* SlideShowView.m */; };
 		3466147F1634EE4B00B1FF5A /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3466147E1634EE4B00B1FF5A /* MainController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		346614D21635108900B1FF5A /* BabyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614D11635108900B1FF5A /* BabyListController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		346614D51635138700B1FF5A /* BabyDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614D41635138700B1FF5A /* BabyDetailController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		346614D81635179500B1FF5A /* UnselectableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614D71635179500B1FF5A /* UnselectableTextView.m */; };
 		3493F1941626B10200277848 /* ATPagingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3493F1801626B10200277848 /* ATPagingView.m */; };
 		3499BE8D1626BED40084B838 /* MainMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3499BE8C1626BED40084B838 /* MainMediator.m */; };
 		3499BEFE1626E2430084B838 /* article_detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEF81626E2430084B838 /* article_detail.jpg */; };
@@ -79,6 +81,10 @@
 		3466147E1634EE4B00B1FF5A /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
 		346614D01635108900B1FF5A /* BabyListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyListController.h; sourceTree = "<group>"; };
 		346614D11635108900B1FF5A /* BabyListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyListController.m; sourceTree = "<group>"; };
+		346614D31635138700B1FF5A /* BabyDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyDetailController.h; sourceTree = "<group>"; };
+		346614D41635138700B1FF5A /* BabyDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyDetailController.m; sourceTree = "<group>"; };
+		346614D61635179500B1FF5A /* UnselectableTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnselectableTextView.h; sourceTree = "<group>"; };
+		346614D71635179500B1FF5A /* UnselectableTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnselectableTextView.m; sourceTree = "<group>"; };
 		3493F17F1626B10200277848 /* ATPagingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATPagingView.h; sourceTree = "<group>"; };
 		3493F1801626B10200277848 /* ATPagingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATPagingView.m; sourceTree = "<group>"; };
 		3499BE8B1626BED40084B838 /* MainMediator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMediator.h; sourceTree = "<group>"; };
@@ -161,6 +167,8 @@
 				3466147E1634EE4B00B1FF5A /* MainController.m */,
 				346614D01635108900B1FF5A /* BabyListController.h */,
 				346614D11635108900B1FF5A /* BabyListController.m */,
+				346614D31635138700B1FF5A /* BabyDetailController.h */,
+				346614D41635138700B1FF5A /* BabyDetailController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -354,6 +362,8 @@
 				340A13491631419600E8D594 /* CommentBox.m */,
 				340A1370163170BE00E8D594 /* CommentCell.h */,
 				340A1371163170BE00E8D594 /* CommentCell.m */,
+				346614D61635179500B1FF5A /* UnselectableTextView.h */,
+				346614D71635179500B1FF5A /* UnselectableTextView.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -479,6 +489,8 @@
 				340A1372163170BE00E8D594 /* CommentCell.m in Sources */,
 				3466147F1634EE4B00B1FF5A /* MainController.m in Sources */,
 				346614D21635108900B1FF5A /* BabyListController.m in Sources */,
+				346614D51635138700B1FF5A /* BabyDetailController.m in Sources */,
+				346614D81635179500B1FF5A /* UnselectableTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
