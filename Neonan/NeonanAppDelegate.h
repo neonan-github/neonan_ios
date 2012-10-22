@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NeonanViewController.h"
 #import "MainController.h"
 
 @interface NeonanAppDelegate : UIResponder <UIApplicationDelegate>
