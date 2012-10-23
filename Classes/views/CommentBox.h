@@ -10,6 +10,6 @@
 #import <HPGrowingTextView.h>
 
 @interface CommentBox : UIView <HPGrowingTextViewDelegate>
-@property (nonatomic, retain) HPGrowingTextView *textView;
-@property (nonatomic, retain) UIButton *doButton;
+@property (nonatomic, unsafe_unretained) HPGrowingTextView *textView;
+@property (nonatomic, unsafe_unretained) UIButton *doButton;
 @end

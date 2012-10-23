@@ -12,7 +12,6 @@ static const float kMargin = 15;
 static const float kGap = 8;
 
 @implementation CommentCell
-@synthesize userNameLabel, timeLabel, commentLabel, arrowView;
 
 + (CGFloat)getContentWidth:(CGFloat)width {
     return width - kMargin * 2;
@@ -28,27 +27,25 @@ static const float kGap = 8;
     if (self) {
         // Initialization code
         float layoutY = kMargin;
-        self.userNameLabel = [[[UILabel alloc] init] autorelease];
+        UILabel *userNameLabel = self.userNameLabel = [[UILabel alloc] init];
         
-        self.timeLabel = [[[UILabel alloc] init] autorelease];
-        self.timeLabel.textAlignment = NSTextAlignmentRight;
+        UILabel *timeLabel = self.timeLabel = [[UILabel alloc] init];
+        timeLabel.textAlignment = NSTextAlignmentRight;
         
-        self.arrowView = [[[UIImageView alloc] init] autorelease];
-        self.arrowView.image = [UIImage imageNamed:@"down_arrow.png"];
+        UIImageView *arrowView = self.arrowView = [[UIImageView alloc] init];
+        arrowView.image = [UIImage imageNamed:@"down_arrow.png"];
         
         layoutY += kGap + 15;
-        self.commentLabel = [[[UILabel alloc] init] autorelease];
-        self.commentLabel.textAlignment = NSTextAlignmentLeft;
+        UILabel *commentLabel = self.commentLabel = [[UILabel alloc] init];
+        commentLabel.textAlignment = NSTextAlignmentLeft;
         
-        [self addSubview:self.userNameLabel];
-        [self addSubview:self.timeLabel];
-        [self addSubview:self.commentLabel];
-        [self addSubview:self.arrowView];
+        [self addSubview:userNameLabel];
+        [self addSubview:timeLabel];
+        [self addSubview:commentLabel];
+        [self addSubview:arrowView];
     }
     return self;
 }
-
-
 
 - (void)layoutSubviews {
     [super layoutSubviews];
@@ -61,15 +58,6 @@ static const float kGap = 8;
     
     layoutY += kGap + 15;
     self.commentLabel.frame = CGRectMake(kMargin, layoutY, 320 - kMargin * 2, self.frame.size.height - [CommentCell getFixedPartHeight]);
-}
-
-- (void)dealloc {
-    self.userNameLabel = nil;
-    self.timeLabel = nil;
-    self.commentLabel = nil;
-    self.arrowView = nil;
-    
-    [super dealloc];
 }
 
 @end

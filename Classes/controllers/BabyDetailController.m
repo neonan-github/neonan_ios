@@ -8,8 +8,6 @@
 
 #import "BabyDetailController.h"
 #import "SMPageControl.h"
-#import "NSString+TruncateToWidth.h"
-#import "UnselectableTextView.h"
 
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;

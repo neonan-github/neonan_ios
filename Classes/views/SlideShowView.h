@@ -12,10 +12,11 @@
 
 @interface SlideShowView : UIView <iCarouselDataSource, iCarouselDelegate>
 @property (nonatomic, assign) NSTimeInterval slideInterval;
-@property (nonatomic, retain) NSTimer *slideTimer;
-@property (nonatomic, retain) iCarousel *carousel;
-@property (nonatomic, assign) id<SlideShowViewDataSource> dataSource;
-@property (nonatomic, assign) id<SlideShowViewDelegate> delegate;
+@property (nonatomic, strong) NSTimer *slideTimer;
+
+@property (nonatomic, unsafe_unretained) iCarousel *carousel;
+@property (nonatomic, unsafe_unretained) id<SlideShowViewDataSource> dataSource;
+@property (nonatomic, unsafe_unretained) id<SlideShowViewDelegate> delegate;
 
 - (void)reloadData;
 - (void)startAutoScroll:(double)interval;

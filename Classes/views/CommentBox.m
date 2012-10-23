@@ -74,8 +74,6 @@
     self.textView.delegate = nil;
     
     self.doButton = nil;
-    
-    [super dealloc];
 }
 
 -(void)resignTextView

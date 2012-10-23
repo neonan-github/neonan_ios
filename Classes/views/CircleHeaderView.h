@@ -12,10 +12,10 @@
 @protocol CircleHeaderViewDataSource;
 
 @interface CircleHeaderView : UIView <iCarouselDataSource, iCarouselDelegate>
-@property (nonatomic, retain) iCarousel *carousel;
+@property (nonatomic, unsafe_unretained) iCarousel *carousel;
 
 @property (nonatomic, copy) NSArray *titles; // used if dataSource is nil 
-@property (nonatomic, assign) id<CircleHeaderViewDataSource> dataSource;
+@property (nonatomic, unsafe_unretained) id<CircleHeaderViewDataSource> dataSource;
 
 - (void)reloadData;
 

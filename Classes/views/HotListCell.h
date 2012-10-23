@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface HotListCell : UITableViewCell
-@property (nonatomic, retain) UIImageView *thumbnail;
-@property (nonatomic, retain) UILabel *titleLabel;
-@property (nonatomic, retain) UILabel *descriptionLabel;
-@property (nonatomic, retain) UILabel *dateLabel;
+@property (nonatomic, unsafe_unretained) UIImageView *thumbnail;
+@property (nonatomic, unsafe_unretained) UILabel *titleLabel;
+@property (nonatomic, unsafe_unretained) UILabel *descriptionLabel;
+@property (nonatomic, unsafe_unretained) UILabel *dateLabel;
 @end

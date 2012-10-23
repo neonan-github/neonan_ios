@@ -13,8 +13,8 @@ static const float kCellMarginTop = 8;
 static const float kCellMarginBottom = 8;
 
 @interface BabyCell ()
-@property (nonatomic, retain) UIView *centerDivider;
-@property (nonatomic, retain) iCarousel *carousel;
+@property (nonatomic, unsafe_unretained) UIView *centerDivider;
+@property (nonatomic, unsafe_unretained) iCarousel *carousel;
 @end
 
 @implementation BabyCell
@@ -30,34 +30,34 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.thumbnail = [[[UIImageView alloc] init] autorelease];
-        self.titleLabel = [[[UILabel alloc] init] autorelease];
-        self.descriptionLabel = [[[UILabel alloc] init] autorelease];
-        self.dateLabel = [[[UILabel alloc] init] autorelease];
+        UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] init];
+        UILabel *titleLabel = self.titleLabel = [[UILabel alloc] init];
+        UILabel *descriptionLabel = self.descriptionLabel = [[UILabel alloc] init];
+        UILabel *dateLabel = self.dateLabel = [[UILabel alloc] init];
         
-        self.centerDivider = [[[UIView alloc] init] autorelease];
-        self.centerDivider.backgroundColor = [UIColor lightGrayColor];
+        UIView *centerDivider = self.centerDivider = [[UIView alloc] init];
+        centerDivider.backgroundColor = [UIColor lightGrayColor];
         
-        self.playButton = [[[UIButton alloc] init] autorelease];
-        self.carousel = [[[iCarousel alloc] init] autorelease];
-        self.carousel.dataSource = self;
-        self.carousel.delegate = self;
+        UIButton *playButton = self.playButton = [[UIButton alloc] init];
         
-        [self.contentView addSubview:self.thumbnail];
-        [self.contentView addSubview:self.titleLabel];
-        [self.contentView addSubview:self.descriptionLabel];
-        [self.contentView addSubview:self.dateLabel];
-        [self.contentView addSubview:self.centerDivider];
-        [self.contentView addSubview:self.playButton];
-        [self.contentView addSubview:self.carousel];
+        iCarousel *carousel = self.carousel = [[iCarousel alloc] init];
+        carousel.dataSource = self;
+        carousel.delegate = self;
+        
+        [self.contentView addSubview:thumbnail];
+        [self.contentView addSubview:titleLabel];
+        [self.contentView addSubview:descriptionLabel];
+        [self.contentView addSubview:dateLabel];
+        [self.contentView addSubview:centerDivider];
+        [self.contentView addSubview:playButton];
+        [self.contentView addSubview:carousel];
     }
     return self;
 }
 
 - (void)setVideoShots:(NSArray *)videoShots {
     if (_videoShots != videoShots) {
-        [_videoShots release];
-        _videoShots = [videoShots retain];
+        _videoShots = videoShots;
     }
     
     [self.carousel reloadData];
@@ -106,8 +106,6 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     self.carousel = nil;
     
     self.videoShots = nil;
-    
-    [super dealloc];
 }
 
 #pragma mark - iCarouselDataSource methods
@@ -122,7 +120,7 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     //create new view if no view is available for recycling
     if (view == nil)
     {
-        view = imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, carousel.frame.size.width - 20, carousel.frame.size.height)] autorelease];
+        view = imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, carousel.frame.size.width - 20, carousel.frame.size.height)];
     }
     else
     {

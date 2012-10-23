@@ -18,13 +18,13 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        self.carousel.scrollEnabled = NO;
-        self.carousel.dataSource = self;
-        self.carousel.delegate = self;
-        [self addSubview:self.carousel];
+        iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        carousel.scrollEnabled = NO;
+        carousel.dataSource = self;
+        carousel.delegate = self;
+        [self addSubview:carousel];
         
-        UIPanGestureRecognizer *recognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)] autorelease];
+        UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
         [self addGestureRecognizer:recognizer];
         
         self.backgroundColor = [UIColor darkGrayColor];
@@ -40,8 +40,6 @@
     self.titles = nil;
     
     self.dataSource = nil;
-    
-    [super dealloc];
 }
 
 - (void)reloadData {
@@ -72,7 +70,7 @@
     
     UILabel *label;
     if (!view) {
-        label = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width / 4, self.frame.size.height)] autorelease];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width / 4, self.frame.size.height)];
         label.textAlignment = UITextAlignmentCenter;
         label.backgroundColor = [UIColor clearColor];
     } else {

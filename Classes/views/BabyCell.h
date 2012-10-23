@@ -10,10 +10,11 @@
 #import <iCarousel.h>
 
 @interface BabyCell : UITableViewCell <iCarouselDataSource, iCarouselDelegate>
-@property (nonatomic, retain) UIImageView *thumbnail;
-@property (nonatomic, retain) UILabel *titleLabel;
-@property (nonatomic, retain) UILabel *descriptionLabel;
-@property (nonatomic, retain) UILabel *dateLabel;
-@property (nonatomic, retain) UIButton *playButton;
-@property (nonatomic, retain) NSArray *videoShots;
+@property (nonatomic, unsafe_unretained) UIImageView *thumbnail;
+@property (nonatomic, unsafe_unretained) UILabel *titleLabel;
+@property (nonatomic, unsafe_unretained) UILabel *descriptionLabel;
+@property (nonatomic, unsafe_unretained) UILabel *dateLabel;
+@property (nonatomic, unsafe_unretained) UIButton *playButton;
+
+@property (nonatomic, strong) NSArray *videoShots;
 @end

@@ -9,26 +9,21 @@
 #import "SlideShowView.h"
 
 @implementation SlideShowView
-@synthesize slideInterval;
-@synthesize slideTimer;
-@synthesize carousel;
-@synthesize dataSource;
-@synthesize delegate;
 
 - (id)initWithFrame:(NSRect)frame
 {
     if ((self = [super initWithFrame:frame]))
     {
-        self.carousel = [[[iCarousel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)] autorelease];
-        self.carousel.decelerationRate = 0.0f;// carousel stops immediately when released
-        self.carousel.ignorePerpendicularSwipes = YES;
+        iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        carousel.decelerationRate = 0.0f;// carousel stops immediately when released
+        carousel.ignorePerpendicularSwipes = YES;
 //        self.carousel.scrollToItemBoundary = YES;
-        self.carousel.stopAtItemBoundary = YES;
-        self.carousel.bounces = NO;
-        self.carousel.clipsToBounds = YES;
-        self.carousel.dataSource = self;
-        self.carousel.delegate = self;
-        [self addSubview:self.carousel];
+        carousel.stopAtItemBoundary = YES;
+        carousel.bounces = NO;
+        carousel.clipsToBounds = YES;
+        carousel.dataSource = self;
+        carousel.delegate = self;
+        [self addSubview:carousel];
     }
     return self;
 }
@@ -49,14 +44,14 @@
 //    }
 //    
 //    [_scrollView scrollRectToVisible:CGRectMake(x, 0, pageWidth, self.frame.size.height) animated:YES];
-    NSInteger index = (self.carousel.currentItemIndex == self.carousel.numberOfItems - 1) ? 0
-    : (self.carousel.currentItemIndex + 1);
-    [self.carousel scrollToItemAtIndex:index animated:YES];
+    NSInteger index = (_carousel.currentItemIndex == _carousel.numberOfItems - 1) ? 0
+    : (_carousel.currentItemIndex + 1);
+    [_carousel scrollToItemAtIndex:index animated:YES];
 }
 
 - (void)startAutoScroll:(double)interval {
     self.slideInterval = interval;
-    if (!self.slideTimer || self.slideTimer.timeInterval != interval) {
+    if (!_slideTimer || _slideTimer.timeInterval != interval) {
         [self stopAutoScroll];
         
         if (interval > 0) {
@@ -79,7 +74,6 @@
     self.carousel = nil;
     self.dataSource = nil;
     self.delegate = nil;
-    [super dealloc];
 }
 
 #pragma mark - iCarouselDataSource methods

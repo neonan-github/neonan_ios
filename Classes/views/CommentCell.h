@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface CommentCell : UITableViewCell
-@property (nonatomic, retain) UILabel *userNameLabel;
-@property (nonatomic, retain) UILabel *timeLabel;
-@property (nonatomic, retain) UILabel *commentLabel;
-@property (nonatomic, retain) UIImageView *arrowView;
+@property (nonatomic, unsafe_unretained) UILabel *userNameLabel;
+@property (nonatomic, unsafe_unretained) UILabel *timeLabel;
+@property (nonatomic, unsafe_unretained) UILabel *commentLabel;
+@property (nonatomic, unsafe_unretained) UIImageView *arrowView;
 
 + (CGFloat)getContentWidth:(CGFloat)width;
 + (CGFloat)getFixedPartHeight;

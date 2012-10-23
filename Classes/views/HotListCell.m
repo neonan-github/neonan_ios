@@ -21,15 +21,15 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.thumbnail = [[[UIImageView alloc] init] autorelease];
-        self.titleLabel = [[[UILabel alloc] init] autorelease];
-        self.descriptionLabel = [[[UILabel alloc] init] autorelease];
-        self.dateLabel = [[[UILabel alloc] init] autorelease];
+        UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] init];
+        UILabel *titleLabel = self.titleLabel = [[UILabel alloc] init];
+        UILabel *descriptionLabel = self.descriptionLabel = [[UILabel alloc] init];
+        UILabel *dateLabel = self.dateLabel = [[UILabel alloc] init];
         
-        [self.contentView addSubview:self.thumbnail];
-        [self.contentView addSubview:self.titleLabel];
-        [self.contentView addSubview:self.descriptionLabel];
-        [self.contentView addSubview:self.dateLabel];
+        [self.contentView addSubview:thumbnail];
+        [self.contentView addSubview:titleLabel];
+        [self.contentView addSubview:descriptionLabel];
+        [self.contentView addSubview:dateLabel];
     }
     return self;
 }
@@ -55,14 +55,6 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x, contentHeight / 3);
     self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight / 3, cellWidth - x, contentHeight / 3);
     self.dateLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, cellWidth - x, contentHeight / 3);
-}
-
-- (void)dealloc {
-    self.thumbnail = nil;
-    self.titleLabel = nil;
-    self.descriptionLabel = nil;
-    self.dateLabel = nil;
-    [super dealloc];
 }
 
 @end
