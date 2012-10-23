@@ -13,7 +13,6 @@ static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
 
 @interface BabyDetailController ()
-@property (nonatomic, unsafe_unretained) UILabel *navigationBar;
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) FoldableTextBox *textBox;
@@ -120,5 +119,30 @@ static const float kDescriptionStretchedLines = 7;
     frame.origin.y = 416 - frame.size.height;
     self.textBox.frame = frame;
 }
+
+#pragma mark - Private methods
+
+- (void)tap:(UITapGestureRecognizer *)recognizer {
+    BOOL hidden = !self.navigationController.navigationBarHidden;
+    
+    [UIView beginAnimations:nil context:nil];
+    [self.navigationController setNavigationBarHidden:hidden animated:YES];
+    
+    CGRect frame = self.slideShowView.frame;
+    frame.origin.y = hidden ? 0 : -44;
+    self.slideShowView.frame = frame;
+    
+    frame = self.textBox.frame;
+    frame.origin.y = hidden ? 460 : (416 - frame.size.height);
+    self.textBox.frame = frame;
+//    方法一
+//    frame = self.pageControl.frame;
+//    frame.origin.y = hidden ? (390 + 44) : 390;
+//    self.pageControl.frame = frame;
+    //方法二
+    self.pageControl.transform = CGAffineTransformMakeTranslation(0, hidden ? 44 : 0);
+    [UIView commitAnimations];
+}
+
 
 @end
