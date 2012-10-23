@@ -10,6 +10,7 @@
 #import "BabyListController.h"
 #import "BabyDetailController.h"
 #import "CommentListController.h"
+#import "SignController.h"
 #import <PrettyKit.h>
 
 @implementation NeonanAppDelegate
@@ -32,7 +33,7 @@
     [self.navController setValue:navigationBar forKeyPath:@"navigationBar"];
     self.window.rootViewController = self.navController;
     
-    UIViewController *controller = [[MainController alloc] init];
+    UIViewController *controller = [[SignController alloc] init];
     [self.navController pushViewController:controller animated:NO];
     
 //    [(NeonanViewController *)controller launch];
