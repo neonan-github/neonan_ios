@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3401FDFC1636A1D700FAF971 /* ArticleDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3401FDFA1636A1D700FAF971 /* ArticleDetailController.m */; };
+		3401FDFD1636A1D700FAF971 /* ArticleDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3401FDFB1636A1D700FAF971 /* ArticleDetailController.xib */; };
 		340A13471631331900E8D594 /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13461631331900E8D594 /* CommentModel.m */; };
 		340A134A1631419600E8D594 /* CommentBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13491631419600E8D594 /* CommentBox.m */; };
 		340A134F163142F100E8D594 /* bg_comment_box.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A134B163142F100E8D594 /* bg_comment_box.png */; };
@@ -50,6 +52,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3401FDF91636A1D700FAF971 /* ArticleDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArticleDetailController.h; sourceTree = "<group>"; };
+		3401FDFA1636A1D700FAF971 /* ArticleDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleDetailController.m; sourceTree = "<group>"; };
+		3401FDFB1636A1D700FAF971 /* ArticleDetailController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ArticleDetailController.xib; path = ../Classes/controllers/ArticleDetailController.xib; sourceTree = "<group>"; };
 		340A13451631331900E8D594 /* CommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentModel.h; sourceTree = "<group>"; };
 		340A13461631331900E8D594 /* CommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentModel.m; sourceTree = "<group>"; };
 		340A13481631419600E8D594 /* CommentBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentBox.h; sourceTree = "<group>"; };
@@ -143,6 +148,8 @@
 				346614DA163521C500B1FF5A /* CommentListController.m */,
 				347AAB5A163672E500D243BA /* SignController.h */,
 				347AAB5B163672E500D243BA /* SignController.m */,
+				3401FDF91636A1D700FAF971 /* ArticleDetailController.h */,
+				3401FDFA1636A1D700FAF971 /* ArticleDetailController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -160,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				347AAB5C163672E500D243BA /* SignController.xib */,
+				3401FDFB1636A1D700FAF971 /* ArticleDetailController.xib */,
 			);
 			name = layouts;
 			sourceTree = "<group>";
@@ -370,6 +378,7 @@
 				340A1352163142F100E8D594 /* bg_comment_commit_highlighted.png in Resources */,
 				346614DD1635397D00B1FF5A /* down_arrow.png in Resources */,
 				347AAB5E163672E500D243BA /* SignController.xib in Resources */,
+				3401FDFD1636A1D700FAF971 /* ArticleDetailController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +424,7 @@
 				346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */,
 				347AAB5D163672E500D243BA /* SignController.m in Sources */,
 				347AAB6416368A6800D243BA /* UITextField+UITextFieldCatagory.m in Sources */,
+				3401FDFC1636A1D700FAF971 /* ArticleDetailController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

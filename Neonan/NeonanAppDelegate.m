@@ -33,7 +33,7 @@
     [self.navController setValue:navigationBar forKeyPath:@"navigationBar"];
     self.window.rootViewController = self.navController;
     
-    UIViewController *controller = [[SignController alloc] init];
+    UIViewController *controller = [[MainController alloc] init];
     [self.navController pushViewController:controller animated:NO];
     
 //    [(NeonanViewController *)controller launch];

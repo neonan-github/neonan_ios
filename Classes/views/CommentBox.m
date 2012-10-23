@@ -8,9 +8,13 @@
 
 #import "CommentBox.h"
 
+@interface CommentBox ()
+- (UIButton *)setUpDoneButton;
+@end
+
 @implementation CommentBox
 @synthesize textView = _textView;
-@synthesize doButton = _doButton;
+@synthesize rightView = _rightView;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -47,23 +51,9 @@
         [self addSubview:textView];
         [self addSubview:entryImageView];
         
-        UIImage *sendBtnBackground = [[UIImage imageNamed:@"bg_comment_commit_normal.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-        UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"bg_comment_commit_highlighted.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+        UIButton *doneButton = self.doneButton = [self setUpDoneButton];
+        [self addSubview:doneButton];
         
-        UIButton *doneBtn = self.doButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        doneBtn.frame = CGRectMake(self.frame.size.width - 69, 8, 63, 27);
-        doneBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        [doneBtn setTitle:@"Done" forState:UIControlStateNormal];
-        
-        [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
-        doneBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
-        doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-        
-        [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [doneBtn addTarget:self action:@selector(resignTextView) forControlEvents:UIControlEventTouchUpInside];
-        [doneBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
-        [doneBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
-        [self addSubview:doneBtn];
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     }
     return self;
@@ -73,20 +63,31 @@
     self.textView = nil;
     self.textView.delegate = nil;
     
-    self.doButton = nil;
+    self.rightView = nil;
 }
 
--(void)resignTextView
-{
-	[self.textView resignFirstResponder];
-}
-
--(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-    BOOL inside = [super pointInside:point withEvent:event];
-    if (!inside) {
-        [self resignTextView];
+- (void)setRightView:(UIView *)view {
+    if (_rightView != view) {
+        [_rightView removeFromSuperview];
+        _rightView = view;
+        _doneButton.hidden = view ? YES : NO;
+        
+        if (view) {
+            CGRect frame = view.frame;
+            frame.origin.x = self.frame.size.width - view.frame.size.width;
+            view.frame = frame;
+        }
     }
-    return inside;
+}
+
+#pragma mark - Override
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    CGRect frame = self.textView.frame;
+    frame.size.width = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x - /*gap*/5;
+    self.textView.frame = frame;
 }
 
 #pragma mark - HPGrowingTextViewDelegate methods
@@ -100,11 +101,45 @@
     r.origin.y += diff;
 	self.frame = r;
     
-    r = self.doButton.frame;
+    UIView *rightView = _rightView ? _rightView : _doneButton;
+    r = rightView.frame;
     r.origin.y -= diff / 2;
-    self.doButton.frame = r;
+    rightView.frame = r;
 }
 
+#pragma mark - Private methods
 
+- (UIButton *)setUpDoneButton {
+   UIImage *sendBtnBackground = [[UIImage imageNamed:@"bg_comment_commit_normal.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+   UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"bg_comment_commit_highlighted.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+        
+   UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+   doneBtn.frame = CGRectMake(self.frame.size.width - 69, 8, 63, 27);
+   doneBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+   [doneBtn setTitle:@"Done" forState:UIControlStateNormal];
+        
+   [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
+   doneBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
+   doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    
+   [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+   [doneBtn addTarget:self action:@selector(resignTextView) forControlEvents:UIControlEventTouchUpInside];
+   [doneBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
+   [doneBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
+    
+    return doneBtn;
+}
+
+-(void)resignTextView {
+	[self.textView resignFirstResponder];
+}
+
+-(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+    BOOL inside = [super pointInside:point withEvent:event];
+    if (!inside) {
+        [self resignTextView];
+    }
+    return inside;
+}
 
 @end
