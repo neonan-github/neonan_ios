@@ -12,6 +12,7 @@
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
 #import "BabyDetailController.h"
+#import "CommentListController.h"
 #import <SVPullToRefresh.h>
 
 @interface MainController ()
@@ -172,7 +173,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UIViewController *controller = [[BabyDetailController alloc] init];
+    UIViewController *controller = [[CommentListController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

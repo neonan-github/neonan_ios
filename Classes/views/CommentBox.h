@@ -11,5 +11,6 @@
 
 @interface CommentBox : UIView <HPGrowingTextViewDelegate>
 @property (nonatomic, unsafe_unretained) HPGrowingTextView *textView;
-@property (nonatomic, unsafe_unretained) UIButton *doButton;
+@property (nonatomic, unsafe_unretained) UIView *rightView;
+@property (nonatomic, unsafe_unretained) UIButton *doneButton;
 @end

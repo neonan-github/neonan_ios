@@ -51,11 +51,19 @@
     [super viewDidUnload];
 }
 
-#pragma mark - Private methods
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//    
+//    UITouch *touch = [[event allTouches] anyObject];
+//    if (([_userTextField isFirstResponder] || [_passwordTextField isFirstResponder]) &&
+//        ([touch view] != _userTextField && [touch view] != _passwordTextField)) {
+//        [_userTextField resignFirstResponder];
+//        [_passwordTextField resignFirstResponder];
+//    }
+//    [super touchesBegan:touches withEvent:event];
+//}
 
 -(void)dismissKeyboard {
     [_userTextField resignFirstResponder];
     [_passwordTextField resignFirstResponder];
 }
-
 @end
