@@ -9,6 +9,8 @@
 #import "CommentBox.h"
 
 @interface CommentBox ()
+@property (unsafe_unretained, nonatomic) UIImageView * entryImageView;
+
 - (UIButton *)setUpDoneButton;
 @end
 
@@ -16,52 +18,64 @@
 @synthesize textView = _textView;
 @synthesize rightView = _rightView;
 
+- (void)setUp:(CGRect)frame {
+    HPGrowingTextView *textView = self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
+    textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    
+    textView.minNumberOfLines = 1;
+    textView.maxNumberOfLines = 4;
+    textView.returnKeyType = UIReturnKeyDefault;
+    [textView.internalTextView setKeyboardAppearance:UIKeyboardAppearanceAlert];
+    textView.font = [UIFont systemFontOfSize:15.0f];
+    textView.delegate = self;
+    textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+    textView.backgroundColor = [UIColor whiteColor];
+    
+    UIImage *rawEntryBackground = [UIImage imageNamed:@"bg_comment_input.png"];
+    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+    UIImageView *entryImageView = self.entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
+    entryImageView.frame = CGRectMake(5, 0, 248, 40);
+    entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    UIImage *rawBackground = [UIImage imageNamed:@"bg_comment_box.png"];
+    UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
+    imageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    textView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    // view hierachy
+    [self addSubview:imageView];
+    [self addSubview:textView];
+    [self addSubview:entryImageView];
+    
+    UIButton *doneButton = self.doneButton = [self setUpDoneButton];
+    [self addSubview:doneButton];
+    
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        HPGrowingTextView *textView = self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
-        textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
-        
-        textView.minNumberOfLines = 1;
-        textView.maxNumberOfLines = 4;
-        textView.returnKeyType = UIReturnKeyDefault;
-        [textView.internalTextView setKeyboardAppearance:UIKeyboardAppearanceAlert];
-        textView.font = [UIFont systemFontOfSize:15.0f];
-        textView.delegate = self;
-        textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-        textView.backgroundColor = [UIColor whiteColor];
-        
-        UIImage *rawEntryBackground = [UIImage imageNamed:@"bg_comment_input.png"];
-        UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-        UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-        entryImageView.frame = CGRectMake(5, 0, 248, 40);
-        entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        
-        UIImage *rawBackground = [UIImage imageNamed:@"bg_comment_box.png"];
-        UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
-        imageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        
-        textView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        
-        // view hierachy
-        [self addSubview:imageView];
-        [self addSubview:textView];
-        [self addSubview:entryImageView];
-        
-        UIButton *doneButton = self.doneButton = [self setUpDoneButton];
-        [self addSubview:doneButton];
-        
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        [self setUp:frame];
     }
     return self;
+}
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self setUp:self.frame];
 }
 
 - (void)dealloc {
     self.textView = nil;
     self.textView.delegate = nil;
+    
+    self.entryImageView = nil;
     
     self.rightView = nil;
 }
@@ -76,6 +90,9 @@
             CGRect frame = view.frame;
             frame.origin.x = self.frame.size.width - view.frame.size.width;
             view.frame = frame;
+            NSLog(@"rightView frame:%f %f %f %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+            
+            [self addSubview:_rightView];
         }
     }
 }
@@ -84,10 +101,17 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    NSLog(@"layoutSubviews");
     
     CGRect frame = self.textView.frame;
-    frame.size.width = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x - /*gap*/5;
+    CGFloat textViewWidth = frame.size.width = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x - /*gap*/5;
     self.textView.frame = frame;
+    
+    NSLog(@"textView frame:%f %f %f %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+    
+    frame = self.entryImageView.frame;
+    frame.size.width = textViewWidth + 8;
+    self.entryImageView.frame = frame;
 }
 
 #pragma mark - HPGrowingTextViewDelegate methods
