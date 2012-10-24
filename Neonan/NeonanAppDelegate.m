@@ -33,7 +33,7 @@
     self.navController = [[UINavigationController alloc] init];
     [self.navController setValue:navigationBar forKeyPath:@"navigationBar"];
     self.window.rootViewController = self.navController;
-    
+       
     UIViewController *controller = [[ArticleDetailController alloc] init];
     [self.navController pushViewController:controller animated:NO];
     

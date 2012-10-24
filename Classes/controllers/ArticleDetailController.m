@@ -37,6 +37,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 85, 26)];
+    logoView.image = [UIImage imageNamed:@"img_logo.png"];
+    self.navigationItem.titleView = logoView;
     
     [_commentBoxRightView removeFromSuperview];
     _commentBox.rightView = _commentBoxRightView;
