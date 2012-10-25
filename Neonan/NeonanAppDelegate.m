@@ -13,7 +13,7 @@
 #import "CommentListController.h"
 #import "SignController.h"
 #import "ArticleDetailController.h"
-#import <PrettyKit.h>
+#import "CustomNavigationBar.h"
 
 @implementation NeonanAppDelegate
 
@@ -25,12 +25,22 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
+//    UINavigationBar *navigationBar = [NeonanAppDelegate createNavigtionBar];
+//    UIImage *image = [UIImage imageNamed:@"icon_left_arrow_white.png"];
+//    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, (44 - image.size.height) / 2, image.size.width, image.size.height)];
+//    [backButton setBackgroundImage:image forState:UIControlStateNormal];
+//    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+//    [navigationBar addSubview:backButton];
+    UINavigationBar *navigationBar = [[CustomNavigationBar alloc] init];
+    
     self.navController = [[UINavigationController alloc] init];
-    [self.navController setValue:[NeonanAppDelegate createNavigtionBar] forKeyPath:@"navigationBar"];
+    [self.navController setValue:navigationBar forKeyPath:@"navigationBar"];
+    self.navController.navigationItem.hidesBackButton = YES;
     self.window.rootViewController = self.navController;
        
     UIViewController *controller = [[MainController alloc] init];
     [self.navController pushViewController:controller animated:NO];
+    self.navController.navigationItem.leftBarButtonItem = nil;
     
 //    [(NeonanViewController *)controller launch];
     
@@ -77,6 +87,12 @@
     [navigationBar addSubview:logoView];
  
     return navigationBar;
+}
+
+#pragma mark - Private methods
+
+- (void)back {
+    [self.navController popViewControllerAnimated:YES];
 }
 
 @end

@@ -16,5 +16,7 @@
 
 + (NSUInteger)computeContentLines:(NSString *)content withWidth:(CGFloat)width andFont:(UIFont *)font;
 
-+ (void)setUIViewController:(UIViewController *)controller defaultTitle:(UIView *)titleView;
++ (void)setBackAction:(SEL)action forController:(UIViewController *)controller withImage:(UIImage *)image;
+
++ (UIImage *)imageFromFile:(NSString *)fileName;
 @end

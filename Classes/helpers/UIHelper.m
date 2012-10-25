@@ -28,12 +28,19 @@
     return  (NSUInteger)(size.height / font.lineHeight);
 }
 
-+ (void)setUIViewController:(UIViewController *)controller defaultTitle:(UIView *)titleView {
-    if (!titleView) {
-        UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 85, 26)];
-        logoView.image = [UIImage imageNamed:@"img_logo.png"];
-        titleView = logoView;
-    }
-    controller.navigationItem.titleView = titleView;
++ (void)setBackAction:(SEL)action forController:(UIViewController *)controller withImage:(UIImage *)image {
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    [backButton setBackgroundImage:image forState:UIControlStateNormal];
+    [backButton addTarget:controller action:action forControlEvents:UIControlEventTouchUpInside];
+    controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
 }
+
++ (UIImage *)imageFromFile:(NSString *)fileName {
+    NSRange prefixRange = [fileName rangeOfString:@"."];
+    NSArray *splits = [fileName componentsSeparatedByString:@"."];
+    NSString *fileLocation = [[NSBundle mainBundle] pathForResource:[splits objectAtIndex:0] ofType:[splits objectAtIndex:1]];
+    NSData *imageData = [NSData dataWithContentsOfFile:fileLocation];
+    return [UIImage imageWithData:imageData];
+}
+
 @end
