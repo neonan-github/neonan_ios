@@ -20,6 +20,11 @@
 #import "BabyDetailController.h"
 #import "CommentListController.h"
 
+typedef enum {
+    listTypeLatest = 0,
+    listTypeHotest
+} listType;
+
 @interface MainController ()
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
@@ -28,9 +33,12 @@
 
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *titles;
+@property (nonatomic, assign) listType type;
 
 - (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
+
+- (NSString *)stringForType:(listType)type;
 @end
 
 @implementation MainController
@@ -42,6 +50,11 @@ headerView = _headerView;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[self stringForType:_type]
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(switchListType)];
     
     float layoutY = 0;
     
@@ -109,6 +122,16 @@ headerView = _headerView;
 - (void)dealloc
 {
     [self cleanUp];
+}
+
+- (void)setType:(listType)type {
+    if (_type != type) {
+        _type = type;
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[self stringForType:_type]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(switchListType)];
+    }
 }
 
 #pragma mark - UIViewController life cycle
@@ -234,6 +257,19 @@ headerView = _headerView;
     cell.videoShots = self.images;
  
     return cell;
+}
+
+- (NSString *)stringForType:(listType)type {
+    if (type == listTypeLatest) {
+        return @"最新";
+    }
+
+    return @"最热";
+}
+
+- (void)switchListType {
+    listType newType = _type == listTypeLatest ? listTypeHotest : listTypeLatest;
+    self.type = newType;
 }
 
 @end

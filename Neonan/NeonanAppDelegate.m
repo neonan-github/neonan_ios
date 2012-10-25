@@ -15,12 +15,6 @@
 #import "ArticleDetailController.h"
 #import <PrettyKit.h>
 
-@interface NeonanAppDelegate ()
-
-- (UINavigationBar *)createNavigtionBar;
-
-@end
-
 @implementation NeonanAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -32,7 +26,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     
     self.navController = [[UINavigationController alloc] init];
-    [self.navController setValue:[self createNavigtionBar] forKeyPath:@"navigationBar"];
+    [self.navController setValue:[NeonanAppDelegate createNavigtionBar] forKeyPath:@"navigationBar"];
     self.window.rootViewController = self.navController;
        
     UIViewController *controller = [[MainController alloc] init];
@@ -70,9 +64,9 @@
 //    [_rootViewController exit];
 }
 
-#pragma mark - Private methods
+#pragma mark - Public static methods
 
-- (UINavigationBar *)createNavigtionBar {
++ (UINavigationBar *)createNavigtionBar {
     PrettyNavigationBar *navigationBar = [[PrettyNavigationBar alloc] init];
     //    navigationBar.topLineColor = [UIColor blackColor];
     //    navigationBar.bottomLineColor = [UIColor blackColor];

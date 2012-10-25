@@ -7,6 +7,7 @@
 //
 
 #import "ArticleDetailController.h"
+#import "SignController.h"
 #import "CommentBox.h"
 #import <DTCoreText.h>
 
@@ -38,6 +39,7 @@
     
     [_commentButton removeFromSuperview];
     _commentBox.rightView = _commentButton;
+    [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)didReceiveMemoryWarning
@@ -142,6 +144,16 @@
 	
 	// commit animations
 	[UIView commitAnimations];
+}
+
+#pragma mark - Private methods
+
+- (void)publish:(UIButton *)button {
+    SignController *controller = [[SignController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    [navController setValue:[NeonanAppDelegate createNavigtionBar] forKeyPath:@"navigationBar"];
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self.navigationController presentModalViewController:navController animated:YES];
 }
 
 @end
