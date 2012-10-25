@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SlideShowView.h"
+#import "CircleHeaderView.h"
 
 @interface MainController : UIViewController <SlideShowViewDataSource, SlideShowViewDelegate,
-UITableViewDataSource, UITableViewDelegate>
+UITableViewDataSource, UITableViewDelegate, CircleHeaderViewDelegate>
 
 @end

@@ -15,10 +15,8 @@
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet DTAttributedTextView *textView;
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
-
-@property (strong, nonatomic) IBOutlet UIView *commentBoxRightView;// 分享及评论
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
-@property (unsafe_unretained, nonatomic) IBOutlet UIButton *commentButton;
+@property (strong, nonatomic) IBOutlet UIButton *commentButton;
 
 @end
 
@@ -37,12 +35,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 85, 26)];
-    logoView.image = [UIImage imageNamed:@"img_logo.png"];
-    self.navigationItem.titleView = logoView;
     
-    [_commentBoxRightView removeFromSuperview];
-    _commentBox.rightView = _commentBoxRightView;
+    [_commentButton removeFromSuperview];
+    _commentBox.rightView = _commentButton;
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,9 +50,10 @@
     [self setTitleLabel:nil];
     [self setTextView:nil];
     [self setCommentBox:nil];
-    [self setCommentBoxRightView:nil];
-    [self setShareButton:nil];
     [self setCommentButton:nil];
+    [self setCommentButton:nil];
+    [self setCommentButton:nil];
+    [self setShareButton:nil];
     [super viewDidUnload];
 }
 
@@ -122,7 +118,7 @@
 }
 
 -(void) keyboardWillHide:(NSNotification *)note{
-    _commentBox.rightView = _commentBoxRightView;
+    _commentBox.rightView = _commentButton;
     
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];

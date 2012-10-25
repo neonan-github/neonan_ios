@@ -7,12 +7,19 @@
 //
 
 #import "NeonanAppDelegate.h"
+#import "MainController.h"
 #import "BabyListController.h"
 #import "BabyDetailController.h"
 #import "CommentListController.h"
 #import "SignController.h"
 #import "ArticleDetailController.h"
 #import <PrettyKit.h>
+
+@interface NeonanAppDelegate ()
+
+- (UINavigationBar *)createNavigtionBar;
+
+@end
 
 @implementation NeonanAppDelegate
 
@@ -24,17 +31,11 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    PrettyNavigationBar *navigationBar = [[PrettyNavigationBar alloc] init];
-//    navigationBar.topLineColor = [UIColor blackColor];
-//    navigationBar.bottomLineColor = [UIColor blackColor];
-//    navigationBar.gradientStartColor = [UIColor blackColor];
-//    navigationBar.gradientEndColor = [UIColor blackColor];
-    
     self.navController = [[UINavigationController alloc] init];
-    [self.navController setValue:navigationBar forKeyPath:@"navigationBar"];
+    [self.navController setValue:[self createNavigtionBar] forKeyPath:@"navigationBar"];
     self.window.rootViewController = self.navController;
        
-    UIViewController *controller = [[ArticleDetailController alloc] init];
+    UIViewController *controller = [[MainController alloc] init];
     [self.navController pushViewController:controller animated:NO];
     
 //    [(NeonanViewController *)controller launch];
@@ -67,6 +68,21 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 //    [_rootViewController exit];
+}
+
+#pragma mark - Private methods
+
+- (UINavigationBar *)createNavigtionBar {
+    PrettyNavigationBar *navigationBar = [[PrettyNavigationBar alloc] init];
+    //    navigationBar.topLineColor = [UIColor blackColor];
+    //    navigationBar.bottomLineColor = [UIColor blackColor];
+    //    navigationBar.gradientStartColor = [UIColor blackColor];
+    //    navigationBar.gradientEndColor = [UIColor blackColor];
+    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake((320 - 86) / 2, (44 - 26) / 2, 86, 26)];
+    logoView.image = [UIImage imageNamed:@"img_logo.png"];
+    [navigationBar addSubview:logoView];
+ 
+    return navigationBar;
 }
 
 @end

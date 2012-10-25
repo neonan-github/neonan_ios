@@ -8,7 +8,10 @@
 
 #import "CommentBox.h"
 
-@interface CommentBox ()
+@interface CommentBox () {
+    NSString *_text;
+}
+
 @property (unsafe_unretained, nonatomic) UIImageView * entryImageView;
 
 - (UIButton *)setUpDoneButton;
@@ -19,9 +22,9 @@
 @synthesize rightView = _rightView;
 
 - (void)setUp:(CGRect)frame {
+   
     HPGrowingTextView *textView = self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
     textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
-    
     textView.minNumberOfLines = 1;
     textView.maxNumberOfLines = 4;
     textView.returnKeyType = UIReturnKeyDefault;
@@ -30,6 +33,12 @@
     textView.delegate = self;
     textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     textView.backgroundColor = [UIColor whiteColor];
+    
+    UIImageView *placeHolderView = self.placeHolderView = [[UIImageView alloc] initWithFrame:CGRectMake(10, (textView.frame.size.height - 16) / 2 , 56, 16)];
+    NSString *fileLocation = [[NSBundle mainBundle] pathForResource:@"img_comment_placeholder" ofType:@"png"];
+    NSData *imageData = [NSData dataWithContentsOfFile:fileLocation];
+    placeHolderView.image = [UIImage imageWithData:imageData];
+    [textView addSubview:placeHolderView];
     
     UIImage *rawEntryBackground = [UIImage imageNamed:@"bg_comment_input.png"];
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
@@ -54,7 +63,7 @@
     [self addSubview:doneButton];
     
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-
+    [self addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionOld context:NULL];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -78,6 +87,12 @@
     self.entryImageView = nil;
     
     self.rightView = nil;
+    
+    [self removeObserver:self forKeyPath:@"frame"];
+}
+
+- (NSString *)text {
+    return _textView.text;
 }
 
 - (void)setRightView:(UIView *)view {
@@ -92,6 +107,7 @@
             view.frame = frame;
             NSLog(@"rightView frame:%f %f %f %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
             
+            _rightView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
             [self addSubview:_rightView];
         }
     }
@@ -112,6 +128,12 @@
     frame = self.entryImageView.frame;
     frame.size.width = textViewWidth + 8;
     self.entryImageView.frame = frame;
+    
+    frame = _rightView.frame;
+    _rightView.center = CGPointMake(frame.origin.x + frame.size.width / 2, self.frame.size.height / 2);
+    
+    frame = _doneButton.frame;
+    _doneButton.center = CGPointMake(frame.origin.x + frame.size.width / 2, self.frame.size.height / 2);
 }
 
 #pragma mark - HPGrowingTextViewDelegate methods
@@ -154,16 +176,42 @@
     return doneBtn;
 }
 
--(void)resignTextView {
+- (void)resignTextView {
 	[self.textView resignFirstResponder];
 }
 
--(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
     BOOL inside = [super pointInside:point withEvent:event];
     if (!inside) {
         [self resignTextView];
     }
     return inside;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if([keyPath isEqualToString:@"frame"]) {
+        CGRect oldFrame = CGRectNull;
+        CGRect newFrame = CGRectNull;
+        if([change objectForKey:@"old"] != [NSNull null]) {
+            oldFrame = [[change objectForKey:@"old"] CGRectValue];
+        }
+        if([object valueForKeyPath:keyPath] != [NSNull null]) {
+            newFrame = [[object valueForKeyPath:keyPath] CGRectValue];
+        }
+        
+        CGFloat oldY = oldFrame.origin.y + oldFrame.size.height;
+        CGFloat newY = newFrame.origin.y + newFrame.size.height;
+        if (oldY > newY) {// keyboard show
+            _textView.text = _text;
+            _placeHolderView.hidden = YES;
+        } else if (oldY < newY) {// keyboard hide
+            _text = _textView.text;
+            _textView.text = @"";
+            _placeHolderView.hidden = NO;
+        }
+        
+        NSLog(@"positon changed:%f %f", oldY, newY);
+    }
 }
 
 @end

@@ -7,25 +7,35 @@
 //
 
 #import "MainController.h"
+#import "BabyDetailController.h"
+#import "ArticleDetailController.h"
+
 #import "SMPageControl.h"
 #import "HotListCell.h"
+#import "BabyCell.h"
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
+#import <SVPullToRefresh.h>
+
 #import "BabyDetailController.h"
 #import "CommentListController.h"
-#import <SVPullToRefresh.h>
 
 @interface MainController ()
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) UITableView *tableView;
+@property (nonatomic, unsafe_unretained) CircleHeaderView *headerView;
 
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *titles;
+
+- (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @implementation MainController
-@synthesize slideShowView = _slideShowView, pageControl = _pageControl, tableView = _tableView;
+@synthesize slideShowView = _slideShowView, pageControl = _pageControl, tableView = _tableView,
+headerView = _headerView;
 @synthesize images = _images, titles = _titles;
 
 - (void)viewDidLoad
@@ -35,7 +45,10 @@
     
     float layoutY = 0;
     
-    CircleHeaderView *headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 30)];
+    CircleHeaderView *headerView = self.headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 30)];
+    headerView.delegate = self;
+    headerView.titles = self.titles = [[NSArray alloc] initWithObjects:@"性情", @"生活", @"主页", @"财富", @"玩乐", @"宝贝", nil];
+    [headerView reloadData];
     [self.view addSubview:headerView];
     
     layoutY += 30;
@@ -62,8 +75,6 @@
     }];
     [self.view addSubview:tableView];
     
-    headerView.titles = self.titles = [[NSArray alloc] initWithObjects:@"性情", @"生活", @"主页", @"财富", @"玩乐", nil];
-    [headerView reloadData];
     self.images = [[NSArray alloc] initWithObjects:@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil];
 }
 
@@ -84,6 +95,9 @@
     self.tableView.delegate = nil;
     self.tableView.dataSource = nil;
     self.tableView = nil;
+    
+    self.headerView.delegate = nil;
+    self.headerView = nil;
 }
 
 - (void)viewDidUnload
@@ -147,7 +161,44 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentifier = @"Cell";
+    if (self.headerView.carousel.currentItemIndex == 5) {
+        return [self createBabyCell:tableView forRowAtIndexPath:indexPath];
+    }
+    
+    return [self createHotListCell:tableView forRowAtIndexPath:indexPath];
+}
+
+#pragma mark - UITableViewDelegate methods
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 80;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UIViewController *controller;
+    switch (indexPath.row % 2) {
+        case 0:
+            controller = [[ArticleDetailController alloc] init];
+            break;
+            
+        default:
+            controller = [[BabyDetailController alloc] init];
+            break;
+    }
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+#pragma mark - CircleHeaderViewDelegate methods
+
+- (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
+    [_slideShowView reloadData];
+    [_tableView reloadData];
+}
+
+#pragma mark - Private methods
+
+- (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *cellIdentifier = @"HotListCell";
     
     HotListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
@@ -163,18 +214,26 @@
     cell.dateLabel.text = [NSString stringWithFormat:@"date %u", indexPath.row];
     
     return cell;
+}
+
+- (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath  {
+    static NSString *cellIdentifier = @"BabyCell";
     
-}
-
-#pragma mark - UITableViewDelegate methods
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 80;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UIViewController *controller = [[CommentListController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
+    BabyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (!cell) {
+        cell = [[BabyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    
+    cell.thumbnail.image = [UIImage imageNamed:[self.images objectAtIndex:indexPath.row]];
+    cell.titleLabel.font = [UIFont systemFontOfSize:12];
+    cell.titleLabel.text = [NSString stringWithFormat:@"title %u", indexPath.row];
+    cell.descriptionLabel.font = [UIFont systemFontOfSize:12];
+    cell.descriptionLabel.text = [NSString stringWithFormat:@"description %u", indexPath.row];
+    cell.dateLabel.font = [UIFont systemFontOfSize:12];
+    cell.dateLabel.text = [NSString stringWithFormat:@"date %u", indexPath.row];
+    cell.videoShots = self.images;
+ 
+    return cell;
 }
 
 @end

@@ -12,6 +12,7 @@
 @synthesize carousel = _carousel;
 @synthesize titles = _titles;
 @synthesize dataSource = _dataSource;
+@synthesize currentItemIndex = _currentItemIndex;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -40,6 +41,10 @@
     self.titles = nil;
     
     self.dataSource = nil;
+}
+
+- (NSUInteger)currentItemIndex {
+    return _carousel.currentItemIndex;
 }
 
 - (void)reloadData {
@@ -83,6 +88,12 @@
 }
 
 #pragma mark - iCarouselDelegate methods
+
+- (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
+    if (self.delegate) {
+        [self.delegate currentItemIndexDidChange:self];
+    }
+}
 
 - (CGFloat)carousel:(iCarousel *)_carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
 {

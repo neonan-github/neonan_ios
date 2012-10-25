@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <HPGrowingTextView.h>
 
-@interface CommentBox : UIView <HPGrowingTextViewDelegate>
+@interface CommentBox : UIView <HPGrowingTextViewDelegate, UITextViewDelegate>
 @property (nonatomic, unsafe_unretained) HPGrowingTextView *textView;
 @property (nonatomic, unsafe_unretained) UIView *rightView;
 @property (nonatomic, unsafe_unretained) UIButton *doneButton;
+@property (nonatomic, unsafe_unretained) UIImageView *placeHolderView;
+
+@property (nonatomic, strong) NSString *text;
 @end

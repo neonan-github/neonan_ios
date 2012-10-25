@@ -28,4 +28,12 @@
     return  (NSUInteger)(size.height / font.lineHeight);
 }
 
++ (void)setUIViewController:(UIViewController *)controller defaultTitle:(UIView *)titleView {
+    if (!titleView) {
+        UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 85, 26)];
+        logoView.image = [UIImage imageNamed:@"img_logo.png"];
+        titleView = logoView;
+    }
+    controller.navigationItem.titleView = titleView;
+}
 @end

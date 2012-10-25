@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface UIHelper : NSObject
 + (void)fitScrollView:(UIScrollView *)scrollView withMaxHeight:(float)maxHeight;// make scrollview sizeToFit
@@ -15,4 +16,5 @@
 
 + (NSUInteger)computeContentLines:(NSString *)content withWidth:(CGFloat)width andFont:(UIFont *)font;
 
++ (void)setUIViewController:(UIViewController *)controller defaultTitle:(UIView *)titleView;
 @end
