@@ -13,6 +13,11 @@ static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
 
 @interface BabyDetailController ()
+@property (nonatomic, unsafe_unretained) UIView *titleBox;
+@property (nonatomic, unsafe_unretained) UILabel *titleLabel;
+@property (nonatomic, unsafe_unretained) UIButton *likeButton;
+@property (nonatomic, unsafe_unretained) UIButton *shareButton;
+
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) FoldableTextBox *textBox;
@@ -36,6 +41,20 @@ static const float kDescriptionStretchedLines = 7;
     [slideShowView addGestureRecognizer:tapRecognizer];
     [self.view addSubview:slideShowView];
     
+    UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 30)];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.text = @"Yangqihan";
+    UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(238, 4, 26, 22)];
+    [likeButton setBackgroundImage:[UIImage imageNamed:@"icon_share.png"] forState:UIControlStateNormal];
+    UIButton *shareButton = self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(278, 4, 26, 22)];
+    [shareButton setBackgroundImage:[UIImage imageNamed:@"icon_share.png"] forState:UIControlStateNormal];
+    UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+    titleBox.backgroundColor = [UIColor redColor];
+    [titleBox addSubview:titleLabel];
+    [titleBox addSubview:likeButton];
+    [titleBox addSubview:shareButton];
+    [self.view addSubview:titleBox];
+    
     FoldableTextBox *textBox = self.textBox = [[FoldableTextBox alloc] initWithFrame:CGRectMake(0, 384, 320, 0)];
     textBox.frame = CGRectMake(0, 384, 320, [textBox getSuggestedHeight]);
     textBox.delegate = self;
@@ -57,6 +76,11 @@ static const float kDescriptionStretchedLines = 7;
 
 - (void)cleanUp
 {
+    self.titleLabel = nil;
+    self.likeButton = nil;
+    self.shareButton = nil;
+    self.titleBox = nil;
+    
     self.slideShowView.dataSource = nil;
     self.slideShowView.delegate = nil;
     self.slideShowView = nil;
@@ -131,6 +155,10 @@ static const float kDescriptionStretchedLines = 7;
     CGRect frame = self.slideShowView.frame;
     frame.origin.y = hidden ? 0 : -44;
     self.slideShowView.frame = frame;
+    
+    frame = self.titleBox.frame;
+    frame.origin.y = hidden ? -30 : 0;
+    self.titleBox.frame = frame;
     
     frame = self.textBox.frame;
     frame.origin.y = hidden ? 460 : (416 - frame.size.height);
