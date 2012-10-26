@@ -35,6 +35,8 @@
     UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, 320, 350)];
     tableView.dataSource = self;
     tableView.delegate = self;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:tableView];
     
     CommentBox *commentBox = self.commentBox = [[CommentBox alloc] initWithFrame:CGRectMake(0, 420, 320, 40)];
@@ -117,7 +119,6 @@
     
     CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
     cell.commentLabel.font = [UIFont systemFontOfSize:14];
-    cell.commentLabel.textColor = [UIColor blackColor];
     cell.commentLabel.numberOfLines = comment.expanded ? 0 : 2;
     cell.commentLabel.lineBreakMode = comment.expanded ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
     cell.commentLabel.text = [NSString stringWithFormat:@"%u %@", indexPath.row, comment.text];

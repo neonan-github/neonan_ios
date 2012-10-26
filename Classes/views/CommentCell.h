@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <PrettyKit.h>
 
-@interface CommentCell : UITableViewCell
+@interface CommentCell : PrettyTableViewCell
 @property (nonatomic, unsafe_unretained) UILabel *userNameLabel;
 @property (nonatomic, unsafe_unretained) UILabel *timeLabel;
 @property (nonatomic, unsafe_unretained) UILabel *commentLabel;

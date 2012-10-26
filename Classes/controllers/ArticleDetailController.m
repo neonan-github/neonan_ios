@@ -8,6 +8,7 @@
 
 #import "ArticleDetailController.h"
 #import "SignController.h"
+#import "CommentListController.h"
 #import "CommentBox.h"
 #import <DTCoreText.h>
 
@@ -36,8 +37,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self.navigationController performSelector:@selector(showCustomBackButton:) withObject:self];
     
     [_commentButton removeFromSuperview];
+    [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
     _commentBox.rightView = _commentButton;
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -151,9 +154,13 @@
 - (void)publish:(UIButton *)button {
     SignController *controller = [[SignController alloc] init];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    [navController setValue:[NeonanAppDelegate createNavigtionBar] forKeyPath:@"navigationBar"];
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self.navigationController presentModalViewController:navController animated:YES];
+}
+
+- (void)showComments {
+    CommentListController *controller = [[CommentListController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

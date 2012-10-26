@@ -26,10 +26,17 @@ static const float kGap = 8;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.customBackgroundColor = [UIColor blackColor];
+        self.customSeparatorColor = [UIColor lightGrayColor];
+        
         float layoutY = kMargin;
         UILabel *userNameLabel = self.userNameLabel = [[UILabel alloc] init];
+        userNameLabel.backgroundColor = [UIColor clearColor];
+        userNameLabel.textColor = [UIColor whiteColor];
         
         UILabel *timeLabel = self.timeLabel = [[UILabel alloc] init];
+        timeLabel.backgroundColor = [UIColor clearColor];
+        timeLabel.textColor = [UIColor whiteColor];
         timeLabel.textAlignment = NSTextAlignmentRight;
         
         UIImageView *arrowView = self.arrowView = [[UIImageView alloc] init];
@@ -37,6 +44,8 @@ static const float kGap = 8;
         
         layoutY += kGap + 15;
         UILabel *commentLabel = self.commentLabel = [[UILabel alloc] init];
+        commentLabel.backgroundColor = [UIColor clearColor];
+        commentLabel.textColor = [UIColor whiteColor];
         commentLabel.textAlignment = NSTextAlignmentLeft;
         
         [self addSubview:userNameLabel];

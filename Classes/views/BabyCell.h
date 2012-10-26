@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <iCarousel.h>
+#import <PrettyKit.h>
 
-@interface BabyCell : UITableViewCell <iCarouselDataSource, iCarouselDelegate>
+@interface BabyCell : PrettyTableViewCell <iCarouselDataSource, iCarouselDelegate>
 @property (nonatomic, unsafe_unretained) UIImageView *thumbnail;
 @property (nonatomic, unsafe_unretained) UILabel *titleLabel;
 @property (nonatomic, unsafe_unretained) UILabel *descriptionLabel;

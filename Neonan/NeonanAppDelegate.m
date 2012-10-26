@@ -13,7 +13,7 @@
 #import "CommentListController.h"
 #import "SignController.h"
 #import "ArticleDetailController.h"
-#import "CustomNavigationBar.h"
+#import "NNNavigationController.h"
 
 @implementation NeonanAppDelegate
 
@@ -25,17 +25,7 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-//    UINavigationBar *navigationBar = [NeonanAppDelegate createNavigtionBar];
-//    UIImage *image = [UIImage imageNamed:@"icon_left_arrow_white.png"];
-//    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, (44 - image.size.height) / 2, image.size.width, image.size.height)];
-//    [backButton setBackgroundImage:image forState:UIControlStateNormal];
-//    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-//    [navigationBar addSubview:backButton];
-    UINavigationBar *navigationBar = [[CustomNavigationBar alloc] init];
-    
-    self.navController = [[UINavigationController alloc] init];
-    [self.navController setValue:navigationBar forKeyPath:@"navigationBar"];
-    self.navController.navigationItem.hidesBackButton = YES;
+    self.navController = [[NNNavigationController alloc] init];
     self.window.rootViewController = self.navController;
        
     UIViewController *controller = [[MainController alloc] init];
@@ -72,27 +62,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 //    [_rootViewController exit];
-}
-
-#pragma mark - Public static methods
-
-+ (UINavigationBar *)createNavigtionBar {
-    PrettyNavigationBar *navigationBar = [[PrettyNavigationBar alloc] init];
-    //    navigationBar.topLineColor = [UIColor blackColor];
-    //    navigationBar.bottomLineColor = [UIColor blackColor];
-    //    navigationBar.gradientStartColor = [UIColor blackColor];
-    //    navigationBar.gradientEndColor = [UIColor blackColor];
-    UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake((320 - 86) / 2, (44 - 26) / 2, 86, 26)];
-    logoView.image = [UIImage imageNamed:@"img_logo.png"];
-    [navigationBar addSubview:logoView];
- 
-    return navigationBar;
-}
-
-#pragma mark - Private methods
-
-- (void)back {
-    [self.navController popViewControllerAnimated:YES];
 }
 
 @end

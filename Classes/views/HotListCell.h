@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <PrettyKit.h>
 
-@interface HotListCell : UITableViewCell
+@interface HotListCell : PrettyTableViewCell
 @property (nonatomic, unsafe_unretained) UIImageView *thumbnail;
 @property (nonatomic, unsafe_unretained) UILabel *titleLabel;
 @property (nonatomic, unsafe_unretained) UILabel *descriptionLabel;

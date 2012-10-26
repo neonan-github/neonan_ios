@@ -30,10 +30,22 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.customBackgroundColor = [UIColor blackColor];
+        self.customSeparatorColor = [UIColor lightGrayColor];
+        
         UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] init];
+        
         UILabel *titleLabel = self.titleLabel = [[UILabel alloc] init];
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.textColor = [UIColor whiteColor];
+        
         UILabel *descriptionLabel = self.descriptionLabel = [[UILabel alloc] init];
+        descriptionLabel.backgroundColor = [UIColor clearColor];
+        descriptionLabel.textColor = [UIColor whiteColor];
+        
         UILabel *dateLabel = self.dateLabel = [[UILabel alloc] init];
+        dateLabel.backgroundColor = [UIColor clearColor];
+        dateLabel.textColor = [UIColor whiteColor];
         
         UIView *centerDivider = self.centerDivider = [[UIView alloc] init];
         centerDivider.backgroundColor = [UIColor lightGrayColor];

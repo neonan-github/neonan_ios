@@ -14,6 +14,4 @@
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) UINavigationController *navController;
 
-+ (UINavigationBar *)createNavigtionBar;
-
 @end
