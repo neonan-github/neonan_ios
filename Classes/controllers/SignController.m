@@ -7,6 +7,7 @@
 //
 
 #import "SignController.h"
+#import "NNNavigationController.h"
 
 @interface SignController ()
 
@@ -56,6 +57,14 @@
     [self setPasswordTextField:nil];
     [self setActionButton:nil];
     [super viewDidUnload];
+}
+
+#pragma mark - UIViewController life cycle
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    ((NNNavigationController *)self.navigationController).showsBackButton = NO;
 }
 
 - (void)setType:(signType)type {

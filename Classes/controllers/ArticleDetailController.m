@@ -9,6 +9,8 @@
 #import "ArticleDetailController.h"
 #import "SignController.h"
 #import "CommentListController.h"
+#import "NNNavigationController.h"
+
 #import "CommentBox.h"
 #import <DTCoreText.h>
 
@@ -37,7 +39,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self.navigationController performSelector:@selector(showCustomBackButton:) withObject:self];
     
     [_commentButton removeFromSuperview];
     [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
@@ -67,6 +68,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    ((NNNavigationController *)self.navigationController).showsBackButton = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -153,7 +156,7 @@
 
 - (void)publish:(UIButton *)button {
     SignController *controller = [[SignController alloc] init];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    UINavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self.navigationController presentModalViewController:navController animated:YES];
 }

@@ -186,6 +186,8 @@
     if (!inside) {
         [self resignTextView];
     }
+    
+    NSLog(@"isActive:%@", self.isActive ? @"YES" : @"NO");
     return self.isActive ? YES : inside;
 }
 
@@ -202,11 +204,12 @@
         
         CGFloat oldY = oldFrame.origin.y + oldFrame.size.height;
         CGFloat newY = newFrame.origin.y + newFrame.size.height;
-        if (oldY > newY) {// keyboard show
+        CGFloat yDelta = newY - oldY;
+        if (yDelta < -200) {// keyboard show
             _active = YES;
             _textView.text = _text;
             _placeHolderView.hidden = YES;
-        } else if (oldY < newY) {// keyboard hide
+        } else if (yDelta > 200) {// keyboard hide
             [self performSelector:@selector(noActived) withObject:nil afterDelay:0.3f];//键盘完全隐藏后，改为非激活状态
             _text = _textView.text;
             _textView.text = @"";

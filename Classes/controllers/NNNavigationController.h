@@ -10,6 +10,6 @@
 
 @interface NNNavigationController : UINavigationController
 
-- (void)showCustomBackButton:(UIViewController *)controller;
+@property (assign, nonatomic) BOOL showsBackButton;
 
 @end

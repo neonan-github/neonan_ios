@@ -7,6 +7,7 @@
 //
 
 #import "BabyDetailController.h"
+#import "NNNavigationController.h"
 #import "SMPageControl.h"
 
 static const float kDescriptionShrinkedLines = 4;
@@ -33,8 +34,6 @@ static const float kDescriptionStretchedLines = 7;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.description = @"杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志。";
-    
-    [self.navigationController performSelector:@selector(showCustomBackButton:) withObject:self];
     
     SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, -44, 320, 460)];
     slideShowView.dataSource = self;
@@ -107,6 +106,8 @@ static const float kDescriptionStretchedLines = 7;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    ((NNNavigationController *)self.navigationController).showsBackButton = YES;
     
     [self.slideShowView reloadData];
     self.textBox.expanded = NO;

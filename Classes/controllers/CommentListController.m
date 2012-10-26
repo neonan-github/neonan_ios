@@ -7,6 +7,7 @@
 //
 
 #import "CommentListController.h"
+#import "NNNavigationController.h"
 #import "CommentBox.h"
 #import "CommentModel.h"
 #import "CommentCell.h"
@@ -17,6 +18,7 @@
 @interface CommentListController ()
 @property (nonatomic, unsafe_unretained) UITableView *tableView;
 @property (nonatomic, unsafe_unretained) CommentBox *commentBox;
+@property (nonatomic, strong) UIButton *commentButton;
 
 @property (nonatomic, strong) NSMutableArray *comments;
 @end
@@ -27,6 +29,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
     titleLabel.backgroundColor = [UIColor blackColor];
     titleLabel.textColor = [UIColor whiteColor];
@@ -41,8 +44,13 @@
     tableView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:tableView];
     
+    
     CommentBox *commentBox = self.commentBox = [[CommentBox alloc] initWithFrame:CGRectMake(0, 420, 320, 40)];
-    [self.view addSubview:commentBox];
+        [self.view addSubview:commentBox];
+    UIButton *commentButton = self.commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    commentButton.frame = CGRectMake(0, 0, 49, 44);
+    commentButton.enabled = NO;
+    commentBox.rightView = commentButton;
     
     self.comments = [[NSMutableArray alloc] initWithCapacity:20];
     for (NSUInteger i = 0; i < 20; i++) {
@@ -64,6 +72,7 @@
     self.tableView.delegate = nil;
     self.tableView = nil;
     
+    self.commentButton = nil;
     self.commentBox = nil;
 }
 
@@ -83,6 +92,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    ((NNNavigationController *)self.navigationController).showsBackButton = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -179,6 +190,8 @@
 
 //Code from Brett Schumann
 -(void) keyboardWillShow:(NSNotification *)note{
+    _commentBox.rightView = nil;
+    
     // get keyboard size and loctaion
 	CGRect keyboardBounds;
     [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
@@ -210,6 +223,8 @@
 }
 
 -(void) keyboardWillHide:(NSNotification *)note{
+    _commentBox.rightView = _commentButton;
+    
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
 	

@@ -27,7 +27,6 @@
 		34648C401627E74E00115082 /* HotListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C3F1627E74E00115082 /* HotListCell.m */; };
 		34648C68162833C000115082 /* SlideShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C67162833C000115082 /* SlideShowView.m */; };
 		3466147F1634EE4B00B1FF5A /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3466147E1634EE4B00B1FF5A /* MainController.m */; };
-		346614D21635108900B1FF5A /* BabyListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614D11635108900B1FF5A /* BabyListController.m */; };
 		346614D51635138700B1FF5A /* BabyDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614D41635138700B1FF5A /* BabyDetailController.m */; };
 		346614DB163521C500B1FF5A /* CommentListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614DA163521C500B1FF5A /* CommentListController.m */; };
 		346614DD1635397D00B1FF5A /* down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 346614DC1635397D00B1FF5A /* down_arrow.png */; };
@@ -90,8 +89,6 @@
 		34648C67162833C000115082 /* SlideShowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideShowView.m; sourceTree = "<group>"; };
 		3466147D1634EE4B00B1FF5A /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
 		3466147E1634EE4B00B1FF5A /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
-		346614D01635108900B1FF5A /* BabyListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyListController.h; sourceTree = "<group>"; };
-		346614D11635108900B1FF5A /* BabyListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyListController.m; sourceTree = "<group>"; };
 		346614D31635138700B1FF5A /* BabyDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyDetailController.h; sourceTree = "<group>"; };
 		346614D41635138700B1FF5A /* BabyDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyDetailController.m; sourceTree = "<group>"; };
 		346614D9163521C500B1FF5A /* CommentListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListController.h; sourceTree = "<group>"; };
@@ -159,8 +156,6 @@
 			children = (
 				3466147D1634EE4B00B1FF5A /* MainController.h */,
 				3466147E1634EE4B00B1FF5A /* MainController.m */,
-				346614D01635108900B1FF5A /* BabyListController.h */,
-				346614D11635108900B1FF5A /* BabyListController.m */,
 				346614D31635138700B1FF5A /* BabyDetailController.h */,
 				346614D41635138700B1FF5A /* BabyDetailController.m */,
 				346614D9163521C500B1FF5A /* CommentListController.h */,
@@ -455,7 +450,6 @@
 				340A134A1631419600E8D594 /* CommentBox.m in Sources */,
 				340A1372163170BE00E8D594 /* CommentCell.m in Sources */,
 				3466147F1634EE4B00B1FF5A /* MainController.m in Sources */,
-				346614D21635108900B1FF5A /* BabyListController.m in Sources */,
 				346614D51635138700B1FF5A /* BabyDetailController.m in Sources */,
 				346614DB163521C500B1FF5A /* CommentListController.m in Sources */,
 				346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */,

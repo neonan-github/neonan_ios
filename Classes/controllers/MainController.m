@@ -7,6 +7,7 @@
 //
 
 #import "MainController.h"
+#import "NNNavigationController.h"
 #import "BabyDetailController.h"
 #import "ArticleDetailController.h"
 
@@ -140,6 +141,8 @@ headerView = _headerView;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    ((NNNavigationController *)self.navigationController).showsBackButton = NO;
     
     [self.slideShowView reloadData];
     [self.slideShowView startAutoScroll:2];

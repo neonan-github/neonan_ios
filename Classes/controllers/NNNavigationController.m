@@ -10,7 +10,7 @@
 #import <PrettyKit.h>
 
 @interface NNNavigationController ()
-@property (strong, nonatomic) UIButton *backButton;
+@property (unsafe_unretained, nonatomic) UIButton *backButton;
 @end
 
 @implementation NNNavigationController
@@ -30,6 +30,12 @@
         logoView.image = [UIImage imageNamed:@"img_logo.png"];
         [navigationBar addSubview:logoView];
         
+        UIImage *image = [UIHelper imageFromFile:@"icon_left_arrow_white.png"];
+        UIButton *backButton = self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, (44 - image.size.height) / 2, image.size.width, image.size.height)];
+        [backButton setBackgroundImage:image forState:UIControlStateNormal];
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        [navigationBar addSubview:backButton];
+        
         [self setValue:navigationBar forKeyPath:@"navigationBar"];
     }
     return self;
@@ -39,7 +45,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.backButton = nil;
+    self.backButton.hidden = !self.showsBackButton;
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,22 +54,28 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)showCustomBackButton:(UIViewController *)controller {
-    if (!_backButton) {
-        UIImage *image = [UIHelper imageFromFile:@"icon_left_arrow_white.png"];
-        UIButton *backButton = self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, (44 - image.size.height) / 2, image.size.width, image.size.height)];
-        [backButton setBackgroundImage:image forState:UIControlStateNormal];
-        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+- (void)viewDidUnload {
+    self.backButton = nil;
+    
+    [super viewDidUnload];
+}
+
+- (void)setShowsBackButton:(BOOL)showsBackButton {
+    if (_showsBackButton != showsBackButton) {
+        _showsBackButton = showsBackButton;
+        _backButton.hidden = !showsBackButton;
     }
-    _backButton.hidden = NO;
-    controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_backButton];
+}
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    viewController.navigationItem.hidesBackButton = YES;
+    [super pushViewController:viewController animated:animated];
 }
 
 #pragma mark - Private methods
 
 - (void)back {
     [self popViewControllerAnimated:YES];
-    self.backButton.hidden = YES;
 }
 
 @end
