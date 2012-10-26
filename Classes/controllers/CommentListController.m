@@ -28,6 +28,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+    titleLabel.backgroundColor = [UIColor blackColor];
+    titleLabel.textColor = [UIColor whiteColor];
     titleLabel.text = @"卡地亚Tortue万年历腕表";
     titleLabel.textAlignment = UITextAlignmentCenter;
     [self.view addSubview:titleLabel];

@@ -12,7 +12,8 @@
     NSString *_text;
 }
 
-@property (unsafe_unretained, nonatomic) UIImageView * entryImageView;
+@property (unsafe_unretained, nonatomic) UIImageView *entryImageView;
+@property (assign, nonatomic, getter = isActive) BOOL active;
 
 - (UIButton *)setUpDoneButton;
 @end
@@ -185,7 +186,7 @@
     if (!inside) {
         [self resignTextView];
     }
-    return inside;
+    return self.isActive ? YES : inside;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -202,9 +203,11 @@
         CGFloat oldY = oldFrame.origin.y + oldFrame.size.height;
         CGFloat newY = newFrame.origin.y + newFrame.size.height;
         if (oldY > newY) {// keyboard show
+            _active = YES;
             _textView.text = _text;
             _placeHolderView.hidden = YES;
         } else if (oldY < newY) {// keyboard hide
+            [self performSelector:@selector(noActived) withObject:nil afterDelay:0.3f];//键盘完全隐藏后，改为非激活状态
             _text = _textView.text;
             _textView.text = @"";
             _placeHolderView.hidden = NO;
@@ -212,6 +215,10 @@
         
         NSLog(@"positon changed:%f %f", oldY, newY);
     }
+}
+
+- (void)noActived {
+    _active = NO;
 }
 
 @end
