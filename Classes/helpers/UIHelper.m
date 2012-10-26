@@ -35,8 +35,11 @@
     controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
 }
 
+@end
+
+@implementation UIImage (UIImageUtil)
+
 + (UIImage *)imageFromFile:(NSString *)fileName {
-    NSRange prefixRange = [fileName rangeOfString:@"."];
     NSArray *splits = [fileName componentsSeparatedByString:@"."];
     NSString *fileLocation = [[NSBundle mainBundle] pathForResource:[splits objectAtIndex:0] ofType:[splits objectAtIndex:1]];
     NSData *imageData = [NSData dataWithContentsOfFile:fileLocation];

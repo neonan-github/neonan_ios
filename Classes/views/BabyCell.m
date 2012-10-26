@@ -12,18 +12,17 @@ static const float kCellMarginLeft = 8;
 static const float kCellMarginTop = 8;
 static const float kCellMarginBottom = 8;
 
+static const float kThumbnailWidth = 45;
+static const float kTextAreaWidth = 60;
+static const float kTextAreaMargin = 20;
+static const float kLeftPartWidth = 188;
+
 @interface BabyCell ()
 @property (nonatomic, unsafe_unretained) UIView *centerDivider;
 @property (nonatomic, unsafe_unretained) iCarousel *carousel;
 @end
 
 @implementation BabyCell
-@synthesize thumbnail = _thumbnail, titleLabel = _titleLabel,
-descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
-@synthesize centerDivider = _centerDivider;
-@synthesize playButton = _playButton;
-@synthesize carousel = _carousel;
-@synthesize videoShots = _videoShots;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -36,19 +35,26 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] init];
         
         UILabel *titleLabel = self.titleLabel = [[UILabel alloc] init];
+        titleLabel.font = [UIFont systemFontOfSize:16];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor whiteColor];
         
-        UILabel *descriptionLabel = self.descriptionLabel = [[UILabel alloc] init];
-        descriptionLabel.backgroundColor = [UIColor clearColor];
-        descriptionLabel.textColor = [UIColor whiteColor];
+        UILabel *scoreLabel = self.scoreLabel = [[UILabel alloc] init];
+        scoreLabel.font = [UIFont systemFontOfSize:12];
+        scoreLabel.textAlignment = NSTextAlignmentCenter;
+        scoreLabel.backgroundColor = [UIColor clearColor];
+        scoreLabel.textColor = [UIColor whiteColor];
         
-        UILabel *dateLabel = self.dateLabel = [[UILabel alloc] init];
-        dateLabel.backgroundColor = [UIColor clearColor];
-        dateLabel.textColor = [UIColor whiteColor];
+        UIButton *voteButton = self.voteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        voteButton.titleLabel.font = [UIFont systemFontOfSize:10];
+        [voteButton setTitle:@"点击投票" forState:UIControlStateNormal];
+        
+        UIButton *arrowView = self.arrowView = [UIButton buttonWithType:UIButtonTypeCustom];
+        [arrowView setImage:[UIImage imageNamed:@"icon_right_arrow_white.png"] forState:UIControlStateNormal];
         
         UIView *centerDivider = self.centerDivider = [[UIView alloc] init];
-        centerDivider.backgroundColor = [UIColor lightGrayColor];
+        centerDivider.backgroundColor = [UIColor redColor];
         
         UIButton *playButton = self.playButton = [[UIButton alloc] init];
         
@@ -58,8 +64,9 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         
         [self.contentView addSubview:thumbnail];
         [self.contentView addSubview:titleLabel];
-        [self.contentView addSubview:descriptionLabel];
-        [self.contentView addSubview:dateLabel];
+        [self.contentView addSubview:scoreLabel];
+        [self.contentView addSubview:voteButton];
+        [self.contentView addSubview:arrowView];
         [self.contentView addSubview:centerDivider];
         [self.contentView addSubview:playButton];
         [self.contentView addSubview:carousel];
@@ -88,15 +95,18 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     const float cellHeight = self.frame.size.height;
     const float cellWidth = self.frame.size.width;
     const float contentHeight = cellHeight - kCellMarginTop - kCellMarginBottom;
-    const float dividerX = cellWidth / 2;
+    const float dividerX = kLeftPartWidth;
     
     float x = kCellMarginLeft;
-    self.thumbnail.frame = CGRectMake(x, kCellMarginTop, 50, contentHeight);
+    self.thumbnail.frame = CGRectMake(x, kCellMarginTop, kThumbnailWidth, contentHeight);
     
-    x += 50 + kCellMarginLeft;
-    self.titleLabel.frame = CGRectMake(x, kCellMarginTop, dividerX - x, contentHeight / 3);
-    self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight / 3, dividerX - x, contentHeight / 3);
-    self.dateLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, dividerX - x, contentHeight / 3);
+    x += kThumbnailWidth + kTextAreaMargin;
+    self.titleLabel.frame = CGRectMake(kCellMarginLeft + kThumbnailWidth, kCellMarginTop, kTextAreaWidth + kTextAreaMargin * 2, contentHeight / 3);
+    self.scoreLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight / 3, kTextAreaWidth, contentHeight / 3);
+    self.voteButton.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, kTextAreaWidth, contentHeight / 3 - 6);
+    self.voteButton.center = CGPointMake(x + kTextAreaWidth / 2, kCellMarginTop + contentHeight * 5 / 6);
+    
+    self.arrowView.frame = CGRectMake(kLeftPartWidth - 20 - 11, (cellHeight - 12) / 2, 11, 12);
     
     //center divider
     self.centerDivider.frame = CGRectMake(dividerX, kCellMarginTop, 1, contentHeight);
@@ -108,8 +118,9 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
 - (void)dealloc {
     self.thumbnail = nil;
     self.titleLabel = nil;
-    self.descriptionLabel = nil;
-    self.dateLabel = nil;
+    self.scoreLabel = nil;
+    self.voteButton = nil;
+    self.arrowView = nil;
     self.centerDivider = nil;
     self.playButton = nil;
     

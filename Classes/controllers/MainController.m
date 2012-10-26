@@ -253,12 +253,8 @@ headerView = _headerView;
     }
     
     cell.thumbnail.image = [UIImage imageNamed:[self.images objectAtIndex:indexPath.row]];
-    cell.titleLabel.font = [UIFont systemFontOfSize:12];
-    cell.titleLabel.text = [NSString stringWithFormat:@"title %u", indexPath.row];
-    cell.descriptionLabel.font = [UIFont systemFontOfSize:12];
-    cell.descriptionLabel.text = [NSString stringWithFormat:@"description %u", indexPath.row];
-    cell.dateLabel.font = [UIFont systemFontOfSize:12];
-    cell.dateLabel.text = [NSString stringWithFormat:@"date %u", indexPath.row];
+    cell.titleLabel.text = [NSString stringWithFormat:@"杨涵齐 %u", indexPath.row];
+    cell.scoreLabel.text = [NSString stringWithFormat:@"%u票", indexPath.row];
     cell.videoShots = self.images;
  
     return cell;

@@ -35,7 +35,7 @@ static const NSUInteger kMaxNumberOfLines = 4;
     
     CGFloat layoutY = 0;
     UIImageView *arrowView = self.arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.width - 20, 0, 20, 20)];
-    arrowView.image = [UIImage imageNamed:@"down_arrow.png"];
+    arrowView.image = [UIImage imageFromFile:@"down_arrow.png"];
     [self addSubview:arrowView];
     
     layoutY += 20;

@@ -18,5 +18,10 @@
 
 + (void)setBackAction:(SEL)action forController:(UIViewController *)controller withImage:(UIImage *)image;
 
+@end
+
+@interface UIImage (UIImageUtil)
+
 + (UIImage *)imageFromFile:(NSString *)fileName;
+
 @end

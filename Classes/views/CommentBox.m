@@ -41,19 +41,17 @@
     placeHolderView.image = [UIImage imageWithData:imageData];
     [textView addSubview:placeHolderView];
     
-    UIImage *rawEntryBackground = [UIImage imageNamed:@"bg_comment_input.png"];
+    UIImage *rawEntryBackground = [UIImage imageFromFile:@"bg_comment_input.png"];
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
     UIImageView *entryImageView = self.entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
     entryImageView.frame = CGRectMake(5, 0, 248, 40);
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
-    UIImage *rawBackground = [UIImage imageNamed:@"bg_comment_box.png"];
+    UIImage *rawBackground = [UIImage imageFromFile:@"bg_comment_box.png"];
     UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
     imageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
-    textView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     // view hierachy
     [self addSubview:imageView];
@@ -111,6 +109,11 @@
             _rightView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
             [self addSubview:_rightView];
         }
+        
+        CGRect frame = self.textView.frame;
+        CGFloat textViewWidth = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x - /*gap*/5;
+        frame.size.width = textViewWidth;
+        self.textView.frame = frame;
     }
 }
 
@@ -121,10 +124,11 @@
     NSLog(@"layoutSubviews");
     
     CGRect frame = self.textView.frame;
-    CGFloat textViewWidth = frame.size.width = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x - /*gap*/5;
+    CGFloat textViewWidth = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x - /*gap*/5;
+    frame.size.width = textViewWidth;
     self.textView.frame = frame;
     
-    NSLog(@"textView frame:%f %f %f %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+    NSLog(@"textView frame:%f %f %f %f", self.textView.frame.origin.x, self.textView.frame.origin.y, self.textView.frame.size.width, self.textView.frame.size.height);
     
     frame = self.entryImageView.frame;
     frame.size.width = textViewWidth + 8;
@@ -157,8 +161,8 @@
 #pragma mark - Private methods
 
 - (UIButton *)setUpDoneButton {
-   UIImage *sendBtnBackground = [[UIImage imageNamed:@"bg_comment_commit_normal.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-   UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"bg_comment_commit_highlighted.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+   UIImage *sendBtnBackground = [[UIImage imageFromFile:@"bg_comment_commit_normal.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+   UIImage *selectedSendBtnBackground = [[UIImage imageFromFile:@"bg_comment_commit_highlighted.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
         
    UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
    doneBtn.frame = CGRectMake(self.frame.size.width - 69, 8, 63, 27);

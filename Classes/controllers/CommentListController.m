@@ -14,6 +14,7 @@
 
 #define CELL_CONTENT_WIDTH 320.0f
 #define CELL_CONTENT_MARGIN 10.0f
+#define COMMENT_BOX_ORIGINAL_HEIGHT 40.0f
 
 @interface CommentListController ()
 @property (nonatomic, unsafe_unretained) UITableView *tableView;
@@ -45,10 +46,10 @@
     [self.view addSubview:tableView];
     
     
-    CommentBox *commentBox = self.commentBox = [[CommentBox alloc] initWithFrame:CGRectMake(0, 420, 320, 40)];
+    CommentBox *commentBox = self.commentBox = [[CommentBox alloc] initWithFrame:CGRectMake(0, 420, 320, COMMENT_BOX_ORIGINAL_HEIGHT)];
         [self.view addSubview:commentBox];
     UIButton *commentButton = self.commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    commentButton.frame = CGRectMake(0, 0, 49, 44);
+    commentButton.frame = CGRectMake(0, 0, 49, COMMENT_BOX_ORIGINAL_HEIGHT);
     commentButton.enabled = NO;
     commentBox.rightView = commentButton;
     
@@ -233,7 +234,7 @@
     containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
     
     CGRect tableFrame = self.tableView.frame;
-    tableFrame.size.height = containerFrame.origin.y - tableFrame.origin.y;
+    tableFrame.size.height = self.view.bounds.size.height - COMMENT_BOX_ORIGINAL_HEIGHT - tableFrame.origin.y;
 	
 	// animations settings
 	[UIView beginAnimations:nil context:NULL];

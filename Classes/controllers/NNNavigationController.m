@@ -21,16 +21,17 @@
     if (self) {
         // Custom initialization
         PrettyNavigationBar *navigationBar = [[PrettyNavigationBar alloc] init];
-        //    navigationBar.topLineColor = [UIColor blackColor];
-        //    navigationBar.bottomLineColor = [UIColor blackColor];
-        //    navigationBar.gradientStartColor = [UIColor blackColor];
-        //    navigationBar.gradientEndColor = [UIColor blackColor];
+        navigationBar.topLineColor = [UIColor blackColor];
+        navigationBar.bottomLineColor = [UIColor blackColor];
+        navigationBar.gradientStartColor = [UIColor blackColor];
+        navigationBar.gradientEndColor = [UIColor blackColor];
+        navigationBar.tintColor = [UIColor blackColor];
 
         UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake((320 - 86) / 2, (44 - 26) / 2, 86, 26)];
-        logoView.image = [UIImage imageNamed:@"img_logo.png"];
+        logoView.image = [UIImage imageFromFile:@"img_logo.png"];
         [navigationBar addSubview:logoView];
         
-        UIImage *image = [UIHelper imageFromFile:@"icon_left_arrow_white.png"];
+        UIImage *image = [UIImage imageFromFile:@"icon_left_arrow_white.png"];
         UIButton *backButton = self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, (44 - image.size.height) / 2, image.size.width, image.size.height)];
         [backButton setBackgroundImage:image forState:UIControlStateNormal];
         [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];

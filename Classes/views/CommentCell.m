@@ -40,7 +40,7 @@ static const float kGap = 8;
         timeLabel.textAlignment = NSTextAlignmentRight;
         
         UIImageView *arrowView = self.arrowView = [[UIImageView alloc] init];
-        arrowView.image = [UIImage imageNamed:@"down_arrow.png"];
+        arrowView.image = [UIImage imageFromFile:@"down_arrow.png"];
         
         layoutY += kGap + 15;
         UILabel *commentLabel = self.commentLabel = [[UILabel alloc] init];
