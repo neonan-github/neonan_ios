@@ -7,7 +7,7 @@
 //
 
 #import "NNNavigationController.h"
-#import <PrettyKit.h>
+#import "CustomNavigationBar.h"
 
 @interface NNNavigationController ()
 @property (unsafe_unretained, nonatomic) UIButton *backButton;
@@ -20,14 +20,15 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        PrettyNavigationBar *navigationBar = [[PrettyNavigationBar alloc] init];
-        navigationBar.topLineColor = [UIColor blackColor];
-        navigationBar.bottomLineColor = [UIColor blackColor];
-        navigationBar.gradientStartColor = [UIColor blackColor];
-        navigationBar.gradientEndColor = [UIColor blackColor];
-        navigationBar.tintColor = [UIColor blackColor];
+        CustomNavigationBar *navigationBar = [[CustomNavigationBar alloc] init];
+        navigationBar.topLineColor = RGB(32, 32, 32);
+        navigationBar.bottomLineColor = RGB(32, 32, 32);
+        navigationBar.gradientStartColor = RGB(32, 32, 32);
+        navigationBar.gradientEndColor = RGB(32, 32, 32);
+//        navigationBar.tintColor = [UIColor blackColor];
+        navigationBar.navigationController = self;
 
-        UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake((320 - 86) / 2, (44 - 26) / 2, 86, 26)];
+        UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake((CompatibleScreenWidth - 85) / 2, (NavBarHeight - 19) / 2, 85, 19)];
         logoView.image = [UIImage imageFromFile:@"img_logo.png"];
         [navigationBar addSubview:logoView];
         

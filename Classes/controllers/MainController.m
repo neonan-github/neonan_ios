@@ -16,7 +16,9 @@
 #import "BabyCell.h"
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
+#import "CustomNavigationBar.h"
 #import <SVPullToRefresh.h>
+#import <FXLabel.h>
 
 #import "BabyDetailController.h"
 #import "CommentListController.h"
@@ -27,6 +29,8 @@ typedef enum {
 } listType;
 
 @interface MainController ()
+@property (nonatomic, unsafe_unretained) UIButton *navLeftButton;
+@property (nonatomic, unsafe_unretained) UIButton *navRightButton;
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) UITableView *tableView;
@@ -51,11 +55,17 @@ headerView = _headerView;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    UIButton *navLeftButton = self.navLeftButton = [UIHelper createBarButton:0];
+    [navLeftButton setImage:[UIImage imageFromFile:@"icon_user_normal.png"] forState:UIControlStateNormal];
+    UIImage *userHighlightedImage = [UIImage imageFromFile:@"icon_user_highlighted.png"];
+    [navLeftButton setImage:userHighlightedImage forState:UIControlStateHighlighted];
+    [navLeftButton setImage:userHighlightedImage forState:UIControlStateSelected];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[self stringForType:_type]
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(switchListType)];
+    UIButton *navRightButton = self.navRightButton = [UIHelper createBarButton:5];
+    [navRightButton setTitle:[self stringForType:_type] forState:UIControlStateNormal];
+    [navRightButton addTarget:self action:@selector(switchListType) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
     
     float layoutY = 0;
     
@@ -66,17 +76,28 @@ headerView = _headerView;
     [self.view addSubview:headerView];
     
     layoutY += 30;
-    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, 100)];
+    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, 120)];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
     [self.view addSubview:slideShowView];
     
-    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, layoutY + 100 - 20, CompatibleScreenWidth - 10, 20)];
+    FXLabel *slideShowTextLabel = [[FXLabel alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenHeight, 16)];
+    slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    slideShowTextLabel.backgroundColor = RGBA(6, 6, 6, 0.7);
+    slideShowTextLabel.text = @"绅士必备 木质调香水最佳推荐";
+    slideShowTextLabel.textColor = [UIColor whiteColor];
+    slideShowTextLabel.font = [UIFont systemFontOfSize:8];
+    [self.view addSubview:slideShowTextLabel];
+    
+    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenWidth - 10, 16)];
+    pageControl.indicatorDiameter = 5;
+    pageControl.indicatorMargin = 4;
+    pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x00a9ff);
     pageControl.alignment = SMPageControlAlignmentRight;
     pageControl.userInteractionEnabled = NO;
     [self.view addSubview:pageControl];
     
-    layoutY += 100;
+    layoutY += 120;
     UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, CompatibleContainerHeight - layoutY) style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -102,6 +123,9 @@ headerView = _headerView;
 
 - (void)cleanUp
 {
+    self.navLeftButton = nil;
+    self.navRightButton = nil;
+    
     self.slideShowView.delegate = nil;
     self.slideShowView.dataSource = nil;
     self.slideShowView = nil;
@@ -130,10 +154,7 @@ headerView = _headerView;
 - (void)setType:(listType)type {
     if (_type != type) {
         _type = type;
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[self stringForType:_type]
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(switchListType)];
+        [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
     }
 }
 
@@ -168,7 +189,7 @@ headerView = _headerView;
     if (!view) {
         view = [[UIImageView alloc] init];
         view.clipsToBounds = YES;
-        view.contentMode = UIViewContentModeTop;
+        view.contentMode = UIViewContentModeScaleAspectFill;
     }
     
     ((UIImageView *)view).image = [UIImage imageNamed:[self.images objectAtIndex:index]];

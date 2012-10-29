@@ -35,6 +35,40 @@
     controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
 }
 
++ (UIButton *)createBarButton:(CGFloat)margin
+{
+    UIImage* buttonImage = [[UIImage imageFromFile:@"bg_bar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0.0];
+    UIImage* buttonHighlightImage = [[UIImage imageFromFile:@"bg_bar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0.0];
+    
+    // Create a custom button
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateHighlighted];
+    [button setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateSelected];
+    
+    // Set the title to use the same font and shadow as the standard back button
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
+    //    button.titleLabel.textColor = [UIColor whiteColor];
+    //    button.titleLabel.shadowOffset = CGSizeMake(1, 1);
+    //    button.titleLabel.shadowColor = [UIColor lightGrayColor];
+    
+    // Set the break mode to truncate at the end like the standard back button
+    button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    
+    // Inset the title on the left and right
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 3.0, 0, 3.0);
+    
+    // Make the button as high as the passed in image
+    button.frame = CGRectMake(0, 0, buttonImage.size.width + margin * 2, buttonImage.size.height);
+    
+    // Set the stretchable images as the background for the button
+    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [button setBackgroundImage:buttonHighlightImage forState:UIControlStateHighlighted];
+    [button setBackgroundImage:buttonHighlightImage forState:UIControlStateSelected];
+    
+    return button;
+}
+
 @end
 
 @implementation UIImage (UIImageUtil)

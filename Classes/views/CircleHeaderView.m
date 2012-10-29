@@ -19,16 +19,24 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        backgroundView.image = [UIImage imageFromFile:@"bg_header_view.png"];
+        [self addSubview:backgroundView];
+        self.backgroundColor = [UIColor blackColor];
+        
         iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         carousel.scrollEnabled = NO;
         carousel.dataSource = self;
         carousel.delegate = self;
         [self addSubview:carousel];
         
+        UIImage *indicatorImg = [UIImage imageFromFile:@"img_header_indicator.png"];
+        UIImageView *indicatorView = [[UIImageView alloc] initWithFrame:CGRectMake((frame.size.width - indicatorImg.size.width) / 2, (frame.size.height - indicatorImg.size.height) / 2, indicatorImg.size.width, indicatorImg.size.height)];
+        indicatorView.image = indicatorImg;
+        [self addSubview:indicatorView];
+        
         UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
         [self addGestureRecognizer:recognizer];
-        
-        self.backgroundColor = [UIColor darkGrayColor];
     }
     return self;
 }
@@ -53,8 +61,6 @@
 
 - (void)pan:(UIPanGestureRecognizer *)recognizer {
     CGPoint point = [recognizer velocityInView:self];
-    NSLog(@"pan:%f", point.x);
-    NSLog(@"currentIndex:%u", self.carousel.currentItemIndex);
     [self.carousel scrollToItemAtIndex:self.carousel.currentItemIndex + (point.x > 0 ? -1 : 1) animated:YES];
 }
 
@@ -77,6 +83,7 @@
     if (!view) {
         label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width / 4, self.frame.size.height)];
         label.textAlignment = UITextAlignmentCenter;
+        label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
     } else {
         label = (UILabel *)view;
@@ -93,6 +100,20 @@
     if (self.delegate) {
         [self.delegate currentItemIndexDidChange:self];
     }
+}
+
+- (CGFloat)carouselItemWidth:(iCarousel *)carousel {
+    UILabel *currentLabel = (UILabel *)_carousel.currentItemView;
+    currentLabel.font = [UIFont systemFontOfSize:14];
+    
+    NSArray *visibleLables = _carousel.visibleItemViews;
+    for (UILabel *label in visibleLables) {
+        if (label != currentLabel) {
+            label.font = [UIFont systemFontOfSize:10];
+        }
+    }
+    
+    return self.frame.size.width / 4;
 }
 
 - (CGFloat)carousel:(iCarousel *)_carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
