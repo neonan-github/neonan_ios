@@ -8,9 +8,9 @@
 
 #import "HotListCell.h"
 
-static const float kCellMarginLeft = 8;
-static const float kCellMarginTop = 12;
-static const float kCellMarginBottom = 12;
+static const float kCellMarginLeft = 10;
+static const float kCellMarginTop = 5;
+static const float kCellMarginBottom = 5;
 
 @implementation HotListCell
 @synthesize thumbnail = _thumbnail, titleLabel = _titleLabel,
@@ -21,8 +21,8 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.customBackgroundColor = [UIColor blackColor];
-        self.customSeparatorColor = [UIColor lightGrayColor];
+        self.customBackgroundColor = RGB(26, 26, 26);
+        self.customSeparatorColor = RGB(13, 13, 13);
         
         UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] init];
         
@@ -56,14 +56,14 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    const float cellHeight = self.frame.size.height;
-    const float cellWidth = self.frame.size.width;
+    const float cellHeight = self.contentView.frame.size.height;
+    const float cellWidth = self.contentView.frame.size.width;
     const float contentHeight = cellHeight - kCellMarginTop - kCellMarginBottom;
     
     float x = kCellMarginLeft;
-    self.thumbnail.frame = CGRectMake(x, kCellMarginTop, 80, contentHeight);
+    self.thumbnail.frame = CGRectMake(x, kCellMarginTop, 75, contentHeight);
     
-    x += 80 + kCellMarginLeft;
+    x += 75 + kCellMarginLeft;
     self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x, contentHeight / 3);
     self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight / 3, cellWidth - x, contentHeight / 3);
     self.dateLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, cellWidth - x, contentHeight / 3);
