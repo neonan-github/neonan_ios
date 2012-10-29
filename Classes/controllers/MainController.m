@@ -59,25 +59,25 @@ headerView = _headerView;
     
     float layoutY = 0;
     
-    CircleHeaderView *headerView = self.headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 30)];
+    CircleHeaderView *headerView = self.headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, 30)];
     headerView.delegate = self;
     headerView.titles = self.titles = [[NSArray alloc] initWithObjects:@"性情", @"生活", @"主页", @"财富", @"玩乐", @"宝贝", nil];
     [headerView reloadData];
     [self.view addSubview:headerView];
     
     layoutY += 30;
-    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 100)];
+    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, 100)];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
     [self.view addSubview:slideShowView];
     
-    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, layoutY + 100 - 20, 310, 20)];
+    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, layoutY + 100 - 20, CompatibleScreenWidth - 10, 20)];
     pageControl.alignment = SMPageControlAlignmentRight;
     pageControl.userInteractionEnabled = NO;
     [self.view addSubview:pageControl];
     
     layoutY += 100;
-    UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, 320, 480 - layoutY) style:UITableViewStylePlain];
+    UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, CompatibleContainerHeight - layoutY) style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -91,7 +91,7 @@ headerView = _headerView;
     }];
     [self.view addSubview:tableView];
     
-    self.images = [[NSArray alloc] initWithObjects:@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil];
+    self.images = [[NSArray alloc] initWithObjects:@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg",@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil];
 }
 
 - (void)didReceiveMemoryWarning
