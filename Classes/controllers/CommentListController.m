@@ -31,14 +31,14 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 30)];
     titleLabel.backgroundColor = [UIColor blackColor];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.text = @"卡地亚Tortue万年历腕表";
     titleLabel.textAlignment = UITextAlignmentCenter;
     [self.view addSubview:titleLabel];
     
-    UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, 320, 350)];
+    UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, CompatibleScreenWidth, CompatibleContainerHeight - 30 - COMMENT_BOX_ORIGINAL_HEIGHT)];
     tableView.dataSource = self;
     tableView.delegate = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -46,8 +46,8 @@
     [self.view addSubview:tableView];
     
     
-    CommentBox *commentBox = self.commentBox = [[CommentBox alloc] initWithFrame:CGRectMake(0, 420, 320, COMMENT_BOX_ORIGINAL_HEIGHT)];
-        [self.view addSubview:commentBox];
+    CommentBox *commentBox = self.commentBox = [[CommentBox alloc] initWithFrame:CGRectMake(0, CompatibleContainerHeight - COMMENT_BOX_ORIGINAL_HEIGHT, CompatibleScreenWidth, COMMENT_BOX_ORIGINAL_HEIGHT)];
+    [self.view addSubview:commentBox];
     UIButton *commentButton = self.commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     commentButton.frame = CGRectMake(0, 0, 49, COMMENT_BOX_ORIGINAL_HEIGHT);
     commentButton.enabled = NO;
@@ -95,6 +95,9 @@
     [super viewWillAppear:animated];
     
     ((NNNavigationController *)self.navigationController).showsBackButton = YES;
+    CGRect frame = self.commentBox.frame;
+    frame.origin.y = self.view.bounds.size.height - frame.size.height;
+    self.commentBox.frame = frame;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -170,7 +173,7 @@
     CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
     UIFont *font = [UIFont systemFontOfSize:14];
     
-    NSUInteger lines = [UIHelper computeContentLines:comment.text withWidth:[CommentCell getContentWidth:320] andFont:font];
+    NSUInteger lines = [UIHelper computeContentLines:comment.text withWidth:[CommentCell getContentWidth:CompatibleScreenWidth] andFont:font];
     CGFloat shrinkedHeight = font.lineHeight * MIN(lines, 2) + [CommentCell getFixedPartHeight];
     
     if (!comment.expanded) {
@@ -180,7 +183,7 @@
     NSString *text = [NSString stringWithFormat:@"%u %@", indexPath.row, comment.text];
     NSLog(@"text:%@", text);
     
-    CGSize constraint = CGSizeMake([CommentCell getContentWidth:320], 20000.0f);
+    CGSize constraint = CGSizeMake([CommentCell getContentWidth:CompatibleScreenWidth], 20000.0f);
     
     CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     
