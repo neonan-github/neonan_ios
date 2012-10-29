@@ -91,7 +91,7 @@ headerView = _headerView;
     }];
     [self.view addSubview:tableView];
     
-    self.images = [[NSArray alloc] initWithObjects:@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg",@"home.jpg", @"baby.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil];
+    self.images = [[NSArray alloc] initWithObjects:@"home.jpg", @"baby_list.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil];
 }
 
 - (void)didReceiveMemoryWarning
