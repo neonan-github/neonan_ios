@@ -29,10 +29,10 @@ static const float kLeftPartWidth = 160;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.customBackgroundColor = RGB(26, 26, 26);
+        self.customBackgroundColor = DarkThemeColor;
         self.customSeparatorColor = RGB(13, 13, 13);
-        self.selectionGradientStartColor = RGB(26, 26, 26);
-        self.selectionGradientEndColor = RGB(26, 26, 26);
+        self.selectionGradientStartColor = DarkThemeColor;
+        self.selectionGradientEndColor = DarkThemeColor;
         
         CGFloat x = kCellMarginLeft;
         CGFloat y = kCellMarginTop;

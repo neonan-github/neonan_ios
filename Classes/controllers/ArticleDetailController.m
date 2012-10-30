@@ -39,6 +39,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.view.backgroundColor = DarkThemeColor;
     
     [_commentButton removeFromSuperview];
     [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];

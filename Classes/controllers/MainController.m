@@ -81,7 +81,7 @@ headerView = _headerView;
     slideShowView.delegate = self;
     [self.view addSubview:slideShowView];
     
-    TTTAttributedLabel *slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenHeight, 16)];
+    TTTAttributedLabel *slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenWidth, 16)];
     slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     slideShowTextLabel.clipsToBounds = YES;
     slideShowTextLabel.font = [UIFont systemFontOfSize:8];
@@ -103,7 +103,7 @@ headerView = _headerView;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.backgroundColor = RGB(26, 26, 26);
+    tableView.backgroundColor = DarkThemeColor;
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done

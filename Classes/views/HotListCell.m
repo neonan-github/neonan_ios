@@ -21,10 +21,10 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.customBackgroundColor = RGB(26, 26, 26);
+        self.customBackgroundColor = DarkThemeColor;
         self.customSeparatorColor = RGB(13, 13, 13);
-        self.selectionGradientStartColor = RGB(26, 26, 26);
-        self.selectionGradientEndColor = RGB(26, 26, 26);
+        self.selectionGradientStartColor = DarkThemeColor;
+        self.selectionGradientEndColor = DarkThemeColor;
         
         UIImageView *accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_disclosure_normal.png"] highlightedImage:[UIImage imageNamed:@"icon_disclosure_highlighted.png"]];
         self.accessoryView = accessoryView;
