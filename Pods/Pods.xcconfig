@@ -1,7 +1,7 @@
+ALWAYS_SEARCH_USER_PATHS = YES
 OTHER_LDFLAGS = -ObjC -lxml2 -framework Accelerate -framework AssetsLibrary -framework CFNetwork -framework CoreGraphics -framework CoreImage -framework CoreText -framework ImageIO -framework MediaPlayer -framework MobileCoreServices -framework QuartzCore -framework SystemConfiguration -framework UIKit
 HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2" ${PODS_HEADERS_SEARCH_PATHS}
-PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/DTCoreText" "${PODS_ROOT}/Headers/FXLabel" "${PODS_ROOT}/Headers/HPGrowingTextView" "${PODS_ROOT}/Headers/NSLogger" "${PODS_ROOT}/Headers/NYXImagesKit" "${PODS_ROOT}/Headers/PrettyKit" "${PODS_ROOT}/Headers/SVPullToRefresh" "${PODS_ROOT}/Headers/iCarousel"
-PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/DTCoreText" "${PODS_ROOT}/BuildHeaders/FXLabel" "${PODS_ROOT}/BuildHeaders/HPGrowingTextView" "${PODS_ROOT}/BuildHeaders/NSLogger" "${PODS_ROOT}/BuildHeaders/NYXImagesKit" "${PODS_ROOT}/BuildHeaders/PrettyKit" "${PODS_ROOT}/BuildHeaders/SVPullToRefresh" "${PODS_ROOT}/BuildHeaders/iCarousel"
-PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
 PODS_ROOT = ${SRCROOT}/Pods
-ALWAYS_SEARCH_USER_PATHS = YES
+PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/DTCoreText" "${PODS_ROOT}/Headers/HPGrowingTextView" "${PODS_ROOT}/Headers/NSLogger" "${PODS_ROOT}/Headers/NYXImagesKit" "${PODS_ROOT}/Headers/PrettyKit" "${PODS_ROOT}/Headers/SVPullToRefresh" "${PODS_ROOT}/Headers/TTTAttributedLabel" "${PODS_ROOT}/Headers/iCarousel"
+PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
+PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/DTCoreText" "${PODS_ROOT}/BuildHeaders/HPGrowingTextView" "${PODS_ROOT}/BuildHeaders/NSLogger" "${PODS_ROOT}/BuildHeaders/NYXImagesKit" "${PODS_ROOT}/BuildHeaders/PrettyKit" "${PODS_ROOT}/BuildHeaders/SVPullToRefresh" "${PODS_ROOT}/BuildHeaders/TTTAttributedLabel" "${PODS_ROOT}/BuildHeaders/iCarousel"

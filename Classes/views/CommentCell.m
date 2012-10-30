@@ -26,8 +26,8 @@ static const float kGap = 8;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.customBackgroundColor = [UIColor blackColor];
-        self.customSeparatorColor = [UIColor lightGrayColor];
+        self.customBackgroundColor = RGB(26, 26, 26);
+        self.customSeparatorColor = RGB(13, 13, 13);
         
         float layoutY = kMargin;
         UILabel *userNameLabel = self.userNameLabel = [[UILabel alloc] init];

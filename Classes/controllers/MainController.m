@@ -102,7 +102,7 @@ headerView = _headerView;
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.backgroundColor = [UIColor blackColor];
+    tableView.backgroundColor = RGB(26, 26, 26);
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
@@ -255,11 +255,8 @@ headerView = _headerView;
     }
     
     cell.thumbnail.image = [UIImage imageNamed:[self.images objectAtIndex:indexPath.row]];
-    cell.titleLabel.font = [UIFont systemFontOfSize:12];
     cell.titleLabel.text = [NSString stringWithFormat:@"title %u", indexPath.row];
-    cell.descriptionLabel.font = [UIFont systemFontOfSize:12];
     cell.descriptionLabel.text = [NSString stringWithFormat:@"description %u", indexPath.row];
-    cell.dateLabel.font = [UIFont systemFontOfSize:12];
     cell.dateLabel.text = [NSString stringWithFormat:@"date %u", indexPath.row];
     
     return cell;

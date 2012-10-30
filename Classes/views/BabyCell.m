@@ -29,8 +29,8 @@ static const float kLeftPartWidth = 188;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.customBackgroundColor = [UIColor blackColor];
-        self.customSeparatorColor = [UIColor lightGrayColor];
+        self.customBackgroundColor = RGB(26, 26, 26);
+        self.customSeparatorColor = RGB(13, 13, 13);
         
         UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] init];
         
