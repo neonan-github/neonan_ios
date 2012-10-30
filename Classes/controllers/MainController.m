@@ -18,7 +18,6 @@
 #import "SlideShowView.h"
 #import "CustomNavigationBar.h"
 #import <SVPullToRefresh.h>
-#import <FXLabel.h>
 
 #import "BabyDetailController.h"
 #import "CommentListController.h"

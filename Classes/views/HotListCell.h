@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <PrettyKit.h>
+#import <MSLabel.h>
 
 @interface HotListCell : PrettyTableViewCell
 @property (nonatomic, unsafe_unretained) UIImageView *thumbnail;
-@property (nonatomic, unsafe_unretained) UILabel *titleLabel;
-@property (nonatomic, unsafe_unretained) UILabel *descriptionLabel;
-@property (nonatomic, unsafe_unretained) UILabel *dateLabel;
+@property (nonatomic, unsafe_unretained) MSLabel *titleLabel;
+@property (nonatomic, unsafe_unretained) MSLabel *descriptionLabel;
+@property (nonatomic, unsafe_unretained) MSLabel *dateLabel;
 @end

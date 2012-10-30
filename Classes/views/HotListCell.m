@@ -29,19 +29,20 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         
         UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] init];
         
-        UILabel *titleLabel = self.titleLabel = [[UILabel alloc] init];
+        MSLabel *titleLabel = self.titleLabel = [[MSLabel alloc] init];
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.numberOfLines = 2;
         titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        titleLabel.verticalAlignment = MSLabelVerticalAlignmentTop;
         titleLabel.font = [UIFont systemFontOfSize:9];
         
-        UILabel *descriptionLabel = self.descriptionLabel = [[UILabel alloc] init];
+        MSLabel *descriptionLabel = self.descriptionLabel = [[MSLabel alloc] init];
         descriptionLabel.backgroundColor = [UIColor clearColor];
         descriptionLabel.textColor = [UIColor whiteColor];
         descriptionLabel.font = [UIFont systemFontOfSize:7];
         
-        UILabel *dateLabel = self.dateLabel = [[UILabel alloc] init];
+        MSLabel *dateLabel = self.dateLabel = [[MSLabel alloc] init];
         dateLabel.backgroundColor = [UIColor clearColor];
         dateLabel.textColor = [UIColor whiteColor];
         dateLabel.font = [UIFont systemFontOfSize:6];
