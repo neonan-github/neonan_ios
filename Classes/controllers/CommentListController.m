@@ -17,9 +17,11 @@
 #define COMMENT_BOX_ORIGINAL_HEIGHT 40.0f
 
 @interface CommentListController ()
-@property (nonatomic, unsafe_unretained) UITableView *tableView;
-@property (nonatomic, unsafe_unretained) CommentBox *commentBox;
-@property (nonatomic, strong) UIButton *commentButton;
+@property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
+@property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
+@property (nonatomic, unsafe_unretained) IBOutlet UITableView *tableView;
+@property (nonatomic, unsafe_unretained) IBOutlet CommentBox *commentBox;
+//@property (nonatomic, strong) UIButton *commentButton;
 
 @property (nonatomic, strong) NSMutableArray *comments;
 @end
@@ -30,28 +32,17 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.view.backgroundColor = DarkThemeColor;
     
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 30)];
-    titleLabel.backgroundColor = [UIColor blackColor];
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.text = @"卡地亚Tortue万年历腕表";
-    titleLabel.textAlignment = UITextAlignmentCenter;
-    [self.view addSubview:titleLabel];
+    CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
+    // Create a custom back button
+    UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, CompatibleScreenWidth, CompatibleContainerHeight - 30 - COMMENT_BOX_ORIGINAL_HEIGHT)];
-    tableView.dataSource = self;
-    tableView.delegate = self;
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:tableView];
-    
-    
-    CommentBox *commentBox = self.commentBox = [[CommentBox alloc] initWithFrame:CGRectMake(0, CompatibleContainerHeight - COMMENT_BOX_ORIGINAL_HEIGHT, CompatibleScreenWidth, COMMENT_BOX_ORIGINAL_HEIGHT)];
-    [self.view addSubview:commentBox];
-    UIButton *commentButton = self.commentButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    commentButton.frame = CGRectMake(0, 0, 49, COMMENT_BOX_ORIGINAL_HEIGHT);
-    commentButton.enabled = NO;
-    commentBox.rightView = commentButton;
+    _tableView.backgroundColor = DarkThemeColor;
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     self.comments = [[NSMutableArray alloc] initWithCapacity:20];
     for (NSUInteger i = 0; i < 20; i++) {
@@ -69,18 +60,20 @@
 
 - (void)cleanUp
 {
+    self.titleLabel = nil;
+    self.shareButton = nil;
+    
     self.tableView.dataSource = nil;
     self.tableView.delegate = nil;
     self.tableView = nil;
     
-    self.commentButton = nil;
     self.commentBox = nil;
 }
 
 - (void)viewDidUnload
 {
-    [super viewDidUnload];
     [self cleanUp];
+    [super viewDidUnload];
 }
 
 - (void)dealloc
@@ -94,9 +87,9 @@
 {
     [super viewWillAppear:animated];
     
-    CGRect frame = self.commentBox.frame;
-    frame.origin.y = self.view.bounds.size.height - frame.size.height;
-    self.commentBox.frame = frame;
+//    CGRect frame = self.commentBox.frame;
+//    frame.origin.y = self.view.bounds.size.height - frame.size.height;
+//    self.commentBox.frame = frame;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -193,7 +186,7 @@
 
 //Code from Brett Schumann
 -(void) keyboardWillShow:(NSNotification *)note{
-    _commentBox.rightView = nil;
+//    _commentBox.rightView = nil;
     
     // get keyboard size and loctaion
 	CGRect keyboardBounds;
@@ -226,7 +219,7 @@
 }
 
 -(void) keyboardWillHide:(NSNotification *)note{
-    _commentBox.rightView = _commentButton;
+//    _commentBox.rightView = _commentButton;
     
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];

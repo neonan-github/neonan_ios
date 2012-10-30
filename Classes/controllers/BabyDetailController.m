@@ -46,7 +46,7 @@ static const float kDescriptionStretchedLines = 7;
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.text = @"杨棋涵";
-    UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(238, 4, 26, 22)];
+    UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(238, 4, 16, 15)];
     [likeButton setBackgroundImage:[UIImage imageFromFile:@"icon_love_normal.png"] forState:UIControlStateNormal];
     [likeButton setBackgroundImage:[UIImage imageFromFile:@"icon_love_highlighted.png"] forState:UIControlStateHighlighted];
     UIButton *shareButton = self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(278, 4, 26, 22)];
