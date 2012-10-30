@@ -29,23 +29,25 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         
         UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] init];
         
-        MSLabel *titleLabel = self.titleLabel = [[MSLabel alloc] init];
+        TTTAttributedLabel *titleLabel = self.titleLabel = [[TTTAttributedLabel alloc] init];
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.numberOfLines = 2;
         titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        titleLabel.verticalAlignment = MSLabelVerticalAlignmentTop;
+        titleLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
         titleLabel.font = [UIFont systemFontOfSize:9];
         
-        MSLabel *descriptionLabel = self.descriptionLabel = [[MSLabel alloc] init];
+        TTTAttributedLabel *descriptionLabel = self.descriptionLabel = [[TTTAttributedLabel alloc] init];
         descriptionLabel.backgroundColor = [UIColor clearColor];
-        descriptionLabel.textColor = [UIColor whiteColor];
+        descriptionLabel.textColor = HEXCOLOR(0x555555);
+        descriptionLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentBottom;
         descriptionLabel.font = [UIFont systemFontOfSize:7];
         
-        MSLabel *dateLabel = self.dateLabel = [[MSLabel alloc] init];
+        TTTAttributedLabel *dateLabel = self.dateLabel = [[TTTAttributedLabel alloc] init];
         dateLabel.backgroundColor = [UIColor clearColor];
-        dateLabel.textColor = [UIColor whiteColor];
+        dateLabel.textColor = HEXCOLOR(0x555555);
         dateLabel.font = [UIFont systemFontOfSize:6];
+        dateLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentBottom;
         dateLabel.textAlignment = NSTextAlignmentRight;
         
         [self.contentView addSubview:thumbnail];

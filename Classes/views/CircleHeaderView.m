@@ -35,6 +35,11 @@
         indicatorView.image = indicatorImg;
         [self addSubview:indicatorView];
         
+        UIImage *bottomLineImg = [UIImage imageFromFile:@"img_header_view_bottom_line.png"];
+        UIImageView *bottomLineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, frame.size.height - bottomLineImg.size.height + 3, frame.size.width, bottomLineImg.size.height)];
+        bottomLineView.image = bottomLineImg;
+        [self addSubview:bottomLineView];
+        
         UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
         [self addGestureRecognizer:recognizer];
     }

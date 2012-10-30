@@ -18,6 +18,7 @@
 #import "SlideShowView.h"
 #import "CustomNavigationBar.h"
 #import <SVPullToRefresh.h>
+#import <TTTAttributedLabel.h>
 
 #import "BabyDetailController.h"
 #import "CommentListController.h"
@@ -80,12 +81,12 @@ headerView = _headerView;
     slideShowView.delegate = self;
     [self.view addSubview:slideShowView];
     
-    FXLabel *slideShowTextLabel = [[FXLabel alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenHeight, 16)];
+    TTTAttributedLabel *slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenHeight, 16)];
     slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
-    slideShowTextLabel.backgroundColor = RGBA(6, 6, 6, 0.7);
-    slideShowTextLabel.text = @"绅士必备 木质调香水最佳推荐";
-    slideShowTextLabel.textColor = [UIColor whiteColor];
     slideShowTextLabel.font = [UIFont systemFontOfSize:8];
+    slideShowTextLabel.textColor = [UIColor whiteColor];
+    slideShowTextLabel.text = @"绅士必备 木质调香水最佳推荐";
+    slideShowTextLabel.backgroundColor = RGBA(6, 6, 6, 0.7);
     [self.view addSubview:slideShowTextLabel];
     
     SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenWidth - 10, 16)];
