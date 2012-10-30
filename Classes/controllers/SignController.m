@@ -63,8 +63,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    ((NNNavigationController *)self.navigationController).showsBackButton = NO;
 }
 
 - (void)setType:(signType)type {

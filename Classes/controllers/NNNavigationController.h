@@ -10,6 +10,4 @@
 
 @interface NNNavigationController : UINavigationController
 
-@property (assign, nonatomic) BOOL showsBackButton;
-
 @end

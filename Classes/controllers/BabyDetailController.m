@@ -111,8 +111,6 @@ static const float kDescriptionStretchedLines = 7;
 {
     [super viewWillAppear:animated];
     
-    ((NNNavigationController *)self.navigationController).showsBackButton = YES;
-    
     [self.slideShowView reloadData];
     self.textBox.expanded = NO;
 }

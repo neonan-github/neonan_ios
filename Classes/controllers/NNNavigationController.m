@@ -10,7 +10,6 @@
 #import "CustomNavigationBar.h"
 
 @interface NNNavigationController ()
-@property (unsafe_unretained, nonatomic) UIButton *backButton;
 @end
 
 @implementation NNNavigationController
@@ -32,12 +31,6 @@
         logoView.image = [UIImage imageFromFile:@"img_logo.png"];
         [navigationBar addSubview:logoView];
         
-        UIImage *image = [UIImage imageFromFile:@"icon_left_arrow_white.png"];
-        UIButton *backButton = self.backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, (44 - image.size.height) / 2, image.size.width, image.size.height)];
-        [backButton setBackgroundImage:image forState:UIControlStateNormal];
-        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-        [navigationBar addSubview:backButton];
-        
         [self setValue:navigationBar forKeyPath:@"navigationBar"];
     }
     return self;
@@ -47,7 +40,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.backButton.hidden = !self.showsBackButton;
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,27 +49,11 @@
 }
 
 - (void)viewDidUnload {
-    self.backButton = nil;
-    
     [super viewDidUnload];
 }
 
-- (void)setShowsBackButton:(BOOL)showsBackButton {
-    if (_showsBackButton != showsBackButton) {
-        _showsBackButton = showsBackButton;
-        _backButton.hidden = !showsBackButton;
-    }
-}
-
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    viewController.navigationItem.hidesBackButton = YES;
     [super pushViewController:viewController animated:animated];
-}
-
-#pragma mark - Private methods
-
-- (void)back {
-    [self popViewControllerAnimated:YES];
 }
 
 @end

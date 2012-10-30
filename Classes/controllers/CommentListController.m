@@ -94,7 +94,6 @@
 {
     [super viewWillAppear:animated];
     
-    ((NNNavigationController *)self.navigationController).showsBackButton = YES;
     CGRect frame = self.commentBox.frame;
     frame.origin.y = self.view.bounds.size.height - frame.size.height;
     self.commentBox.frame = frame;

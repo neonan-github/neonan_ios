@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "CustomNavigationBar.h"
+
 /** String: Identifier **/
 #define DEVICE_IDENTIFIER ( ( IS_IPAD ) ? DEVICE_IPAD : ( IS_IPHONE ) ? DEVICE_IPHONE , DEVICE_SIMULATOR )
 
@@ -103,6 +105,7 @@
 + (void)setBackAction:(SEL)action forController:(UIViewController *)controller withImage:(UIImage *)image;
 
 + (UIButton *)createBarButton:(CGFloat)margin;
++ (UIButton *)createBackButton:(CustomNavigationBar *)navigationBar;
 
 @end
 

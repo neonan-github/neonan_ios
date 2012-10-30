@@ -41,6 +41,11 @@
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = DarkThemeColor;
     
+    CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
+    // Create a custom back button
+    UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
 //    [_commentButton removeFromSuperview];
 //    [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
 //    _commentBox.rightView = _commentButton;
@@ -67,8 +72,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    ((NNNavigationController *)self.navigationController).showsBackButton = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)

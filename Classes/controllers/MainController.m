@@ -164,8 +164,6 @@ headerView = _headerView;
 {
     [super viewWillAppear:animated];
     
-    ((NNNavigationController *)self.navigationController).showsBackButton = NO;
-    
     [self.slideShowView reloadData];
     [self.slideShowView startAutoScroll:2];
 }

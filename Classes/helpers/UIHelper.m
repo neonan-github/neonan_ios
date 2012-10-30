@@ -38,7 +38,7 @@
 + (UIButton *)createBarButton:(CGFloat)margin
 {
     UIImage* buttonImage = [[UIImage imageFromFile:@"bg_bar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0.0];
-    UIImage* buttonHighlightImage = [[UIImage imageFromFile:@"bg_bar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0.0];
+//    UIImage* buttonHighlightImage = [[UIImage imageFromFile:@"bg_bar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0.0];
     
     // Create a custom button
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -63,8 +63,22 @@
     
     // Set the stretchable images as the background for the button
     [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    [button setBackgroundImage:buttonHighlightImage forState:UIControlStateHighlighted];
-    [button setBackgroundImage:buttonHighlightImage forState:UIControlStateSelected];
+//    [button setBackgroundImage:buttonHighlightImage forState:UIControlStateHighlighted];
+//    [button setBackgroundImage:buttonHighlightImage forState:UIControlStateSelected];
+    
+    return button;
+}
+
++ (UIButton *)createBackButton:(CustomNavigationBar *)navigationBar {
+    UIImage* buttonImage = [UIImage imageFromFile:@"bg_back_button.png"];
+    UIButton* button = [navigationBar backButtonWith:buttonImage highlight:buttonImage leftCapWidth:16];
+    
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateHighlighted];
+    [button setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateSelected];
+    button.contentEdgeInsets = UIEdgeInsetsMake(2, 0, 0, 0);
+    
+    [navigationBar setText:@"返回" onBackButton:button];
     
     return button;
 }
