@@ -8,17 +8,17 @@
 
 #import "BabyCell.h"
 
-static const float kCellMarginLeft = 8;
-static const float kCellMarginTop = 8;
-static const float kCellMarginBottom = 8;
+static const float kCellMarginLeft = 10;
+static const float kCellMarginTop = 7;
+static const float kCellMarginBottom = 7;
 
-static const float kThumbnailWidth = 45;
-static const float kTextAreaWidth = 60;
-static const float kTextAreaMargin = 20;
-static const float kLeftPartWidth = 188;
+static const float kThumbnailWidth = 50;
+static const float kTextAreaWidth = 54;
+static const float kTextAreaMargin = 10;
+static const float kLeftPartWidth = 160;
 
 @interface BabyCell ()
-@property (nonatomic, unsafe_unretained) UIView *centerDivider;
+@property (nonatomic, unsafe_unretained) UIImageView *centerDivider;
 @property (nonatomic, unsafe_unretained) iCarousel *carousel;
 @end
 
@@ -31,39 +31,56 @@ static const float kLeftPartWidth = 188;
         // Initialization code
         self.customBackgroundColor = RGB(26, 26, 26);
         self.customSeparatorColor = RGB(13, 13, 13);
+        self.selectionGradientStartColor = RGB(26, 26, 26);
+        self.selectionGradientEndColor = RGB(26, 26, 26);
         
-        UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] init];
+        CGFloat x = kCellMarginLeft;
+        CGFloat y = kCellMarginTop;
+        UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] initWithFrame:CGRectMake(x, y, kThumbnailWidth, 0)];
         
-        UILabel *titleLabel = self.titleLabel = [[UILabel alloc] init];
-        titleLabel.font = [UIFont systemFontOfSize:16];
-        titleLabel.textAlignment = NSTextAlignmentCenter;
+        x += kThumbnailWidth + 8;
+        y += 5;
+        UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y, kTextAreaWidth, 12)];
+        titleLabel.font = [UIFont boldSystemFontOfSize:12];
+        titleLabel.textAlignment = NSTextAlignmentLeft;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor whiteColor];
         
-        UILabel *scoreLabel = self.scoreLabel = [[UILabel alloc] init];
-        scoreLabel.font = [UIFont systemFontOfSize:12];
-        scoreLabel.textAlignment = NSTextAlignmentCenter;
+        y += 12 + 10;
+        UIImageView *loveImgView = [[UIImageView alloc] initWithFrame:CGRectMake(x, y, 10, 10)];
+        loveImgView.image = [UIImage imageNamed:@"icon_love_highlighted.png"];
+        
+        UILabel *scoreLabel = self.scoreLabel = [[UILabel alloc] initWithFrame:CGRectMake(x + 14, y, 40, 10)];
+        scoreLabel.font = [UIFont systemFontOfSize:7];
         scoreLabel.backgroundColor = [UIColor clearColor];
         scoreLabel.textColor = [UIColor whiteColor];
         
-        UIButton *voteButton = self.voteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        voteButton.titleLabel.font = [UIFont systemFontOfSize:10];
-        [voteButton setTitle:@"点击投票" forState:UIControlStateNormal];
+        UIButton *voteButton = self.voteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        voteButton.frame = CGRectMake(x, 52, kTextAreaWidth, 15);
+        voteButton.titleLabel.font = [UIFont systemFontOfSize:8];
+        [voteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [voteButton setTitle:@"投她一票" forState:UIControlStateNormal];
+        [voteButton setBackgroundImage:[UIImage imageNamed:@"bg_btn_vote.png"] forState:UIControlStateNormal];
+//        [voteButton setBackgroundImage:[UIImage imageNamed:@"bg_btn_vote.png"] forState:UIControlStateSelected];
         
-        UIButton *arrowView = self.arrowView = [UIButton buttonWithType:UIButtonTypeCustom];
-        [arrowView setImage:[UIImage imageNamed:@"icon_right_arrow_white.png"] forState:UIControlStateNormal];
+        UIImageView *arrowView = self.arrowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_disclosure_normal.png"] highlightedImage:[UIImage imageNamed:@"icon_disclosure_highlighted.png"]];
+        arrowView.frame = CGRectMake(kLeftPartWidth - 3 - 20, 0, 20, 20);
         
-        UIView *centerDivider = self.centerDivider = [[UIView alloc] init];
-        centerDivider.backgroundColor = [UIColor redColor];
+        UIImageView *centerDivider = self.centerDivider = [[UIImageView alloc] initWithImage:[UIImage imageFromFile:@"img_cell_divider.png"]];
+        centerDivider.frame = CGRectMake(kLeftPartWidth, 0, 1, 80);
         
         UIButton *playButton = self.playButton = [[UIButton alloc] init];
         
-        iCarousel *carousel = self.carousel = [[iCarousel alloc] init];
+        iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(kLeftPartWidth + 10, kCellMarginTop, 0, 0)];
+        carousel.contentOffset = CGSizeMake(-40, 0);
+        carousel.clipsToBounds = YES;
         carousel.dataSource = self;
         carousel.delegate = self;
+        carousel.bounces = NO;
         
         [self.contentView addSubview:thumbnail];
         [self.contentView addSubview:titleLabel];
+        [self.contentView addSubview:loveImgView];
         [self.contentView addSubview:scoreLabel];
         [self.contentView addSubview:voteButton];
         [self.contentView addSubview:arrowView];
@@ -82,11 +99,18 @@ static const float kLeftPartWidth = 188;
     [self.carousel reloadData];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-//    [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+    _voteButton.highlighted = NO;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    _voteButton.selected = NO;
+    // If you don't set highlighted to NO in this method,
+    // for some reason it'll be highlighed while the
+    // table cell selection animates out
+    _voteButton.highlighted = NO;
 }
 
 - (void)layoutSubviews {
@@ -97,22 +121,22 @@ static const float kLeftPartWidth = 188;
     const float contentHeight = cellHeight - kCellMarginTop - kCellMarginBottom;
     const float dividerX = kLeftPartWidth;
     
-    float x = kCellMarginLeft;
-    self.thumbnail.frame = CGRectMake(x, kCellMarginTop, kThumbnailWidth, contentHeight);
+    CGRect frame = _thumbnail.frame;
+    frame.size.height = contentHeight;
+    _thumbnail.frame = frame;
     
-    x += kThumbnailWidth + kTextAreaMargin;
-    self.titleLabel.frame = CGRectMake(kCellMarginLeft + kThumbnailWidth, kCellMarginTop, kTextAreaWidth + kTextAreaMargin * 2, contentHeight / 3);
-    self.scoreLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight / 3, kTextAreaWidth, contentHeight / 3);
-    self.voteButton.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, kTextAreaWidth, contentHeight / 3 - 6);
-    self.voteButton.center = CGPointMake(x + kTextAreaWidth / 2, kCellMarginTop + contentHeight * 5 / 6);
+    frame = _arrowView.frame;
+    frame.origin.y = (cellHeight - 20) / 2;
+    _arrowView.frame = frame;
     
-    self.arrowView.frame = CGRectMake(kLeftPartWidth - 20 - 11, (cellHeight - 12) / 2, 11, 12);
+    frame = _centerDivider.frame;
+    frame.size.height = cellHeight - 5;
+    _centerDivider.frame = frame;
     
-    //center divider
-    self.centerDivider.frame = CGRectMake(dividerX, kCellMarginTop, 1, contentHeight);
-    
-    self.carousel.frame = CGRectMake(dividerX + 20, kCellMarginTop, cellWidth - dividerX - 20 * 2, contentHeight);
-    self.carousel.clipsToBounds = YES;
+    frame = _carousel.frame;
+    frame.size.width = cellWidth - dividerX - 10;
+    frame.size.height = contentHeight;
+    _carousel.frame = frame;
 }
 
 - (void)dealloc {
@@ -143,7 +167,7 @@ static const float kLeftPartWidth = 188;
     //create new view if no view is available for recycling
     if (view == nil)
     {
-        view = imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, carousel.frame.size.width - 20, carousel.frame.size.height)];
+        view = imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, carousel.frame.size.height)];
     }
     else
     {
@@ -168,7 +192,7 @@ static const float kLeftPartWidth = 188;
         case iCarouselOptionSpacing:
         {
             //add a bit of spacing between the item views
-            return value * 1.05f;
+            return value * 1.05;
         }
         default:
         {

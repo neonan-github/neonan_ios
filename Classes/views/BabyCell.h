@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <iCarousel.h>
 #import <PrettyKit.h>
-#import <DTCoreText.h>
 
 @interface BabyCell : PrettyTableViewCell <iCarouselDataSource, iCarouselDelegate>
 @property (nonatomic, unsafe_unretained) UIImageView *thumbnail;
@@ -17,7 +16,7 @@
 @property (nonatomic, unsafe_unretained) UILabel *scoreLabel;// 投票数
 @property (nonatomic, unsafe_unretained) UIButton *voteButton;
 
-@property (nonatomic, unsafe_unretained) UIButton *arrowView;
+@property (nonatomic, unsafe_unretained) UIImageView *arrowView;
 @property (nonatomic, unsafe_unretained) UIButton *playButton;
 
 @property (nonatomic, strong) NSArray *videoShots;

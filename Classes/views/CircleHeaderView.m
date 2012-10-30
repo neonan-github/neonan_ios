@@ -8,6 +8,13 @@
 
 #import "CircleHeaderView.h"
 
+@interface CircleHeaderView () {
+    UIFont *_smallFont, *_bigFont;
+}
+@property (readonly, nonatomic) UIFont *smallFont;
+@property (readonly, nonatomic) UIFont *bigFont;
+@end
+
 @implementation CircleHeaderView
 @synthesize carousel = _carousel;
 @synthesize titles = _titles;
@@ -56,6 +63,22 @@
     self.dataSource = nil;
 }
 
+- (UIFont *)smallFont {
+    if (!_smallFont) {
+        _smallFont = [UIFont systemFontOfSize:10];
+    }
+    
+    return _smallFont;
+}
+
+- (UIFont *)bigFont {
+    if (!_bigFont) {
+        _bigFont = [UIFont systemFontOfSize:14];
+    }
+    
+    return _bigFont;
+}
+
 - (NSUInteger)currentItemIndex {
     return _carousel.currentItemIndex;
 }
@@ -90,6 +113,7 @@
         label.textAlignment = UITextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
+        label.font = self.smallFont;
     } else {
         label = (UILabel *)view;
     }
@@ -109,12 +133,12 @@
 
 - (CGFloat)carouselItemWidth:(iCarousel *)carousel {
     UILabel *currentLabel = (UILabel *)_carousel.currentItemView;
-    currentLabel.font = [UIFont systemFontOfSize:14];
+    currentLabel.font = self.bigFont;
     
     NSArray *visibleLables = _carousel.visibleItemViews;
     for (UILabel *label in visibleLables) {
         if (label != currentLabel) {
-            label.font = [UIFont systemFontOfSize:10];
+            label.font = self.smallFont;
         }
     }
     

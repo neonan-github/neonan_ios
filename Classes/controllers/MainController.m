@@ -83,6 +83,7 @@ headerView = _headerView;
     
     TTTAttributedLabel *slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenHeight, 16)];
     slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    slideShowTextLabel.clipsToBounds = YES;
     slideShowTextLabel.font = [UIFont systemFontOfSize:8];
     slideShowTextLabel.textColor = [UIColor whiteColor];
     slideShowTextLabel.text = @"绅士必备 木质调香水最佳推荐";
@@ -220,7 +221,7 @@ headerView = _headerView;
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 60;
+    return self.headerView.carousel.currentItemIndex == 5 ? 80 : 60;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -235,6 +236,7 @@ headerView = _headerView;
             break;
     }
     [self.navigationController pushViewController:controller animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - CircleHeaderViewDelegate methods
@@ -271,7 +273,7 @@ headerView = _headerView;
     }
     
     cell.thumbnail.image = [UIImage imageNamed:[self.images objectAtIndex:indexPath.row]];
-    cell.titleLabel.text = [NSString stringWithFormat:@"杨涵齐 %u", indexPath.row];
+    [cell.titleLabel setText:[NSString stringWithFormat:@"杨涵齐 %u", indexPath.row]];
     cell.scoreLabel.text = [NSString stringWithFormat:@"%u票", indexPath.row];
     cell.videoShots = self.images;
  
