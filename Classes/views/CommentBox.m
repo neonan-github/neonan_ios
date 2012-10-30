@@ -16,6 +16,7 @@
 @property (assign, nonatomic, getter = isActive) BOOL active;
 
 - (UIButton *)setUpDoneButton;
+- (void)alignParentCenter:(UIView *)view;
 @end
 
 @implementation CommentBox
@@ -23,14 +24,13 @@
 @synthesize rightView = _rightView;
 
 - (void)setUp:(CGRect)frame {
-   
-    HPGrowingTextView *textView = self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
+    HPGrowingTextView *textView = self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(48, 3, 198, 24)];
     textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     textView.minNumberOfLines = 1;
     textView.maxNumberOfLines = 4;
     textView.returnKeyType = UIReturnKeyDefault;
     [textView.internalTextView setKeyboardAppearance:UIKeyboardAppearanceAlert];
-    textView.font = [UIFont systemFontOfSize:15.0f];
+    textView.font = [UIFont systemFontOfSize:12];
     textView.delegate = self;
     textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     textView.backgroundColor = [UIColor whiteColor];
@@ -44,13 +44,13 @@
     UIImage *rawEntryBackground = [UIImage imageFromFile:@"bg_comment_input.png"];
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
     UIImageView *entryImageView = self.entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-    entryImageView.frame = CGRectMake(5, 0, 248, 40);
+    entryImageView.frame = CGRectMake(47, 0, 248, frame.size.height);
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     UIImage *rawBackground = [UIImage imageFromFile:@"bg_comment_box.png"];
     UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
-    imageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    imageView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
     imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     // view hierachy
@@ -60,6 +60,15 @@
     
     UIButton *doneButton = self.doneButton = [self setUpDoneButton];
     [self addSubview:doneButton];
+    
+    UIButton *countButton = self.countButton = [[UIButton alloc] initWithFrame:CGRectMake(10, (frame.size.height - 22) / 2, 28, 22)];
+    [countButton setBackgroundImage:[UIImage imageFromFile:@"bg_comment_count.png"] forState:UIControlStateNormal];
+    countButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 4, 0);
+    countButton.titleLabel.font = [UIFont systemFontOfSize:9];
+    countButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [countButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [countButton setTitle:@"23" forState:UIControlStateNormal];
+    [self addSubview:countButton];
     
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [self addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionOld context:NULL];
@@ -121,24 +130,29 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    NSLog(@"layoutSubviews");
     
     CGRect frame = self.textView.frame;
     CGFloat textViewWidth = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x - /*gap*/5;
     frame.size.width = textViewWidth;
     self.textView.frame = frame;
     
-    NSLog(@"textView frame:%f %f %f %f", self.textView.frame.origin.x, self.textView.frame.origin.y, self.textView.frame.size.width, self.textView.frame.size.height);
-    
     frame = self.entryImageView.frame;
     frame.size.width = textViewWidth + 8;
     self.entryImageView.frame = frame;
     
-    frame = _rightView.frame;
-    _rightView.center = CGPointMake(frame.origin.x + frame.size.width / 2, self.frame.size.height / 2);
+    [self alignParentCenter:_countButton];
+    [self alignParentCenter:_rightView];
+    [self alignParentCenter:_doneButton];
+}
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+    BOOL inside = [super pointInside:point withEvent:event];
+    if (!inside) {
+        [self resignTextView];
+    }
     
-    frame = _doneButton.frame;
-    _doneButton.center = CGPointMake(frame.origin.x + frame.size.width / 2, self.frame.size.height / 2);
+    NSLog(@"isActive:%@", self.isActive ? @"YES" : @"NO");
+    return self.isActive ? YES : inside;
 }
 
 #pragma mark - HPGrowingTextViewDelegate methods
@@ -161,22 +175,22 @@
 #pragma mark - Private methods
 
 - (UIButton *)setUpDoneButton {
-   UIImage *sendBtnBackground = [[UIImage imageFromFile:@"bg_comment_commit_normal.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-   UIImage *selectedSendBtnBackground = [[UIImage imageFromFile:@"bg_comment_commit_highlighted.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-        
-   UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-   doneBtn.frame = CGRectMake(self.frame.size.width - 69, 8, 63, 27);
-   doneBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-   [doneBtn setTitle:@"Done" forState:UIControlStateNormal];
-        
-   [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
-   doneBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
-   doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+//   UIImage *sendBtnBackground = [[UIImage imageFromFile:@"bg_comment_commit_normal.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+//   UIImage *selectedSendBtnBackground = [[UIImage imageFromFile:@"bg_comment_commit_highlighted.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
     
-   [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+   UIButton *doneBtn = [UIHelper createBarButton:10];
+   doneBtn.frame = CGRectMake(self.frame.size.width - 54, 7, 44, 24);
+   doneBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+   [doneBtn setTitle:@"发表" forState:UIControlStateNormal];
+        
+//   [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
+//   doneBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
+   doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+    
+   [doneBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
    [doneBtn addTarget:self action:@selector(resignTextView) forControlEvents:UIControlEventTouchUpInside];
-   [doneBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
-   [doneBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
+//   [doneBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
+//   [doneBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
     
     return doneBtn;
 }
@@ -185,14 +199,12 @@
 	[self.textView resignFirstResponder];
 }
 
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-    BOOL inside = [super pointInside:point withEvent:event];
-    if (!inside) {
-        [self resignTextView];
-    }
-    
-    NSLog(@"isActive:%@", self.isActive ? @"YES" : @"NO");
-    return self.isActive ? YES : inside;
+- (void)alignParentCenter:(UIView *)view {
+    CGRect frame = view.frame;
+    CGPoint center = view.center;
+    center.x = frame.origin.x + frame.size.width / 2;
+    center.y = self.frame.size.height / 2;
+    view.center = center;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

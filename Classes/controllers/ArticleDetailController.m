@@ -20,7 +20,7 @@
 @property (unsafe_unretained, nonatomic) IBOutlet DTAttributedTextView *textView;
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
-@property (strong, nonatomic) IBOutlet UIButton *commentButton;
+//@property (strong, nonatomic) IBOutlet UIButton *commentButton;
 
 @end
 
@@ -41,9 +41,10 @@
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = DarkThemeColor;
     
-    [_commentButton removeFromSuperview];
-    [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
-    _commentBox.rightView = _commentButton;
+//    [_commentButton removeFromSuperview];
+//    [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
+//    _commentBox.rightView = _commentButton;
+    [_commentBox.countButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -57,9 +58,6 @@
     [self setTitleLabel:nil];
     [self setTextView:nil];
     [self setCommentBox:nil];
-    [self setCommentButton:nil];
-    [self setCommentButton:nil];
-    [self setCommentButton:nil];
     [self setShareButton:nil];
     [super viewDidUnload];
 }
@@ -94,7 +92,7 @@
 
 //Code from Brett Schumann
 -(void) keyboardWillShow:(NSNotification *)note{
-    _commentBox.rightView = nil;
+//    _commentBox.rightView = nil;
     
     // get keyboard size and loctaion
 	CGRect keyboardBounds;
@@ -127,7 +125,7 @@
 }
 
 -(void) keyboardWillHide:(NSNotification *)note{
-    _commentBox.rightView = _commentButton;
+//    _commentBox.rightView = _commentButton;
     
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
