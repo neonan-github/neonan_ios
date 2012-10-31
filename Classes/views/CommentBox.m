@@ -42,7 +42,7 @@
     [textView addSubview:placeHolderView];
     
     UIImage *rawEntryBackground = [UIImage imageFromFile:@"bg_comment_input.png"];
-    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:8 topCapHeight:12];
     UIImageView *entryImageView = self.entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
     entryImageView.frame = CGRectMake(47, 0, 248, frame.size.height);
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
