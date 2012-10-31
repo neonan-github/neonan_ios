@@ -158,9 +158,7 @@
 
 - (void)publish:(UIButton *)button {
     SignController *controller = [[SignController alloc] init];
-    UINavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self.navigationController presentModalViewController:navController animated:YES];
+    [self.navigationController presentModalViewController:controller animated:YES];
 }
 
 - (void)showComments {

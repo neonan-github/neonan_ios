@@ -7,18 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UITextField+UITextFieldCatagory.h"
+#import <TTTAttributedLabel.h>
 
 typedef enum {
     signIn = 0,
     signUp
 } signType;
 
-@interface SignController : UIViewController
+@interface SignController : UIViewController <TTTAttributedLabelDelegate>
 
-@property (unsafe_unretained, nonatomic) IBOutlet UITextField *userTextField;
-@property (unsafe_unretained, nonatomic) IBOutlet UITextField *passwordTextField;
-@property (unsafe_unretained, nonatomic) IBOutlet UIButton *actionButton;
+
 @property (assign, nonatomic) signType type;
 
 - (id)initWithType:(signType)type;
