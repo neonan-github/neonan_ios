@@ -14,6 +14,8 @@
 		340716E21640DC01006E40FE /* img_logo_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 340716E11640DC01006E40FE /* img_logo_big.png */; };
 		340716E51640EB12006E40FE /* img_user_input.png in Resources */ = {isa = PBXBuildFile; fileRef = 340716E41640EB12006E40FE /* img_user_input.png */; };
 		340716E71640ED7D006E40FE /* img_password_input.png in Resources */ = {isa = PBXBuildFile; fileRef = 340716E61640ED7D006E40FE /* img_password_input.png */; };
+		340716F8164128E7006E40FE /* VideoPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340716F6164128E7006E40FE /* VideoPlayController.m */; };
+		34071703164133C3006E40FE /* VideoPlayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34071702164133C3006E40FE /* VideoPlayController.xib */; };
 		340A13471631331900E8D594 /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13461631331900E8D594 /* CommentModel.m */; };
 		340A134A1631419600E8D594 /* CommentBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13491631419600E8D594 /* CommentBox.m */; };
 		340A134F163142F100E8D594 /* bg_comment_box.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A134B163142F100E8D594 /* bg_comment_box.png */; };
@@ -92,6 +94,9 @@
 		340716E11640DC01006E40FE /* img_logo_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_logo_big.png; sourceTree = "<group>"; };
 		340716E41640EB12006E40FE /* img_user_input.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_user_input.png; sourceTree = "<group>"; };
 		340716E61640ED7D006E40FE /* img_password_input.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_password_input.png; sourceTree = "<group>"; };
+		340716F5164128E7006E40FE /* VideoPlayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayController.h; sourceTree = "<group>"; };
+		340716F6164128E7006E40FE /* VideoPlayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayController.m; sourceTree = "<group>"; };
+		34071702164133C3006E40FE /* VideoPlayController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VideoPlayController.xib; path = Classes/controllers/VideoPlayController.xib; sourceTree = SOURCE_ROOT; };
 		340A13451631331900E8D594 /* CommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentModel.h; sourceTree = "<group>"; };
 		340A13461631331900E8D594 /* CommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentModel.m; sourceTree = "<group>"; };
 		340A13481631419600E8D594 /* CommentBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentBox.h; sourceTree = "<group>"; };
@@ -215,6 +220,8 @@
 				3401FDFA1636A1D700FAF971 /* ArticleDetailController.m */,
 				34584642163A3582008AAD38 /* NNNavigationController.h */,
 				34584643163A3582008AAD38 /* NNNavigationController.m */,
+				340716F5164128E7006E40FE /* VideoPlayController.h */,
+				340716F6164128E7006E40FE /* VideoPlayController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -234,6 +241,7 @@
 				347AAB5C163672E500D243BA /* SignController.xib */,
 				3401FDFB1636A1D700FAF971 /* ArticleDetailController.xib */,
 				34CB8FF3163FDFD40001AD87 /* CommentListController.xib */,
+				34071702164133C3006E40FE /* VideoPlayController.xib */,
 			);
 			name = layouts;
 			sourceTree = "<group>";
@@ -516,6 +524,7 @@
 				340716E21640DC01006E40FE /* img_logo_big.png in Resources */,
 				340716E51640EB12006E40FE /* img_user_input.png in Resources */,
 				340716E71640ED7D006E40FE /* img_password_input.png in Resources */,
+				34071703164133C3006E40FE /* VideoPlayController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,6 +572,7 @@
 				3401FDFC1636A1D700FAF971 /* ArticleDetailController.m in Sources */,
 				34584644163A3582008AAD38 /* NNNavigationController.m in Sources */,
 				34AC9C6B163E41640020DE4B /* CustomNavigationBar.m in Sources */,
+				340716F8164128E7006E40FE /* VideoPlayController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

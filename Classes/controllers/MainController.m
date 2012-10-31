@@ -10,6 +10,7 @@
 #import "NNNavigationController.h"
 #import "BabyDetailController.h"
 #import "ArticleDetailController.h"
+#import "VideoPlayController.h"
 
 #import "SMPageControl.h"
 #import "HotListCell.h"
@@ -28,7 +29,7 @@ typedef enum {
     listTypeHotest
 } listType;
 
-@interface MainController ()
+@interface MainController () <BabyCellDelegate>
 @property (nonatomic, unsafe_unretained) UIButton *navLeftButton;
 @property (nonatomic, unsafe_unretained) UIButton *navRightButton;
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
@@ -244,6 +245,13 @@ headerView = _headerView;
     [_tableView reloadData];
 }
 
+#pragma mark - BabyCellDelegate methods
+
+- (void)playVideoAtIndex:(NSUInteger)index {
+    UIViewController *controller = [[VideoPlayController alloc] init];
+    [self.navigationController presentModalViewController:controller animated:YES];
+}
+
 #pragma mark - Private methods
 
 - (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -268,6 +276,7 @@ headerView = _headerView;
     BabyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
         cell = [[BabyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell.delegate = self;
     }
     
     cell.thumbnail.image = [UIImage imageNamed:[self.images objectAtIndex:indexPath.row]];
