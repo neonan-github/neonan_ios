@@ -35,7 +35,7 @@
     textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     textView.backgroundColor = [UIColor whiteColor];
     
-    UIImageView *placeHolderView = self.placeHolderView = [[UIImageView alloc] initWithFrame:CGRectMake(10, (textView.frame.size.height - 16) / 2 , 56, 16)];
+    UIImageView *placeHolderView = self.placeHolderView = [[UIImageView alloc] initWithFrame:CGRectMake(5, (textView.frame.size.height - 16) / 2 , 56, 16)];
     NSString *fileLocation = [[NSBundle mainBundle] pathForResource:@"img_comment_placeholder" ofType:@"png"];
     NSData *imageData = [NSData dataWithContentsOfFile:fileLocation];
     placeHolderView.image = [UIImage imageWithData:imageData];
