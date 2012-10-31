@@ -17,9 +17,16 @@ static const float kTextAreaWidth = 54;
 static const float kTextAreaMargin = 10;
 static const float kLeftPartWidth = 160;
 
+static const NSInteger kTagItemImgView = 2000;
+static const NSInteger kTagItemPlayButton = 2001;
+
 @interface BabyCell ()
 @property (nonatomic, unsafe_unretained) UIImageView *centerDivider;
 @property (nonatomic, unsafe_unretained) iCarousel *carousel;
+@property (nonatomic, unsafe_unretained) UIButton *playButton;
+
+- (UIButton *)createItemView:(iCarousel *)carousel;
+
 @end
 
 @implementation BabyCell
@@ -69,7 +76,9 @@ static const float kLeftPartWidth = 160;
         UIImageView *centerDivider = self.centerDivider = [[UIImageView alloc] initWithImage:[UIImage imageFromFile:@"img_cell_divider.png"]];
         centerDivider.frame = CGRectMake(kLeftPartWidth, 0, 1, 80);
         
-        UIButton *playButton = self.playButton = [[UIButton alloc] init];
+        UIButton *playButton = self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
+        [playButton setBackgroundImage:[UIImage imageFromFile:@"icon_play_video.png"] forState:UIControlStateNormal];
+        playButton.hidden = YES;
         
         iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(kLeftPartWidth + 10, kCellMarginTop, 0, 0)];
         carousel.contentOffset = CGSizeMake(-40, 0);
@@ -77,6 +86,7 @@ static const float kLeftPartWidth = 160;
         carousel.dataSource = self;
         carousel.delegate = self;
         carousel.bounces = NO;
+        carousel.centerItemWhenSelected = NO;
         
         [self.contentView addSubview:thumbnail];
         [self.contentView addSubview:titleLabel];
@@ -85,10 +95,26 @@ static const float kLeftPartWidth = 160;
         [self.contentView addSubview:voteButton];
         [self.contentView addSubview:arrowView];
         [self.contentView addSubview:centerDivider];
-        [self.contentView addSubview:playButton];
         [self.contentView addSubview:carousel];
+        [self.contentView addSubview:playButton];
     }
     return self;
+}
+
+- (void)dealloc {
+    self.thumbnail = nil;
+    self.titleLabel = nil;
+    self.scoreLabel = nil;
+    self.voteButton = nil;
+    self.arrowView = nil;
+    self.centerDivider = nil;
+    self.playButton = nil;
+    
+    self.carousel.dataSource = nil;
+    self.carousel.delegate = nil;
+    self.carousel = nil;
+    
+    self.videoShots = nil;
 }
 
 - (void)setVideoShots:(NSArray *)videoShots {
@@ -99,9 +125,16 @@ static const float kLeftPartWidth = 160;
     [self.carousel reloadData];
 }
 
+#pragma mark - Override
+
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     [super setHighlighted:highlighted animated:animated];
     _voteButton.highlighted = NO;
+    
+    NSArray *visibleItems = _carousel.visibleItemViews;
+    for (UIButton *item in visibleItems) {
+        item.highlighted = NO;
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -111,6 +144,11 @@ static const float kLeftPartWidth = 160;
     // for some reason it'll be highlighed while the
     // table cell selection animates out
     _voteButton.highlighted = NO;
+    NSArray *visibleItems = _carousel.visibleItemViews;
+    for (UIButton *item in visibleItems) {
+        item.selected = NO;
+        item.highlighted = NO;
+    }
 }
 
 - (void)layoutSubviews {
@@ -139,22 +177,6 @@ static const float kLeftPartWidth = 160;
     _carousel.frame = frame;
 }
 
-- (void)dealloc {
-    self.thumbnail = nil;
-    self.titleLabel = nil;
-    self.scoreLabel = nil;
-    self.voteButton = nil;
-    self.arrowView = nil;
-    self.centerDivider = nil;
-    self.playButton = nil;
-    
-    self.carousel.dataSource = nil;
-    self.carousel.delegate = nil;
-    self.carousel = nil;
-    
-    self.videoShots = nil;
-}
-
 #pragma mark - iCarouselDataSource methods
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel {
@@ -162,19 +184,13 @@ static const float kLeftPartWidth = 160;
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
-    UIImageView *imageView = nil;
-    
     //create new view if no view is available for recycling
-    if (view == nil)
-    {
-        view = imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 80, carousel.frame.size.height)];
-    }
-    else
-    {
-        imageView = (UIImageView *) view;
+    if (!view) {
+        view = [self createItemView:carousel];
     }
     
-    imageView.image = [UIImage imageNamed:[self.videoShots objectAtIndex:index]];
+    UIButton *itemView = (UIButton *)view;
+    [itemView setBackgroundImage:[UIImage imageNamed:[_videoShots objectAtIndex:index]] forState:UIControlStateNormal];
     
     return view;
 }
@@ -199,6 +215,16 @@ static const float kLeftPartWidth = 160;
             return value;
         }
     }    
+}
+
+#pragma mark - Private methods
+
+- (UIButton *)createItemView:(iCarousel *)carousel {
+    UIButton *itemView = [UIButton buttonWithType:UIButtonTypeCustom];
+    itemView.frame = CGRectMake(0, 0, 80, carousel.frame.size.height);
+    [itemView setImage:[UIImage imageFromFile:@"icon_play_video.png"]  forState:UIControlStateNormal];
+    
+    return itemView;
 }
 
 @end

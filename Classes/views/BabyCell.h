@@ -17,7 +17,6 @@
 @property (nonatomic, unsafe_unretained) UIButton *voteButton;
 
 @property (nonatomic, unsafe_unretained) UIImageView *arrowView;
-@property (nonatomic, unsafe_unretained) UIButton *playButton;
 
 @property (nonatomic, strong) NSArray *videoShots;
 @end
