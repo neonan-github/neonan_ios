@@ -30,12 +30,15 @@ static const NSUInteger kMaxNumberOfLines = 4;
 @synthesize expanded = _expanded;
 @synthesize delegate = _delegate;
 
+#pragma mark - init
+
 - (void)setUp:(CGRect)frame {
-    self.backgroundColor = [UIColor darkGrayColor];
+    self.backgroundColor = RGBA(0, 0, 0, 0.5);
     
     CGFloat layoutY = 0;
-    UIImageView *arrowView = self.arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.width - 20, 0, 20, 20)];
-    arrowView.image = [UIImage imageFromFile:@"icon_down_arrow.png"];
+    UIImageView *arrowView = self.arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.width - 17, 5, 9, 7)];
+    arrowView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
+    arrowView.image = [UIImage imageFromFile:@"icon_up_arrow_white.png"];
     [self addSubview:arrowView];
     
     layoutY += 20;
@@ -44,7 +47,9 @@ static const NSUInteger kMaxNumberOfLines = 4;
     
     UILabel *textLabel = self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, 0)];
     textLabel.backgroundColor = [UIColor clearColor];
-    textLabel.text = @"Yes, you have citedYes, you have citedYes, you have citedYes, you have citedYes, you have citedYes, you Yes, you have citedYes, you have citedYes, you have citedYes, you have citedYes, you have citedYes, you";
+    textLabel.textColor = [UIColor whiteColor];
+    textLabel.font = [UIFont systemFontOfSize:11];
+    textLabel.text = @"杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志。杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志。";
     [scrollView addSubview:textLabel];
     
     self.userInteractionEnabled = YES;
@@ -66,6 +71,8 @@ static const NSUInteger kMaxNumberOfLines = 4;
     [super awakeFromNib];
     [self setUp:self.frame];
 }
+
+#pragma mark - Accessors
 
 - (void)setExpanded:(BOOL)expanded {
     _expanded = expanded;
@@ -98,6 +105,8 @@ static const NSUInteger kMaxNumberOfLines = 4;
     
     self.expanded = _expanded;
 }
+
+#pragma mark - Override methods
 
 - (void)layoutSubviews {
     // resize scrollview
@@ -142,6 +151,8 @@ static const NSUInteger kMaxNumberOfLines = 4;
     CGRect frame = self.frame;
     frame.size.height = [self getFixPartHeight] + scrollViewHeight;
     self.frame = frame;
+    
+    _arrowView.transform = CGAffineTransformMakeRotation(M_PI);
     [UIView commitAnimations];
 }
 
@@ -159,6 +170,8 @@ static const NSUInteger kMaxNumberOfLines = 4;
     frame = self.frame;
     frame.size.height = [self getFixPartHeight] + scrollViewHeight;
     self.frame = frame;
+    
+    _arrowView.transform = CGAffineTransformMakeRotation(0);
     [UIView commitAnimations];
 }
 

@@ -35,6 +35,11 @@ static const float kDescriptionStretchedLines = 7;
 	// Do any additional setup after loading the view.
     self.description = @"杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志。";
     
+    CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
+    // Create a custom back button
+    UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
     SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, -NavBarHeight, CompatibleScreenWidth, CompatibleScreenHeight - StatusBarHeight)];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
@@ -42,23 +47,33 @@ static const float kDescriptionStretchedLines = 7;
     [slideShowView addGestureRecognizer:tapRecognizer];
     [self.view addSubview:slideShowView];
     
-    UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 30)];
+    UIImageView *navBottomLine = [[UIImageView alloc] initWithImage:[UIImage imageFromFile:@"img_nav_bottom_line.png"]];
+    CGRect frame = navBottomLine.frame;
+    frame.origin.y = -4;
+    navBottomLine.frame = frame;
+    
+    UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 200, 30)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont systemFontOfSize:13];
     titleLabel.text = @"杨棋涵";
-    UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(238, 4, 16, 15)];
+    
+    UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(261, 12, 16, 15)];
     [likeButton setBackgroundImage:[UIImage imageFromFile:@"icon_love_normal.png"] forState:UIControlStateNormal];
     [likeButton setBackgroundImage:[UIImage imageFromFile:@"icon_love_highlighted.png"] forState:UIControlStateHighlighted];
-    UIButton *shareButton = self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(278, 4, 26, 22)];
+    
+    UIButton *shareButton = self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(290, 12, 20, 15)];
     [shareButton setBackgroundImage:[UIImage imageFromFile:@"icon_share.png"] forState:UIControlStateNormal];
-    UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 30)];
-    titleBox.backgroundColor = [UIColor blackColor];
+    
+    UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35)];
+    titleBox.backgroundColor = DarkThemeColor;
+    [titleBox addSubview:navBottomLine];
     [titleBox addSubview:titleLabel];
     [titleBox addSubview:likeButton];
     [titleBox addSubview:shareButton];
     [self.view addSubview:titleBox];
     
-    CGRect frame = CGRectMake(0, CompatibleContainerHeight - 32, CompatibleScreenWidth, 0);
+    frame = CGRectMake(0, CompatibleContainerHeight - 32, CompatibleScreenWidth, 0);
     FoldableTextBox *textBox = self.textBox = [[FoldableTextBox alloc] initWithFrame:frame];
     frame.size.height = [textBox getSuggestedHeight];
     textBox.frame = frame;
@@ -66,7 +81,10 @@ static const float kDescriptionStretchedLines = 7;
     textBox.insets = UIEdgeInsetsMake(0, 10, 25, 20);
     [self.view addSubview:textBox];
     
-    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, CompatibleContainerHeight - 26, CompatibleScreenWidth, 20)];
+    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, CompatibleContainerHeight - 18, CompatibleScreenWidth, 16)];
+    pageControl.indicatorDiameter = 5;
+    pageControl.indicatorMargin = 4;
+    pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x00a9ff);
     pageControl.userInteractionEnabled = NO;
     [self.view addSubview:pageControl];
     
@@ -162,7 +180,7 @@ static const float kDescriptionStretchedLines = 7;
     self.slideShowView.frame = frame;
     
     frame = self.titleBox.frame;
-    frame.origin.y = hidden ? -30 : 0;
+    frame.origin.y = hidden ? -frame.size.height : 0;
     self.titleBox.frame = frame;
     
     frame = self.textBox.frame;

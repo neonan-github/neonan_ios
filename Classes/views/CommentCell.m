@@ -13,15 +13,6 @@ static const float kGap = 8;
 
 static UIFont *commentFont;
 
-static UIImage *downArrowImg, *upArrowImg;
-
-@interface CommentCell ()
-
-+ (UIImage *)getDownArrowImg;
-+ (UIImage *)getUpArrowImg;
-
-@end
-
 @implementation CommentCell
 
 + (UIFont *)getCommentFont {
@@ -39,23 +30,6 @@ static UIImage *downArrowImg, *upArrowImg;
 + (CGFloat)getFixedPartHeight {
     return kMargin * 2 + 15 + kGap;
 }
-
-+ (UIImage *)getDownArrowImg {
-    if (!downArrowImg) {
-        downArrowImg = [UIImage imageFromFile:@"icon_down_arrow.png"];
-    }
-
-    return downArrowImg;
-}
-
-+ (UIImage *)getUpArrowImg {
-    if (!upArrowImg) {
-        upArrowImg = [UIImage imageFromFile:@"icon_up_arrow.png"];
-    }
-    
-    return upArrowImg;
-}
-
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -100,7 +74,7 @@ static UIImage *downArrowImg, *upArrowImg;
     if (_expanded != expanded) {
         _expanded = expanded;
         
-        _arrowView.image = expanded ? [CommentCell getUpArrowImg] : [CommentCell getDownArrowImg];
+        _arrowView.transform = CGAffineTransformMakeRotation(expanded ? M_PI : 0);
     }
 }
 
