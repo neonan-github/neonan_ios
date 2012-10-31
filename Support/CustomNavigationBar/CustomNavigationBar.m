@@ -77,8 +77,8 @@
   // Set the title to use the same font and shadow as the standard back button
   button.titleLabel.font = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
   button.titleLabel.textColor = [UIColor whiteColor];
-  button.titleLabel.shadowOffset = CGSizeMake(0,-1);
-  button.titleLabel.shadowColor = [UIColor darkGrayColor];
+//  button.titleLabel.shadowOffset = CGSizeMake(0,-1);
+//  button.titleLabel.shadowColor = [UIColor darkGrayColor];
   
   // Set the break mode to truncate at the end like the standard back button
   button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;

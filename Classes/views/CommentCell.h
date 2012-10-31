@@ -14,7 +14,9 @@
 @property (nonatomic, unsafe_unretained) UILabel *timeLabel;
 @property (nonatomic, unsafe_unretained) UILabel *commentLabel;
 @property (nonatomic, unsafe_unretained) UIImageView *arrowView;
+@property (nonatomic, assign) BOOL expanded;
 
 + (CGFloat)getContentWidth:(CGFloat)width;
 + (CGFloat)getFixedPartHeight;
++ (UIFont *)getCommentFont;
 @end

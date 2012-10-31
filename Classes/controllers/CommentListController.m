@@ -127,17 +127,15 @@
     }
     
     CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
-    cell.commentLabel.font = [UIFont systemFontOfSize:14];
     cell.commentLabel.numberOfLines = comment.expanded ? 0 : 2;
     cell.commentLabel.lineBreakMode = comment.expanded ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
     cell.commentLabel.text = [NSString stringWithFormat:@"%u %@", indexPath.row, comment.text];
     
-    cell.userNameLabel.font = [UIFont systemFontOfSize:13];
     cell.userNameLabel.text = comment.userName;
     
-    cell.timeLabel.font = [UIFont systemFontOfSize:13];
     cell.timeLabel.text = comment.time;
     
+    cell.expanded = comment.expanded;
     comment.expandable = [UIHelper computeContentLines:cell.commentLabel.text withWidth:[CommentCell getContentWidth:320] andFont:cell.commentLabel.font] > 2;
     cell.arrowView.hidden = !comment.expandable;
     
@@ -163,7 +161,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
-    UIFont *font = [UIFont systemFontOfSize:14];
+    UIFont *font = [CommentCell getCommentFont];
     
     NSUInteger lines = [UIHelper computeContentLines:comment.text withWidth:[CommentCell getContentWidth:CompatibleScreenWidth] andFont:font];
     CGFloat shrinkedHeight = font.lineHeight * MIN(lines, 2) + [CommentCell getFixedPartHeight];
@@ -177,7 +175,7 @@
     
     CGSize constraint = CGSizeMake([CommentCell getContentWidth:CompatibleScreenWidth], 20000.0f);
     
-    CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    CGSize size = [text sizeWithFont:font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     
     return MAX(size.height + [CommentCell getFixedPartHeight], shrinkedHeight);
 }
