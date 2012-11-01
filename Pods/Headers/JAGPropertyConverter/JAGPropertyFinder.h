@@ -1,0 +1,1 @@
+../../JAGPropertyConverter/JAGPropertyConverter/JAGPropertyFinder.h
