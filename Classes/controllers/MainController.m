@@ -24,9 +24,8 @@
 #import "BabyDetailController.h"
 #import "CommentListController.h"
 
-#import <AFNetworking.h>
-
 #import "ListCellModel.h"
+#import "BabyCellModel.h"
 
 typedef enum {
     listTypeLatest = 0,
@@ -127,9 +126,9 @@ headerView = _headerView;
                    @"http://neonan.b0.upaiyun.com//2012-10-24/1351039316411.jpg",
                    @"http://neonan.b0.upaiyun.com//2012-10-24/1351039266238.jpg", nil];
     
-    _listData = [[NSMutableArray alloc] initWithCapacity:20];
+    self.listData = [[NSMutableArray alloc] initWithCapacity:20];
     for (NSUInteger i = 0; i < 20; i++) {
-        [_listData addObject:[[ListCellModel alloc] init]];
+        [self.listData addObject:[[ListCellModel alloc] init]];
     }
 }
 
@@ -216,7 +215,6 @@ headerView = _headerView;
 #pragma mark - SlideShowViewDelegate methods
 
 - (void)slideShowViewItemIndexDidChange:(SlideShowView *)slideShowView {
-    self.listData = nil;
     [self.pageControl setCurrentPage:slideShowView.carousel.currentItemIndex];
 }
 
@@ -258,6 +256,7 @@ headerView = _headerView;
 #pragma mark - CircleHeaderViewDelegate methods
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
+    self.listData = nil;
     [_slideShowView reloadData];
     [_tableView reloadData];
 }
@@ -272,11 +271,11 @@ headerView = _headerView;
 #pragma mark - Private methods
 
 - (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentifier = @"HotListCell";
+    static NSString *listCellIdentifier = @"HotListCell";
     
-    HotListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    HotListCell *cell = [tableView dequeueReusableCellWithIdentifier:listCellIdentifier];
     if (!cell) {
-        cell = [[HotListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[HotListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:listCellIdentifier];
     }
     
     ListCellModel *model = [_listData objectAtIndex:indexPath.row];
@@ -289,18 +288,19 @@ headerView = _headerView;
 }
 
 - (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath  {
-    static NSString *cellIdentifier = @"BabyCell";
+    static NSString *babyCellIdentifier = @"BabyCell";
     
-    BabyCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    BabyCell *cell = [tableView dequeueReusableCellWithIdentifier:babyCellIdentifier];
     if (!cell) {
-        cell = [[BabyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[BabyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:babyCellIdentifier];
         cell.delegate = self;
     }
     
-    cell.thumbnail.image = [UIImage imageNamed:[self.images objectAtIndex:indexPath.row]];
-    [cell.titleLabel setText:[NSString stringWithFormat:@"杨涵齐 %u", indexPath.row]];
-    cell.scoreLabel.text = [NSString stringWithFormat:@"%u票", indexPath.row];
-    cell.videoShots = self.images;
+    BabyCellModel *model = [_listData objectAtIndex:indexPath.row];
+    [cell.thumbnail setImageWithURL:[NSURL URLWithString:model.babyImgUrl]];
+    cell.titleLabel.text = model.title;
+    cell.scoreLabel.text = [NSString stringWithFormat:@"%u票", model.score];
+    cell.videoShots = model.shotImgUrls;
  
     return cell;
 }

@@ -11,7 +11,7 @@
 @interface BabyCellModel : NSObject
 @property (copy, nonatomic) NSString *babyImgUrl;
 @property (copy, nonatomic) NSString *title;
-@property (assign, nonatomic) NSUInteger *score;
+@property (assign, nonatomic) NSUInteger score;
 @property (copy, nonatomic) NSArray *shotImgUrls;
 @property (copy, nonatomic) NSArray *videoUrls;
 @end

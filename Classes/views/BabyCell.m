@@ -7,6 +7,7 @@
 //
 
 #import "BabyCell.h"
+#import <UIButton+WebCache.h>
 
 static const float kCellMarginLeft = 10;
 static const float kCellMarginTop = 7;
@@ -20,10 +21,9 @@ static const float kLeftPartWidth = 160;
 static const NSInteger kTagItemImgView = 2000;
 static const NSInteger kTagItemPlayButton = 2001;
 
-@interface BabyCell ()
+@interface BabyCell () <SDWebImageManagerDelegate>
 @property (nonatomic, unsafe_unretained) UIImageView *centerDivider;
 @property (nonatomic, unsafe_unretained) iCarousel *carousel;
-@property (nonatomic, unsafe_unretained) UIButton *playButton;
 
 - (UIButton *)createItemView:(iCarousel *)carousel;
 
@@ -76,10 +76,6 @@ static const NSInteger kTagItemPlayButton = 2001;
         UIImageView *centerDivider = self.centerDivider = [[UIImageView alloc] initWithImage:[UIImage imageFromFile:@"img_cell_divider.png"]];
         centerDivider.frame = CGRectMake(kLeftPartWidth, 0, 1, 80);
         
-        UIButton *playButton = self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 22, 22)];
-        [playButton setBackgroundImage:[UIImage imageFromFile:@"icon_play_video.png"] forState:UIControlStateNormal];
-        playButton.hidden = YES;
-        
         iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(kLeftPartWidth + 10, kCellMarginTop, 0, 0)];
         carousel.contentOffset = CGSizeMake(-40, 0);
         carousel.clipsToBounds = YES;
@@ -96,7 +92,6 @@ static const NSInteger kTagItemPlayButton = 2001;
         [self.contentView addSubview:arrowView];
         [self.contentView addSubview:centerDivider];
         [self.contentView addSubview:carousel];
-        [self.contentView addSubview:playButton];
     }
     return self;
 }
@@ -110,7 +105,6 @@ static const NSInteger kTagItemPlayButton = 2001;
     self.voteButton = nil;
     self.arrowView = nil;
     self.centerDivider = nil;
-    self.playButton = nil;
     
     self.carousel.dataSource = nil;
     self.carousel.delegate = nil;
@@ -192,7 +186,16 @@ static const NSInteger kTagItemPlayButton = 2001;
     }
     
     UIButton *itemView = (UIButton *)view;
-    [itemView setBackgroundImage:[UIImage imageNamed:[_videoShots objectAtIndex:index]] forState:UIControlStateNormal];
+//    [itemView setBackgroundImage:[UIImage imageFromFile:@"baby_detail.jpg"] forState:UIControlStateNormal];
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    [manager downloadWithURL:[_videoShots objectAtIndex:index]
+                    delegate:self
+                     options:0
+                     success:^(UIImage *image, BOOL cached)
+    {
+        [itemView setBackgroundImage:image forState:UIControlStateNormal];
+    }
+                     failure:nil];
     
     return view;
 }
