@@ -9,6 +9,7 @@
 #import "BabyDetailController.h"
 #import "NNNavigationController.h"
 #import "SMPageControl.h"
+#import <UIImageView+WebCache.h>
 
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
@@ -43,6 +44,7 @@ static const float kDescriptionStretchedLines = 7;
     SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, -NavBarHeight, CompatibleScreenWidth, CompatibleScreenHeight - StatusBarHeight)];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
+    slideShowView.backgroundColor = DarkThemeColor;
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     [slideShowView addGestureRecognizer:tapRecognizer];
     [self.view addSubview:slideShowView];
@@ -88,7 +90,12 @@ static const float kDescriptionStretchedLines = 7;
     pageControl.userInteractionEnabled = NO;
     [self.view addSubview:pageControl];
     
-    self.slideImages = [[NSArray alloc] initWithObjects:@"home.jpg", @"baby_list.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil];
+    self.slideImages = [[NSArray alloc] initWithObjects:@"http://neonan.b0.upaiyun.com/uploads/bfab07ca-b5e7-4562-9745-c68eceb14796.jpg",
+                        @"http://neonan.b0.upaiyun.com/uploads/abd670d9-2f5e-4716-8d59-b19ae4eba704.jpg",
+                        @"http://neonan.b0.upaiyun.com//2012-10-24/1351039293662.jpg",
+                        @"http://neonan.b0.upaiyun.com//2012-10-25/1351125878136.jpg",
+                        @"http://neonan.b0.upaiyun.com//2012-10-24/1351039316411.jpg",
+                        @"http://neonan.b0.upaiyun.com//2012-10-24/1351039266238.jpg", nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -146,10 +153,10 @@ static const float kDescriptionStretchedLines = 7;
     if (!view) {
         view = [[UIImageView alloc] init];
         view.clipsToBounds = YES;
-        view.contentMode = UIViewContentModeTop;
+        view.contentMode = UIViewContentModeScaleAspectFit;
     }
     
-    ((UIImageView *)view).image = [UIImage imageNamed:[self.slideImages objectAtIndex:index]];
+    [((UIImageView *)view) setImageWithURL:[NSURL URLWithString:[_slideImages objectAtIndex:index]]];
     
     return view;
 }
