@@ -10,6 +10,8 @@
 #import <iCarousel.h>
 #import <PrettyKit.h>
 
+@protocol BabyCellDelegate;
+
 @interface BabyCell : PrettyTableViewCell <iCarouselDataSource, iCarouselDelegate>
 @property (nonatomic, unsafe_unretained) UIImageView *thumbnail;
 @property (nonatomic, unsafe_unretained) UILabel *titleLabel;
@@ -19,4 +21,12 @@
 @property (nonatomic, unsafe_unretained) UIImageView *arrowView;
 
 @property (nonatomic, strong) NSArray *videoShots;
+
+@property (nonatomic, unsafe_unretained) id<BabyCellDelegate> delegate;
+@end
+
+@protocol BabyCellDelegate <NSObject>
+
+- (void)playVideoAtIndex:(NSUInteger)index;
+
 @end

@@ -223,8 +223,15 @@ static const NSInteger kTagItemPlayButton = 2001;
     UIButton *itemView = [UIButton buttonWithType:UIButtonTypeCustom];
     itemView.frame = CGRectMake(0, 0, 80, carousel.frame.size.height);
     [itemView setImage:[UIImage imageFromFile:@"icon_play_video.png"]  forState:UIControlStateNormal];
+    [itemView addTarget:self action:@selector(playVideo) forControlEvents:UIControlEventTouchUpInside];
     
     return itemView;
+}
+
+- (void)playVideo {
+    if (_delegate) {
+        [_delegate playVideoAtIndex:0];
+    }
 }
 
 @end
