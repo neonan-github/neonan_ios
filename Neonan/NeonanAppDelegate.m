@@ -20,6 +20,11 @@
 {
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     
+    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:1024 * 1024 diskCapacity:1024 * 1024 * 5 diskPath:nil];
+    [NSURLCache setSharedURLCache:URLCache];
+    
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
@@ -32,6 +37,27 @@
     self.navController.navigationItem.leftBarButtonItem = nil;
     
 //    [(NeonanViewController *)controller launch];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"test5@neonan.com", @"email", @"4783C9E55D93F1215FAEQ1E6980EE622", @"password", nil];
+    NSMutableURLRequest *request = [[NNHttpClient sharedClient] requestWithMethod:@"POST" path:@"register" parameters:parameters];
+    AFHTTPRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        NSLog(@"Response: %@\n%@", response.MIMEType, [JSON class]);
+        NSDictionary *dic = JSON;
+        [dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            NSLog(@"%@ %@", key, [obj objectForKey:@"message"]);
+        }];
+        for (id attributes in JSON) {
+            NSLog(@"attributes:%@\n", [attributes class]);
+        }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        NSLog(@"%@", [error localizedDescription]);
+    }];
+    [operation start];
+//    [[NNHttpClient sharedClient] postPath:@"register" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+//        NSLog(@"Response: %@", text);
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        NSLog(@"%@", [error localizedDescription]);
+//    }];
     
     [self.window makeKeyAndVisible];
     return YES;

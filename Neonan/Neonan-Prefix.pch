@@ -13,4 +13,5 @@
     #import <Foundation/Foundation.h>
     #import "UIHelper.h"
     #import "NeonanAppDelegate.h"
+    #import "NNHttpClient.h"
 #endif

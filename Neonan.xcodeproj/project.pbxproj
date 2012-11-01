@@ -74,6 +74,7 @@
 		34D464E51630243900D8EE28 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464E41630243900D8EE28 /* SMPageControl.m */; };
 		34E3E37F16422A510058F5CF /* ListCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E37E16422A510058F5CF /* ListCellModel.m */; };
 		34E3E383164231400058F5CF /* BabyCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E382164231400058F5CF /* BabyCellModel.m */; };
+		34E3E3A8164276C50058F5CF /* NNHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E3A7164276C50058F5CF /* NNHttpClient.m */; };
 		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
 		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; };
 		53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFE16265E9400B0672C /* CoreGraphics.framework */; };
@@ -176,6 +177,9 @@
 		34E3E37E16422A510058F5CF /* ListCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCellModel.m; sourceTree = "<group>"; };
 		34E3E381164231400058F5CF /* BabyCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCellModel.h; sourceTree = "<group>"; };
 		34E3E382164231400058F5CF /* BabyCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyCellModel.m; sourceTree = "<group>"; };
+		34E3E39C164272BD0058F5CF /* Contants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Contants.h; sourceTree = "<group>"; };
+		34E3E3A6164276C50058F5CF /* NNHttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHttpClient.h; sourceTree = "<group>"; };
+		34E3E3A7164276C50058F5CF /* NNHttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHttpClient.m; sourceTree = "<group>"; };
 		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53816AFA16265E9400B0672C /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		53816AFC16265E9400B0672C /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -319,6 +323,9 @@
 			children = (
 				34D464D01630065C00D8EE28 /* UIHelper.h */,
 				34D464D11630065C00D8EE28 /* UIHelper.m */,
+				34E3E39C164272BD0058F5CF /* Contants.h */,
+				34E3E3A6164276C50058F5CF /* NNHttpClient.h */,
+				34E3E3A7164276C50058F5CF /* NNHttpClient.m */,
 			);
 			path = helpers;
 			sourceTree = "<group>";
@@ -585,6 +592,7 @@
 				340716F8164128E7006E40FE /* VideoPlayController.m in Sources */,
 				34E3E37F16422A510058F5CF /* ListCellModel.m in Sources */,
 				34E3E383164231400058F5CF /* BabyCellModel.m in Sources */,
+				34E3E3A8164276C50058F5CF /* NNHttpClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
