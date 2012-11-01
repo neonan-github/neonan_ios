@@ -54,9 +54,21 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSString *html = [NSString stringWithFormat:@"<iframe height=%0.0f width=%0.0f frameborder=0 src=\"http://player.youku.com/embed/XNDY4OTU1Mzky\" frameborder=0 allowfullscreen></iframe>", self.view.frame.size.height, self.view.frame.size.width];
-    [_webView loadHTMLString:@"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;\"/><title>Untitled Document</title></head><body><iframe height=498 width=510 frameborder=0 src=\"http://player.youku.com/embed/XNDY4OTU1Mzky\" frameborder=0 allowfullscreen></iframe></body></html>" baseURL:nil];
-//    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"<iframe height=498 width=510 frameborder=0 src=\"http://player.youku.com/embed/XNDY4OTU1Mzky\" frameborder=0 allowfullscreen></iframe>"]]];
+//    
+//    NSString *embedHTML = @"\
+//	<html><head>\
+//	<meta name = \"viewport\" content = \"initial-scale = 1.0, user-scalable = no, width = 620\"/></head>\
+//	<script>document.ontouchmove = function(event) {event.preventDefault();}</script>\
+//	<body style=\"background:#000;margin:0px;\">\
+//	<div><iframe width=\"620\" height=\"348\" src=\"%@\" frameborder=\"0\" allowfullscreen></iframe>\
+//	</div></body></html>";
+//    
+//    NSString *html = [NSString stringWithFormat:embedHTML, @"http://player.youku.com/embed/XNDY4OTU1Mzky"];
+//    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://player.youku.com/embed/XNDY5MjU5NTg4"]]];
+//    NSString *html = [NSString stringWithFormat:@"<iframe frameborder=0 src=\"http://player.youku.com/embed/XNDY4OTU1Mzky\"></iframe>"];
+//    [_webView loadHTMLString:html baseURL:nil];
+//    [_webView loadHTMLString:@"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=320; initial-scale=1.0; minimum-scale=1.0;\"/><title>Untitled Document</title></head><body><iframe height=498 width=510 frameborder=0 src=\"http://player.youku.com/embed/XNDY4OTU1Mzky\" frameborder=0 allowfullscreen></iframe></body></html>" baseURL:nil];
+    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://player.youku.com/embed/XNDY4OTU1Mzky"]]];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -68,17 +80,29 @@
 #pragma mark - UIWebViewDelegate methods
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    CGRect frame = webView.frame;
-    frame.size.height = 1;
-    webView.frame = frame;
-    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
-    frame.size = fittingSize;
-    webView.frame = frame;
+//    CGRect frame = webView.frame;
+//    frame.size.height = 1;
+//    webView.frame = frame;
+//    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
+//    frame.size = fittingSize;
+//    webView.frame = frame;
     
-    NSString *jsCommand = [NSString stringWithFormat:@"document.body.style.zoom = 0.1;"];
-    [webView stringByEvaluatingJavaScriptFromString:jsCommand];
+//    if ([webView respondsToSelector:@selector(scrollView)])
+//    {
+//        UIScrollView *scroll=[webView scrollView];
+//        
+//        float zoom=webView.bounds.size.width/scroll.contentSize.width;
+//        float zoom2 = webView.bounds.size.height/scroll.contentSize.height;
+//        scroll.minimumZoomScale = MIN(zoom, zoom2);
+//        scroll.maximumZoomScale = MIN(zoom, zoom2);
+//        scroll.zoomScale = MIN(zoom, zoom2);
+//    }
     
-    NSLog(@"size: %f, %f", fittingSize.width, fittingSize.height);
+//    NSLog(@"size: %f, %f", fittingSize.width, fittingSize.height);
+//    CGFloat contentHeight = [[webView stringByEvaluatingJavaScriptFromString:
+//                              @"document.documentElement.scrollHeight"] floatValue];
+//	webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y,
+//                               webView.frame.size.width, contentHeight);
 }
 
 @end
