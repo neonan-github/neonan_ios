@@ -24,6 +24,10 @@
 #import "BabyDetailController.h"
 #import "CommentListController.h"
 
+#import <AFNetworking.h>
+
+#import "ListCellModel.h"
+
 typedef enum {
     listTypeLatest = 0,
     listTypeHotest
@@ -40,6 +44,8 @@ typedef enum {
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, assign) listType type;
+
+@property (nonatomic, strong) NSMutableArray *listData;
 
 - (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -114,7 +120,17 @@ headerView = _headerView;
     }];
     [self.view addSubview:tableView];
     
-    self.images = [[NSArray alloc] initWithObjects:@"home.jpg", @"baby_list.jpg", @"baby_detail.jpg", @"splash.jpg", @"article_detail.jpg", @"article_list.jpg", nil];
+    self.images = [[NSArray alloc] initWithObjects:@"http://neonan.b0.upaiyun.com/uploads/bfab07ca-b5e7-4562-9745-c68eceb14796.jpg",
+                   @"http://neonan.b0.upaiyun.com/uploads/abd670d9-2f5e-4716-8d59-b19ae4eba704.jpg",
+                   @"http://neonan.b0.upaiyun.com//2012-10-24/1351039293662.jpg",
+                   @"http://neonan.b0.upaiyun.com//2012-10-25/1351125878136.jpg",
+                   @"http://neonan.b0.upaiyun.com//2012-10-24/1351039316411.jpg",
+                   @"http://neonan.b0.upaiyun.com//2012-10-24/1351039266238.jpg", nil];
+    
+    _listData = [[NSMutableArray alloc] initWithCapacity:20];
+    for (NSUInteger i = 0; i < 20; i++) {
+        [_listData addObject:[[ListCellModel alloc] init]];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -192,7 +208,7 @@ headerView = _headerView;
         view.contentMode = UIViewContentModeScaleAspectFill;
     }
     
-    ((UIImageView *)view).image = [UIImage imageNamed:[self.images objectAtIndex:index]];
+    [((UIImageView *)view) setImageWithURL:[NSURL URLWithString:[self.images objectAtIndex:index]]];
     
     return view;
 }
@@ -200,13 +216,14 @@ headerView = _headerView;
 #pragma mark - SlideShowViewDelegate methods
 
 - (void)slideShowViewItemIndexDidChange:(SlideShowView *)slideShowView {
+    self.listData = nil;
     [self.pageControl setCurrentPage:slideShowView.carousel.currentItemIndex];
 }
 
 #pragma mark － UITableViewDataSource methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.images.count;
+    return _listData.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -262,10 +279,11 @@ headerView = _headerView;
         cell = [[HotListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
-    cell.thumbnail.image = [UIImage imageNamed:[self.images objectAtIndex:indexPath.row]];
-    cell.titleLabel.text = [NSString stringWithFormat:@"title %u", indexPath.row];
-    cell.descriptionLabel.text = [NSString stringWithFormat:@"description %u", indexPath.row];
-    cell.dateLabel.text = [NSString stringWithFormat:@"date %u", indexPath.row];
+    ListCellModel *model = [_listData objectAtIndex:indexPath.row];
+    [cell.thumbnail setImageWithURL:[NSURL URLWithString:model.imgUrl]];
+    cell.titleLabel.text = model.title;
+    cell.descriptionLabel.text = model.category;
+    cell.dateLabel.text = model.date;
     
     return cell;
 }

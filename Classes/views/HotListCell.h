@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <PrettyKit.h>
 #import <TTTAttributedLabel.h>
+#import <AFNetworking.h>
 
 @interface HotListCell : PrettyTableViewCell
 @property (nonatomic, unsafe_unretained) UIImageView *thumbnail;

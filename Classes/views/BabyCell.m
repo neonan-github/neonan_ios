@@ -102,6 +102,8 @@ static const NSInteger kTagItemPlayButton = 2001;
 }
 
 - (void)dealloc {
+    self.delegate = nil;
+    
     self.thumbnail = nil;
     self.titleLabel = nil;
     self.scoreLabel = nil;
@@ -194,6 +196,8 @@ static const NSInteger kTagItemPlayButton = 2001;
     
     return view;
 }
+
+#pragma mark - iCarouselDelegate methods
 
 - (CGFloat)carousel:(iCarousel *)_carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value
 {
