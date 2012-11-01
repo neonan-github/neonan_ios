@@ -1,6 +1,8 @@
 #ifdef __OBJC__
 #import <UIKit/UIKit.h>
 #endif
+
+#import <SystemConfiguration/SystemConfiguration.h>
 #ifdef __OBJC__
 #import <CoreText/CoreText.h>
 #endif

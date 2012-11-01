@@ -72,6 +72,8 @@
 		34CB8FF4163FDFD40001AD87 /* CommentListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FF3163FDFD40001AD87 /* CommentListController.xib */; };
 		34D464D21630065C00D8EE28 /* UIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464D11630065C00D8EE28 /* UIHelper.m */; };
 		34D464E51630243900D8EE28 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464E41630243900D8EE28 /* SMPageControl.m */; };
+		34E3E37F16422A510058F5CF /* ListCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E37E16422A510058F5CF /* ListCellModel.m */; };
+		34E3E383164231400058F5CF /* BabyCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E382164231400058F5CF /* BabyCellModel.m */; };
 		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
 		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; };
 		53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFE16265E9400B0672C /* CoreGraphics.framework */; };
@@ -170,6 +172,10 @@
 		34D464D11630065C00D8EE28 /* UIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIHelper.m; sourceTree = "<group>"; };
 		34D464E31630243900D8EE28 /* SMPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPageControl.h; sourceTree = "<group>"; };
 		34D464E41630243900D8EE28 /* SMPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPageControl.m; sourceTree = "<group>"; };
+		34E3E37D16422A510058F5CF /* ListCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCellModel.h; sourceTree = "<group>"; };
+		34E3E37E16422A510058F5CF /* ListCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCellModel.m; sourceTree = "<group>"; };
+		34E3E381164231400058F5CF /* BabyCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCellModel.h; sourceTree = "<group>"; };
+		34E3E382164231400058F5CF /* BabyCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyCellModel.m; sourceTree = "<group>"; };
 		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53816AFA16265E9400B0672C /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		53816AFC16265E9400B0672C /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -231,6 +237,10 @@
 			children = (
 				340A13451631331900E8D594 /* CommentModel.h */,
 				340A13461631331900E8D594 /* CommentModel.m */,
+				34E3E37D16422A510058F5CF /* ListCellModel.h */,
+				34E3E37E16422A510058F5CF /* ListCellModel.m */,
+				34E3E381164231400058F5CF /* BabyCellModel.h */,
+				34E3E382164231400058F5CF /* BabyCellModel.m */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -573,6 +583,8 @@
 				34584644163A3582008AAD38 /* NNNavigationController.m in Sources */,
 				34AC9C6B163E41640020DE4B /* CustomNavigationBar.m in Sources */,
 				340716F8164128E7006E40FE /* VideoPlayController.m in Sources */,
+				34E3E37F16422A510058F5CF /* ListCellModel.m in Sources */,
+				34E3E383164231400058F5CF /* BabyCellModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

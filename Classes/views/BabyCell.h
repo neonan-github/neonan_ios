@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <iCarousel.h>
 #import <PrettyKit.h>
+#import <UIImageView+WebCache.h>
 
 @protocol BabyCellDelegate;
 
