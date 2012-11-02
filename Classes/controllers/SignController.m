@@ -10,6 +10,8 @@
 #import "NNNavigationController.h"
 #import <DCRoundSwitch.h>
 
+#import "SignResult.h"
+
 @interface SignController ()
 @property (unsafe_unretained, nonatomic) TTTAttributedLabel *switchTypeLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *userTextField;
@@ -17,6 +19,11 @@
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *actionButton;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *rememberPWLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet DCRoundSwitch *rememberSwitch;
+
+- (BOOL)validateEmail:(NSString *)string;
+- (void)signUpWithEmail:(NSString *)email andPassword:(NSString *)password;
+- (void)signInWithEmail:(NSString *)email andPassword:(NSString *)password;
+
 @end
 
 @implementation SignController
@@ -154,11 +161,69 @@
 }
 
 - (void)sign:(UIButton *)button {
-    if (_type == signIn) {
-        NSLog(@"sign in!!!");
-    } else {
-        NSLog(@"sing up!!!");
+    NSString *email = [_userTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (!email || email.length < 1) {
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"邮箱不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+//        [alertView show];
+        [UIHelper alertWithMessage:@"邮箱不能为空"];
+        return;
     }
+    
+    NSString *password = [_passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (!password || password.length < 1) {
+        [UIHelper alertWithMessage:@"密码不能为空"];
+        return;
+    }
+    
+    if (![self validateEmail:email]) {
+        [UIHelper alertWithMessage:@"邮箱格式错误"];
+        return;
+    }
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [self performSelector:(_type == signIn ? @selector(signInWithEmail:andPassword:) : @selector(signUpWithEmail:andPassword:))
+               withObject:email
+               withObject:password];
+#pragma clang diagnostic pop
+    
+//    if (_type == signIn) {
+//        NSLog(@"sign in!!!");
+//        [self signUpWithEmail:email andPassword:password];
+//    } else {
+//        NSLog(@"sing up!!!");
+//    }
+}
+
+- (BOOL)validateEmail:(NSString *)string {
+    BOOL stricterFilter = NO; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
+    NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSString *laxString = @".+@.+\\.[A-Za-z]{2}[A-Za-z]*";
+    NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    return [emailTest evaluateWithObject:string];
+}
+
+- (void)signWithEmail:(NSString *)email andPassword:(NSString *)password atPath:(NSString *)path {
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:email, @"email", password, @"password", nil];
+    [[NNHttpClient sharedClient] postAtPath:path parameters:parameters responseClass:[SignResult class] success:^(id<Jsonable> response) {
+        NeonanAppDelegate *delegate = ApplicationDelegate;
+        SignResult *result = (SignResult *)response;
+        delegate.token = result.token;
+        NSLog(@"response:%@", result.token);
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
+ 
+}
+
+- (void)signUpWithEmail:(NSString *)email andPassword:(NSString *)password {
+    [self signWithEmail:email andPassword:password atPath:@"register"];
+}
+
+- (void)signInWithEmail:(NSString *)email andPassword:(NSString *)password {
+    [self signWithEmail:email andPassword:password atPath:@"login"];
 }
 
 @end

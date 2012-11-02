@@ -8,6 +8,7 @@
 
 #import "NNHttpClient.h"
 #import <AFJSONRequestOperation.h>
+#import "ResponseError.h"
 
 static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
 
@@ -36,6 +37,34 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
 //	[self setDefaultHeader:@"Accept" value:@"application/json"];
     
     return self;
+}
+
+- (void)postAtPath:(NSString *)path
+         parameters:(NSDictionary *)parameters
+      responseClass:(Class<Jsonable>)responseClass
+            success:(void (^)(id<Jsonable> response))success
+            failure:(void (^)(ResponseError *error))failure {
+    NSMutableURLRequest *request = [self requestWithMethod:@"POST" path:path parameters:parameters];
+    AFHTTPRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        if ([JSON objectForKey:@"error"]) {
+            ResponseError *error = [ResponseError parse:[JSON objectForKey:@"error"]];
+            if (failure) {
+                failure(error);
+            }
+            
+            return;
+        }
+        
+        if (success) {
+            success([responseClass parse:JSON]);
+        }
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        if (failure) {
+            failure([[ResponseError alloc] initWithCode:0 andMessage:[error localizedDescription]]);
+        }
+        NSLog(@"%@", [error localizedDescription]);
+    }];
+    [operation start];
 }
 
 @end

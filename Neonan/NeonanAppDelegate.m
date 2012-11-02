@@ -8,11 +8,10 @@
 
 #import "NeonanAppDelegate.h"
 #import "MainController.h"
-#import "BabyDetailController.h"
-#import "CommentListController.h"
-#import "SignController.h"
-#import "ArticleDetailController.h"
 #import "NNNavigationController.h"
+
+#import "ResponseError.h"
+#import "SignResult.h"
 
 @implementation NeonanAppDelegate
 
@@ -36,36 +35,20 @@
     [self.navController pushViewController:controller animated:NO];
     self.navController.navigationItem.leftBarButtonItem = nil;
     
-//    [(NeonanViewController *)controller launch];
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"test5@neonan.com", @"email", @"4783C9E55D93F1215FAEQ1E6980EE622", @"password", nil];
-    NSMutableURLRequest *request = [[NNHttpClient sharedClient] requestWithMethod:@"POST" path:@"register" parameters:parameters];
-    AFHTTPRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSLog(@"Response: %@\n%@", response.MIMEType, JSON);
-        NSDictionary *dic = JSON;
-        [dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            NSLog(@"%@ %@", key, [obj objectForKey:@"message"]);
-        }];
-        for (id attributes in JSON) {
-            NSLog(@"attributes:%@\n", [attributes class]);
-        }
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"%@", [error localizedDescription]);
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"test12@neonan.com", @"email", @"4783C9E55D93F1215FAEQ1E6980EE622", @"password", nil];
+    [[NNHttpClient sharedClient] postAtPath:@"register" parameters:parameters responseClass:[SignResult class] success:^(id<Jsonable> response) {
+        NSLog(@"response:%@", ((SignResult *)response).token);
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
     }];
-    [operation start];
-//    [[NNHttpClient sharedClient] postPath:@"register" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSString *text = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        NSLog(@"Response: %@", text);
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"%@", [error localizedDescription]);
-//    }];
     
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-//    [_rootViewController enterBackground];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -76,7 +59,6 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-//    [_rootViewController enterForeground];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -86,7 +68,6 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-//    [_rootViewController exit];
 }
 
 @end

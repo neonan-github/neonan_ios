@@ -83,6 +83,12 @@
     return button;
 }
 
++ (void)alertWithMessage:(NSString *)message {
+    BlockAlertView *alertView = [BlockAlertView alertWithTitle:nil message:message];
+    [alertView setCancelButtonWithTitle:@"确定" block:nil];
+    [alertView show];
+}
+
 @end
 
 @implementation UIImage (UIImageUtil)

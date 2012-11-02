@@ -7,10 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Jsonable.h"
 
-@interface ResponseError : NSObject
+@interface ResponseError : NSObject <Jsonable>
 
 @property (assign, nonatomic) NSInteger errorCode;
 @property (strong, nonatomic) NSString *message;
+
+- (id)initWithCode:(NSInteger)code andMessage:(NSString *)message;
 
 @end

@@ -39,8 +39,8 @@
 		346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614ED1635489B00B1FF5A /* FoldableTextBox.m */; };
 		347AAB5D163672E500D243BA /* SignController.m in Sources */ = {isa = PBXBuildFile; fileRef = 347AAB5B163672E500D243BA /* SignController.m */; };
 		347AAB5E163672E500D243BA /* SignController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 347AAB5C163672E500D243BA /* SignController.xib */; };
-		347AAB6416368A6800D243BA /* UITextField+UITextFieldCatagory.m in Sources */ = {isa = PBXBuildFile; fileRef = 347AAB6316368A6800D243BA /* UITextField+UITextFieldCatagory.m */; };
 		34843563164360F30073468D /* ResponseError.m in Sources */ = {isa = PBXBuildFile; fileRef = 34843562164360F30073468D /* ResponseError.m */; };
+		3484357616437A4B0073468D /* SignResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 3484357516437A4B0073468D /* SignResult.m */; };
 		3499BEFE1626E2430084B838 /* article_detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEF81626E2430084B838 /* article_detail.jpg */; };
 		3499BEFF1626E2430084B838 /* article_list.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEF91626E2430084B838 /* article_list.jpg */; };
 		3499BF001626E2430084B838 /* baby_detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEFA1626E2430084B838 /* baby_detail.jpg */; };
@@ -136,10 +136,12 @@
 		347AAB5A163672E500D243BA /* SignController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignController.h; sourceTree = "<group>"; };
 		347AAB5B163672E500D243BA /* SignController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignController.m; sourceTree = "<group>"; };
 		347AAB5C163672E500D243BA /* SignController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SignController.xib; path = ../Classes/controllers/SignController.xib; sourceTree = "<group>"; };
-		347AAB6216368A6800D243BA /* UITextField+UITextFieldCatagory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+UITextFieldCatagory.h"; sourceTree = "<group>"; };
-		347AAB6316368A6800D243BA /* UITextField+UITextFieldCatagory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+UITextFieldCatagory.m"; sourceTree = "<group>"; };
 		34843561164360F30073468D /* ResponseError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseError.h; sourceTree = "<group>"; };
 		34843562164360F30073468D /* ResponseError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResponseError.m; sourceTree = "<group>"; };
+		34843572164367EC0073468D /* Jsonable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Jsonable.h; sourceTree = "<group>"; };
+		3484357416437A4B0073468D /* SignResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignResult.h; sourceTree = "<group>"; };
+		3484357516437A4B0073468D /* SignResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignResult.m; sourceTree = "<group>"; };
+		348435771643A32A0073468D /* AppHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppHelper.h; sourceTree = "<group>"; };
 		3499BEF81626E2430084B838 /* article_detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = article_detail.jpg; sourceTree = "<group>"; };
 		3499BEF91626E2430084B838 /* article_list.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = article_list.jpg; sourceTree = "<group>"; };
 		3499BEFA1626E2430084B838 /* baby_detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = baby_detail.jpg; sourceTree = "<group>"; };
@@ -180,7 +182,6 @@
 		34E3E37E16422A510058F5CF /* ListCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCellModel.m; sourceTree = "<group>"; };
 		34E3E381164231400058F5CF /* BabyCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCellModel.h; sourceTree = "<group>"; };
 		34E3E382164231400058F5CF /* BabyCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyCellModel.m; sourceTree = "<group>"; };
-		34E3E39C164272BD0058F5CF /* Contants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Contants.h; sourceTree = "<group>"; };
 		34E3E3A6164276C50058F5CF /* NNHttpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHttpClient.h; sourceTree = "<group>"; };
 		34E3E3A7164276C50058F5CF /* NNHttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHttpClient.m; sourceTree = "<group>"; };
 		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -248,8 +249,11 @@
 				34E3E37E16422A510058F5CF /* ListCellModel.m */,
 				34E3E381164231400058F5CF /* BabyCellModel.h */,
 				34E3E382164231400058F5CF /* BabyCellModel.m */,
+				34843572164367EC0073468D /* Jsonable.h */,
 				34843561164360F30073468D /* ResponseError.h */,
 				34843562164360F30073468D /* ResponseError.m */,
+				3484357416437A4B0073468D /* SignResult.h */,
+				3484357516437A4B0073468D /* SignResult.m */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -326,9 +330,9 @@
 		34D46496162FCA7500D8EE28 /* helpers */ = {
 			isa = PBXGroup;
 			children = (
+				348435771643A32A0073468D /* AppHelper.h */,
 				34D464D01630065C00D8EE28 /* UIHelper.h */,
 				34D464D11630065C00D8EE28 /* UIHelper.m */,
-				34E3E39C164272BD0058F5CF /* Contants.h */,
 				34E3E3A6164276C50058F5CF /* NNHttpClient.h */,
 				34E3E3A7164276C50058F5CF /* NNHttpClient.m */,
 			);
@@ -439,8 +443,6 @@
 				346614ED1635489B00B1FF5A /* FoldableTextBox.m */,
 				340A13481631419600E8D594 /* CommentBox.h */,
 				340A13491631419600E8D594 /* CommentBox.m */,
-				347AAB6216368A6800D243BA /* UITextField+UITextFieldCatagory.h */,
-				347AAB6316368A6800D243BA /* UITextField+UITextFieldCatagory.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -590,7 +592,6 @@
 				346614DB163521C500B1FF5A /* CommentListController.m in Sources */,
 				346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */,
 				347AAB5D163672E500D243BA /* SignController.m in Sources */,
-				347AAB6416368A6800D243BA /* UITextField+UITextFieldCatagory.m in Sources */,
 				3401FDFC1636A1D700FAF971 /* ArticleDetailController.m in Sources */,
 				34584644163A3582008AAD38 /* NNNavigationController.m in Sources */,
 				34AC9C6B163E41640020DE4B /* CustomNavigationBar.m in Sources */,
@@ -599,6 +600,7 @@
 				34E3E383164231400058F5CF /* BabyCellModel.m in Sources */,
 				34E3E3A8164276C50058F5CF /* NNHttpClient.m in Sources */,
 				34843563164360F30073468D /* ResponseError.m in Sources */,
+				3484357616437A4B0073468D /* SignResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
