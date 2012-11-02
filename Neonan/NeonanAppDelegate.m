@@ -40,7 +40,7 @@
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"test5@neonan.com", @"email", @"4783C9E55D93F1215FAEQ1E6980EE622", @"password", nil];
     NSMutableURLRequest *request = [[NNHttpClient sharedClient] requestWithMethod:@"POST" path:@"register" parameters:parameters];
     AFHTTPRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSLog(@"Response: %@\n%@", response.MIMEType, [JSON class]);
+        NSLog(@"Response: %@\n%@", response.MIMEType, JSON);
         NSDictionary *dic = JSON;
         [dic enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             NSLog(@"%@ %@", key, [obj objectForKey:@"message"]);
