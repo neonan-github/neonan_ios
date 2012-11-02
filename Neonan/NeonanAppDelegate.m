@@ -13,6 +13,8 @@
 #import "ResponseError.h"
 #import "SignResult.h"
 
+#import <SSKeychain.h>
+
 @implementation NeonanAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -34,13 +36,6 @@
     UIViewController *controller = [[MainController alloc] init];
     [self.navController pushViewController:controller animated:NO];
     self.navController.navigationItem.leftBarButtonItem = nil;
-    
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"test12@neonan.com", @"email", @"4783C9E55D93F1215FAEQ1E6980EE622", @"password", nil];
-    [[NNHttpClient sharedClient] postAtPath:@"register" parameters:parameters responseClass:[SignResult class] success:^(id<Jsonable> response) {
-        NSLog(@"response:%@", ((SignResult *)response).token);
-    } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
-    }];
     
     [self.window makeKeyAndVisible];
     

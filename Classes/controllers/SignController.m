@@ -10,6 +10,9 @@
 #import "NNNavigationController.h"
 #import <DCRoundSwitch.h>
 
+#import <SSKeychain.h>
+#import "MD5.h"
+
 #import "SignResult.h"
 
 @interface SignController ()
@@ -180,6 +183,7 @@
         return;
     }
     
+    
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [self performSelector:(_type == signIn ? @selector(signInWithEmail:andPassword:) : @selector(signUpWithEmail:andPassword:))
@@ -210,6 +214,7 @@
         NeonanAppDelegate *delegate = ApplicationDelegate;
         SignResult *result = (SignResult *)response;
         delegate.token = result.token;
+        [SSKeychain setPassword:[password md5] forService:@"neonan.com" account:email];
         NSLog(@"response:%@", result.token);
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
