@@ -128,7 +128,7 @@ headerView = _headerView;
     
     self.listData = [[NSMutableArray alloc] initWithCapacity:20];
     for (NSUInteger i = 0; i < 20; i++) {
-        [self.listData addObject:[[ListCellModel alloc] init]];
+        [self.listData addObject:[[BabyCellModel alloc] init]];
     }
 }
 
@@ -225,7 +225,7 @@ headerView = _headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.headerView.carousel.currentItemIndex == 5) {
+    if (self.headerView.carousel.currentItemIndex == 0) {
         return [self createBabyCell:tableView forRowAtIndexPath:indexPath];
     }
     
@@ -235,7 +235,7 @@ headerView = _headerView;
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return self.headerView.carousel.currentItemIndex == 5 ? 80 : 60;
+    return self.headerView.carousel.currentItemIndex == 0 ? 80 : 60;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -265,7 +265,8 @@ headerView = _headerView;
 
 - (void)playVideoAtIndex:(NSUInteger)index {
     UIViewController *controller = [[VideoPlayController alloc] init];
-    [self.navigationController presentModalViewController:controller animated:YES];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    [self.navigationController presentModalViewController:navController animated:YES];
 }
 
 #pragma mark - Private methods

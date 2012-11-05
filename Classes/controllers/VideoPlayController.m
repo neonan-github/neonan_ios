@@ -7,6 +7,7 @@
 //
 
 #import "VideoPlayController.h"
+#import "MathHelper.h"
 
 @interface VideoPlayController () <UIWebViewDelegate>
 
@@ -29,7 +30,37 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.webView.delegate = self;
+    UIButton *navLeftButton = [UIHelper createBarButton:5];
+    [navLeftButton setTitle:@"关闭" forState:UIControlStateNormal];
+    [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
+    
+    _webView.delegate = self;
+    _webView.hidden = YES;
+    
+    NSString *embedHTML = @"\
+	<html><head>\
+	<meta name=\"apple-touch-fullscreen\" content=\"YES\" /><meta name=\"apple-mobile-web-app-capable\" content=\"yes\" /><meta name=\"viewport\" content=\"width=device-width,initial-scale=%.2f,minimum-scale=%.2f,maximum-scale=%.2f,user-scalable=no\" /></head>\
+	<body style=\"background:#000;margin:0px;\">\
+	<iframe width=510 height=498 src=\"http://player.youku.com/embed/XNDcwNjA1MjQ0\" frameborder=0 ></iframe>\
+	</body></html>";
+    
+    CGFloat scale = [MathHelper floorValue:(self.view.frame.size.width / 510) withDecimal:2];
+    
+    CGRect frame = _webView.frame;
+    frame.size.width = scale * 510;
+    frame.size.height = scale * 498;
+    _webView.frame = frame;
+    
+    _webView.center = self.view.center;
+    
+    for (id subview in _webView.subviews)
+        if ([[subview class] isSubclassOfClass: [UIScrollView class]])
+            ((UIScrollView *)subview).bounces = NO;
+    
+    NSString *html = [NSString stringWithFormat:embedHTML, scale, scale, scale];
+    NSLog(embedHTML, scale, scale, scale);
+    [_webView loadHTMLString:html baseURL:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,27 +79,8 @@
     self.webView.delegate = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return (toInterfaceOrientation == UIDeviceOrientationLandscapeLeft || toInterfaceOrientation == UIDeviceOrientationLandscapeRight);
-}
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-//    
-//    NSString *embedHTML = @"\
-//	<html><head>\
-//	<meta name = \"viewport\" content = \"initial-scale = 1.0, user-scalable = no, width = 620\"/></head>\
-//	<script>document.ontouchmove = function(event) {event.preventDefault();}</script>\
-//	<body style=\"background:#000;margin:0px;\">\
-//	<div><iframe width=\"620\" height=\"348\" src=\"%@\" frameborder=\"0\" allowfullscreen></iframe>\
-//	</div></body></html>";
-//    
-//    NSString *html = [NSString stringWithFormat:embedHTML, @"http://player.youku.com/embed/XNDY4OTU1Mzky"];
-//    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://player.youku.com/embed/XNDY5MjU5NTg4"]]];
-//    NSString *html = [NSString stringWithFormat:@"<iframe frameborder=0 src=\"http://player.youku.com/embed/XNDY4OTU1Mzky\"></iframe>"];
-//    [_webView loadHTMLString:html baseURL:nil];
-//    [_webView loadHTMLString:@"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /><meta name=\"viewport\" content=\"width=320; initial-scale=1.0; minimum-scale=1.0;\"/><title>Untitled Document</title></head><body><iframe height=498 width=510 frameborder=0 src=\"http://player.youku.com/embed/XNDY4OTU1Mzky\" frameborder=0 allowfullscreen></iframe></body></html>" baseURL:nil];
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://player.youku.com/embed/XNDY4OTU1Mzky"]]];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -80,29 +92,38 @@
 #pragma mark - UIWebViewDelegate methods
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-//    CGRect frame = webView.frame;
-//    frame.size.height = 1;
-//    webView.frame = frame;
-//    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
-//    frame.size = fittingSize;
-//    webView.frame = frame;
+    NSLog(@"webViewDidFinishLoad");
+    webView.hidden = NO;
     
-//    if ([webView respondsToSelector:@selector(scrollView)])
-//    {
-//        UIScrollView *scroll=[webView scrollView];
-//        
-//        float zoom=webView.bounds.size.width/scroll.contentSize.width;
-//        float zoom2 = webView.bounds.size.height/scroll.contentSize.height;
-//        scroll.minimumZoomScale = MIN(zoom, zoom2);
-//        scroll.maximumZoomScale = MIN(zoom, zoom2);
-//        scroll.zoomScale = MIN(zoom, zoom2);
-//    }
+    [self performSelector:@selector(autoPlay) withObject:nil afterDelay:1];
+}
+
+#pragma mark - Private methods
+
+- (UIButton *)findButtonInView:(UIView *)view {
+    UIButton *button = nil;
     
-//    NSLog(@"size: %f, %f", fittingSize.width, fittingSize.height);
-//    CGFloat contentHeight = [[webView stringByEvaluatingJavaScriptFromString:
-//                              @"document.documentElement.scrollHeight"] floatValue];
-//	webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y,
-//                               webView.frame.size.width, contentHeight);
+    if ([view isMemberOfClass:[UIButton class]]) {
+        return (UIButton *)view;
+    }
+    
+    if (view.subviews && [view.subviews count] > 0) {
+        for (UIView *subview in view.subviews) {
+            button = [self findButtonInView:subview];
+            if (button) return button;
+        }
+    }
+    
+    return button;
+}
+
+- (void)autoPlay {
+    UIButton *playButton = [self findButtonInView:_webView];
+    [playButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)close {
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end
