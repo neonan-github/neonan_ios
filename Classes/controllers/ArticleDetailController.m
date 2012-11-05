@@ -51,6 +51,8 @@
 //    _commentBox.rightView = _commentButton;
     [_commentBox.countButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)didReceiveMemoryWarning
@@ -155,6 +157,14 @@
 }
 
 #pragma mark - Private methods
+
+- (void)share {
+//	SHKItem *item = [SHKItem text:@"test!!!"];
+//    item.tags = [NSArray arrayWithObjects:@"sharekit", @"testing", @"text example", nil];
+//	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
+//	[SHK setRootViewController:self];
+//	[actionSheet showFromToolbar:self.navigationController.toolbar];
+}
 
 - (void)publish:(UIButton *)button {
     SignController *controller = [[SignController alloc] init];
