@@ -10,6 +10,7 @@
 #import "SignController.h"
 #import "CommentListController.h"
 #import "NNNavigationController.h"
+#import "SHK.h"
 
 #import "CommentBox.h"
 #import <DTCoreText.h>
@@ -159,11 +160,11 @@
 #pragma mark - Private methods
 
 - (void)share {
-//	SHKItem *item = [SHKItem text:@"test!!!"];
-//    item.tags = [NSArray arrayWithObjects:@"sharekit", @"testing", @"text example", nil];
-//	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
-//	[SHK setRootViewController:self];
-//	[actionSheet showFromToolbar:self.navigationController.toolbar];
+	SHKItem *item = [SHKItem text:@"test!!!"];
+    item.tags = [NSArray arrayWithObjects:@"sharekit", @"testing", @"text example", nil];
+	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
+	[SHK setRootViewController:self];
+	[actionSheet showFromToolbar:self.navigationController.toolbar];
 }
 
 - (void)publish:(UIButton *)button {
