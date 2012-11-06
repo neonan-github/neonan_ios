@@ -6,9 +6,9 @@
 //  Copyright (c) 2011 Cocoa Miners. All rights reserved.
 //
 
-#import "DemoConfigurator.h"
+#import "NNShareConfigurator.h"
 
-@implementation DemoConfigurator
+@implementation NNShareConfigurator
 
 /* 
  App Description 

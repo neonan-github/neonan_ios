@@ -8,6 +8,6 @@
 
 #import "DefaultSHKConfigurator.h"
 
-@interface DemoConfigurator : DefaultSHKConfigurator
+@interface NNShareConfigurator : DefaultSHKConfigurator
 
 @end

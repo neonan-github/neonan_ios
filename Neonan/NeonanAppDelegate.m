@@ -12,7 +12,7 @@
 
 #import "ResponseError.h"
 #import "SignResult.h"
-#import "DemoConfigurator.h"
+#import "NNShareConfigurator.h"
 #import "SHKConfiguration.h"
 
 #import <SSKeychain.h>
@@ -28,7 +28,7 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
-    DefaultSHKConfigurator *configurator = [[DemoConfigurator alloc] init];
+    DefaultSHKConfigurator *configurator = [[NNShareConfigurator alloc] init];
     [SHKConfiguration sharedInstanceWithConfigurator:configurator];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

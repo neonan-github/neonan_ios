@@ -57,7 +57,7 @@
 		3499BF021626E2430084B838 /* home.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEFC1626E2430084B838 /* home.jpg */; };
 		3499BF031626E2430084B838 /* splash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEFD1626E2430084B838 /* splash.jpg */; };
 		3499BF131627D3F70084B838 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3499BF121627D3F70084B838 /* MediaPlayer.framework */; };
-		34A149E01647E2E800963D8C /* DemoConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A149DF1647E2E800963D8C /* DemoConfigurator.m */; };
+		34A149E01647E2E800963D8C /* NNShareConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A149DF1647E2E800963D8C /* NNShareConfigurator.m */; };
 		34AC9C6B163E41640020DE4B /* CustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC9C6A163E41640020DE4B /* CustomNavigationBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		34AC9C6D163E5D0E0020DE4B /* bg_btn_nav_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C6C163E5D0E0020DE4B /* bg_btn_nav_right.png */; };
 		34AC9C6F163E5DB10020DE4B /* bg_bar_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C6E163E5DB10020DE4B /* bg_bar_button.png */; };
@@ -480,8 +480,8 @@
 		3499BEFC1626E2430084B838 /* home.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = home.jpg; sourceTree = "<group>"; };
 		3499BEFD1626E2430084B838 /* splash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = splash.jpg; sourceTree = "<group>"; };
 		3499BF121627D3F70084B838 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		34A149DE1647E2E800963D8C /* DemoConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoConfigurator.h; sourceTree = "<group>"; };
-		34A149DF1647E2E800963D8C /* DemoConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoConfigurator.m; sourceTree = "<group>"; };
+		34A149DE1647E2E800963D8C /* NNShareConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNShareConfigurator.h; sourceTree = "<group>"; };
+		34A149DF1647E2E800963D8C /* NNShareConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNShareConfigurator.m; sourceTree = "<group>"; };
 		34AC9C69163E41640020DE4B /* CustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNavigationBar.h; sourceTree = "<group>"; };
 		34AC9C6A163E41640020DE4B /* CustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNavigationBar.m; sourceTree = "<group>"; };
 		34AC9C6C163E5D0E0020DE4B /* bg_btn_nav_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_btn_nav_right.png; sourceTree = "<group>"; };
@@ -786,8 +786,8 @@
 		53816B0016265E9400B0672C /* Neonan */ = {
 			isa = PBXGroup;
 			children = (
-				34A149DE1647E2E800963D8C /* DemoConfigurator.h */,
-				34A149DF1647E2E800963D8C /* DemoConfigurator.m */,
+				34A149DE1647E2E800963D8C /* NNShareConfigurator.h */,
+				34A149DF1647E2E800963D8C /* NNShareConfigurator.m */,
 				53816B0916265E9400B0672C /* NeonanAppDelegate.h */,
 				53816B0A16265E9400B0672C /* NeonanAppDelegate.m */,
 				53816B0116265E9400B0672C /* Supporting Files */,
@@ -1313,7 +1313,7 @@
 				3484357616437A4B0073468D /* SignResult.m in Sources */,
 				348435B81643C6540073468D /* MD5.m in Sources */,
 				34E4BC141647571000C07DFA /* MathHelper.m in Sources */,
-				34A149E01647E2E800963D8C /* DemoConfigurator.m in Sources */,
+				34A149E01647E2E800963D8C /* NNShareConfigurator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
