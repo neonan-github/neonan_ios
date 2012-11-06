@@ -157,7 +157,7 @@
 
 - (void)showInView:(UIView *)view
 {
-    self.center=CGPointMake(view.bounds.size.width/2, view.bounds.size.height/2);
+    self.center=CGPointMake(view.bounds.size.width/2, view.bounds.size.height/4);
     [view addSubview:self];
 }
 

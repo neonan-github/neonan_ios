@@ -34,8 +34,10 @@
             NSData *img=UIImageJPEGRepresentation(content, 0.5f);
             [mailController addAttachmentData:img mimeType:@"image/jpeg" fileName:@"image"];
         }
-        else
-           [mailController setMessageBody:content isHTML:NO];
+        else {
+            [mailController setSubject:description];
+            [mailController setMessageBody:content isHTML:NO];
+        }
         
          if(self.rootViewController)
             [self.rootViewController presentModalViewController:mailController animated:YES];

@@ -158,6 +158,9 @@
 		34E3E383164231400058F5CF /* BabyCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E382164231400058F5CF /* BabyCellModel.m */; };
 		34E3E3A8164276C50058F5CF /* NNHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E3A7164276C50058F5CF /* NNHttpClient.m */; };
 		34E4BC141647571000C07DFA /* MathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E4BC131647571000C07DFA /* MathHelper.m */; };
+		34E95AC71648FF1000DCD229 /* ShareEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E95AC51648FF1000DCD229 /* ShareEditController.m */; };
+		34E95AC81648FF1000DCD229 /* ShareEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E95AC61648FF1000DCD229 /* ShareEditController.xib */; };
+		34E95ACB164905FE00DCD229 /* ShareHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E95ACA164905FE00DCD229 /* ShareHelper.m */; };
 		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
 		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFE16265E9400B0672C /* CoreGraphics.framework */; };
@@ -417,6 +420,11 @@
 		34E3E3A7164276C50058F5CF /* NNHttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHttpClient.m; sourceTree = "<group>"; };
 		34E4BC121647571000C07DFA /* MathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathHelper.h; sourceTree = "<group>"; };
 		34E4BC131647571000C07DFA /* MathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MathHelper.m; sourceTree = "<group>"; };
+		34E95AC41648FF1000DCD229 /* ShareEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareEditController.h; sourceTree = "<group>"; };
+		34E95AC51648FF1000DCD229 /* ShareEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareEditController.m; sourceTree = "<group>"; };
+		34E95AC61648FF1000DCD229 /* ShareEditController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ShareEditController.xib; path = ../Classes/controllers/ShareEditController.xib; sourceTree = "<group>"; };
+		34E95AC9164905FE00DCD229 /* ShareHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareHelper.h; sourceTree = "<group>"; };
+		34E95ACA164905FE00DCD229 /* ShareHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareHelper.m; sourceTree = "<group>"; };
 		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53816AFA16265E9400B0672C /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		53816AFC16265E9400B0672C /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -471,6 +479,8 @@
 				34584643163A3582008AAD38 /* NNNavigationController.m */,
 				340716F5164128E7006E40FE /* VideoPlayController.h */,
 				340716F6164128E7006E40FE /* VideoPlayController.m */,
+				34E95AC41648FF1000DCD229 /* ShareEditController.h */,
+				34E95AC51648FF1000DCD229 /* ShareEditController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -500,6 +510,7 @@
 				3401FDFB1636A1D700FAF971 /* ArticleDetailController.xib */,
 				34CB8FF3163FDFD40001AD87 /* CommentListController.xib */,
 				34071702164133C3006E40FE /* VideoPlayController.xib */,
+				34E95AC61648FF1000DCD229 /* ShareEditController.xib */,
 			);
 			name = layouts;
 			sourceTree = "<group>";
@@ -832,6 +843,8 @@
 				348435B71643C6540073468D /* MD5.m */,
 				34E4BC121647571000C07DFA /* MathHelper.h */,
 				34E4BC131647571000C07DFA /* MathHelper.m */,
+				34E95AC9164905FE00DCD229 /* ShareHelper.h */,
+				34E95ACA164905FE00DCD229 /* ShareHelper.m */,
 			);
 			path = helpers;
 			sourceTree = "<group>";
@@ -1082,6 +1095,7 @@
 				348004B91648D6C200EED346 /* delete@2x.png in Resources */,
 				348004BA1648D6C200EED346 /* logo.png in Resources */,
 				348004BB1648D6C200EED346 /* logo@2x.png in Resources */,
+				34E95AC81648FF1000DCD229 /* ShareEditController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1187,6 +1201,8 @@
 				348004C11648D6C200EED346 /* SHSendView.m in Sources */,
 				348004C21648D6C200EED346 /* SHSMoreViewController.m in Sources */,
 				348004C31648D6C200EED346 /* SHSShareViewController.m in Sources */,
+				34E95AC71648FF1000DCD229 /* ShareEditController.m in Sources */,
+				34E95ACB164905FE00DCD229 /* ShareHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

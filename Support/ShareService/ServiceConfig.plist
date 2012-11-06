@@ -107,15 +107,6 @@
 	<key>TrackClickBack</key>
 	<true/>
 	<key>RedirectServices</key>
-	<array>
-		<dict>
-			<key>title</key>
-			<string>QQ空间</string>
-			<key>name</key>
-			<string>qzone</string>
-			<key>isMore</key>
-			<false/>
-		</dict>
-	</array>
+	<array/>
 </dict>
 </plist>

@@ -10,7 +10,7 @@
 #import "SignController.h"
 #import "CommentListController.h"
 #import "NNNavigationController.h"
-#import "SHSShareViewController.h"
+#import "ShareHelper.h"
 
 #import "CommentBox.h"
 #import <DTCoreText.h>
@@ -22,7 +22,7 @@
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
 //@property (strong, nonatomic) IBOutlet UIButton *commentButton;
-@property (strong, nonatomic) SHSShareViewController *shareController;
+@property (strong, nonatomic) ShareHelper *shareHelper;
 
 @end
 
@@ -68,7 +68,7 @@
     [self setTextView:nil];
     [self setCommentBox:nil];
     [self setShareButton:nil];
-    self.shareController = nil;
+    self.shareHelper = nil;
     [super viewDidUnload];
 }
 
@@ -162,17 +162,11 @@
 #pragma mark - Private methods
 
 - (void)share {
-    if (!self.shareController) {
-        self.shareController = [[SHSShareViewController alloc] initWithRootViewController:self];
+    if (!self.shareHelper) {
+        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
     }
     
-    self.shareController.shareType=ShareTypeText;
-    self.shareController.sharedtitle=@"google";
-    self.shareController.sharedText=@"hahaha";
-    self.shareController.sharedURL=@"http://www.google.com";
-    self.shareController.shareType=ShareTypeText;
-    
-    [self.shareController showShareView];
+    [self.shareHelper showShareView];
 }
 
 - (void)publish:(UIButton *)button {
