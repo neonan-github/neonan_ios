@@ -16,11 +16,11 @@
  These values are used by any service that shows 'shared from XYZ'
  */
 - (NSString*)appName {
-	return @"Share Kit Demo App";
+	return @"牛男";
 }
 
 - (NSString*)appURL {
-	return @"https://github.com/ShareKit/ShareKit/";
+	return @"http://www.neonan.com/";
 }
 
 /*
@@ -74,7 +74,7 @@
 
 // To use xAuth, set to 1
 - (NSNumber*)sinaWeiboUseXAuth {
-	return [NSNumber numberWithInt:0];
+	return [NSNumber numberWithInt:1];
 }
 
 // Enter your sina weibo screen name (Only for xAuth)
