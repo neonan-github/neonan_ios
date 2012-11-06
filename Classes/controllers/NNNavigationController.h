@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NNNavigationController : UINavigationController
-
+@property (assign, nonatomic) BOOL logoHidden;
 @end

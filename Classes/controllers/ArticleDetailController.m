@@ -10,7 +10,7 @@
 #import "SignController.h"
 #import "CommentListController.h"
 #import "NNNavigationController.h"
-#import "SHK.h"
+#import "SHSShareViewController.h"
 
 #import "CommentBox.h"
 #import <DTCoreText.h>
@@ -22,6 +22,7 @@
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
 //@property (strong, nonatomic) IBOutlet UIButton *commentButton;
+@property (strong, nonatomic) SHSShareViewController *shareController;
 
 @end
 
@@ -67,6 +68,7 @@
     [self setTextView:nil];
     [self setCommentBox:nil];
     [self setShareButton:nil];
+    self.shareController = nil;
     [super viewDidUnload];
 }
 
@@ -160,11 +162,17 @@
 #pragma mark - Private methods
 
 - (void)share {
-	SHKItem *item = [SHKItem text:@"test!!!"];
-    item.tags = [NSArray arrayWithObjects:@"sharekit", @"testing", @"text example", nil];
-	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
-	[SHK setRootViewController:self];
-	[actionSheet showFromToolbar:self.navigationController.toolbar];
+    if (!self.shareController) {
+        self.shareController = [[SHSShareViewController alloc] initWithRootViewController:self];
+    }
+    
+    self.shareController.shareType=ShareTypeText;
+    self.shareController.sharedtitle=@"google";
+    self.shareController.sharedText=@"hahaha";
+    self.shareController.sharedURL=@"http://www.google.com";
+    self.shareController.shareType=ShareTypeText;
+    
+    [self.shareController showShareView];
 }
 
 - (void)publish:(UIButton *)button {

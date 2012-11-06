@@ -8,12 +8,9 @@
 
 #import "NeonanAppDelegate.h"
 #import "MainController.h"
-#import "NNNavigationController.h"
 
 #import "ResponseError.h"
 #import "SignResult.h"
-#import "NNShareConfigurator.h"
-#import "SHKConfiguration.h"
 
 #import <SSKeychain.h>
 
@@ -28,14 +25,12 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
-    DefaultSHKConfigurator *configurator = [[NNShareConfigurator alloc] init];
-    [SHKConfiguration sharedInstanceWithConfigurator:configurator];
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
     self.navController = [[NNNavigationController alloc] init];
+    self.navController.logoHidden = NO;
     self.window.rootViewController = self.navController;
        
     UIViewController *controller = [[MainController alloc] init];
