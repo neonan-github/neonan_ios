@@ -84,7 +84,9 @@
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];//停止播放
+    if (SYSTEM_VERSION_LESS_THAN(@"6.0")) {
+        [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];//停止播放
+    }
     
     [super viewDidDisappear:animated];
 }
