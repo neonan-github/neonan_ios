@@ -53,7 +53,7 @@
     self.navigationItem.title=@"请求授权";
     
     UIBarButtonItem *cancelBtn=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
-    self.navigationItem.rightBarButtonItem=cancelBtn;
+    self.navigationItem.leftBarButtonItem=cancelBtn;
     [cancelBtn release];
 }
 
