@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "MainController.h"
+#import "NNNavigationController.h"
 
 @interface NeonanAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
-@property (nonatomic, strong) UINavigationController *navController;
+@property (nonatomic, strong) NNNavigationController *navController;
 
 @property (nonatomic, copy) NSString *token;// 登录令牌
 

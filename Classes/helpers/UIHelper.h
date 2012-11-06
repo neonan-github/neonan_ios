@@ -16,6 +16,7 @@
 #define TabBar                              self.tabBarController.tabBar
 #define NavBarHeight                        44
 #define StatusBarHeight                     20
+#define KeyboardPortraitHeight              216
 #define TabBarHeight                        self.tabBarController.tabBar.bounds.size.height
 #define ScreenWidth                         [[UIScreen mainScreen] bounds].size.width
 #define ScreenHeight                        [[UIScreen mainScreen] bounds].size.height

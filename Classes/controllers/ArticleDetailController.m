@@ -10,7 +10,7 @@
 #import "SignController.h"
 #import "CommentListController.h"
 #import "NNNavigationController.h"
-#import "SHK.h"
+#import "ShareHelper.h"
 
 #import "CommentBox.h"
 #import <DTCoreText.h>
@@ -22,6 +22,7 @@
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
 //@property (strong, nonatomic) IBOutlet UIButton *commentButton;
+@property (strong, nonatomic) ShareHelper *shareHelper;
 
 @end
 
@@ -67,6 +68,7 @@
     [self setTextView:nil];
     [self setCommentBox:nil];
     [self setShareButton:nil];
+    self.shareHelper = nil;
     [super viewDidUnload];
 }
 
@@ -160,11 +162,11 @@
 #pragma mark - Private methods
 
 - (void)share {
-	SHKItem *item = [SHKItem text:@"test!!!"];
-    item.tags = [NSArray arrayWithObjects:@"sharekit", @"testing", @"text example", nil];
-	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
-	[SHK setRootViewController:self];
-	[actionSheet showFromToolbar:self.navigationController.toolbar];
+    if (!self.shareHelper) {
+        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
+    }
+    
+    [self.shareHelper showShareView];
 }
 
 - (void)publish:(UIButton *)button {

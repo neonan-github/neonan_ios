@@ -10,6 +10,7 @@
 #import "CustomNavigationBar.h"
 
 @interface NNNavigationController ()
+@property (unsafe_unretained, nonatomic) UIImageView *logoView;
 @end
 
 @implementation NNNavigationController
@@ -24,12 +25,14 @@
         navigationBar.bottomLineColor = RGB(32, 32, 32);
         navigationBar.gradientStartColor = RGB(32, 32, 32);
         navigationBar.gradientEndColor = RGB(32, 32, 32);
-//        navigationBar.tintColor = [UIColor blackColor];
+        navigationBar.tintColor = RGB(32, 32, 32);
         navigationBar.navigationController = self;
 
-        UIImageView *logoView = [[UIImageView alloc] initWithFrame:CGRectMake((CompatibleScreenWidth - 85) / 2, (NavBarHeight - 19) / 2, 85, 19)];
+        UIImageView *logoView = self.logoView = [[UIImageView alloc] initWithFrame:CGRectMake((CompatibleScreenWidth - 85) / 2, (NavBarHeight - 19) / 2, 85, 19)];
         logoView.image = [UIImage imageFromFile:@"img_logo.png"];
         [navigationBar addSubview:logoView];
+        
+        self.logoHidden = YES;
         
         [self setValue:navigationBar forKeyPath:@"navigationBar"];
     }
@@ -49,11 +52,33 @@
 }
 
 - (void)viewDidUnload {
+    self.logoView = nil;
+    
     [super viewDidUnload];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     [super pushViewController:viewController animated:animated];
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+// pre-iOS 6 support
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)setLogoHidden:(BOOL)hidden {
+    if (_logoHidden != hidden) {
+        _logoHidden = hidden;
+        
+        _logoView.hidden = hidden;
+    }
 }
 
 @end
