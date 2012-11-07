@@ -20,6 +20,7 @@
 #import "CustomNavigationBar.h"
 #import <SVPullToRefresh.h>
 #import <TTTAttributedLabel.h>
+#import <NYXImagesKit.h>
 
 #import "BabyDetailController.h"
 #import "CommentListController.h"
@@ -32,7 +33,7 @@ typedef enum {
     listTypeHotest
 } listType;
 
-@interface MainController () <BabyCellDelegate>
+@interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate>
 @property (nonatomic, unsafe_unretained) UIButton *navLeftButton;
 @property (nonatomic, unsafe_unretained) UIButton *navRightButton;
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
@@ -119,12 +120,12 @@ headerView = _headerView;
     }];
     [self.view addSubview:tableView];
     
-    self.images = [[NSArray alloc] initWithObjects:@"http://neonan.b0.upaiyun.com/uploads/bfab07ca-b5e7-4562-9745-c68eceb14796.jpg",
-                   @"http://neonan.b0.upaiyun.com/uploads/abd670d9-2f5e-4716-8d59-b19ae4eba704.jpg",
-                   @"http://neonan.b0.upaiyun.com//2012-10-24/1351039293662.jpg",
-                   @"http://neonan.b0.upaiyun.com//2012-10-25/1351125878136.jpg",
-                   @"http://neonan.b0.upaiyun.com//2012-10-24/1351039316411.jpg",
-                   @"http://neonan.b0.upaiyun.com//2012-10-24/1351039266238.jpg", nil];
+    self.images = [[NSArray alloc] initWithObjects:@"http://neonan.b0.upaiyun.com/uploads/7ba32007-fa1c-4625-9c03-8607c3468ec7.jpg",
+                   @"http://neonan.b0.upaiyun.com/uploads/a78299ad-8972-4224-ac7f-9c9a88d34564.jpg",
+                   @"http://neonan.b0.upaiyun.com/uploads/96b12b06-0925-4579-b069-747ea154f18c.jpg",
+                   @"http://neonan.b0.upaiyun.com/uploads/e9873bfb-f865-4a49-a815-56f2b7bbf641.jpg",
+                   @"http://neonan.b0.upaiyun.com/uploads/d8380d5b-7153-4ea0-9bd6-d53a3ee38db1.jpg",
+                   @"http://neonan.b0.upaiyun.com/uploads/d615d555-67e3-4f86-a8e3-d3b77888ca64.jpg", nil];
     
     self.listData = [[NSMutableArray alloc] initWithCapacity:20];
     for (NSUInteger i = 0; i < 20; i++) {
@@ -203,11 +204,21 @@ headerView = _headerView;
 - (UIView *)slideShowView:(SlideShowView *)slideShowView viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
     if (!view) {
         view = [[UIImageView alloc] init];
-        view.clipsToBounds = YES;
-        view.contentMode = UIViewContentModeScaleAspectFill;
+//        view.clipsToBounds = NO;
+//        view.contentMode = UIViewContentModeScaleAspectFill;
     }
     
-    [((UIImageView *)view) setImageWithURL:[NSURL URLWithString:[self.images objectAtIndex:index]]];
+//    [((UIImageView *)view) setImageWithURL:[NSURL URLWithString:[self.images objectAtIndex:index]]];
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    [manager downloadWithURL:[self.images objectAtIndex:index]
+                    delegate:self
+                     options:0
+                     success:^(UIImage *image, BOOL cached)
+     {
+         UIImage *cropedImage = [[image scaleByFactor:view.frame.size.width / image.size.width] cropToSize:view.frame.size usingMode:NYXCropModeTopCenter];
+         [((UIImageView *)view) setImage:cropedImage];
+     }
+                     failure:nil];
     
     return view;
 }
