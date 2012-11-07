@@ -13,16 +13,17 @@
 #import "ShareHelper.h"
 
 #import "CommentBox.h"
-#import <DTCoreText.h>
 
-@interface ArticleDetailController ()
+@interface ArticleDetailController () <UIWebViewDelegate>
 
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
-@property (unsafe_unretained, nonatomic) IBOutlet DTAttributedTextView *textView;
+@property (unsafe_unretained, nonatomic) IBOutlet UIWebView *textView;
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
 //@property (strong, nonatomic) IBOutlet UIButton *commentButton;
 @property (strong, nonatomic) ShareHelper *shareHelper;
+
+- (void)loadHtml;
 
 @end
 
@@ -48,6 +49,11 @@
     UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
+    _textView.backgroundColor = DarkThemeColor;
+    _textView.scalesPageToFit = YES;
+    _textView.delegate = self;
+    _textView.dataDetectorTypes = UIDataDetectorTypeNone;
+    
 //    [_commentButton removeFromSuperview];
 //    [_commentButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
 //    _commentBox.rightView = _commentButton;
@@ -55,6 +61,8 @@
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
     
     [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self loadHtml];
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,6 +102,21 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [super viewWillDisappear:animated];
+}
+
+#pragma mark - UIWebViewDelegate methods
+
+- (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
+    NSLog(@"shouldStartLoadWithRequest type:%d", navigationType);
+    if(navigationType == UIWebViewNavigationTypeLinkClicked) {
+        return NO;
+    }
+    return YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+   [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName(\"a\").removeAttribute(\"href\");"]; 
+//   [webView stringByEvaluatingJavaScriptFromString:@"document.anchors[\"ancDevx\"].removeAttribute(\"href\");"]; 
 }
 
 #pragma mark - Keyboard events handle
@@ -160,6 +183,27 @@
 }
 
 #pragma mark - Private methods
+
+- (void)loadHtml {
+    // Load HTML data
+	NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"article_sample.html" ofType:nil];
+	NSString *html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:NULL];
+//	NSData *data = [html dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *formattedHTML = [NSString stringWithFormat:@"<html> \n"
+                                   "<head> \n"
+                                   "<style type=\"text/css\"> \n"
+                                   "body {font-family: \"%@\"; font-size: %@em; color: white; padding: 1em;}\n"
+                                   "a:link {color: white; text-decoration: none;}\n"
+                                   "a:visited {color: white; text-decoration: none;}\n"
+                                   "a:hover {color: white; text-decoration: none;}\n"
+                                   "a:active {color: white; text-decoration: none;}\n"
+                                   "</style> \n"
+                                   "</head> \n"
+                                   "<body>%@</body> \n"
+                                   "</html>", @"helvetica", [NSNumber numberWithInt:2], html];
+    [_textView loadHTMLString:formattedHTML baseURL:nil];
+}
 
 - (void)share {
     if (!self.shareHelper) {
