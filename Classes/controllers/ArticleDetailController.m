@@ -13,6 +13,7 @@
 #import "ShareHelper.h"
 
 #import "CommentBox.h"
+#import <UIWebView+RemoveShadow.h>
 
 @interface ArticleDetailController () <UIWebViewDelegate>
 
@@ -49,7 +50,7 @@
     UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    _textView.backgroundColor = DarkThemeColor;
+    [_textView removeShadow];
     _textView.scalesPageToFit = YES;
     _textView.delegate = self;
     _textView.dataDetectorTypes = UIDataDetectorTypeNone;

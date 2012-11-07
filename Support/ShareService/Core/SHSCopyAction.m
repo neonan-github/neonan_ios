@@ -10,7 +10,7 @@
 
 @implementation SHSCopyAction
 
-@synthesize rootViewController,description, sharedUrl;
+@synthesize rootViewController,description, sharedUrl,title;
 
 - (BOOL)sendAction:(id)content
 {

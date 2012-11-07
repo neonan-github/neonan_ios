@@ -140,7 +140,7 @@
         [_rootViewController.navigationController pushViewController:controller animated:YES];
     } else if([item conformsToProtocol:@protocol(SHSActionProtocol)]) {
         [item performSelector:@selector(setRootViewController:) withObject:_rootViewController];
-        [((id<SHSActionProtocol>)item) setDescription:@"description"];
+        [((id<SHSActionProtocol>)item) setTitle:@"description"];
         [((id<SHSActionProtocol>)item) setSharedUrl:@"http://www.google.com"];
         [((id<SHSActionProtocol>)item) sendAction:@"testtest"];
     } else {

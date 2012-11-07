@@ -12,7 +12,7 @@
 
 @implementation SHSEmailAction
 
-@synthesize rootViewController,description,sharedUrl;
+@synthesize rootViewController,description,sharedUrl,title;
 
 - (BOOL)sendAction:(id)content
 {
@@ -35,7 +35,7 @@
             [mailController addAttachmentData:img mimeType:@"image/jpeg" fileName:@"image"];
         }
         else {
-            [mailController setSubject:description];
+            [mailController setSubject:title];
             [mailController setMessageBody:content isHTML:NO];
         }
         

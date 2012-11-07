@@ -13,6 +13,7 @@
 @property (nonatomic,retain) NSString *description;
 @property (nonatomic,assign) UIViewController *rootViewController;
 @property (nonatomic,retain) NSString *sharedUrl;
+@property (nonatomic,retain) NSString *title;
 
 - (BOOL)sendAction:(id)content;
 - (NSString *)getURL:(NSString *)url andSite:(NSString *)site;

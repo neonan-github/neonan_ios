@@ -11,7 +11,7 @@
 #import "SHSAPIKeys.h"
 
 @implementation SHSSMSAction
-@synthesize rootViewController,description,sharedUrl;
+@synthesize rootViewController,description,sharedUrl,title;
 
 - (BOOL)sendAction:(id)content
 {
@@ -49,7 +49,7 @@
    }
     else 
     {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"sms:",content]]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"sms:%@",content]]];
         DataStatistic *stat = [[DataStatistic alloc] init];
         [stat sendStatistic:self.sharedUrl site:@"email"];
         [stat release];
