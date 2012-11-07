@@ -67,7 +67,7 @@
     [super viewWillAppear:animated];
     
     CGRect frame = _textView.frame;
-    frame.size.height = self.view.frame.size.height - 40 - KeyboardPortraitHeight;
+    frame.size.height = self.view.frame.size.height - 76 - KeyboardPortraitHeight;
     _textView.frame = frame;
     
     [_textView becomeFirstResponder];
@@ -197,7 +197,7 @@
     
     if([_shareItem conformsToProtocol:@protocol(SHSOAuthSharerProtocol)])  {
         [((id<SHSOAuthSharerProtocol>)_shareItem) setSharedUrl:@"http://www.baidu.com"];
-        [((id<SHSOAuthSharerProtocol>)_shareItem) shareText:@"baidutest"];
+        [((id<SHSOAuthSharerProtocol>)_shareItem) shareText:@"baidutestjfkdjfkdjfkdjfkd"];
     }
 }
 

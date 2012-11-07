@@ -8,8 +8,8 @@
 
 
 //腾讯微博
-#define TXWEIBO_APP_KEY @"100297082"
-#define TXWEIBO_SECRET_KEY @"c5df159fdcd3f2608b970e31847df63b"
+#define TXWEIBO_APP_KEY @"801266115"
+#define TXWEIBO_SECRET_KEY @"579fce9e5434e638c714d9261317f544"
 
 //新浪微博
 #define SINAWEIBO_APP_KEY @"1162156315"
@@ -28,8 +28,8 @@
 #define KAIXIN_SECRET_KEY @""
 
 //人人网
-#define RENREN_APP_KEY @"331e7f3a593f4c4abd9bc24e6a28f041"
-#define RENREN_SECRET_KEY @"8e9fe88002b34076b52ce0ce9c8bead4"
+#define RENREN_APP_KEY @"8e9fe88002b34076b52ce0ce9c8bead4"
+#define RENREN_SECRET_KEY @"331e7f3a593f4c4abd9bc24e6a28f041"
 
 //publisherUuid
 #define PUBLISHER_UUID @"123"
