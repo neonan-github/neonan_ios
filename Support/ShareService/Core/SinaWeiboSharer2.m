@@ -133,7 +133,7 @@
 
 - (void)request:(WBRequest *)request didFinishLoadingWithResult:(id)result
 {
-
+    NSLog(@"werequest finish:%@", result);
     if([self.delegate respondsToSelector:@selector(OAuthSharerDidFinishShare:)])
         [self.delegate OAuthSharerDidFinishShare:self];
     
@@ -144,6 +144,7 @@
 
 - (void)request:(WBRequest *)request didFailWithError:(NSError *)error
 {
+    NSLog(@"werequest error:%@", error);
     if([self.delegate respondsToSelector:@selector(OAuthSharerDidFailShare:)])
         [self.delegate OAuthSharerDidFailShare:self];
 }

@@ -196,8 +196,8 @@
     }
     
     if([_shareItem conformsToProtocol:@protocol(SHSOAuthSharerProtocol)])  {
-        [((id<SHSOAuthSharerProtocol>)_shareItem) setSharedUrl:@"http://www.google.com"];
-        [((id<SHSOAuthSharerProtocol>)_shareItem) shareText:@"testkkk"];
+        [((id<SHSOAuthSharerProtocol>)_shareItem) setSharedUrl:@"http://www.baidu.com"];
+        [((id<SHSOAuthSharerProtocol>)_shareItem) shareText:@"baidutest"];
     }
 }
 
