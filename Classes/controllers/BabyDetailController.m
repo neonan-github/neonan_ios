@@ -90,12 +90,12 @@ static const float kDescriptionStretchedLines = 7;
     pageControl.userInteractionEnabled = NO;
     [self.view addSubview:pageControl];
     
-    self.slideImages = [[NSArray alloc] initWithObjects:@"http://neonan.b0.upaiyun.com/uploads/bfab07ca-b5e7-4562-9745-c68eceb14796.jpg",
-                        @"http://neonan.b0.upaiyun.com/uploads/abd670d9-2f5e-4716-8d59-b19ae4eba704.jpg",
-                        @"http://neonan.b0.upaiyun.com//2012-10-24/1351039293662.jpg",
-                        @"http://neonan.b0.upaiyun.com//2012-10-25/1351125878136.jpg",
-                        @"http://neonan.b0.upaiyun.com//2012-10-24/1351039316411.jpg",
-                        @"http://neonan.b0.upaiyun.com//2012-10-24/1351039266238.jpg", nil];
+    self.slideImages = [[NSArray alloc] initWithObjects:@"http://neonan.b0.upaiyun.com//2012-10-09/1349778230030.jpg",
+                        @"http://neonan.b0.upaiyun.com//2012-10-09/1349778230179.jpg",
+                        @"http://neonan.b0.upaiyun.com//2012-10-09/1349778230351.jpg",
+                        @"http://neonan.b0.upaiyun.com//2012-10-09/1349778230515.jpg",
+                        @"http://neonan.b0.upaiyun.com//2012-10-09/1349778230877.jpg",
+                        @"http://neonan.b0.upaiyun.com//2012-10-09/1349778231008.jpg", nil];
 }
 
 - (void)didReceiveMemoryWarning

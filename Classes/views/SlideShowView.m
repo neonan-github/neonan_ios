@@ -8,6 +8,10 @@
 
 #import "SlideShowView.h"
 
+@interface SlideShowView ()
+@property (assign, nonatomic) NSUInteger previousIndex;
+@end
+
 @implementation SlideShowView
 
 - (id)initWithFrame:(NSRect)frame
@@ -17,9 +21,9 @@
         iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         carousel.decelerationRate = 0.0f;// carousel stops immediately when released
         carousel.ignorePerpendicularSwipes = YES;
-//        self.carousel.scrollToItemBoundary = YES;
-        carousel.stopAtItemBoundary = YES;
-        carousel.bounces = NO;
+//        self.carousel.scrollToItemBoundary = NO;
+//        carousel.stopAtItemBoundary = NO;
+        carousel.bounces = YES;
         carousel.clipsToBounds = YES;
         carousel.dataSource = self;
         carousel.delegate = self;
@@ -92,6 +96,10 @@
 #pragma mark - iCarouselDelegate methods
 
 - (void)carouselWillBeginDecelerating:(iCarousel *)carousel {
+    NSLog(@"carouselWillBeginDecelerating");
+    if (_previousIndex != carousel.currentItemIndex) {
+        [carousel scrollToItemAtIndex:carousel.currentItemIndex animated:YES];
+    }
     [self stopAutoScroll];
 }
 
@@ -101,7 +109,9 @@
 }
 
 - (void)carouselWillBeginDragging:(iCarousel *)carousel {
-   [self stopAutoScroll]; 
+    NSLog(@"carouselWillBeginDragging");
+    _previousIndex = carousel.currentItemIndex;
+    [self stopAutoScroll]; 
 }
 
 - (void)carouselDidEndDragging:(iCarousel *)carousel willDecelerate:(BOOL)decelerate {
@@ -112,6 +122,7 @@
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
+    NSLog(@"carouselCurrentItemIndexDidChange");
     if (self.delegate) {
         [self.delegate slideShowViewItemIndexDidChange:self];
     }
@@ -142,4 +153,19 @@
     }
 }
 
+- (void)carouselWillBeginScrollingAnimation:(iCarousel *)carousel {
+    NSLog(@"carouselWillBeginScrollingAnimation");
+    if (_previousIndex != carousel.currentItemIndex) {
+        _previousIndex = carousel.currentItemIndex;
+        [carousel scrollToItemAtIndex:carousel.currentItemIndex animated:YES];
+    }
+}
+
+- (void)carouselDidEndScrollingAnimation:(iCarousel *)carousel {
+   NSLog(@"carouselDidEndScrollingAnimation"); 
+}
+
+- (void)carouselDidScroll:(iCarousel *)carousel {
+   NSLog(@"carouselDidScroll:"); 
+}
 @end
