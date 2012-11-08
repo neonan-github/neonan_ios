@@ -139,9 +139,6 @@
 		34B2B77F16380F4500F75977 /* bg_btn_sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B2B77E16380F4500F75977 /* bg_btn_sign.png */; };
 		34B2B7821638113200F75977 /* img_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B2B7811638113200F75977 /* img_logo.png */; };
 		34B618A3164A0DFE00842F15 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3432926C1647B2140070B66A /* SystemConfiguration.framework */; };
-		34B618A6164A0E3B00842F15 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3476216D1647BEF900B8B60B /* CoreLocation.framework */; };
-		34B618A8164A0E8D00842F15 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B618A7164A0E8D00842F15 /* CoreText.framework */; };
-		34B618AA164A0EB600842F15 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B618A9164A0EB600842F15 /* libicucore.dylib */; };
 		34B618B7164A5B2300842F15 /* article_sample.html in Resources */ = {isa = PBXBuildFile; fileRef = 34B618B6164A5B2300842F15 /* article_sample.html */; };
 		34C81B4F162BF78000DA093B /* BabyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C81B4E162BF78000DA093B /* BabyCell.m */; };
 		34CB8FC2163F6D170001AD87 /* icon_disclosure_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */; };
@@ -159,6 +156,9 @@
 		34CB8FF4163FDFD40001AD87 /* CommentListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FF3163FDFD40001AD87 /* CommentListController.xib */; };
 		34D464D21630065C00D8EE28 /* UIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464D11630065C00D8EE28 /* UIHelper.m */; };
 		34D464E51630243900D8EE28 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464E41630243900D8EE28 /* SMPageControl.m */; };
+		34E17E16164B5E9C00810CD4 /* MainSlideShowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E17E15164B5E9C00810CD4 /* MainSlideShowModel.m */; };
+		34E17E44164BBD3400810CD4 /* BabyListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E17E43164BBD3400810CD4 /* BabyListModel.m */; };
+		34E17E47164BC16600810CD4 /* VideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E17E46164BC16600810CD4 /* VideoModel.m */; };
 		34E3E37F16422A510058F5CF /* ListCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E37E16422A510058F5CF /* ListCellModel.m */; };
 		34E3E383164231400058F5CF /* BabyCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E382164231400058F5CF /* BabyCellModel.m */; };
 		34E3E3A8164276C50058F5CF /* NNHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E3A7164276C50058F5CF /* NNHttpClient.m */; };
@@ -225,7 +225,6 @@
 		346614DA163521C500B1FF5A /* CommentListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListController.m; sourceTree = "<group>"; };
 		346614EC1635489B00B1FF5A /* FoldableTextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoldableTextBox.h; sourceTree = "<group>"; };
 		346614ED1635489B00B1FF5A /* FoldableTextBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoldableTextBox.m; sourceTree = "<group>"; };
-		3476216D1647BEF900B8B60B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		347AAB5A163672E500D243BA /* SignController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignController.h; sourceTree = "<group>"; };
 		347AAB5B163672E500D243BA /* SignController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignController.m; sourceTree = "<group>"; };
 		347AAB5C163672E500D243BA /* SignController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SignController.xib; path = ../Classes/controllers/SignController.xib; sourceTree = "<group>"; };
@@ -396,8 +395,6 @@
 		34AC9C76163E80770020DE4B /* img_header_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_header_indicator.png; sourceTree = "<group>"; };
 		34B2B77E16380F4500F75977 /* bg_btn_sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_btn_sign.png; sourceTree = "<group>"; };
 		34B2B7811638113200F75977 /* img_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_logo.png; sourceTree = "<group>"; };
-		34B618A7164A0E8D00842F15 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		34B618A9164A0EB600842F15 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		34B618B6164A5B2300842F15 /* article_sample.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = article_sample.html; sourceTree = "<group>"; };
 		34C81B4D162BF78000DA093B /* BabyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCell.h; sourceTree = "<group>"; };
 		34C81B4E162BF78000DA093B /* BabyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyCell.m; sourceTree = "<group>"; };
@@ -418,6 +415,13 @@
 		34D464D11630065C00D8EE28 /* UIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIHelper.m; sourceTree = "<group>"; };
 		34D464E31630243900D8EE28 /* SMPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPageControl.h; sourceTree = "<group>"; };
 		34D464E41630243900D8EE28 /* SMPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPageControl.m; sourceTree = "<group>"; };
+		34E17E12164B5CB100810CD4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		34E17E14164B5E9C00810CD4 /* MainSlideShowModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainSlideShowModel.h; sourceTree = "<group>"; };
+		34E17E15164B5E9C00810CD4 /* MainSlideShowModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainSlideShowModel.m; sourceTree = "<group>"; };
+		34E17E42164BBD3400810CD4 /* BabyListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyListModel.h; sourceTree = "<group>"; };
+		34E17E43164BBD3400810CD4 /* BabyListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyListModel.m; sourceTree = "<group>"; };
+		34E17E45164BC16600810CD4 /* VideoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoModel.h; sourceTree = "<group>"; };
+		34E17E46164BC16600810CD4 /* VideoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoModel.m; sourceTree = "<group>"; };
 		34E3E37D16422A510058F5CF /* ListCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCellModel.h; sourceTree = "<group>"; };
 		34E3E37E16422A510058F5CF /* ListCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCellModel.m; sourceTree = "<group>"; };
 		34E3E381164231400058F5CF /* BabyCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCellModel.h; sourceTree = "<group>"; };
@@ -454,8 +458,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34B618A8164A0E8D00842F15 /* CoreText.framework in Frameworks */,
-				34B618A6164A0E3B00842F15 /* CoreLocation.framework in Frameworks */,
 				34B618A3164A0DFE00842F15 /* SystemConfiguration.framework in Frameworks */,
 				3432926F1647B2230070B66A /* MessageUI.framework in Frameworks */,
 				348435A81643C1C00073468D /* Security.framework in Frameworks */,
@@ -465,7 +467,6 @@
 				53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */,
 				53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */,
 				F912E5785A5344D991F500B6 /* libPods.a in Frameworks */,
-				34B618AA164A0EB600842F15 /* libicucore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,6 +510,12 @@
 				34843562164360F30073468D /* ResponseError.m */,
 				3484357416437A4B0073468D /* SignResult.h */,
 				3484357516437A4B0073468D /* SignResult.m */,
+				34E17E14164B5E9C00810CD4 /* MainSlideShowModel.h */,
+				34E17E15164B5E9C00810CD4 /* MainSlideShowModel.m */,
+				34E17E42164BBD3400810CD4 /* BabyListModel.h */,
+				34E17E43164BBD3400810CD4 /* BabyListModel.m */,
+				34E17E45164BC16600810CD4 /* VideoModel.h */,
+				34E17E46164BC16600810CD4 /* VideoModel.m */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -848,6 +855,7 @@
 				34E4BC131647571000C07DFA /* MathHelper.m */,
 				34E95AC9164905FE00DCD229 /* ShareHelper.h */,
 				34E95ACA164905FE00DCD229 /* ShareHelper.m */,
+				34E17E12164B5CB100810CD4 /* Constants.h */,
 			);
 			path = helpers;
 			sourceTree = "<group>";
@@ -885,9 +893,6 @@
 		53816AF916265E9400B0672C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				34B618A9164A0EB600842F15 /* libicucore.dylib */,
-				34B618A7164A0E8D00842F15 /* CoreText.framework */,
-				3476216D1647BEF900B8B60B /* CoreLocation.framework */,
 				3432926E1647B2230070B66A /* MessageUI.framework */,
 				3432926C1647B2140070B66A /* SystemConfiguration.framework */,
 				348435A71643C1C00073468D /* Security.framework */,
@@ -1208,6 +1213,9 @@
 				348004C31648D6C200EED346 /* SHSShareViewController.m in Sources */,
 				34E95AC71648FF1000DCD229 /* ShareEditController.m in Sources */,
 				34E95ACB164905FE00DCD229 /* ShareHelper.m in Sources */,
+				34E17E16164B5E9C00810CD4 /* MainSlideShowModel.m in Sources */,
+				34E17E44164BBD3400810CD4 /* BabyListModel.m in Sources */,
+				34E17E47164BC16600810CD4 /* VideoModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

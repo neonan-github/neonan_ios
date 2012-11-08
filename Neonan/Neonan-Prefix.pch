@@ -15,4 +15,5 @@
     #import "UIHelper.h"
     #import "NeonanAppDelegate.h"
     #import "NNHttpClient.h"
+    #import "Constants.h"
 #endif

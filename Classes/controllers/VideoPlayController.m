@@ -43,7 +43,7 @@
 	<meta name=\"apple-touch-fullscreen\" content=\"YES\" /><meta name=\"apple-mobile-web-app-capable\" content=\"yes\" /><meta name=\"viewport\" content=\"width=device-width,initial-scale=%.2f,minimum-scale=%.2f,maximum-scale=%.2f,user-scalable=no\" /></head>\
 	<body style=\"background:#000;margin:0px;\">\
 	<iframe width=510 height=498 src=\"http://player.youku.com/embed/XNDcwNjA1MjQ0\" frameborder=0 ></iframe>\
-	</body></html>";
+	</body></html>";//土豆testhttp://www.tudou.com/programs/view/html5embed.action?code=mBpndi0t9I0
     
     CGFloat scale = [MathHelper floorValue:(self.view.frame.size.width / 510) withDecimal:2];
     

@@ -39,12 +39,13 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
     return self;
 }
 
-- (void)postAtPath:(NSString *)path
-         parameters:(NSDictionary *)parameters
-      responseClass:(Class<Jsonable>)responseClass
-            success:(void (^)(id<Jsonable> response))success
-            failure:(void (^)(ResponseError *error))failure {
-    NSMutableURLRequest *request = [self requestWithMethod:@"POST" path:path parameters:parameters];
+- (void)requestAtPath:(NSString *)path
+             byMethod:(NSString *)method
+           parameters:(NSDictionary *)parameters
+        responseClass:(Class<Jsonable>)responseClass
+              success:(void (^)(id<Jsonable> response))success
+              failure:(void (^)(ResponseError *error))failure {
+    NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:parameters];
     AFHTTPRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         if ([JSON objectForKey:@"error"]) {
             ResponseError *error = [ResponseError parse:[JSON objectForKey:@"error"]];
@@ -65,6 +66,22 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
         NSLog(@"%@", [error localizedDescription]);
     }];
     [operation start];
+}
+
+- (void)postAtPath:(NSString *)path
+         parameters:(NSDictionary *)parameters
+      responseClass:(Class<Jsonable>)responseClass
+            success:(void (^)(id<Jsonable> response))success
+            failure:(void (^)(ResponseError *error))failure {
+    [self requestAtPath:path byMethod:@"POST" parameters:parameters responseClass:responseClass success:success failure:failure];
+}
+
+- (void)getAtPath:(NSString *)path
+        parameters:(NSDictionary *)parameters
+     responseClass:(Class<Jsonable>)responseClass
+           success:(void (^)(id<Jsonable> response))success
+           failure:(void (^)(ResponseError *error))failure {
+    [self requestAtPath:path byMethod:@"GET" parameters:parameters responseClass:responseClass success:success failure:failure];
 }
 
 @end
