@@ -27,6 +27,7 @@
 
 #import "ListCellModel.h"
 #import "BabyCellModel.h"
+#import "MainSlideShowModel.h"
 
 typedef enum {
     listTypeLatest = 0,
@@ -41,6 +42,7 @@ typedef enum {
 @property (nonatomic, unsafe_unretained) UITableView *tableView;
 @property (nonatomic, unsafe_unretained) CircleHeaderView *headerView;
 
+@property (nonatomic, strong) MainSlideShowModel *slideShowModel;
 @property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, assign) listType type;
@@ -51,6 +53,8 @@ typedef enum {
 - (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 
 - (NSString *)stringForType:(listType)type;
+
+- (void)requsetForSlideShow:(NSString *)channel;
 @end
 
 @implementation MainController
@@ -120,13 +124,13 @@ headerView = _headerView;
     }];
     [self.view addSubview:tableView];
     
-    self.images = [[NSArray alloc] initWithObjects:@"http://neonan.b0.upaiyun.com/uploads/7ba32007-fa1c-4625-9c03-8607c3468ec7.jpg",
-                   @"http://neonan.b0.upaiyun.com/uploads/a78299ad-8972-4224-ac7f-9c9a88d34564.jpg",
-                   @"http://neonan.b0.upaiyun.com/uploads/96b12b06-0925-4579-b069-747ea154f18c.jpg",
-                   @"http://neonan.b0.upaiyun.com/uploads/e9873bfb-f865-4a49-a815-56f2b7bbf641.jpg",
-                   @"http://neonan.b0.upaiyun.com/uploads/d8380d5b-7153-4ea0-9bd6-d53a3ee38db1.jpg",
-                   @"http://neonan.b0.upaiyun.com/uploads/d615d555-67e3-4f86-a8e3-d3b77888ca64.jpg", nil];
-    
+//    self.images = [[NSArray alloc] initWithObjects:@"http://neonan.b0.upaiyun.com/uploads/7ba32007-fa1c-4625-9c03-8607c3468ec7.jpg",
+//                   @"http://neonan.b0.upaiyun.com/uploads/a78299ad-8972-4224-ac7f-9c9a88d34564.jpg",
+//                   @"http://neonan.b0.upaiyun.com/uploads/96b12b06-0925-4579-b069-747ea154f18c.jpg",
+//                   @"http://neonan.b0.upaiyun.com/uploads/e9873bfb-f865-4a49-a815-56f2b7bbf641.jpg",
+//                   @"http://neonan.b0.upaiyun.com/uploads/d8380d5b-7153-4ea0-9bd6-d53a3ee38db1.jpg",
+//                   @"http://neonan.b0.upaiyun.com/uploads/d615d555-67e3-4f86-a8e3-d3b77888ca64.jpg", nil];
+//    
     self.listData = [[NSMutableArray alloc] initWithCapacity:20];
     for (NSUInteger i = 0; i < 20; i++) {
         [self.listData addObject:[[BabyCellModel alloc] init]];
@@ -185,6 +189,12 @@ headerView = _headerView;
     [self.slideShowView startAutoScroll:2];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self requsetForSlideShow:@"home"];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.slideShowView stopAutoScroll];
@@ -196,7 +206,7 @@ headerView = _headerView;
 #pragma mark - SlideShowViewDataSource methods
 
 - (NSUInteger)numberOfItemsInSlideShowView:(SlideShowView *)slideShowView {
-    NSUInteger count = self.images.count;
+    NSUInteger count = _slideShowModel ? MainSlideShowCount : _slideShowModel.list.count;
     [self.pageControl setNumberOfPages:count];
     return count;
 }
@@ -210,7 +220,8 @@ headerView = _headerView;
     
 //    [((UIImageView *)view) setImageWithURL:[NSURL URLWithString:[self.images objectAtIndex:index]]];
     SDWebImageManager *manager = [SDWebImageManager sharedManager];
-    [manager downloadWithURL:[self.images objectAtIndex:index]
+    NSString *imgUrl = _slideShowModel.list ? [[_slideShowModel.list objectAtIndex:index] imgUrl] : nil;
+    [manager downloadWithURL:[NSURL URLWithString:imgUrl]
                     delegate:self
                      options:0
                      success:^(UIImage *image, BOOL cached)
@@ -328,6 +339,20 @@ headerView = _headerView;
 - (void)switchListType {
     listType newType = _type == listTypeLatest ? listTypeHotest : listTypeLatest;
     self.type = newType;
+}
+
+#pragma mark - Private Request methods
+
+- (void)requsetForSlideShow:(NSString *)channel {
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"home", [NSNumber numberWithUnsignedInteger:MainSlideShowCount], @"count", nil];
+    [[NNHttpClient sharedClient] getAtPath:@"image_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
+        self.slideShowModel = (MainSlideShowModel *)response;
+        [_slideShowView reloadData];
+        NSLog(@"response count:%u", _slideShowModel.list.count);
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
 }
 
 @end
