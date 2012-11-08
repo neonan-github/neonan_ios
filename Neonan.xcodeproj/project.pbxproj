@@ -157,6 +157,8 @@
 		34D464D21630065C00D8EE28 /* UIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464D11630065C00D8EE28 /* UIHelper.m */; };
 		34D464E51630243900D8EE28 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464E41630243900D8EE28 /* SMPageControl.m */; };
 		34E17E16164B5E9C00810CD4 /* MainSlideShowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E17E15164B5E9C00810CD4 /* MainSlideShowModel.m */; };
+		34E17E44164BBD3400810CD4 /* BabyListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E17E43164BBD3400810CD4 /* BabyListModel.m */; };
+		34E17E47164BC16600810CD4 /* VideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E17E46164BC16600810CD4 /* VideoModel.m */; };
 		34E3E37F16422A510058F5CF /* ListCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E37E16422A510058F5CF /* ListCellModel.m */; };
 		34E3E383164231400058F5CF /* BabyCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E382164231400058F5CF /* BabyCellModel.m */; };
 		34E3E3A8164276C50058F5CF /* NNHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E3E3A7164276C50058F5CF /* NNHttpClient.m */; };
@@ -416,6 +418,10 @@
 		34E17E12164B5CB100810CD4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		34E17E14164B5E9C00810CD4 /* MainSlideShowModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainSlideShowModel.h; sourceTree = "<group>"; };
 		34E17E15164B5E9C00810CD4 /* MainSlideShowModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainSlideShowModel.m; sourceTree = "<group>"; };
+		34E17E42164BBD3400810CD4 /* BabyListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyListModel.h; sourceTree = "<group>"; };
+		34E17E43164BBD3400810CD4 /* BabyListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyListModel.m; sourceTree = "<group>"; };
+		34E17E45164BC16600810CD4 /* VideoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoModel.h; sourceTree = "<group>"; };
+		34E17E46164BC16600810CD4 /* VideoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoModel.m; sourceTree = "<group>"; };
 		34E3E37D16422A510058F5CF /* ListCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListCellModel.h; sourceTree = "<group>"; };
 		34E3E37E16422A510058F5CF /* ListCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCellModel.m; sourceTree = "<group>"; };
 		34E3E381164231400058F5CF /* BabyCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCellModel.h; sourceTree = "<group>"; };
@@ -506,6 +512,10 @@
 				3484357516437A4B0073468D /* SignResult.m */,
 				34E17E14164B5E9C00810CD4 /* MainSlideShowModel.h */,
 				34E17E15164B5E9C00810CD4 /* MainSlideShowModel.m */,
+				34E17E42164BBD3400810CD4 /* BabyListModel.h */,
+				34E17E43164BBD3400810CD4 /* BabyListModel.m */,
+				34E17E45164BC16600810CD4 /* VideoModel.h */,
+				34E17E46164BC16600810CD4 /* VideoModel.m */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -1204,6 +1214,8 @@
 				34E95AC71648FF1000DCD229 /* ShareEditController.m in Sources */,
 				34E95ACB164905FE00DCD229 /* ShareHelper.m in Sources */,
 				34E17E16164B5E9C00810CD4 /* MainSlideShowModel.m in Sources */,
+				34E17E44164BBD3400810CD4 /* BabyListModel.m in Sources */,
+				34E17E47164BC16600810CD4 /* VideoModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

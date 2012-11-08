@@ -38,14 +38,15 @@ typedef enum {
 @property (nonatomic, unsafe_unretained) UIButton *navLeftButton;
 @property (nonatomic, unsafe_unretained) UIButton *navRightButton;
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
+@property (nonatomic, unsafe_unretained) TTTAttributedLabel *slideShowTextLabel;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) UITableView *tableView;
 @property (nonatomic, unsafe_unretained) CircleHeaderView *headerView;
 
 @property (nonatomic, strong) MainSlideShowModel *slideShowModel;
-@property (nonatomic, strong) NSArray *images;
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, assign) listType type;
+@property (nonatomic, strong) NSString *currentChannel;
 
 @property (nonatomic, strong) NSMutableArray *listData;
 
@@ -54,17 +55,22 @@ typedef enum {
 
 - (NSString *)stringForType:(listType)type;
 
-- (void)requsetForSlideShow:(NSString *)channel;
+- (void)requestForSlideShow:(NSString *)channel;
+- (void)requestForList:(NSString *)channel withType:(listType)type;
+
+- (void)updateSlideShow;
 @end
 
 @implementation MainController
 @synthesize slideShowView = _slideShowView, pageControl = _pageControl, tableView = _tableView,
 headerView = _headerView;
-@synthesize images = _images, titles = _titles;
+@synthesize titles = _titles;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.currentChannel = @"home";
+    
 	// Do any additional setup after loading the view.
     UIButton *navLeftButton = self.navLeftButton = [UIHelper createBarButton:0];
     [navLeftButton setImage:[UIImage imageFromFile:@"icon_user_normal.png"] forState:UIControlStateNormal];
@@ -92,12 +98,12 @@ headerView = _headerView;
     slideShowView.delegate = self;
     [self.view addSubview:slideShowView];
     
-    TTTAttributedLabel *slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenWidth, 16)];
+    TTTAttributedLabel *slideShowTextLabel = self.slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenWidth, 16)];
     slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     slideShowTextLabel.clipsToBounds = YES;
     slideShowTextLabel.font = [UIFont systemFontOfSize:8];
     slideShowTextLabel.textColor = [UIColor whiteColor];
-    slideShowTextLabel.text = @"绅士必备 木质调香水最佳推荐";
+//    slideShowTextLabel.text = @"绅士必备 木质调香水最佳推荐";
     slideShowTextLabel.backgroundColor = RGBA(6, 6, 6, 0.7);
     [self.view addSubview:slideShowTextLabel];
     
@@ -118,19 +124,13 @@ headerView = _headerView;
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
+        [self requestForList:_currentChannel withType:_type];
     }];
     [tableView addInfiniteScrollingWithActionHandler:^{
         // add data to data source, insert new cells into table view
     }];
     [self.view addSubview:tableView];
     
-//    self.images = [[NSArray alloc] initWithObjects:@"http://neonan.b0.upaiyun.com/uploads/7ba32007-fa1c-4625-9c03-8607c3468ec7.jpg",
-//                   @"http://neonan.b0.upaiyun.com/uploads/a78299ad-8972-4224-ac7f-9c9a88d34564.jpg",
-//                   @"http://neonan.b0.upaiyun.com/uploads/96b12b06-0925-4579-b069-747ea154f18c.jpg",
-//                   @"http://neonan.b0.upaiyun.com/uploads/e9873bfb-f865-4a49-a815-56f2b7bbf641.jpg",
-//                   @"http://neonan.b0.upaiyun.com/uploads/d8380d5b-7153-4ea0-9bd6-d53a3ee38db1.jpg",
-//                   @"http://neonan.b0.upaiyun.com/uploads/d615d555-67e3-4f86-a8e3-d3b77888ca64.jpg", nil];
-//    
     self.listData = [[NSMutableArray alloc] initWithCapacity:20];
     for (NSUInteger i = 0; i < 20; i++) {
         [self.listData addObject:[[BabyCellModel alloc] init]];
@@ -151,6 +151,8 @@ headerView = _headerView;
     self.slideShowView.delegate = nil;
     self.slideShowView.dataSource = nil;
     self.slideShowView = nil;
+    
+    self.slideShowTextLabel = nil;
     
     self.pageControl = nil;
     
@@ -184,15 +186,15 @@ headerView = _headerView;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.slideShowView reloadData];
-    [self.slideShowView startAutoScroll:2];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self requsetForSlideShow:@"home"];
+    [self.slideShowView reloadData];
+    [self.slideShowView startAutoScroll:2];
+    [self requestForSlideShow:_currentChannel];
+    [_tableView.pullToRefreshView triggerRefresh];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -237,6 +239,8 @@ headerView = _headerView;
 #pragma mark - SlideShowViewDelegate methods
 
 - (void)slideShowViewItemIndexDidChange:(SlideShowView *)slideShowView {
+    NSUInteger currentIndex = slideShowView.carousel.currentItemIndex;
+    _slideShowTextLabel.text = _slideShowModel.list ? [[_slideShowModel.list objectAtIndex:currentIndex] title] : @"";
     [self.pageControl setCurrentPage:slideShowView.carousel.currentItemIndex];
 }
 
@@ -293,6 +297,62 @@ headerView = _headerView;
 
 #pragma mark - Private methods
 
+- (NSString *)stringForType:(listType)type {
+    if (type == listTypeLatest) {
+        return @"最新";
+    }
+
+    return @"最热";
+}
+
+- (NSString *)requestStringForType:(listType)type {
+    if (type == listTypeLatest) {
+        return @"new";
+    }
+    
+    return @"hotest";
+}
+
+- (void)switchListType {
+    listType newType = _type == listTypeLatest ? listTypeHotest : listTypeLatest;
+    self.type = newType;
+}
+
+#pragma mark - Private Request methods
+
+- (void)requestForSlideShow:(NSString *)channel {
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
+                                [NSNumber numberWithUnsignedInteger:MainSlideShowCount], @"count", nil];
+    
+    [[NNHttpClient sharedClient] getAtPath:@"image_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
+        self.slideShowModel = (MainSlideShowModel *)response;
+        [self updateSlideShow];
+        NSLog(@"response count:%u", _slideShowModel.list.count);
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
+}
+
+- (void)requestForList:(NSString *)channel withType:(listType)type {
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
+                                [self requestStringForType:type], @"sort_type",
+                                0, @"offset",
+                                20, @"count", nil];
+    
+    [[NNHttpClient sharedClient] getAtPath:@"baby_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
+        self.slideShowModel = (MainSlideShowModel *)response;
+        [self updateSlideShow];
+        NSLog(@"response count:%u", _slideShowModel.list.count);
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
+ 
+}
+
+#pragma mark - Private UI related
+
 - (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *listCellIdentifier = @"HotListCell";
     
@@ -324,35 +384,13 @@ headerView = _headerView;
     cell.titleLabel.text = model.title;
     cell.scoreLabel.text = [NSString stringWithFormat:@"%u票", model.score];
     cell.videoShots = model.shotImgUrls;
- 
+    
     return cell;
 }
 
-- (NSString *)stringForType:(listType)type {
-    if (type == listTypeLatest) {
-        return @"最新";
-    }
-
-    return @"最热";
-}
-
-- (void)switchListType {
-    listType newType = _type == listTypeLatest ? listTypeHotest : listTypeLatest;
-    self.type = newType;
-}
-
-#pragma mark - Private Request methods
-
-- (void)requsetForSlideShow:(NSString *)channel {
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"home", [NSNumber numberWithUnsignedInteger:MainSlideShowCount], @"count", nil];
-    [[NNHttpClient sharedClient] getAtPath:@"image_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
-        self.slideShowModel = (MainSlideShowModel *)response;
-        [_slideShowView reloadData];
-        NSLog(@"response count:%u", _slideShowModel.list.count);
-    } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
-        [UIHelper alertWithMessage:error.message];
-    }];
+- (void)updateSlideShow {
+    [_slideShowView reloadData];
+    _slideShowTextLabel.text = [[_slideShowModel.list objectAtIndex:_slideShowView.carousel.currentItemIndex] title];
 }
 
 @end
