@@ -10,6 +10,8 @@
 
 @interface BabyItem : NSObject
 
+@property (strong, nonatomic) NSString *photoUrl;
+@property (assign, nonatomic) NSInteger voteNum;
 @property (strong, nonatomic) NSString *contentId;
 @property (strong, nonatomic) NSString *babyName;
 @property (strong, nonatomic) NSArray *list;

@@ -28,6 +28,7 @@
 #import "ListCellModel.h"
 #import "BabyCellModel.h"
 #import "MainSlideShowModel.h"
+#import "BabyListModel.h"
 
 typedef enum {
     listTypeLatest = 0,
@@ -327,7 +328,7 @@ headerView = _headerView;
     [[NNHttpClient sharedClient] getAtPath:@"image_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
         self.slideShowModel = (MainSlideShowModel *)response;
         [self updateSlideShow];
-        NSLog(@"response count:%u", _slideShowModel.list.count);
+        NSLog(@"requestForSlideShow response count:%u", _slideShowModel.list.count);
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
@@ -340,15 +341,15 @@ headerView = _headerView;
                                 0, @"offset",
                                 20, @"count", nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"baby_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
-        self.slideShowModel = (MainSlideShowModel *)response;
-        [self updateSlideShow];
-        NSLog(@"response count:%u", _slideShowModel.list.count);
+    [[NNHttpClient sharedClient] getAtPath:@"baby_list" parameters:parameters responseClass:[BabyListModel class] success:^(id<Jsonable> response) {
+        BabyListModel *babyList = (BabyListModel *)response;
+        NSLog(@"requestForList response count:%u", babyList.list.count);
+        [_tableView.pullToRefreshView stopAnimating];
+        [_tableView.infiniteScrollingView stopAnimating];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
     }];
- 
 }
 
 #pragma mark - Private UI related
