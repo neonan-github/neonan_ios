@@ -14,13 +14,13 @@
 @property (assign, nonatomic) NSInteger voteNum;
 @property (strong, nonatomic) NSString *contentId;
 @property (strong, nonatomic) NSString *babyName;
-@property (strong, nonatomic) NSArray *list;
+@property (strong, nonatomic) NSArray *videos;
 
 @end
 
 @interface BabyListModel : NSObject <Jsonable>
 
 @property (assign, nonatomic) NSUInteger totalCount;
-@property (strong, nonatomic) NSArray *list;
+@property (strong, nonatomic) NSArray *items;
 
 @end

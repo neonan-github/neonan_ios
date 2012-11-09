@@ -343,7 +343,7 @@ headerView = _headerView;
     
     [[NNHttpClient sharedClient] getAtPath:@"baby_list" parameters:parameters responseClass:[BabyListModel class] success:^(id<Jsonable> response) {
         BabyListModel *babyList = (BabyListModel *)response;
-        NSLog(@"requestForList response count:%u", babyList.list.count);
+        NSLog(@"requestForList response count:%u", babyList.items.count);
         [_tableView.pullToRefreshView stopAnimating];
         [_tableView.infiniteScrollingView stopAnimating];
     } failure:^(ResponseError *error) {

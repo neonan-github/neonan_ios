@@ -10,21 +10,21 @@
 #import "VideoModel.h"
 
 @implementation BabyItem
-@synthesize contentId, babyName, list, photoUrl, voteNum;
+@synthesize contentId, babyName, videos, photoUrl, voteNum;
 
 @end
 
 @implementation BabyListModel
-@synthesize totalCount, list;
+@synthesize totalCount, items;
 
 + (id<Jsonable>)parse:(NSDictionary *)JSON {
     DCParserConfiguration *config = [DCParserConfiguration configuration];
     
-    DCArrayMapping *mapper = [DCArrayMapping mapperForClassElements:[BabyItem class] forAttribute:@"list" onClass:[BabyListModel class]];
-    [config addArrayMapper:mapper];
+    DCObjectMapping *listMapping = [DCObjectMapping mapKeyPath:@"list" toAttribute:@"items" onClass:[BabyListModel class]]; 
+    [config addArrayMapper:[DCArrayMapping mapperForClass:[BabyItem class] onMapping:listMapping]];
     
-    mapper = [DCArrayMapping mapperForClassElements:[VideoModel class] forAttribute:@"list" onClass:[BabyItem class]];
-    [config addArrayMapper:mapper];
+    listMapping = [DCObjectMapping mapKeyPath:@"list" toAttribute:@"videos" onClass:[BabyItem class]];
+    [config addArrayMapper:[DCArrayMapping mapperForClass:[VideoModel class] onMapping:listMapping]];
     
     DCObjectMapping *totalMapping = [DCObjectMapping mapKeyPath:@"total" toAttribute:@"totalCount" onClass:[BabyListModel class]];
     [config addObjectMapping:totalMapping];
