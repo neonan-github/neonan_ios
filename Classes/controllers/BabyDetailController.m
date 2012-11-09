@@ -10,6 +10,9 @@
 #import "NNNavigationController.h"
 #import "SMPageControl.h"
 #import <UIImageView+WebCache.h>
+#import <SDImageCache.h>
+
+#import "SlideShowDetailModel.h"
 
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
@@ -24,8 +27,11 @@ static const float kDescriptionStretchedLines = 7;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) FoldableTextBox *textBox;
 
-@property (nonatomic, strong) NSArray *slideImages;
-@property (nonatomic, strong) NSString *description;
+@property (nonatomic, strong) SlideShowDetailModel *dataModel;
+
+- (void)requestForSlideShow:(NSString *)contentId;
+
+- (void)updateData;
 @end
 
 @implementation BabyDetailController
@@ -34,7 +40,6 @@ static const float kDescriptionStretchedLines = 7;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.description = @"杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志。";
     
     CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
     // Create a custom back button
@@ -58,7 +63,6 @@ static const float kDescriptionStretchedLines = 7;
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont systemFontOfSize:13];
-    titleLabel.text = @"杨棋涵";
     
     UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(261, 12, 16, 15)];
     [likeButton setBackgroundImage:[UIImage imageFromFile:@"icon_love_normal.png"] forState:UIControlStateNormal];
@@ -89,13 +93,6 @@ static const float kDescriptionStretchedLines = 7;
     pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x00a9ff);
     pageControl.userInteractionEnabled = NO;
     [self.view addSubview:pageControl];
-    
-    self.slideImages = [[NSArray alloc] initWithObjects:@"http://neonan.b0.upaiyun.com//2012-10-09/1349778230030.jpg",
-                        @"http://neonan.b0.upaiyun.com//2012-10-09/1349778230179.jpg",
-                        @"http://neonan.b0.upaiyun.com//2012-10-09/1349778230351.jpg",
-                        @"http://neonan.b0.upaiyun.com//2012-10-09/1349778230515.jpg",
-                        @"http://neonan.b0.upaiyun.com//2012-10-09/1349778230877.jpg",
-                        @"http://neonan.b0.upaiyun.com//2012-10-09/1349778231008.jpg", nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -136,14 +133,18 @@ static const float kDescriptionStretchedLines = 7;
 {
     [super viewWillAppear:animated];
     
-    [self.slideShowView reloadData];
-    self.textBox.expanded = NO;
+    if (_dataModel) {
+        [self.slideShowView reloadData];
+    } else {
+        [self requestForSlideShow:@"146"];
+    }
+    _textBox.expanded = NO;
 }
 
 #pragma mark - SlideShowViewDataSource methods
 
 - (NSUInteger)numberOfItemsInSlideShowView:(SlideShowView *)slideShowView {
-    NSUInteger count = self.slideImages.count;
+    NSUInteger count = _dataModel.imgUrls.count;
     [self.pageControl setNumberOfPages:count];
     return count;
     
@@ -154,9 +155,29 @@ static const float kDescriptionStretchedLines = 7;
         view = [[UIImageView alloc] init];
         view.clipsToBounds = YES;
         view.contentMode = UIViewContentModeScaleAspectFit;
+        
+        UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        progressView.tag = 1000;
+        
+        CGRect frame = progressView.frame;
+        frame.origin.x = (slideShowView.bounds.size.width - frame.size.width) / 2;
+        frame.origin.y = (slideShowView.bounds.size.height - frame.size.height) / 2;
+        progressView.frame = frame;
+        [view addSubview:progressView];
     }
     
-    [((UIImageView *)view) setImageWithURL:[NSURL URLWithString:[_slideImages objectAtIndex:index]]];
+    UIActivityIndicatorView *progressView = (UIActivityIndicatorView *)[view viewWithTag:1000];
+    NSURL *imgUrl = [NSURL URLWithString:[_dataModel.imgUrls objectAtIndex:index]];
+    [((UIImageView *)view) setImageWithURL:imgUrl success:^(UIImage *image, BOOL cached) {
+        [progressView stopAnimating];
+    } failure:nil];
+    
+    UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromKey:[imgUrl absoluteString]];
+    if (cachedImage) {
+        [progressView stopAnimating];
+    } else {
+        [progressView startAnimating];
+    }
     
     return view;
 }
@@ -164,13 +185,15 @@ static const float kDescriptionStretchedLines = 7;
 #pragma mark - SlideShowViewDelegate methods
 
 - (void)slideShowViewItemIndexDidChange:(SlideShowView *)slideShowView {
-    [self.pageControl setCurrentPage:slideShowView.carousel.currentItemIndex];
+    NSUInteger currentIndex = slideShowView.carousel.currentItemIndex;
+    [self.pageControl setCurrentPage:currentIndex];
+    _textBox.text = [_dataModel.descriptions objectAtIndex:(_dataModel.descriptions.count > 1 ? currentIndex : 0)];
 }
 
 #pragma mark - FoldableTextBoxDelegate methods
 
 - (void)onFrameChanged:(CGRect)frame {
-    frame.origin.y = CompatibleContainerHeight - frame.size.height;
+    frame.origin.y = self.navigationController.navigationBarHidden ? (CompatibleScreenHeight - StatusBarHeight) : (CompatibleContainerHeight - frame.size.height);
     self.textBox.frame = frame;
 }
 
@@ -202,5 +225,37 @@ static const float kDescriptionStretchedLines = 7;
     [UIView commitAnimations];
 }
 
+#pragma mark - Private Request methods
+
+- (void)requestForSlideShow:(NSString *)contentId {
+    UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    CGRect frame = progressView.frame;
+    frame.origin.x = (_slideShowView.bounds.size.width - frame.size.width) / 2;
+    frame.origin.y = (_slideShowView.bounds.size.height - frame.size.height) / 2;
+    progressView.frame = frame;
+    [_slideShowView addSubview:progressView];
+    [progressView startAnimating];
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"baby", @"content_type",
+                                contentId, @"content_id", nil];
+    
+    [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[SlideShowDetailModel class] success:^(id<Jsonable> response) {
+        self.dataModel = response;
+        [self updateData];
+        [progressView removeFromSuperview];
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
+}
+
+#pragma mark - Private UI related
+
+- (void)updateData {
+    [_slideShowView reloadData];
+    [self slideShowViewItemIndexDidChange:_slideShowView];
+    
+    _titleLabel.text = _dataModel.title;
+}
 
 @end

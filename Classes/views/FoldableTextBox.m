@@ -19,6 +19,7 @@ static const NSUInteger kMaxNumberOfLines = 4;
 
 - (CGFloat)getFixPartHeight;
 
+@property (nonatomic, unsafe_unretained) UILabel *textLabel;
 @property (nonatomic, assign) CGFloat bottomMargin;
 
 @end
@@ -49,7 +50,6 @@ static const NSUInteger kMaxNumberOfLines = 4;
     textLabel.backgroundColor = [UIColor clearColor];
     textLabel.textColor = [UIColor whiteColor];
     textLabel.font = [UIFont systemFontOfSize:11];
-    textLabel.text = @"杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志。杨棋涵毕业于中国音乐学院，有“小范冰冰”之称。以性感、冷艳、奢华、高贵等多种造型成为2010年娱乐媒体关注的焦点，更是频频亮相《男人装》、《瑞丽》、《时尚芭莎》等时尚杂志。";
     [scrollView addSubview:textLabel];
     
     self.userInteractionEnabled = YES;
@@ -74,9 +74,19 @@ static const NSUInteger kMaxNumberOfLines = 4;
 
 #pragma mark - Accessors
 
+- (void)setText:(NSString *)text {
+    _textLabel.text = text;
+    self.expanded = NO;
+}
+
+- (NSString *)text {
+    return _textLabel.text;
+}
+
 - (void)setExpanded:(BOOL)expanded {
     _expanded = expanded;
-        
+    
+    CGRect oldFrame = self.frame;
     if (expanded && [self allowExpand]) {
         [self expand];
     } else {

@@ -12,6 +12,7 @@
 #import "ResponseError.h"
 #import "SignResult.h"
 
+#import <AFNetworkActivityIndicatorManager.h>
 #import <SSKeychain.h>
 
 @implementation NeonanAppDelegate

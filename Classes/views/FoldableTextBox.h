@@ -17,13 +17,13 @@
 @interface FoldableTextBox : UIView
 @property (nonatomic, unsafe_unretained) UIScrollView *scrollView;
 @property (nonatomic, unsafe_unretained) UIImageView *arrowView;
-@property (nonatomic, unsafe_unretained) UILabel *textLabel;
 
 @property (nonatomic, assign, getter = isExpanded) BOOL expanded;
 
 @property (nonatomic, unsafe_unretained) id<FoldableTextBoxDelegate> delegate;
 
 @property (nonatomic, assign) UIEdgeInsets insets;
+@property (nonatomic, copy) NSString *text;
 
 - (CGFloat)getSuggestedHeight;
 @end

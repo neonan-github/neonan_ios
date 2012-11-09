@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import <AFNetworking.h>
+#import <AFHTTPClient.h>
 #import "ResponseError.h"
 
 @interface NNHttpClient : AFHTTPClient
