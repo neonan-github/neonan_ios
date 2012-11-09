@@ -129,6 +129,7 @@
 		3499BF021626E2430084B838 /* home.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEFC1626E2430084B838 /* home.jpg */; };
 		3499BF031626E2430084B838 /* splash.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3499BEFD1626E2430084B838 /* splash.jpg */; };
 		3499BF131627D3F70084B838 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3499BF121627D3F70084B838 /* MediaPlayer.framework */; };
+		34AB4A3C164CA1C30011B8F9 /* CommonListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AB4A3B164CA1C30011B8F9 /* CommonListModel.m */; };
 		34AC9C6B163E41640020DE4B /* CustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC9C6A163E41640020DE4B /* CustomNavigationBar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		34AC9C6D163E5D0E0020DE4B /* bg_btn_nav_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C6C163E5D0E0020DE4B /* bg_btn_nav_right.png */; };
 		34AC9C6F163E5DB10020DE4B /* bg_bar_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C6E163E5DB10020DE4B /* bg_bar_button.png */; };
@@ -385,6 +386,8 @@
 		3499BEFC1626E2430084B838 /* home.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = home.jpg; sourceTree = "<group>"; };
 		3499BEFD1626E2430084B838 /* splash.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = splash.jpg; sourceTree = "<group>"; };
 		3499BF121627D3F70084B838 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		34AB4A3A164CA1C30011B8F9 /* CommonListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonListModel.h; sourceTree = "<group>"; };
+		34AB4A3B164CA1C30011B8F9 /* CommonListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonListModel.m; sourceTree = "<group>"; };
 		34AC9C69163E41640020DE4B /* CustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNavigationBar.h; sourceTree = "<group>"; };
 		34AC9C6A163E41640020DE4B /* CustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNavigationBar.m; sourceTree = "<group>"; };
 		34AC9C6C163E5D0E0020DE4B /* bg_btn_nav_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_btn_nav_right.png; sourceTree = "<group>"; };
@@ -516,6 +519,8 @@
 				34E17E43164BBD3400810CD4 /* BabyListModel.m */,
 				34E17E45164BC16600810CD4 /* VideoModel.h */,
 				34E17E46164BC16600810CD4 /* VideoModel.m */,
+				34AB4A3A164CA1C30011B8F9 /* CommonListModel.h */,
+				34AB4A3B164CA1C30011B8F9 /* CommonListModel.m */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -1216,6 +1221,7 @@
 				34E17E16164B5E9C00810CD4 /* MainSlideShowModel.m in Sources */,
 				34E17E44164BBD3400810CD4 /* BabyListModel.m in Sources */,
 				34E17E47164BC16600810CD4 /* VideoModel.m in Sources */,
+				34AB4A3C164CA1C30011B8F9 /* CommonListModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

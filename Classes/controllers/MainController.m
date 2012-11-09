@@ -29,6 +29,7 @@
 #import "BabyCellModel.h"
 #import "MainSlideShowModel.h"
 #import "BabyListModel.h"
+#import "CommonListModel.h"
 
 typedef enum {
     listTypeLatest = 0,
@@ -341,15 +342,27 @@ headerView = _headerView;
                                 0, @"offset",
                                 20, @"count", nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"baby_list" parameters:parameters responseClass:[BabyListModel class] success:^(id<Jsonable> response) {
-        BabyListModel *babyList = (BabyListModel *)response;
-        NSLog(@"requestForList response count:%u", babyList.items.count);
+    BOOL isBabyChannel = [channel isEqualToString:@"baby"];
+    NSString *path = isBabyChannel ? @"baby_list" : @"work_list";
+    Class responseClass = isBabyChannel ? [BabyListModel class] : [CommonListModel class];
+    
+    [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
         [_tableView.pullToRefreshView stopAnimating];
         [_tableView.infiniteScrollingView stopAnimating];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
     }];
+    
+//    [[NNHttpClient sharedClient] getAtPath:@"work_list" parameters:parameters responseClass:[CommonListModel class] success:^(id<Jsonable> response) {
+//        CommonListModel *list = (CommonListModel *)response;
+//        NSLog(@"requestForList response count:%u", list.items.count);
+//        [_tableView.pullToRefreshView stopAnimating];
+//        [_tableView.infiniteScrollingView stopAnimating];
+//    } failure:^(ResponseError *error) {
+//        NSLog(@"error:%@", error.message);
+//        [UIHelper alertWithMessage:error.message];
+//    }];
 }
 
 #pragma mark - Private UI related
