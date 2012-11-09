@@ -15,6 +15,19 @@
 #import "CommentBox.h"
 #import <UIWebView+RemoveShadow.h>
 
+static const NSString *kHtmlTemplate = @"<html> \n"
+"<head> \n"
+"<style type=\"text/css\"> \n"
+"body {font-family: \"%@\"; font-size: %@em; color: white; padding: 1em;}\n"
+"a:link {color: white; text-decoration: none;}\n"
+"a:visited {color: white; text-decoration: none;}\n"
+"a:hover {color: white; text-decoration: none;}\n"
+"a:active {color: white; text-decoration: none;}\n"
+"</style> \n"
+"</head> \n"
+"<body>%@</body> \n"
+"</html>";
+
 @interface ArticleDetailController () <UIWebViewDelegate>
 
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
