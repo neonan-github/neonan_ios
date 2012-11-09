@@ -167,7 +167,7 @@
 		34E95AC81648FF1000DCD229 /* ShareEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E95AC61648FF1000DCD229 /* ShareEditController.xib */; };
 		34E95ACB164905FE00DCD229 /* ShareHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E95ACA164905FE00DCD229 /* ShareHelper.m */; };
 		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
-		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFE16265E9400B0672C /* CoreGraphics.framework */; };
 		53816B0516265E9400B0672C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 53816B0316265E9400B0672C /* InfoPlist.strings */; };
 		53816B0716265E9400B0672C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 53816B0616265E9400B0672C /* main.m */; };
