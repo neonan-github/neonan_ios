@@ -115,6 +115,19 @@
   [backButton setTitle:text forState:UIControlStateNormal];
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    UIView *view = [super hitTest:point withEvent:event];
+    
+    // make leftBarButtonItem's touch area as same as it frame
+    if (view ==  self.topItem.leftBarButtonItem.customView) {
+        point = [self convertPoint:point toView:view];
+        BOOL inside = [self.topItem.leftBarButtonItem.customView pointInside:point withEvent:event];
+        return inside ? view : nil;
+    }
+    
+    return view;
+}
+
 - (void)dealloc
 {
   [navigationBarBackgroundImage release];
