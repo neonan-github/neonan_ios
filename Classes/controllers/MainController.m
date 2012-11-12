@@ -25,19 +25,23 @@
 #import "BabyDetailController.h"
 #import "CommentListController.h"
 
-#import "ListCellModel.h"
-#import "BabyCellModel.h"
 #import "MainSlideShowModel.h"
 #import "BabyListModel.h"
 #import "CommonListModel.h"
 
 static const NSUInteger kBabyChannelIndex = 3;
 static const NSUInteger kRequestCount = 20;
+static const NSString *kRequestCountString = @"20";
 
 typedef enum {
     listTypeLatest = 0,
     listTypeHotest
 } listType;
+
+typedef enum {
+    requestTypeRefresh = 0,
+    requestTypeAppend
+} requestType;
 
 @interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate>
 @property (nonatomic, unsafe_unretained) UIButton *navLeftButton;
@@ -62,8 +66,9 @@ typedef enum {
 - (NSString *)stringForType:(listType)type;
 
 - (void)requestForSlideShow:(NSString *)channel;
-- (void)requestForList:(NSString *)channel withType:(listType)type;
+- (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType;
 
+- (void)updateTableView;
 - (void)updateSlideShow;
 - (void)onChannelChanged;
 @end
@@ -134,11 +139,13 @@ headerView = _headerView;
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
-        [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withType:_type];
+        [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:requestTypeRefresh];
     }];
-//    [tableView addInfiniteScrollingWithActionHandler:^{
-//        // add data to data source, insert new cells into table view
-//    }];
+    [tableView addInfiniteScrollingWithActionHandler:^{
+        // add data to data source, insert new cells into table view
+        [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:requestTypeAppend];
+    }];
+    tableView.showsInfiniteScrolling = NO;
     [self.view addSubview:tableView];
 }
 
@@ -363,22 +370,27 @@ headerView = _headerView;
     }];
 }
 
-- (void)requestForList:(NSString *)channel withType:(listType)type {
+- (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType {
+    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : ([_dataModel items].count - 1));
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
                                 [self requestStringForType:type], @"sort_type",
-                                0, @"offset",
-                                20, @"count", nil];
+                                [NSString stringWithFormat:@"%u", offset], @"offset",
+                                kRequestCountString, @"count", nil];
     
     BOOL isBabyChannel = [channel isEqualToString:@"baby"];
     NSString *path = @"work_list";
     Class responseClass = isBabyChannel ? [BabyListModel class] : [CommonListModel class];
     
     [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
-        self.dataModel = response;
-        [_tableView reloadData];
-        [_tableView.pullToRefreshView stopAnimating];
-        [_tableView.infiniteScrollingView stopAnimating];
-        _tableView.pullToRefreshView.lastUpdatedDate = [NSDate date];
+        if (requestType == requestTypeAppend) {
+            [self.dataModel appendMoreData:response];
+        } else {
+            self.dataModel = response;
+            NSLog(@"array type:%@", [[self.dataModel items] class]);
+            _tableView.pullToRefreshView.lastUpdatedDate = [NSDate date];
+        }
+        
+        [self updateTableView];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
@@ -431,6 +443,15 @@ headerView = _headerView;
     cell.videoShots = dataItem.videoShots;
     
     return cell;
+}
+
+- (void)updateTableView {
+    [_tableView reloadData];
+    [_tableView.pullToRefreshView stopAnimating];
+    [_tableView.infiniteScrollingView stopAnimating];
+    
+    NSLog(@"totalCount:%u", [_dataModel totalCount]);
+    _tableView.showsInfiniteScrolling = [_dataModel totalCount] > [_dataModel items].count;
 }
 
 - (void)updateSlideShow {

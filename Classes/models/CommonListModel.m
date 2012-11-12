@@ -47,4 +47,15 @@
     return [parser parseDictionary:JSON];
 }
 
+- (void)appendMoreData:(CommonListModel *)data {
+    NSMutableArray *array;
+    if ([self.items isKindOfClass:[NSMutableArray class]]) {
+        array = (NSMutableArray *)self.items;
+    } else {
+        array = [NSMutableArray arrayWithArray:self.items];
+    }
+    
+    [array addObjectsFromArray:data.items];
+    self.items = array;
+}
 @end

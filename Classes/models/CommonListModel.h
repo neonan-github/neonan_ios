@@ -22,6 +22,7 @@
 @interface CommonListModel : NSObject <Jsonable>
 
 @property (assign, nonatomic) NSUInteger totalCount;
-@property (strong, nonatomic) NSMutableArray *items;
+@property (strong, nonatomic) NSArray *items;
 
+- (void)appendMoreData:(CommonListModel *)data;
 @end
