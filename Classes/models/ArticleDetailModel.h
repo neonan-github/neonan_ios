@@ -11,8 +11,10 @@
 @interface ArticleDetailModel : NSObject <Jsonable>
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *author;
-@property (assign, nonatomic) long dateMillis;
+@property (strong, nonatomic) NSNumber *dateMillis;
 @property (assign, nonatomic) NSInteger commentNum;
 @property (strong, nonatomic) NSString *content;
 @property (strong, nonatomic) NSString *shareUrl;
+
+@property (readonly, nonatomic) NSString *date;
 @end

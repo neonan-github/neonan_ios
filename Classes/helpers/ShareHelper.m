@@ -135,14 +135,16 @@
     if([item conformsToProtocol:@protocol(SHSOAuthSharerProtocol)])  {
         ShareEditController *controller = [[ShareEditController alloc] init];
         controller.shareItem = item;
+        [item setSharedText:[NSString stringWithFormat:@"牛男分享：%@", _title]];
+        [item setSharedUrl:_shareUrl];
         [item performSelector:@selector(setRootViewController:) withObject:controller];
         [item performSelector:@selector(setDelegate:) withObject:controller];
         [_rootViewController.navigationController pushViewController:controller animated:YES];
     } else if([item conformsToProtocol:@protocol(SHSActionProtocol)]) {
         [item performSelector:@selector(setRootViewController:) withObject:_rootViewController];
-        [((id<SHSActionProtocol>)item) setTitle:@"description"];
-        [((id<SHSActionProtocol>)item) setSharedUrl:@"http://www.google.com"];
-        [((id<SHSActionProtocol>)item) sendAction:@"testtest"];
+        [((id<SHSActionProtocol>)item) setTitle:_title];
+        [((id<SHSActionProtocol>)item) setSharedUrl:_shareUrl];
+        [((id<SHSActionProtocol>)item) sendAction:[NSString stringWithFormat:@"牛男分享：%@", _title]];
     } else {
     }
     

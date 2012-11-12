@@ -11,6 +11,9 @@
 @interface ShareHelper : NSObject <UIActionSheetDelegate>
 @property (nonatomic, unsafe_unretained) UIViewController *rootViewController;
 
+@property (copy, nonatomic) NSString *shareUrl;
+@property (copy, nonatomic) NSString *title;
+
 - (id)initWithRootViewController:(UIViewController *)rootViewController;
 - (void)showShareView;
 

@@ -16,7 +16,7 @@
 #import <UIWebView+RemoveShadow.h>
 #import <MBProgressHUD.h>
 
-#import "HtmlModel.h"
+#import "ArticleDetailModel.h"
 
 static NSString *kHtmlTemplate = @"<html> \n"
 "<head> \n"
@@ -34,14 +34,17 @@ static NSString *kHtmlTemplate = @"<html> \n"
 @interface ArticleDetailController () <UIWebViewDelegate>
 
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
+@property (unsafe_unretained, nonatomic) IBOutlet UILabel *extraInfoLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UIWebView *textView;
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
 //@property (strong, nonatomic) IBOutlet UIButton *commentButton;
 @property (strong, nonatomic) ShareHelper *shareHelper;
 
-- (void)renderHtml:(NSString *)html;
+@property (strong, nonatomic) ArticleDetailModel *dataModel;
+
 - (void)requestForHtml:(NSString *)contentId;
+- (void)updateData;
 
 @end
 
@@ -85,10 +88,12 @@ static NSString *kHtmlTemplate = @"<html> \n"
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    self.dataModel = nil;
 }
 
 - (void)viewDidUnload {
     [self setTitleLabel:nil];
+    [self setExtraInfoLabel:nil];
     [self setTextView:nil];
     [self setCommentBox:nil];
     [self setShareButton:nil];
@@ -111,8 +116,11 @@ static NSString *kHtmlTemplate = @"<html> \n"
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    
-    [self requestForHtml:@"11084"];
+    if (_dataModel) {
+        [self updateData];
+    } else {
+        [self requestForHtml:@"11084"];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -208,32 +216,49 @@ static NSString *kHtmlTemplate = @"<html> \n"
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
                                 contentId, @"content_id", nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[HtmlModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        [self renderHtml:((HtmlModel *)response).content];
+        self.dataModel = response;
+        [self updateData];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
     }];
 }
 
-#pragma mark - Private methods
+#pragma mark - Private UI related
 
 - (void)renderHtml:(NSString *)html {
     // Load HTML data
-//	NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"article_sample.html" ofType:nil];
-//	NSString *html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:NULL];
+    //	NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"article_sample.html" ofType:nil];
+    //	NSString *html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:NULL];
     
     NSString *formattedHTML = [NSString stringWithFormat:kHtmlTemplate, @"helvetica", [NSNumber numberWithInt:2], html];
     [_textView loadHTMLString:formattedHTML baseURL:nil];
 }
 
+- (void)updateData {
+    _titleLabel.text = _dataModel.title;
+    _extraInfoLabel.text = [NSString stringWithFormat:@"%@ 编辑：%@", _dataModel.date, _dataModel.author];
+    [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];
+    [self renderHtml:_dataModel.content];
+}
+
+#pragma mark - Private methods
+
+
 - (void)share {
+    if (!_dataModel) {
+        return;
+    }
+    
     if (!self.shareHelper) {
         self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
     }
     
-    [self.shareHelper showShareView];
+    _shareHelper.title = _dataModel.title;
+    _shareHelper.shareUrl = _dataModel.shareUrl;
+    [_shareHelper showShareView];
 }
 
 - (void)publish:(UIButton *)button {
