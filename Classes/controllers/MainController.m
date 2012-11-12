@@ -65,6 +65,7 @@ typedef enum {
 - (void)requestForList:(NSString *)channel withType:(listType)type;
 
 - (void)updateSlideShow;
+- (void)onChannelChanged;
 @end
 
 @implementation MainController
@@ -126,6 +127,8 @@ headerView = _headerView;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.backgroundColor = DarkThemeColor;
+//    NSDateFormatter *formatter = tableView.pullToRefreshView.dateFormatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"YYYY MM DD HH:MM:SS"];
     tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     [tableView addPullToRefreshWithActionHandler:^{
@@ -194,7 +197,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"baby", @"videos", @"top", @"qa", @"women", nil];
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"baby", @"video", @"top", @"qa", @"women", nil];
     }
     
     return _channelTypes;
@@ -310,11 +313,7 @@ headerView = _headerView;
     self.dataModel = nil;
     self.slideShowModel = nil;
     
-    [_slideShowView reloadData];
-    [_tableView reloadData];
-    
-    [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
-    [_tableView.pullToRefreshView triggerRefresh];
+    [self performSelector:@selector(onChannelChanged) withObject:nil afterDelay:0.3];
 }
 
 #pragma mark - BabyCellDelegate methods
@@ -376,9 +375,10 @@ headerView = _headerView;
     
     [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
         self.dataModel = response;
+        [_tableView reloadData];
         [_tableView.pullToRefreshView stopAnimating];
         [_tableView.infiniteScrollingView stopAnimating];
-        [_tableView reloadData];
+        _tableView.pullToRefreshView.lastUpdatedDate = [NSDate date];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
@@ -436,6 +436,14 @@ headerView = _headerView;
 - (void)updateSlideShow {
     [_slideShowView reloadData];
     _slideShowTextLabel.text = [[_slideShowModel.list objectAtIndex:_slideShowView.carousel.currentItemIndex] title];
+}
+
+- (void)onChannelChanged {
+    [_slideShowView reloadData];
+    [_tableView reloadData];
+    
+    [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
+    [_tableView.pullToRefreshView triggerRefresh];
 }
 
 @end

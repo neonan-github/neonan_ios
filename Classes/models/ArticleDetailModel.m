@@ -25,7 +25,7 @@
 
 - (NSString *)date {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"YYYY-MM-DD"];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
     
     return [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:([_dateMillis longLongValue] / 1000)]];
 }
