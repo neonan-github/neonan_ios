@@ -29,6 +29,7 @@
 #import "BabyListModel.h"
 #import "CommonListModel.h"
 
+static const NSUInteger kTopChannelIndex = 5;
 static const NSUInteger kBabyChannelIndex = 3;
 static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
@@ -71,6 +72,7 @@ typedef enum {
 - (void)updateTableView;
 - (void)updateSlideShow;
 - (void)onChannelChanged;
+- (void)setSlideShowHidden:(BOOL)hidden;
 @end
 
 @implementation MainController
@@ -82,6 +84,8 @@ headerView = _headerView;
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view.
+    self.view.backgroundColor = DarkThemeColor;
+    
     UIButton *navLeftButton = self.navLeftButton = [UIHelper createBarButton:0];
     [navLeftButton setImage:[UIImage imageFromFile:@"icon_user_normal.png"] forState:UIControlStateNormal];
     UIImage *userHighlightedImage = [UIImage imageFromFile:@"icon_user_highlighted.png"];
@@ -465,6 +469,21 @@ headerView = _headerView;
     
     [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     [_tableView.pullToRefreshView triggerRefresh];
+    
+    [self setSlideShowHidden:_headerView.carousel.currentItemIndex == kTopChannelIndex];
+}
+
+- (void)setSlideShowHidden:(BOOL)hidden {
+    if (_slideShowView.hidden != hidden) {
+        [UIView beginAnimations:nil context:nil];
+        _slideShowView.hidden = hidden;
+        CGRect frame = _tableView.frame;
+        CGFloat delta = _slideShowView.frame.size.height * (hidden ? 1 : -1);
+        frame.origin.y -= delta;
+        frame.size.height += delta;
+        _tableView.frame = frame;
+        [UIView commitAnimations];
+    }
 }
 
 @end
