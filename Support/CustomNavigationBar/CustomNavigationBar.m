@@ -118,10 +118,10 @@
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     UIView *view = [super hitTest:point withEvent:event];
     
-    // make leftBarButtonItem's touch area as same as it frame
-    if (view ==  self.topItem.leftBarButtonItem.customView) {
+    // make barButtonItem's touch area as same as it frame
+    if (view ==  self.topItem.leftBarButtonItem.customView || view ==  self.topItem.rightBarButtonItem.customView) {
         point = [self convertPoint:point toView:view];
-        BOOL inside = [self.topItem.leftBarButtonItem.customView pointInside:point withEvent:event];
+        BOOL inside = [view pointInside:point withEvent:event];
         return inside ? view : nil;
     }
     
