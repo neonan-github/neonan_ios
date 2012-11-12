@@ -343,7 +343,7 @@ headerView = _headerView;
                                 20, @"count", nil];
     
     BOOL isBabyChannel = [channel isEqualToString:@"baby"];
-    NSString *path = isBabyChannel ? @"baby_list" : @"work_list";
+    NSString *path = @"work_list";
     Class responseClass = isBabyChannel ? [BabyListModel class] : [CommonListModel class];
     
     [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
