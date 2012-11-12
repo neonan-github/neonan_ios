@@ -50,7 +50,6 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         dateLabel.textColor = HEXCOLOR(0x555555);
         dateLabel.font = [UIFont systemFontOfSize:6];
         dateLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentBottom;
-        dateLabel.textAlignment = NSTextAlignmentRight;
         
         [self.contentView addSubview:thumbnail];
         [self.contentView addSubview:titleLabel];
@@ -80,7 +79,7 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     x += 75 + kCellMarginLeft;
     self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x, contentHeight * 2 / 3);
     self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, cellWidth - x, contentHeight / 3);
-    self.dateLabel.frame = CGRectMake(cellWidth - 75, kCellMarginTop + contentHeight * 2 / 3, 55, contentHeight / 3);
+    self.dateLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, 55, contentHeight / 3);
 }
 
 @end

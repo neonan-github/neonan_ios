@@ -12,6 +12,19 @@
 @implementation BabyItem
 @synthesize contentId, babyName, videos, photoUrl, voteNum;
 
+- (NSArray *)videoShots {
+    if (!videos || videos.count < 1) {
+        return nil;
+    }
+
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:videos.count];
+    for (VideoModel *videoData in videos) {
+        [array addObject:videoData.imgUrl];
+    }
+    
+    return array;
+}
+
 @end
 
 @implementation BabyListModel

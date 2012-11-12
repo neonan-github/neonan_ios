@@ -31,6 +31,9 @@
 #import "BabyListModel.h"
 #import "CommonListModel.h"
 
+static const NSUInteger kBabyChannelIndex = 3;
+static const NSUInteger kRequestCount = 20;
+
 typedef enum {
     listTypeLatest = 0,
     listTypeHotest
@@ -45,12 +48,13 @@ typedef enum {
 @property (nonatomic, unsafe_unretained) UITableView *tableView;
 @property (nonatomic, unsafe_unretained) CircleHeaderView *headerView;
 
-@property (nonatomic, strong) MainSlideShowModel *slideShowModel;
-@property (nonatomic, strong) NSArray *titles;
-@property (nonatomic, assign) listType type;
-@property (nonatomic, strong) NSString *currentChannel;
+@property (nonatomic, strong) NSArray *channelTexts;
+@property (nonatomic, strong) NSArray *channelTypes;
+@property (nonatomic, assign) NSUInteger channelIndex;
 
-@property (nonatomic, strong) NSMutableArray *listData;
+@property (nonatomic, strong) MainSlideShowModel *slideShowModel;
+@property (nonatomic, assign) listType type;
+@property (nonatomic, strong) id dataModel;// BabyListModel or CommonListModel;
 
 - (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -66,12 +70,10 @@ typedef enum {
 @implementation MainController
 @synthesize slideShowView = _slideShowView, pageControl = _pageControl, tableView = _tableView,
 headerView = _headerView;
-@synthesize titles = _titles;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.currentChannel = @"home";
     
 	// Do any additional setup after loading the view.
     UIButton *navLeftButton = self.navLeftButton = [UIHelper createBarButton:0];
@@ -90,7 +92,8 @@ headerView = _headerView;
     
     CircleHeaderView *headerView = self.headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, 30)];
     headerView.delegate = self;
-    headerView.titles = self.titles = [[NSArray alloc] initWithObjects:@"性情", @"生活", @"主页", @"财富", @"玩乐", @"宝贝", nil];
+    headerView.titles = self.channelTexts;
+    [headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
     [headerView reloadData];
     [self.view addSubview:headerView];
     
@@ -123,20 +126,17 @@ headerView = _headerView;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.backgroundColor = DarkThemeColor;
+    tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
-        [self requestForList:_currentChannel withType:_type];
+        [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withType:_type];
     }];
-    [tableView addInfiniteScrollingWithActionHandler:^{
-        // add data to data source, insert new cells into table view
-    }];
+//    [tableView addInfiniteScrollingWithActionHandler:^{
+//        // add data to data source, insert new cells into table view
+//    }];
     [self.view addSubview:tableView];
-    
-    self.listData = [[NSMutableArray alloc] initWithCapacity:20];
-    for (NSUInteger i = 0; i < 20; i++) {
-        [self.listData addObject:[[BabyCellModel alloc] init]];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -184,6 +184,22 @@ headerView = _headerView;
     }
 }
 
+- (NSArray *)channelTexts {
+    if (!_channelTexts) {
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"睿知", @"酷玩", @"宝贝", @"视频", @"精选", @"howto", @"女人", nil];
+    }
+    
+    return  _channelTexts;
+}
+
+- (NSArray *)channelTypes {
+    if (!_channelTypes) {
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"baby", @"videos", @"top", @"qa", @"women", nil];
+    }
+    
+    return _channelTypes;
+}
+
 #pragma mark - UIViewController life cycle
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -193,17 +209,25 @@ headerView = _headerView;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self.slideShowView reloadData];
+    if (_slideShowView.carousel.currentItemIndex == 0) {
+        [self.slideShowView reloadData];
+    }
     [self.slideShowView startAutoScroll:2];
-    [self requestForSlideShow:_currentChannel];
-    [_tableView.pullToRefreshView triggerRefresh];
+    
+    if (!_slideShowModel) {
+        [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
+    }
+    
+    if (!_dataModel) {
+        [_tableView.pullToRefreshView triggerRefresh];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self.slideShowView stopAutoScroll];
-    
     [super viewWillDisappear:animated];
+    
+    [self.slideShowView stopAutoScroll];
 }
 
 
@@ -217,23 +241,21 @@ headerView = _headerView;
 
 - (UIView *)slideShowView:(SlideShowView *)slideShowView viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
     if (!view) {
-        view = [[UIImageView alloc] init];
+        view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, slideShowView.frame.size.width, slideShowView.frame.size.height)];
 //        view.clipsToBounds = NO;
 //        view.contentMode = UIViewContentModeScaleAspectFill;
     }
     
-//    [((UIImageView *)view) setImageWithURL:[NSURL URLWithString:[self.images objectAtIndex:index]]];
-    SDWebImageManager *manager = [SDWebImageManager sharedManager];
     NSString *imgUrl = _slideShowModel.list ? [[_slideShowModel.list objectAtIndex:index] imgUrl] : nil;
-    [manager downloadWithURL:[NSURL URLWithString:imgUrl]
-                    delegate:self
-                     options:0
-                     success:^(UIImage *image, BOOL cached)
-     {
-         UIImage *cropedImage = [[image scaleByFactor:view.frame.size.width / image.size.width] cropToSize:view.frame.size usingMode:NYXCropModeTopCenter];
-         [((UIImageView *)view) setImage:cropedImage];
-     }
-                     failure:nil];
+    [[SDWebImageManager sharedManager] downloadWithURL:[NSURL URLWithString:imgUrl]
+                                              delegate:self
+                                               options:0
+                                               success:^(UIImage *image, BOOL cached)
+            {
+                UIImage *cropedImage = [[image scaleByFactor:view.frame.size.width / image.size.width] cropToSize:view.frame.size usingMode:NYXCropModeTopCenter];
+                [((UIImageView *)view) setImage:cropedImage];
+            }
+                                               failure:nil];
     
     return view;
 }
@@ -249,11 +271,11 @@ headerView = _headerView;
 #pragma mark － UITableViewDataSource methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _listData.count;
+    return [_dataModel items].count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.headerView.carousel.currentItemIndex == 0) {
+    if (_channelIndex == kBabyChannelIndex) {
         return [self createBabyCell:tableView forRowAtIndexPath:indexPath];
     }
     
@@ -263,7 +285,7 @@ headerView = _headerView;
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return self.headerView.carousel.currentItemIndex == 0 ? 80 : 60;
+    return _channelIndex == kBabyChannelIndex ? 80 : 60;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -284,9 +306,15 @@ headerView = _headerView;
 #pragma mark - CircleHeaderViewDelegate methods
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
-    self.listData = nil;
+    self.channelIndex = headView.carousel.currentItemIndex;
+    self.dataModel = nil;
+    self.slideShowModel = nil;
+    
     [_slideShowView reloadData];
     [_tableView reloadData];
+    
+    [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
+    [_tableView.pullToRefreshView triggerRefresh];
 }
 
 #pragma mark - BabyCellDelegate methods
@@ -312,7 +340,7 @@ headerView = _headerView;
         return @"new";
     }
     
-    return @"hotest";
+    return @"hot";
 }
 
 - (void)switchListType {
@@ -347,11 +375,15 @@ headerView = _headerView;
     Class responseClass = isBabyChannel ? [BabyListModel class] : [CommonListModel class];
     
     [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
+        self.dataModel = response;
         [_tableView.pullToRefreshView stopAnimating];
         [_tableView.infiniteScrollingView stopAnimating];
+        [_tableView reloadData];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
+        [_tableView.pullToRefreshView stopAnimating];
+        [_tableView.infiniteScrollingView stopAnimating];
     }];
     
 //    [[NNHttpClient sharedClient] getAtPath:@"work_list" parameters:parameters responseClass:[CommonListModel class] success:^(id<Jsonable> response) {
@@ -375,11 +407,10 @@ headerView = _headerView;
         cell = [[HotListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:listCellIdentifier];
     }
     
-    ListCellModel *model = [_listData objectAtIndex:indexPath.row];
-    [cell.thumbnail setImageWithURL:[NSURL URLWithString:model.imgUrl]];
-    cell.titleLabel.text = model.title;
-    cell.descriptionLabel.text = model.category;
-    cell.dateLabel.text = model.date;
+    CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
+    [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl]];
+    cell.titleLabel.text = dataItem.title;
+    cell.dateLabel.text = dataItem.date;
     
     return cell;
 }
@@ -393,11 +424,11 @@ headerView = _headerView;
         cell.delegate = self;
     }
     
-    BabyCellModel *model = [_listData objectAtIndex:indexPath.row];
-    [cell.thumbnail setImageWithURL:[NSURL URLWithString:model.babyImgUrl]];
-    cell.titleLabel.text = model.title;
-    cell.scoreLabel.text = [NSString stringWithFormat:@"%u票", model.score];
-    cell.videoShots = model.shotImgUrls;
+    BabyItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
+    [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.photoUrl]];
+    cell.titleLabel.text = dataItem.babyName;
+    cell.scoreLabel.text = [NSString stringWithFormat:@"%u票", dataItem.voteNum];
+    cell.videoShots = dataItem.videoShots;
     
     return cell;
 }

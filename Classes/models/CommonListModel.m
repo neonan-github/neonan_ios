@@ -11,6 +11,13 @@
 @implementation CommonItem
 @synthesize thumbUrl, contentType, title, itemId, dateMillis;
 
+- (NSString *)date {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-DD"];
+    
+    return [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:([self.dateMillis longLongValue] / 1000)]];
+}
+
 @end
 
 @implementation CommonListModel

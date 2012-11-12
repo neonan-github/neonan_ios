@@ -33,6 +33,7 @@
 }
 
 - (void)reloadData {
+    [self.carousel scrollToItemAtIndex:0 animated:NO];
     [self.carousel reloadData];
 }
 

@@ -16,6 +16,9 @@
 @property (strong, nonatomic) NSString *babyName;
 @property (strong, nonatomic) NSArray *videos;
 
+@property (readonly, nonatomic) NSArray *videoShots;
+@property (readonly, nonatomic) NSArray *videoUrls;
+
 @end
 
 @interface BabyListModel : NSObject <Jsonable>

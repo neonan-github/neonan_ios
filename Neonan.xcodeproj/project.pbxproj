@@ -24,6 +24,7 @@
 		340A1352163142F100E8D594 /* bg_comment_commit_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A134E163142F100E8D594 /* bg_comment_commit_highlighted.png */; };
 		340A1372163170BE00E8D594 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A1371163170BE00E8D594 /* CommentCell.m */; };
 		342D0C611650966800097670 /* HtmlModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 342D0C601650966800097670 /* HtmlModel.m */; };
+		342D0C701650F0E900097670 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 342D0C721650F0E900097670 /* Localizable.strings */; };
 		3432926F1647B2230070B66A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3432926E1647B2230070B66A /* MessageUI.framework */; };
 		3446C89F162D680C0049B952 /* CircleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3446C89E162D680C0049B952 /* CircleHeaderView.m */; };
 		345321FC1638F47D002137E6 /* icon_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 345321FB1638F47D002137E6 /* icon_share.png */; };
@@ -207,6 +208,7 @@
 		340A1371163170BE00E8D594 /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
 		342D0C5F1650966800097670 /* HtmlModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HtmlModel.h; sourceTree = "<group>"; };
 		342D0C601650966800097670 /* HtmlModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HtmlModel.m; sourceTree = "<group>"; };
+		342D0C711650F0E900097670 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		3432926C1647B2140070B66A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3432926E1647B2230070B66A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		3446C89D162D680C0049B952 /* CircleHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleHeaderView.h; sourceTree = "<group>"; };
@@ -806,6 +808,7 @@
 			isa = PBXGroup;
 			children = (
 				34B618B6164A5B2300842F15 /* article_sample.html */,
+				342D0C721650F0E900097670 /* Localizable.strings */,
 				347AAB60163672FC00D243BA /* layouts */,
 				34CB8FEE163FD2F20001AD87 /* bg_back_button.png */,
 				34AC9C74163E75870020DE4B /* bg_header_view.png */,
@@ -1126,6 +1129,7 @@
 				348004BB1648D6C200EED346 /* logo@2x.png in Resources */,
 				34E95AC81648FF1000DCD229 /* ShareEditController.xib in Resources */,
 				34B618B7164A5B2300842F15 /* article_sample.html in Resources */,
+				342D0C701650F0E900097670 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1246,6 +1250,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		342D0C721650F0E900097670 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				342D0C711650F0E900097670 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		348004151648D6C200EED346 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

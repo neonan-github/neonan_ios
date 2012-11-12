@@ -14,8 +14,9 @@
 @property (strong, nonatomic) NSString *contentType;
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *itemId;
-@property (assign, nonatomic) long dateMillis;
+@property (strong, nonatomic) NSNumber *dateMillis;
 
+@property (readonly, nonatomic) NSString *date;
 @end
 
 @interface CommonListModel : NSObject <Jsonable>
