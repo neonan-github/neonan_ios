@@ -14,8 +14,11 @@
 
 #import "CommentBox.h"
 #import <UIWebView+RemoveShadow.h>
+#import <MBProgressHUD.h>
 
-static const NSString *kHtmlTemplate = @"<html> \n"
+#import "HtmlModel.h"
+
+static NSString *kHtmlTemplate = @"<html> \n"
 "<head> \n"
 "<style type=\"text/css\"> \n"
 "body {font-family: \"%@\"; font-size: %@em; color: white; padding: 1em;}\n"
@@ -37,7 +40,8 @@ static const NSString *kHtmlTemplate = @"<html> \n"
 //@property (strong, nonatomic) IBOutlet UIButton *commentButton;
 @property (strong, nonatomic) ShareHelper *shareHelper;
 
-- (void)loadHtml;
+- (void)renderHtml:(NSString *)html;
+- (void)requestForHtml:(NSString *)contentId;
 
 @end
 
@@ -75,8 +79,6 @@ static const NSString *kHtmlTemplate = @"<html> \n"
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
     
     [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self loadHtml];
 }
 
 - (void)didReceiveMemoryWarning
@@ -109,6 +111,8 @@ static const NSString *kHtmlTemplate = @"<html> \n"
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    
+    [self requestForHtml:@"11084"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -196,26 +200,31 @@ static const NSString *kHtmlTemplate = @"<html> \n"
 	[UIView commitAnimations];
 }
 
+#pragma mark - Private Request methods
+
+- (void)requestForHtml:(NSString *)contentId {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES]; 
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
+                                contentId, @"content_id", nil];
+    
+    [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[HtmlModel class] success:^(id<Jsonable> response) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [self renderHtml:((HtmlModel *)response).content];
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
+}
+
 #pragma mark - Private methods
 
-- (void)loadHtml {
+- (void)renderHtml:(NSString *)html {
     // Load HTML data
-	NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"article_sample.html" ofType:nil];
-	NSString *html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:NULL];
-//	NSData *data = [html dataUsingEncoding:NSUTF8StringEncoding];
+//	NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"article_sample.html" ofType:nil];
+//	NSString *html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:NULL];
     
-    NSString *formattedHTML = [NSString stringWithFormat:@"<html> \n"
-                                   "<head> \n"
-                                   "<style type=\"text/css\"> \n"
-                                   "body {font-family: \"%@\"; font-size: %@em; color: white; padding: 1em;}\n"
-                                   "a:link {color: white; text-decoration: none;}\n"
-                                   "a:visited {color: white; text-decoration: none;}\n"
-                                   "a:hover {color: white; text-decoration: none;}\n"
-                                   "a:active {color: white; text-decoration: none;}\n"
-                                   "</style> \n"
-                                   "</head> \n"
-                                   "<body>%@</body> \n"
-                                   "</html>", @"helvetica", [NSNumber numberWithInt:2], html];
+    NSString *formattedHTML = [NSString stringWithFormat:kHtmlTemplate, @"helvetica", [NSNumber numberWithInt:2], html];
     [_textView loadHTMLString:formattedHTML baseURL:nil];
 }
 
