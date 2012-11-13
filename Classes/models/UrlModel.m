@@ -1,14 +1,14 @@
 //
-//  HtmlModel.m
+//  UrlModel.m
 //  Neonan
 //
-//  Created by capricorn on 12-11-12.
+//  Created by capricorn on 12-11-13.
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import "HtmlModel.h"
+#import "UrlModel.h"
 
-@implementation HtmlModel
+@implementation UrlModel
 
 + (id<Jsonable>)parse:(NSDictionary *)JSON {
     DCKeyValueObjectMapping *parser = [DCKeyValueObjectMapping mapperForClass:self];

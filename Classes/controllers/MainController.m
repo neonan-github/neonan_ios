@@ -44,6 +44,12 @@ typedef enum {
     requestTypeAppend
 } requestType;
 
+typedef enum {
+    contentTypeSlide = 0,
+    contentTypeArticle,
+    contentTypeVideo
+} contentType;
+
 @interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate>
 @property (nonatomic, unsafe_unretained) UIButton *navLeftButton;
 @property (nonatomic, unsafe_unretained) UIButton *navRightButton;
@@ -65,6 +71,7 @@ typedef enum {
 - (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 
 - (NSString *)stringForType:(listType)type;
+- (contentType)judgeContentType:(id)item;
 
 - (void)requestForSlideShow:(NSString *)channel;
 - (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType;
@@ -195,6 +202,7 @@ headerView = _headerView;
     if (_type != type) {
         _type = type;
         [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
+        [_tableView.pullToRefreshView triggerRefresh];
     }
 }
 
@@ -256,7 +264,6 @@ headerView = _headerView;
 - (UIView *)slideShowView:(SlideShowView *)slideShowView viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
     if (!view) {
         view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, slideShowView.frame.size.width, slideShowView.frame.size.height)];
-        view.backgroundColor = [UIColor whiteColor];
 //        view.clipsToBounds = NO;
 //        view.contentMode = UIViewContentModeScaleAspectFill;
     }
@@ -305,15 +312,25 @@ headerView = _headerView;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UIViewController *controller;
-    switch (indexPath.row % 2) {
-        case 0:
+    
+    id dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
+    switch ([self judgeContentType:dataItem]) {
+        case contentTypeArticle:
             controller = [[ArticleDetailController alloc] init];
+            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
             break;
             
-        default:
+        case contentTypeSlide:
             controller = [[BabyDetailController alloc] init];
+            [controller performSelector:@selector(setContentType:) withObject:[dataItem contentType]];
+            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
             break;
+            
+        case contentTypeVideo:
+            controller = [[VideoPlayController alloc] init];
+            [controller performSelector:@selector(setVideoUrl:) withObject:[dataItem videoUrl]];
     }
+    
     [self.navigationController pushViewController:controller animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -322,8 +339,6 @@ headerView = _headerView;
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
     self.channelIndex = headView.carousel.currentItemIndex;
-    self.dataModel = nil;
-    self.slideShowModel = nil;
     
     [self performSelector:@selector(onChannelChanged) withObject:nil afterDelay:0.3];
 }
@@ -331,8 +346,9 @@ headerView = _headerView;
 #pragma mark - BabyCellDelegate methods
 
 - (void)playVideoAtIndex:(NSUInteger)index {
-    UIViewController *controller = [[VideoPlayController alloc] init];
+    VideoPlayController *controller = [[VideoPlayController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    controller.videoUrl = @"http://player.youku.com/embed/XNDczNzExNDA4";
     [self.navigationController presentModalViewController:navController animated:YES];
 }
 
@@ -344,6 +360,23 @@ headerView = _headerView;
     }
 
     return @"最热";
+}
+
+- (contentType)judgeContentType:(id)item {
+    if ([item isKindOfClass:[BabyItem class]]) {
+        return contentTypeSlide;
+    }
+    
+    NSString *type = [item contentType];
+    if ([type isEqualToString:@"article"]) {
+        return contentTypeArticle;
+    }
+    
+    if ([type isEqualToString:@"video"]) {
+        return contentTypeVideo;
+    }
+    
+    return contentTypeSlide;
 }
 
 - (NSString *)requestStringForType:(listType)type {
@@ -376,7 +409,7 @@ headerView = _headerView;
 }
 
 - (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType {
-    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : ([_dataModel items].count - 1));
+    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
                                 [self requestStringForType:type], @"sort_type",
                                 [NSString stringWithFormat:@"%u", offset], @"offset",
@@ -392,7 +425,7 @@ headerView = _headerView;
         } else {
             self.dataModel = response;
             NSLog(@"array type:%@", [[self.dataModel items] class]);
-            _tableView.pullToRefreshView.lastUpdatedDate = [NSDate date];
+//            _tableView.pullToRefreshView.lastUpdatedDate = [NSDate date];
         }
         
         [self updateTableView];
@@ -465,8 +498,11 @@ headerView = _headerView;
 }
 
 - (void)onChannelChanged {
-    [_slideShowView reloadData];
+    self.dataModel = nil;
     [_tableView reloadData];
+    
+    self.slideShowModel = nil;
+    [_slideShowView reloadData];
     
     [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     [_tableView.pullToRefreshView triggerRefresh];

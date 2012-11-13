@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSArray *videos;
 @property (assign, nonatomic) BOOL voted;
 
+@property (readonly, nonatomic) NSString *contentType;
 @property (readonly, nonatomic) NSArray *videoShots;
 @property (readonly, nonatomic) NSArray *videoUrls;
 

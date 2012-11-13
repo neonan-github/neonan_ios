@@ -10,7 +10,9 @@
 #import "SlideShowView.h"
 #import "FoldableTextBox.h"
 
-@interface BabyDetailController : UIViewController<SlideShowViewDataSource, SlideShowViewDelegate,
-FoldableTextBoxDelegate>
+@interface BabyDetailController : UIViewController
+
+@property (copy, nonatomic) NSString *contentType;
+@property (copy, nonatomic) NSString *contentId;
 
 @end

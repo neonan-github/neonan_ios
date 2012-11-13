@@ -17,7 +17,9 @@
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
 
-@interface BabyDetailController ()
+@interface BabyDetailController () <SlideShowViewDataSource, SlideShowViewDelegate,
+FoldableTextBoxDelegate>
+
 @property (nonatomic, unsafe_unretained) UIView *titleBox;
 @property (nonatomic, unsafe_unretained) UILabel *titleLabel;
 @property (nonatomic, unsafe_unretained) UIButton *likeButton;
@@ -29,7 +31,7 @@ static const float kDescriptionStretchedLines = 7;
 
 @property (nonatomic, strong) SlideShowDetailModel *dataModel;
 
-- (void)requestForSlideShow:(NSString *)contentId;
+- (void)requestForSlideShow;
 
 - (void)updateData;
 @end
@@ -136,7 +138,7 @@ static const float kDescriptionStretchedLines = 7;
     if (_dataModel) {
         [self.slideShowView reloadData];
     } else {
-        [self requestForSlideShow:@"146"];
+        [self requestForSlideShow];
     }
     _textBox.expanded = NO;
 }
@@ -227,7 +229,7 @@ static const float kDescriptionStretchedLines = 7;
 
 #pragma mark - Private Request methods
 
-- (void)requestForSlideShow:(NSString *)contentId {
+- (void)requestForSlideShow {
     UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     CGRect frame = progressView.frame;
     frame.origin.x = (_slideShowView.bounds.size.width - frame.size.width) / 2;
@@ -236,8 +238,8 @@ static const float kDescriptionStretchedLines = 7;
     [_slideShowView addSubview:progressView];
     [progressView startAnimating];
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"baby", @"content_type",
-                                contentId, @"content_id", nil];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:_contentType, @"content_type",
+                                _contentId, @"content_id", nil];
     
     [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[SlideShowDetailModel class] success:^(id<Jsonable> response) {
         self.dataModel = response;

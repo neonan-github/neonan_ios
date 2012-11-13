@@ -10,4 +10,6 @@
 
 @interface ArticleDetailController : UIViewController
 
+@property (copy, nonatomic) NSString *contentId;
+
 @end

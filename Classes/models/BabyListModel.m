@@ -12,6 +12,10 @@
 @implementation BabyItem
 @synthesize contentId, babyName, videos, photoUrl, voteNum;
 
+- (NSString *)contentType {
+    return @"baby";
+}
+
 - (NSArray *)videoShots {
     if (!videos || videos.count < 1) {
         return nil;

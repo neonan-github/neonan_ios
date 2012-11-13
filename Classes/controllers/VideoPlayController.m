@@ -9,6 +9,13 @@
 #import "VideoPlayController.h"
 #import "MathHelper.h"
 
+static NSString *kHtmlTemplate = @"\
+<html><head>\
+<meta name=\"apple-touch-fullscreen\" content=\"YES\" /><meta name=\"apple-mobile-web-app-capable\" content=\"yes\" /><meta name=\"viewport\" content=\"width=device-width,initial-scale=%.2f,minimum-scale=%.2f,maximum-scale=%.2f,user-scalable=no\" /></head>\
+<body style=\"background:#000;margin:0px;\">\
+<iframe width=510 height=498 src=\"%@\" frameborder=0 ></iframe>\
+</body></html>";
+
 @interface VideoPlayController () <UIWebViewDelegate>
 
 @property (unsafe_unretained, nonatomic) IBOutlet UIWebView *webView;
@@ -30,20 +37,20 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    UIButton *navLeftButton = [UIHelper createBarButton:5];
-    [navLeftButton setTitle:@"关闭" forState:UIControlStateNormal];
-    [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
+    if (self.navigationController.viewControllers.count > 1) {// pushed
+        CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
+        // Create a custom back button
+        UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    } else { //presented
+        UIButton *navLeftButton = [UIHelper createBarButton:5];
+        [navLeftButton setTitle:@"关闭" forState:UIControlStateNormal];
+        [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
+    }
     
     _webView.delegate = self;
     _webView.hidden = YES;
-    
-    NSString *embedHTML = @"\
-	<html><head>\
-	<meta name=\"apple-touch-fullscreen\" content=\"YES\" /><meta name=\"apple-mobile-web-app-capable\" content=\"yes\" /><meta name=\"viewport\" content=\"width=device-width,initial-scale=%.2f,minimum-scale=%.2f,maximum-scale=%.2f,user-scalable=no\" /></head>\
-	<body style=\"background:#000;margin:0px;\">\
-	<iframe width=510 height=498 src=\"http://player.youku.com/embed/XNDcwNjA1MjQ0\" frameborder=0 ></iframe>\
-	</body></html>";//土豆testhttp://www.tudou.com/programs/view/html5embed.action?code=mBpndi0t9I0
     
     CGFloat scale = [MathHelper floorValue:(self.view.frame.size.width / 510) withDecimal:2];
     
@@ -58,8 +65,8 @@
         if ([[subview class] isSubclassOfClass: [UIScrollView class]])
             ((UIScrollView *)subview).bounces = NO;
     
-    NSString *html = [NSString stringWithFormat:embedHTML, scale, scale, scale];
-    NSLog(embedHTML, scale, scale, scale);
+    NSString *html = [NSString stringWithFormat:kHtmlTemplate, scale, scale, scale, _videoUrl];
+    NSLog(@"video html:%@", html);
     [_webView loadHTMLString:html baseURL:nil];
 }
 

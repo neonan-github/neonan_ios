@@ -9,7 +9,7 @@
 #import "CommonListModel.h"
 
 @implementation CommonItem
-@synthesize thumbUrl, contentType, title, itemId, dateMillis;
+@synthesize thumbUrl, contentType, title, contentId, dateMillis;
 
 - (NSString *)date {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -35,9 +35,7 @@
     DCObjectMapping *urlMapping = [DCObjectMapping mapKeyPath:@"url" toAttribute:@"thumbUrl" onClass:[CommonItem class]];
     [config addObjectMapping:urlMapping];
     
-    DCObjectMapping *idMapping = [DCObjectMapping mapKeyPath:@"content_id" toAttribute:@"itemId" onClass:[CommonItem class]];
-    [config addObjectMapping:idMapping];
-    idMapping = [DCObjectMapping mapKeyPath:@"video_url" toAttribute:@"itemId" onClass:[CommonItem class]];
+    DCObjectMapping *idMapping = [DCObjectMapping mapKeyPath:@"content_id" toAttribute:@"contentId" onClass:[CommonItem class]];
     [config addObjectMapping:idMapping];
     
     DCObjectMapping *dateMapping = [DCObjectMapping mapKeyPath:@"date" toAttribute:@"dateMillis" onClass:[CommonItem class]];
