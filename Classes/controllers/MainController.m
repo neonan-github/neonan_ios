@@ -76,6 +76,7 @@ typedef enum {
 
 - (void)requestForSlideShow:(NSString *)channel;
 - (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType;
+- (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
 
 - (void)updateTableView;
 - (void)updateSlideShow;
@@ -389,6 +390,19 @@ headerView = _headerView;
     self.type = newType;
 }
 
+- (NSInteger)searchBabyById:(NSString *)babyId {
+    if (_dataModel && [_dataModel isKindOfClass:[BabyListModel class]]) {
+        for (NSUInteger i = 0; i < [_dataModel items].count; i++ ) {
+            BabyItem *item = [[_dataModel items] objectAtIndex:i];
+            if ([[item contentId] isEqualToString:babyId]) {
+                return i;
+            }
+        }
+    }
+    
+    return -1;
+}
+
 #pragma mark - Private Request methods
 
 - (void)requestForSlideShow:(NSString *)channel {
@@ -442,6 +456,25 @@ headerView = _headerView;
 //        NSLog(@"error:%@", error.message);
 //        [UIHelper alertWithMessage:error.message];
 //    }];
+}
+
+- (void)requestForVote:(NSString *)babyId withToken:(NSString *)token {
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:babyId, @"content_id",
+                                token, @"token", nil];
+    
+    [[NNHttpClient sharedClient] postAtPath:@"baby_vote" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
+        NSInteger itemIndex = [self searchBabyById:babyId];
+        if (itemIndex < 0) {
+            return;
+        }
+        
+        BabyItem *item = [[_dataModel items] objectAtIndex:itemIndex];
+        item.voteNum++;
+        [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:itemIndex inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
 }
 
 #pragma mark - Private UI related
