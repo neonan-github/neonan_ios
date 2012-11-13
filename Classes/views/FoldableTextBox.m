@@ -19,6 +19,8 @@ static const NSUInteger kMaxNumberOfLines = 4;
 
 - (CGFloat)getFixPartHeight;
 
+- (NSString *)filterText:(NSString *)text;
+
 @property (nonatomic, unsafe_unretained) UILabel *textLabel;
 @property (nonatomic, assign) CGFloat bottomMargin;
 
@@ -75,8 +77,8 @@ static const NSUInteger kMaxNumberOfLines = 4;
 #pragma mark - Accessors
 
 - (void)setText:(NSString *)text {
-    _textLabel.text = text;
-    self.expanded = NO;
+    _textLabel.text = [self filterText:text];
+    self.expanded = self.expanded;
 }
 
 - (NSString *)text {
@@ -86,7 +88,6 @@ static const NSUInteger kMaxNumberOfLines = 4;
 - (void)setExpanded:(BOOL)expanded {
     _expanded = expanded;
     
-    CGRect oldFrame = self.frame;
     if (expanded && [self allowExpand]) {
         [self expand];
     } else {
@@ -183,6 +184,12 @@ static const NSUInteger kMaxNumberOfLines = 4;
     
     _arrowView.transform = CGAffineTransformMakeRotation(0);
     [UIView commitAnimations];
+}
+
+- (NSString *)filterText:(NSString *)text {
+    text = [text stringByReplacingOccurrencesOfString:@"<.+?>|&.+?;" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, text.length)];
+    
+    return text;
 }
 
 - (void)tap:(UITapGestureRecognizer *)recognizer {

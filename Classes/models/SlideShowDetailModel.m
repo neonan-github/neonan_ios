@@ -34,11 +34,11 @@
 }
 
 - (NSArray *)descriptions {
-    if (brief) {
-        return [NSArray arrayWithObject:brief];
+    if (descriptions) {
+        return descriptions;
     }
     
-    return descriptions;
+    return [NSArray arrayWithObject:brief];
 }
 
 @end
