@@ -14,6 +14,7 @@
 @property (strong, nonatomic) NSString *contentId;
 @property (strong, nonatomic) NSString *contentType;
 @property (strong, nonatomic) NSString *imgUrl;
+@property (strong, nonatomic) NSString *videoUrl;
 
 @end
 

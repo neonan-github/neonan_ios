@@ -91,11 +91,13 @@ static NSString *kHtmlTemplate = @"\
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    
+    NSLog(@"viewDidDisappear");
     if (SYSTEM_VERSION_LESS_THAN(@"6.0")) {
+        NSLog(@"stop play");
         [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];//停止播放
     }
+    
+    [super viewDidDisappear:animated];
 }
 
 #pragma mark - UIWebViewDelegate methods

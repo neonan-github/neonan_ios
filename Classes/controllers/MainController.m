@@ -79,7 +79,9 @@ typedef enum {
 - (void)updateTableView;
 - (void)updateSlideShow;
 - (void)onChannelChanged;
+- (void)onSlideShowItemClicked:(UIView *)view;
 - (void)setSlideShowHidden:(BOOL)hidden;
+- (void)enterControllerByType:(id)item;
 @end
 
 @implementation MainController
@@ -266,6 +268,8 @@ headerView = _headerView;
         view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, slideShowView.frame.size.width, slideShowView.frame.size.height)];
 //        view.clipsToBounds = NO;
 //        view.contentMode = UIViewContentModeScaleAspectFill;
+        UIGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSlideShowItemClicked:)];
+        [view addGestureRecognizer:tapRecognizer];
     }
     
     NSString *imgUrl = _slideShowModel.list ? [[_slideShowModel.list objectAtIndex:index] imgUrl] : nil;
@@ -278,6 +282,7 @@ headerView = _headerView;
                 [((UIImageView *)view) setImage:cropedImage];
             }
                                                failure:nil];
+    view.tag = index;
     
     return view;
 }
@@ -290,10 +295,10 @@ headerView = _headerView;
     [self.pageControl setCurrentPage:slideShowView.carousel.currentItemIndex];
 }
 
-#pragma mark － UITableViewDataSource methods
+#pragma mark - UITableViewDataSource methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_dataModel items].count;
+    return _dataModel ? [_dataModel items].count : 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -311,27 +316,8 @@ headerView = _headerView;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UIViewController *controller;
-    
     id dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
-    switch ([self judgeContentType:dataItem]) {
-        case contentTypeArticle:
-            controller = [[ArticleDetailController alloc] init];
-            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
-            break;
-            
-        case contentTypeSlide:
-            controller = [[BabyDetailController alloc] init];
-            [controller performSelector:@selector(setContentType:) withObject:[dataItem contentType]];
-            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
-            break;
-            
-        case contentTypeVideo:
-            controller = [[VideoPlayController alloc] init];
-            [controller performSelector:@selector(setVideoUrl:) withObject:[dataItem videoUrl]];
-    }
-    
-    [self.navigationController pushViewController:controller animated:YES];
+    [self enterControllerByType:dataItem];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -457,6 +443,10 @@ headerView = _headerView;
         cell = [[HotListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:listCellIdentifier];
     }
     
+//    if (![_dataModel isKindOfClass:[CommonListModel class]]) {
+//        return nil;
+//    }
+    
     CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl]];
     cell.titleLabel.text = dataItem.title;
@@ -473,6 +463,10 @@ headerView = _headerView;
         cell = [[BabyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:babyCellIdentifier];
         cell.delegate = self;
     }
+    
+//    if (![_dataModel isKindOfClass:[BabyListModel class]]) {
+//        return nil;
+//    }
     
     BabyItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.photoUrl]];
@@ -508,6 +502,35 @@ headerView = _headerView;
     [_tableView.pullToRefreshView triggerRefresh];
     
     [self setSlideShowHidden:_headerView.carousel.currentItemIndex == kTopChannelIndex];
+}
+
+- (void)enterControllerByType:(id)dataItem {
+    UIViewController *controller;
+    
+    switch ([self judgeContentType:dataItem]) {
+        case contentTypeArticle:
+            controller = [[ArticleDetailController alloc] init];
+            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
+            break;
+            
+        case contentTypeSlide:
+            controller = [[BabyDetailController alloc] init];
+            [controller performSelector:@selector(setContentType:) withObject:[dataItem contentType]];
+            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
+            break;
+            
+        case contentTypeVideo:
+            controller = [[VideoPlayController alloc] init];
+            [controller performSelector:@selector(setVideoUrl:) withObject:[dataItem videoUrl]];
+    }
+    
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)onSlideShowItemClicked:(UIGestureRecognizer *)recognizer {
+    NSInteger index = recognizer.view.tag;
+    
+    [self enterControllerByType:[_slideShowModel.list objectAtIndex:index]];
 }
 
 - (void)setSlideShowHidden:(BOOL)hidden {

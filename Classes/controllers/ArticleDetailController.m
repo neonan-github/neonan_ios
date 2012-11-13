@@ -119,7 +119,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
     if (_dataModel) {
         [self updateData];
     } else {
-        [self requestForHtml:@"11084"];
+        [self requestForHtml:_contentId];
     }
 }
 
