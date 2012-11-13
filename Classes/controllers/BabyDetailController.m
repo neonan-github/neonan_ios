@@ -13,6 +13,7 @@
 #import <SDImageCache.h>
 
 #import "SlideShowDetailModel.h"
+#import "ShareHelper.h"
 
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
@@ -30,6 +31,7 @@ FoldableTextBoxDelegate>
 @property (nonatomic, unsafe_unretained) FoldableTextBox *textBox;
 
 @property (nonatomic, strong) SlideShowDetailModel *dataModel;
+@property (strong, nonatomic) ShareHelper *shareHelper;
 
 - (void)requestForSlideShow;
 
@@ -72,6 +74,7 @@ FoldableTextBoxDelegate>
     
     UIButton *shareButton = self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(290, 12, 20, 15)];
     [shareButton setBackgroundImage:[UIImage imageFromFile:@"icon_share.png"] forState:UIControlStateNormal];
+    [shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     
     UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35)];
     titleBox.backgroundColor = DarkThemeColor;
@@ -252,6 +255,20 @@ FoldableTextBoxDelegate>
 }
 
 #pragma mark - Private UI related
+
+- (void)share {
+    if (!_dataModel) {
+        return;
+    }
+    
+    if (!self.shareHelper) {
+        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
+    }
+    
+    _shareHelper.title = [_contentType isEqualToString:@"baby"] ? [NSString stringWithFormat:@"牛男宝贝 %@", _dataModel.title]: _dataModel.title;
+    _shareHelper.shareUrl = _dataModel.shareUrl;
+    [_shareHelper showShareView];
+}
 
 - (void)updateData {
     [_slideShowView reloadData];
