@@ -256,6 +256,7 @@ headerView = _headerView;
 - (UIView *)slideShowView:(SlideShowView *)slideShowView viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
     if (!view) {
         view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, slideShowView.frame.size.width, slideShowView.frame.size.height)];
+        view.backgroundColor = [UIColor whiteColor];
 //        view.clipsToBounds = NO;
 //        view.contentMode = UIViewContentModeScaleAspectFill;
     }

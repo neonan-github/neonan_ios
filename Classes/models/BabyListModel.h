@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSString *contentId;
 @property (strong, nonatomic) NSString *babyName;
 @property (strong, nonatomic) NSArray *videos;
+@property (assign, nonatomic) BOOL voted;
 
 @property (readonly, nonatomic) NSArray *videoShots;
 @property (readonly, nonatomic) NSArray *videoUrls;

@@ -25,6 +25,19 @@
     return array;
 }
 
+- (NSArray *)videoUrls {
+    if (!videos || videos.count < 1) {
+        return nil;
+    }
+    
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:videos.count];
+    for (VideoModel *videoData in videos) {
+        [array addObject:videoData.videoUrl];
+    }
+    
+    return array;
+}
+
 @end
 
 @implementation BabyListModel
@@ -47,6 +60,9 @@
     
     DCObjectMapping *photoMapping = [DCObjectMapping mapKeyPath:@"url" toAttribute:@"photoUrl" onClass:[BabyItem class]];
     [config addObjectMapping:photoMapping];
+    
+    DCObjectMapping *votedMapping = [DCObjectMapping mapKeyPath:@"has_vote" toAttribute:@"voted" onClass:[BabyItem class]];
+    [config addObjectMapping:votedMapping];
     
     DCObjectMapping *urlMapping = [DCObjectMapping mapKeyPath:@"url" toAttribute:@"imgUrl" onClass:[VideoModel class]];
     [config addObjectMapping:urlMapping];
