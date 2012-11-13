@@ -186,6 +186,7 @@ static const NSInteger kTagItemPlayButton = 2001;
     }
     
     UIButton *itemView = (UIButton *)view;
+    view.tag = index;
 //    [itemView setBackgroundImage:[UIImage imageFromFile:@"baby_detail.jpg"] forState:UIControlStateNormal];
     SDWebImageManager *manager = [SDWebImageManager sharedManager];
     [manager downloadWithURL:[_videoShots objectAtIndex:index]
@@ -230,14 +231,15 @@ static const NSInteger kTagItemPlayButton = 2001;
     UIButton *itemView = [UIButton buttonWithType:UIButtonTypeCustom];
     itemView.frame = CGRectMake(0, 0, 80, carousel.frame.size.height);
     [itemView setImage:[UIImage imageFromFile:@"icon_play_video.png"]  forState:UIControlStateNormal];
-    [itemView addTarget:self action:@selector(playVideo) forControlEvents:UIControlEventTouchUpInside];
+    [itemView addTarget:self action:@selector(playVideo:) forControlEvents:UIControlEventTouchUpInside];
     
     return itemView;
 }
 
-- (void)playVideo {
+- (void)playVideo:(UIView *)view {
+    NSInteger index = view.tag;
     if (_delegate) {
-        [_delegate playVideoAtIndex:0];
+        [_delegate playVideo:[_videoUrls objectAtIndex:index]];
     }
 }
 

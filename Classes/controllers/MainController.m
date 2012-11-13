@@ -331,10 +331,10 @@ headerView = _headerView;
 
 #pragma mark - BabyCellDelegate methods
 
-- (void)playVideoAtIndex:(NSUInteger)index {
+- (void)playVideo:(NSString *)videoUrl {
     VideoPlayController *controller = [[VideoPlayController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
-    controller.videoUrl = @"http://player.youku.com/embed/XNDczNzExNDA4";
+    controller.videoUrl = videoUrl;
     [self.navigationController presentModalViewController:navController animated:YES];
 }
 
@@ -473,6 +473,7 @@ headerView = _headerView;
     cell.titleLabel.text = dataItem.babyName;
     cell.scoreLabel.text = [NSString stringWithFormat:@"%u票", dataItem.voteNum];
     cell.videoShots = dataItem.videoShots;
+    cell.videoUrls = dataItem.videoUrls;
     
     return cell;
 }

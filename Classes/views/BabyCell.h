@@ -22,12 +22,13 @@
 @property (nonatomic, unsafe_unretained) UIImageView *arrowView;
 
 @property (nonatomic, strong) NSArray *videoShots;
+@property (nonatomic, strong) NSArray *videoUrls;
 
 @property (nonatomic, unsafe_unretained) id<BabyCellDelegate> delegate;
 @end
 
 @protocol BabyCellDelegate <NSObject>
 
-- (void)playVideoAtIndex:(NSUInteger)index;
+- (void)playVideo:(NSString *)videoUrl;
 
 @end

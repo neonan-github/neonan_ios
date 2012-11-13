@@ -9,12 +9,7 @@
 #import "VideoPlayController.h"
 #import "MathHelper.h"
 
-static NSString *kHtmlTemplate = @"\
-<html><head>\
-<meta name=\"apple-touch-fullscreen\" content=\"YES\" /><meta name=\"apple-mobile-web-app-capable\" content=\"yes\" /><meta name=\"viewport\" content=\"width=device-width,initial-scale=%.2f,minimum-scale=%.2f,maximum-scale=%.2f,user-scalable=no\" /></head>\
-<body style=\"background:#000;margin:0px;\">\
-<iframe width=510 height=498 src=\"%@\" frameborder=0 ></iframe>\
-</body></html>";
+#import <MBProgressHUD.h>
 
 @interface VideoPlayController () <UIWebViewDelegate>
 
@@ -52,22 +47,13 @@ static NSString *kHtmlTemplate = @"\
     _webView.delegate = self;
     _webView.hidden = YES;
     
-    CGFloat scale = [MathHelper floorValue:(self.view.frame.size.width / 510) withDecimal:2];
-    
-    CGRect frame = _webView.frame;
-    frame.size.width = scale * 510;
-    frame.size.height = scale * 498;
-    _webView.frame = frame;
-    
-    _webView.center = self.view.center;
-    
     for (id subview in _webView.subviews)
         if ([[subview class] isSubclassOfClass: [UIScrollView class]])
             ((UIScrollView *)subview).bounces = NO;
     
-    NSString *html = [NSString stringWithFormat:kHtmlTemplate, scale, scale, scale, _videoUrl];
-    NSLog(@"video html:%@", html);
-    [_webView loadHTMLString:html baseURL:nil];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_videoUrl]];
+    [_webView loadRequest:request];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,14 +72,19 @@ static NSString *kHtmlTemplate = @"\
     self.webView.delegate = nil;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    NNNavigationController *navController = (NNNavigationController *)self.navigationController;
+    navController.autoRotate = NO;
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
-    NSLog(@"viewDidDisappear");
     if (SYSTEM_VERSION_LESS_THAN(@"6.0")) {
-        NSLog(@"stop play");
         [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];//停止播放
     }
     
@@ -104,7 +95,19 @@ static NSString *kHtmlTemplate = @"\
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"webViewDidFinishLoad");
+//    CGFloat contentWidth = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.clientWidth;"] floatValue];
+//    CGFloat contentHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.clientHeight;"] floatValue];
+//    NSLog(@"width:%f height:%f", contentWidth, contentHeight);
+//    CGFloat scale = [MathHelper floorValue:(self.view.frame.size.width / contentWidth) withDecimal:2];
+//    CGRect frame = _webView.frame;
+//    frame.size.width = scale * contentWidth;
+//    frame.size.height = scale * contentHeight;
+//    frame.origin.y = (self.view.bounds.size.height - frame.size.height) / 2;
+//    webView.frame = frame;
+    
+//    webView.center = self.view.center;
     webView.hidden = NO;
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     [self performSelector:@selector(autoPlay) withObject:nil afterDelay:1];
 }
@@ -131,6 +134,8 @@ static NSString *kHtmlTemplate = @"\
 - (void)autoPlay {
     UIButton *playButton = [self findButtonInView:_webView];
     [playButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+    NNNavigationController *navController = (NNNavigationController *)self.navigationController;
+    navController.autoRotate = YES;
 }
 
 - (void)close {

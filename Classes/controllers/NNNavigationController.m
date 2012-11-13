@@ -70,7 +70,7 @@
 }
 // pre-iOS 6 support
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
+    return _autoRotate ? (toInterfaceOrientation != UIDeviceOrientationPortraitUpsideDown) : (toInterfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)setLogoHidden:(BOOL)hidden {
