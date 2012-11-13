@@ -61,7 +61,7 @@ FoldableTextBoxDelegate>
     frame.origin.y = -4;
     navBottomLine.frame = frame;
     
-    UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 200, 30)];
+    UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 240, 30)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont systemFontOfSize:13];

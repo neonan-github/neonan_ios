@@ -23,6 +23,7 @@
 
 @property (nonatomic, strong) NSArray *videoShots;
 @property (nonatomic, strong) NSArray *videoUrls;
+@property (nonatomic, assign) BOOL voted;
 
 @property (nonatomic, unsafe_unretained) id<BabyCellDelegate> delegate;
 @end
@@ -30,5 +31,6 @@
 @protocol BabyCellDelegate <NSObject>
 
 - (void)playVideo:(NSString *)videoUrl;
+- (void)voteBabyAtIndex:(NSInteger)index;
 
 @end

@@ -11,6 +11,7 @@
 #import "BabyDetailController.h"
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
+#import "SignController.h"
 
 #import "SMPageControl.h"
 #import "HotListCell.h"
@@ -331,6 +332,16 @@ headerView = _headerView;
 
 #pragma mark - BabyCellDelegate methods
 
+- (void)voteBabyAtIndex:(NSInteger)index {
+    NeonanAppDelegate *delegate = ApplicationDelegate;
+    if (delegate.token) {
+        
+    } else {
+        SignController *signController = [[SignController alloc] init];
+        [self.navigationController presentModalViewController:signController animated:YES];
+    }
+}
+
 - (void)playVideo:(NSString *)videoUrl {
     VideoPlayController *controller = [[VideoPlayController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
@@ -443,9 +454,9 @@ headerView = _headerView;
         cell = [[HotListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:listCellIdentifier];
     }
     
-//    if (![_dataModel isKindOfClass:[CommonListModel class]]) {
-//        return nil;
-//    }
+    if (![_dataModel isKindOfClass:[CommonListModel class]]) {
+        return nil;
+    }
     
     CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl]];
@@ -464,9 +475,9 @@ headerView = _headerView;
         cell.delegate = self;
     }
     
-//    if (![_dataModel isKindOfClass:[BabyListModel class]]) {
-//        return nil;
-//    }
+    if (![_dataModel isKindOfClass:[BabyListModel class]]) {
+        return nil;
+    }
     
     BabyItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.photoUrl]];
@@ -474,6 +485,8 @@ headerView = _headerView;
     cell.scoreLabel.text = [NSString stringWithFormat:@"%u票", dataItem.voteNum];
     cell.videoShots = dataItem.videoShots;
     cell.videoUrls = dataItem.videoUrls;
+    cell.voted = dataItem.voted;
+    cell.tag = indexPath.row;
     
     return cell;
 }

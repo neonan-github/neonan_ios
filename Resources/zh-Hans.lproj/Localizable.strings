@@ -10,3 +10,9 @@
 "Loading..." = "加载中...";
 "Pull to refresh..." = "下拉刷新";
 "Release to refresh..." = "释放立即刷新";
+"User not exist!" = "用户名或密码错";
+"User already exist!" = "用户已存在";
+"Wrong password!" = "用户名或密码错";
+"Data not found!" = "数据不存在";
+"Not auth!" = "尚未登录";
+

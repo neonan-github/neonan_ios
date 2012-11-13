@@ -30,4 +30,12 @@
     return self;
 }
 
+- (NSString *)message {
+    if (_errorCode > 0) {
+        return NSLocalizedString(_message,);
+    }
+    
+    return _message;
+}
+
 @end

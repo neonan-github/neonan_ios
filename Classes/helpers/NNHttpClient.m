@@ -39,6 +39,10 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
     return self;
 }
 
+- (BOOL)success:(NSInteger)statusCode {
+    return statusCode >= 200 && statusCode < 300;
+}
+
 - (void)requestAtPath:(NSString *)path
              byMethod:(NSString *)method
            parameters:(NSDictionary *)parameters
@@ -61,7 +65,8 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
         }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (failure) {
-            failure([[ResponseError alloc] initWithCode:0 andMessage:[error localizedDescription]]);
+            NSString *errorMessage = ([self success:response.statusCode] || response.statusCode == 0) ? [error localizedDescription] : @"网络连接失败";
+            failure([[ResponseError alloc] initWithCode:-4 andMessage:errorMessage]);
         }
         NSLog(@"%@", [error localizedDescription]);
     }];

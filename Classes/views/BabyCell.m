@@ -69,6 +69,7 @@ static const NSInteger kTagItemPlayButton = 2001;
         [voteButton setTitle:@"投她一票" forState:UIControlStateNormal];
         [voteButton setBackgroundImage:[UIImage imageNamed:@"bg_btn_vote.png"] forState:UIControlStateNormal];
 //        [voteButton setBackgroundImage:[UIImage imageNamed:@"bg_btn_vote.png"] forState:UIControlStateSelected];
+        [voteButton addTarget:self action:@selector(vote) forControlEvents:UIControlEventTouchUpInside];
         
         UIImageView *arrowView = self.arrowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_disclosure_normal.png"] highlightedImage:[UIImage imageNamed:@"icon_disclosure_highlighted.png"]];
         arrowView.frame = CGRectMake(kLeftPartWidth - 3 - 20, 0, 20, 20);
@@ -119,6 +120,12 @@ static const NSInteger kTagItemPlayButton = 2001;
     }
     
     [self.carousel reloadData];
+}
+
+- (void)setVoted:(BOOL )voted {
+    _voted = voted;
+    [_voteButton setTitle:(voted ? @"已投票" : @"投她一票") forState:UIControlStateNormal];
+    _voteButton.enabled = !voted;
 }
 
 #pragma mark - Override
@@ -236,9 +243,16 @@ static const NSInteger kTagItemPlayButton = 2001;
     return itemView;
 }
 
-- (void)playVideo:(UIView *)view {
-    NSInteger index = view.tag;
+- (void)vote {
     if (_delegate) {
+        NSInteger index = self.tag;
+        [_delegate voteBabyAtIndex:index];
+    }
+}
+
+- (void)playVideo:(UIView *)view {
+    if (_delegate) {
+        NSInteger index = view.tag;
         [_delegate playVideo:[_videoUrls objectAtIndex:index]];
     }
 }
