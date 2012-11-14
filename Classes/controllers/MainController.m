@@ -244,11 +244,11 @@ headerView = _headerView;
         [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     }
     
-    if (!_dataModel) {
-        [_tableView.pullToRefreshView triggerRefresh];
-    } else {
-        [_tableView reloadData];
-    }
+//    if (!_dataModel) {
+    [_tableView.pullToRefreshView triggerRefresh];
+//    } else {
+//        [_tableView reloadData];
+//    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -565,6 +565,9 @@ headerView = _headerView;
             controller = [[BabyDetailController alloc] init];
             [controller performSelector:@selector(setContentType:) withObject:[dataItem contentType]];
             [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
+            if ([dataItem isKindOfClass:[BabyItem class]]) {
+                ((BabyDetailController *)controller).voted = [dataItem voted];
+            }
             break;
             
         case contentTypeVideo:

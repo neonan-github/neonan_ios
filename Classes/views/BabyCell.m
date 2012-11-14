@@ -78,7 +78,7 @@ static const NSInteger kTagItemPlayButton = 2001;
         centerDivider.frame = CGRectMake(kLeftPartWidth, 0, 1, 80);
         
         iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(kLeftPartWidth + 10, kCellMarginTop, 0, 0)];
-        carousel.contentOffset = CGSizeMake(-40, 0);
+        carousel.contentOffset = CGSizeMake(-20, 0);
         carousel.clipsToBounds = YES;
         carousel.dataSource = self;
         carousel.delegate = self;
@@ -236,9 +236,13 @@ static const NSInteger kTagItemPlayButton = 2001;
 
 - (UIButton *)createItemView:(iCarousel *)carousel {
     UIButton *itemView = [UIButton buttonWithType:UIButtonTypeCustom];
-    itemView.frame = CGRectMake(0, 0, 80, carousel.frame.size.height);
     [itemView setImage:[UIImage imageFromFile:@"icon_play_video.png"]  forState:UIControlStateNormal];
     [itemView addTarget:self action:@selector(playVideo:) forControlEvents:UIControlEventTouchUpInside];
+    
+    CGRect frame = itemView.frame;
+    frame.size.width = 104;
+    frame.size.height = carousel.frame.size.height;
+    itemView.frame = frame;
     
     return itemView;
 }

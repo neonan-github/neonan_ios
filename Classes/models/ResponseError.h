@@ -14,6 +14,7 @@
 //(3, "Wrong password!", HttpResponseStatus.OK),
 //(4, "Data not found!", HttpResponseStatus.OK),
 //(5, "Not auth!", HttpResponseStatus.OK),
+//(6, "User has already voted the baby!", HttpResponseStatus.OK),
 //(-1, "Invliad parameters!", HttpResponseStatus.BAD_REQUEST),
 //(-2, "Method not implemented!", HttpResponseStatus.NOT_IMPLEMENTED),
 //(-3, "Server error!", HttpResponseStatus.INTERNAL_SERVER_ERROR);

@@ -13,4 +13,5 @@
 @property (strong, nonatomic) NSArray *descriptions;
 @property (strong, nonatomic) NSString *shareUrl;
 @property (strong, nonatomic) NSArray *imgUrls;
+@property (assign, nonatomic) BOOL voted;
 @end

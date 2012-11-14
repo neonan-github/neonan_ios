@@ -34,6 +34,7 @@ FoldableTextBoxDelegate>
 @property (strong, nonatomic) ShareHelper *shareHelper;
 
 - (void)requestForSlideShow;
+- (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
 
 - (void)updateData;
 @end
@@ -68,12 +69,20 @@ FoldableTextBoxDelegate>
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont systemFontOfSize:13];
     
-    UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(261, 12, 16, 15)];
-    [likeButton setBackgroundImage:[UIImage imageFromFile:@"icon_love_normal.png"] forState:UIControlStateNormal];
-    [likeButton setBackgroundImage:[UIImage imageFromFile:@"icon_love_highlighted.png"] forState:UIControlStateHighlighted];
+    UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(245, 5, 35, 25)];
+    likeButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10);
+//    likeButton.backgroundColor = RGBA(255, 0, 0, 0.3);
+    [likeButton setImage:[UIImage imageFromFile:@"icon_love_normal.png"] forState:UIControlStateNormal];
+    [likeButton setImage:[UIImage imageFromFile:@"icon_love_highlighted.png"] forState:UIControlStateHighlighted];
+    [likeButton setImage:[UIImage imageFromFile:@"icon_love_highlighted.png"] forState:UIControlStateDisabled];
+    [likeButton addTarget:self action:@selector(vote) forControlEvents:UIControlEventTouchUpInside];
+    likeButton.enabled = !_voted;
+    likeButton.hidden = ![_contentType isEqualToString:@"baby"];
     
-    UIButton *shareButton = self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(290, 12, 20, 15)];
-    [shareButton setBackgroundImage:[UIImage imageFromFile:@"icon_share.png"] forState:UIControlStateNormal];
+    UIButton *shareButton = self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(285, 5, 35, 25)];
+    shareButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 10);
+//    shareButton.backgroundColor = RGBA(0, 255, 0, 0.3);
+    [shareButton setImage:[UIImage imageFromFile:@"icon_share.png"] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     
     UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35)];
@@ -139,7 +148,7 @@ FoldableTextBoxDelegate>
     [super viewWillAppear:animated];
     
     if (_dataModel) {
-        [self.slideShowView reloadData];
+        [self updateData];
     } else {
         [self requestForSlideShow];
     }
@@ -230,32 +239,6 @@ FoldableTextBoxDelegate>
     [UIView commitAnimations];
 }
 
-#pragma mark - Private Request methods
-
-- (void)requestForSlideShow {
-    UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    CGRect frame = progressView.frame;
-    frame.origin.x = (_slideShowView.bounds.size.width - frame.size.width) / 2;
-    frame.origin.y = (_slideShowView.bounds.size.height - frame.size.height) / 2;
-    progressView.frame = frame;
-    [_slideShowView addSubview:progressView];
-    [progressView startAnimating];
-    
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:_contentType, @"content_type",
-                                _contentId, @"content_id", nil];
-    
-    [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[SlideShowDetailModel class] success:^(id<Jsonable> response) {
-        self.dataModel = response;
-        [self updateData];
-        [progressView removeFromSuperview];
-    } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
-        [UIHelper alertWithMessage:error.message];
-    }];
-}
-
-#pragma mark - Private UI related
-
 - (void)share {
     if (!_dataModel) {
         return;
@@ -270,9 +253,79 @@ FoldableTextBoxDelegate>
     [_shareHelper showShareView];
 }
 
+- (void)vote {
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    NSString *babyId = _contentId;
+    [sessionManager requsetToken:self success:^(NSString *token) {
+        [self requestForVote:babyId withToken:token];
+    }];
+}
+
+#pragma mark - Private Request methods
+
+- (void)requestForSlideShowWithParams:(NSDictionary *)parameters success:(void (^)())success {
+    [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[SlideShowDetailModel class] success:^(id<Jsonable> response) {
+        self.dataModel = response;
+        [self updateData];
+        
+        if (success) {
+            success();
+        }
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
+}
+
+- (void)requestForSlideShow {
+    UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    CGRect frame = progressView.frame;
+    frame.origin.x = (_slideShowView.bounds.size.width - frame.size.width) / 2;
+    frame.origin.y = (_slideShowView.bounds.size.height - frame.size.height) / 2;
+    progressView.frame = frame;
+    [_slideShowView addSubview:progressView];
+    [progressView startAnimating];
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:_contentType, @"content_type",
+                                _contentId, @"content_id", nil];
+    
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    if ([sessionManager getToken] || [sessionManager canAutoLogin]) {
+        [sessionManager requsetToken:self success:^(NSString *token) {
+            [parameters setValue:token forKey:@"token"];
+            [self requestForSlideShowWithParams:parameters success:^{
+                [progressView removeFromSuperview];
+            }];
+        }];
+    } else {
+        [self requestForSlideShowWithParams:parameters success:^{
+            [progressView removeFromSuperview];
+        }];
+    }
+}
+
+- (void)requestForVote:(NSString *)babyId withToken:(NSString *)token {
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:babyId, @"content_id",
+                                token, @"token", nil];
+    
+    [[NNHttpClient sharedClient] postAtPath:@"baby_vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+        if ([self isViewLoaded]) {
+            _dataModel.voted = YES;
+            [self updateData];
+        }
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
+}
+
+#pragma mark - Private UI related
+
 - (void)updateData {
     [_slideShowView reloadData];
     [self slideShowViewItemIndexDidChange:_slideShowView];
+    
+    _likeButton.enabled = !_dataModel.voted;
     
     _titleLabel.text = _dataModel.title;
 }

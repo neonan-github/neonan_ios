@@ -29,6 +29,9 @@
     DCObjectMapping *briefsMapping = [DCObjectMapping mapKeyPath:@"briefs" toAttribute:@"descriptions" onClass:self];
     [config addArrayMapper:[DCArrayMapping mapperForClass:[NSString class] onMapping:briefsMapping]];
     
+    DCObjectMapping *votedMapping = [DCObjectMapping mapKeyPath:@"has_vote" toAttribute:@"voted" onClass:self];
+    [config addObjectMapping:votedMapping];
+    
     DCKeyValueObjectMapping *parser = [DCKeyValueObjectMapping mapperForClass:self andConfiguration:config];
     return [parser parseDictionary:JSON];
 }
