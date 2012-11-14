@@ -12,9 +12,18 @@
 #import "CommentModel.h"
 #import "CommentCell.h"
 
+#import "CommentListModel.h"
+
+#import <SVPullToRefresh.h>
+
 #define CELL_CONTENT_WIDTH 320.0f
 #define CELL_CONTENT_MARGIN 10.0f
 #define COMMENT_BOX_ORIGINAL_HEIGHT 40.0f
+
+typedef enum {
+    requestTypeRefresh = 0,
+    requestTypeAppend
+} requestType;
 
 @interface CommentListController ()
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
@@ -23,7 +32,8 @@
 @property (nonatomic, unsafe_unretained) IBOutlet CommentBox *commentBox;
 //@property (nonatomic, strong) UIButton *commentButton;
 
-@property (nonatomic, strong) NSMutableArray *comments;
+//@property (nonatomic, strong) NSMutableArray *comments;
+@property (nonatomic, strong) CommentListModel *dataModel;
 @end
 
 @implementation CommentListController
@@ -43,12 +53,22 @@
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_tableView addPullToRefreshWithActionHandler:^{
+        // refresh data
+        // call [tableView.pullToRefreshView stopAnimating] when done
+        [self requestForComments:@"111" withRequestType:requestTypeRefresh];
+    }];
+    [_tableView addInfiniteScrollingWithActionHandler:^{
+        // add data to data source, insert new cells into table view
+        [self requestForComments:@"111" withRequestType:requestTypeAppend];
+    }];
+    _tableView.showsInfiniteScrolling = NO;
     
-    self.comments = [[NSMutableArray alloc] initWithCapacity:20];
-    for (NSUInteger i = 0; i < 20; i++) {
-        CommentModel *comment = [[CommentModel alloc] init];
-        [self.comments addObject:comment];
-    }
+//    self.comments = [[NSMutableArray alloc] initWithCapacity:20];
+//    for (NSUInteger i = 0; i < 20; i++) {
+//        CommentModel *comment = [[CommentModel alloc] init];
+//        [self.comments addObject:comment];
+//    }
 
 }
 
@@ -112,7 +132,7 @@
 #pragma mark － UITableViewDataSource methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.comments.count;
+    return _dataModel.items.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -126,14 +146,14 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
+    CommentItem *comment = [_dataModel.items objectAtIndex:indexPath.row];
     cell.commentLabel.numberOfLines = comment.expanded ? 0 : 2;
     cell.commentLabel.lineBreakMode = comment.expanded ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
-    cell.commentLabel.text = [NSString stringWithFormat:@"%u %@", indexPath.row, comment.text];
+    cell.commentLabel.text = comment.content;
     
-    cell.userNameLabel.text = comment.userName;
+    cell.userNameLabel.text = comment.visitor;
     
-    cell.timeLabel.text = comment.time;
+    cell.timeLabel.text = comment.date;
     
     cell.expanded = comment.expanded;
     comment.expandable = [UIHelper computeContentLines:cell.commentLabel.text withWidth:[CommentCell getContentWidth:320] andFont:cell.commentLabel.font] > 2;
@@ -148,7 +168,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"didSelectRowAtIndexPath:%@", indexPath);
     
-    CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
+    CommentItem *comment = [_dataModel.items objectAtIndex:indexPath.row];
     comment.expanded = !comment.expanded;
     
     if (comment.expandable) {
@@ -160,22 +180,19 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    CommentModel *comment = [self.comments objectAtIndex:indexPath.row];
+    CommentItem *comment = [_dataModel.items objectAtIndex:indexPath.row];
     UIFont *font = [CommentCell getCommentFont];
     
-    NSUInteger lines = [UIHelper computeContentLines:comment.text withWidth:[CommentCell getContentWidth:CompatibleScreenWidth] andFont:font];
+    NSUInteger lines = [UIHelper computeContentLines:comment.content withWidth:[CommentCell getContentWidth:CompatibleScreenWidth] andFont:font];
     CGFloat shrinkedHeight = font.lineHeight * MIN(lines, 2) + [CommentCell getFixedPartHeight];
     
     if (!comment.expanded) {
         return shrinkedHeight;
     }
     
-    NSString *text = [NSString stringWithFormat:@"%u %@", indexPath.row, comment.text];
-    NSLog(@"text:%@", text);
-    
     CGSize constraint = CGSizeMake([CommentCell getContentWidth:CompatibleScreenWidth], 20000.0f);
     
-    CGSize size = [text sizeWithFont:font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    CGSize size = [comment.content sizeWithFont:font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     
     return MAX(size.height + [CommentCell getFixedPartHeight], shrinkedHeight);
 }
@@ -241,6 +258,26 @@
 	
 	// commit animations
 	[UIView commitAnimations];
+}
+
+- (void)requestForComments:(NSString *)contentId withRequestType:(requestType)requestType {
+//    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
+//    
+//    [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
+//        if (requestType == requestTypeAppend) {
+//            [self.dataModel appendMoreData:response];
+//        } else {
+//            self.dataModel = response;
+//        }
+//        
+//        [self updateTableView];
+//    } failure:^(ResponseError *error) {
+//        NSLog(@"error:%@", error.message);
+//        [UIHelper alertWithMessage:error.message];
+//        [_tableView.pullToRefreshView stopAnimating];
+//        [_tableView.infiniteScrollingView stopAnimating];
+//    }];
+
 }
 
 @end
