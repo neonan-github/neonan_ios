@@ -16,6 +16,10 @@
     return @"baby";
 }
 
+- (NSString *)contentId {
+    return [contentId description];
+}
+
 - (NSArray *)videoShots {
     if (!videos || videos.count < 1) {
         return nil;

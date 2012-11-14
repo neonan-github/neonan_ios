@@ -18,6 +18,10 @@
     return [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:([self.dateMillis longLongValue] / 1000)]];
 }
 
+- (NSString *)contentId {
+    return [contentId description];
+}
+
 @end
 
 @implementation CommonListModel

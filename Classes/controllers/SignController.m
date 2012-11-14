@@ -211,11 +211,14 @@
 - (void)signWithEmail:(NSString *)email andPassword:(NSString *)password atPath:(NSString *)path {
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:email, @"email", password, @"password", nil];
     [[NNHttpClient sharedClient] postAtPath:path parameters:parameters responseClass:[SignResult class] success:^(id<Jsonable> response) {
-        NeonanAppDelegate *delegate = ApplicationDelegate;
-        SignResult *result = (SignResult *)response;
-        delegate.token = result.token;
+        NSString *token = ((SignResult *)response).token;
+        [[SessionManager sharedManager] storeToken:token];
         [SSKeychain setPassword:[password md5] forService:@"neonan.com" account:email];
-        NSLog(@"response:%@", result.token);
+        if (_success) {
+            _success(token);
+        }
+        
+        [self close];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];

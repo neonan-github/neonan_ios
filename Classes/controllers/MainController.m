@@ -246,6 +246,8 @@ headerView = _headerView;
     
     if (!_dataModel) {
         [_tableView.pullToRefreshView triggerRefresh];
+    } else {
+        [_tableView reloadData];
     }
 }
 
@@ -334,13 +336,14 @@ headerView = _headerView;
 #pragma mark - BabyCellDelegate methods
 
 - (void)voteBabyAtIndex:(NSInteger)index {
-    NeonanAppDelegate *delegate = ApplicationDelegate;
-    if (delegate.token) {
-        
-    } else {
-        SignController *signController = [[SignController alloc] init];
-        [self.navigationController presentModalViewController:signController animated:YES];
+    if (![_dataModel isKindOfClass:[BabyListModel class]]) {
+        return;
     }
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    NSString *babyId = [[[_dataModel items] objectAtIndex:index] contentId];
+    [sessionManager requsetToken:self success:^(NSString *token) {
+        [self requestForVote:babyId withToken:token];
+    }];
 }
 
 - (void)playVideo:(NSString *)videoUrl {
@@ -462,7 +465,7 @@ headerView = _headerView;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:babyId, @"content_id",
                                 token, @"token", nil];
     
-    [[NNHttpClient sharedClient] postAtPath:@"baby_vote" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] postAtPath:@"baby_vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
         NSInteger itemIndex = [self searchBabyById:babyId];
         if (itemIndex < 0) {
             return;
@@ -470,7 +473,11 @@ headerView = _headerView;
         
         BabyItem *item = [[_dataModel items] objectAtIndex:itemIndex];
         item.voteNum++;
-        [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:itemIndex inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        item.voted = YES;
+        
+        if ([self isViewLoaded]) {
+            [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:itemIndex inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];

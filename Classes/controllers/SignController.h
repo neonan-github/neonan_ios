@@ -14,10 +14,12 @@ typedef enum {
     signUp
 } signType;
 
+typedef void(^SignSuccessBlock)(NSString *token);
+
 @interface SignController : UIViewController <TTTAttributedLabelDelegate>
 
-
 @property (assign, nonatomic) signType type;
+@property (copy, nonatomic) SignSuccessBlock success;
 
 - (id)initWithType:(signType)type;
 

@@ -15,6 +15,4 @@
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) NNNavigationController *navController;
 
-@property (nonatomic, copy) NSString *token;// 登录令牌
-
 @end
