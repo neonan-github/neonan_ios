@@ -13,5 +13,6 @@
 + (SessionManager *)sharedManager;
 
 - (void)storeToken:(NSString *)token;
-- (void)requsetToken:(UIViewController *)controller success:(void (^)(NSString *token))success;
+- (NSString *)getToken;// 直接返回token
+- (void)requsetToken:(UIViewController *)controller success:(void (^)(NSString *token))success;// 若token，存在直接返回；否则，请求；
 @end
