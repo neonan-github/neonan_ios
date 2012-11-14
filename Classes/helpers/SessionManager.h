@@ -15,7 +15,7 @@
 - (void)storeToken:(NSString *)token;
 - (NSString *)getToken;// 直接返回token，可能为nil
 - (void)requsetToken:(UIViewController *)controller success:(void (^)(NSString *token))success;// 若token存在，直接返回；否则，请求；
-
+- (BOOL)canAutoLogin;
 - (void)signWithEmail:(NSString *)email
           andPassword:(NSString *)password
                atPath:(NSString *)path

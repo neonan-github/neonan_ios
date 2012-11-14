@@ -420,14 +420,8 @@ headerView = _headerView;
     }];
 }
 
-- (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType {
-    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
-                                [self requestStringForType:type], @"sort_type",
-                                [NSString stringWithFormat:@"%u", offset], @"offset",
-                                kRequestCountString, @"count", nil];
-    
-    BOOL isBabyChannel = [channel isEqualToString:@"baby"];
+- (void)requestForList:(NSDictionary *)parameters withRequestType:(requestType)requestType {
+    BOOL isBabyChannel = [[parameters objectForKey:@"channel"] isEqualToString:@"baby"];
     NSString *path = @"work_list";
     Class responseClass = isBabyChannel ? [BabyListModel class] : [CommonListModel class];
     
@@ -436,10 +430,8 @@ headerView = _headerView;
             [self.dataModel appendMoreData:response];
         } else {
             self.dataModel = response;
-//            _tableView.pullToRefreshView.lastUpdatedDate = [NSDate date];
         }
         
-//        NSLog(@"current thread is main thread:%@", [NSThread isMainThread] ? @"y" : @"n");
         [self updateTableView];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
@@ -447,16 +439,25 @@ headerView = _headerView;
         [_tableView.pullToRefreshView stopAnimating];
         [_tableView.infiniteScrollingView stopAnimating];
     }];
+ 
+}
+
+- (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType {
+    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
+                                [self requestStringForType:type], @"sort_type",
+                                [NSString stringWithFormat:@"%u", offset], @"offset",
+                                kRequestCountString, @"count", nil];
     
-//    [[NNHttpClient sharedClient] getAtPath:@"work_list" parameters:parameters responseClass:[CommonListModel class] success:^(id<Jsonable> response) {
-//        CommonListModel *list = (CommonListModel *)response;
-//        NSLog(@"requestForList response count:%u", list.items.count);
-//        [_tableView.pullToRefreshView stopAnimating];
-//        [_tableView.infiniteScrollingView stopAnimating];
-//    } failure:^(ResponseError *error) {
-//        NSLog(@"error:%@", error.message);
-//        [UIHelper alertWithMessage:error.message];
-//    }];
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    if ([sessionManager getToken] || [sessionManager canAutoLogin]) {
+        [sessionManager requsetToken:self success:^(NSString *token) {
+            [parameters setValue:token forKey:@"token"];
+            [self requestForList:parameters withRequestType:requestType];
+        }];
+    } else {
+        [self requestForList:parameters withRequestType:requestType];
+    }
 }
 
 - (void)requestForVote:(NSString *)babyId withToken:(NSString *)token {

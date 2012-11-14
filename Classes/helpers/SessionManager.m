@@ -11,12 +11,15 @@
 #import <SSKeychain.h>
 #import "SignResult.h"
 
-static NSString *kServiceName = @"neonan.com";
+static NSString *const kServiceName = @"neonan.com";
+static NSString *const kAccountKey = @"account";
+static NSString *const kPasswordKey = @"password";
 
 @interface SessionManager ()
 
 @property (copy, nonatomic) NSString *token;
 
+- (NSDictionary *)checkAccountInKeyChain;
 @end
 
 @implementation SessionManager
@@ -48,16 +51,35 @@ static NSString *kServiceName = @"neonan.com";
         return;
     }
     
-    NSArray *accounts = [SSKeychain accountsForService:kServiceName];
-    if (!accounts || accounts.count < 1) {
+    NSDictionary *account = [self checkAccountInKeyChain];
+    if (!account) {
         SignController *signController = [[SignController alloc] init];
         signController.success = success;
         [controller.navigationController presentModalViewController:signController animated:YES];
     } else {
-        NSString *email = [[accounts objectAtIndex:0] objectForKey:kSSKeychainAccountKey];
-        NSString *password = [SSKeychain passwordForService:kServiceName account:email];
+        NSString *email = [account objectForKey:kAccountKey];
+        NSString *password = [account objectForKey:kPasswordKey];
         [self signWithEmail:email andPassword:password atPath:@"login" success:success failure:nil];
     }
+}
+
+- (NSDictionary *)checkAccountInKeyChain {
+    NSArray *accounts = [SSKeychain accountsForService:kServiceName];
+    if (accounts && accounts.count > 0) {
+        NSString *email = [[accounts objectAtIndex:0] objectForKey:kSSKeychainAccountKey];
+        NSError *error = nil;
+        NSString *password = [SSKeychain passwordForService:kServiceName account:email error:&error];
+        
+        if (!error) {
+            return [NSDictionary dictionaryWithObjectsAndKeys:email, kAccountKey, password, kPasswordKey,nil];
+        }
+    }
+    
+    return nil;
+}
+
+- (BOOL)canAutoLogin {
+    return [self checkAccountInKeyChain] != nil;
 }
 
 - (void)signWithEmail:(NSString *)email
