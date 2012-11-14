@@ -546,6 +546,8 @@ headerView = _headerView;
 }
 
 - (void)onChannelChanged {
+    [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"work_list"];
+    
     self.dataModel = nil;
     [_tableView reloadData];
     
