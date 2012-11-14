@@ -9,11 +9,11 @@
 #import "SignController.h"
 #import "NNNavigationController.h"
 #import <DCRoundSwitch.h>
-
-#import <SSKeychain.h>
-#import "MD5.h"
+#import <MBProgressHUD.h>
 
 #import "SignResult.h"
+#import "SessionManager.h"
+#import "MD5.h"
 
 @interface SignController ()
 @property (unsafe_unretained, nonatomic) TTTAttributedLabel *switchTypeLabel;
@@ -209,21 +209,19 @@
 }
 
 - (void)signWithEmail:(NSString *)email andPassword:(NSString *)password atPath:(NSString *)path {
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:email, @"email", password, @"password", nil];
-    [[NNHttpClient sharedClient] postAtPath:path parameters:parameters responseClass:[SignResult class] success:^(id<Jsonable> response) {
-        NSString *token = ((SignResult *)response).token;
-        [[SessionManager sharedManager] storeToken:token];
-        [SSKeychain setPassword:[password md5] forService:@"neonan.com" account:email];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    password = [password md5];
+    [[SessionManager sharedManager] signWithEmail:email andPassword:password atPath:path success:^(NSString *token) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (_success) {
             _success(token);
         }
-        
         [self close];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         [UIHelper alertWithMessage:error.message];
     }];
- 
 }
 
 - (void)signUpWithEmail:(NSString *)email andPassword:(NSString *)password {

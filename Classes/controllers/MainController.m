@@ -328,8 +328,6 @@ headerView = _headerView;
 #pragma mark - CircleHeaderViewDelegate methods
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
-    self.channelIndex = headView.carousel.currentItemIndex;
-    
     [self performSelector:@selector(onChannelChanged) withObject:nil afterDelay:0.3];
 }
 
@@ -438,10 +436,10 @@ headerView = _headerView;
             [self.dataModel appendMoreData:response];
         } else {
             self.dataModel = response;
-            NSLog(@"array type:%@", [[self.dataModel items] class]);
 //            _tableView.pullToRefreshView.lastUpdatedDate = [NSDate date];
         }
         
+//        NSLog(@"current thread is main thread:%@", [NSThread isMainThread] ? @"y" : @"n");
         [self updateTableView];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
@@ -494,10 +492,6 @@ headerView = _headerView;
         cell = [[HotListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:listCellIdentifier];
     }
     
-    if (![_dataModel isKindOfClass:[CommonListModel class]]) {
-        return nil;
-    }
-    
     CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl]];
     cell.titleLabel.text = dataItem.title;
@@ -513,10 +507,6 @@ headerView = _headerView;
     if (!cell) {
         cell = [[BabyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:babyCellIdentifier];
         cell.delegate = self;
-    }
-    
-    if (![_dataModel isKindOfClass:[BabyListModel class]]) {
-        return nil;
     }
     
     BabyItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
@@ -536,7 +526,6 @@ headerView = _headerView;
     [_tableView.pullToRefreshView stopAnimating];
     [_tableView.infiniteScrollingView stopAnimating];
     
-    NSLog(@"totalCount:%u", [_dataModel totalCount]);
     _tableView.showsInfiniteScrolling = [_dataModel totalCount] > [_dataModel items].count;
 }
 
@@ -548,6 +537,8 @@ headerView = _headerView;
 - (void)onChannelChanged {
     [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"work_list"];
     
+    self.channelIndex = _headerView.carousel.currentItemIndex;
+    
     self.dataModel = nil;
     [_tableView reloadData];
     
@@ -557,7 +548,7 @@ headerView = _headerView;
     [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     [_tableView.pullToRefreshView triggerRefresh];
     
-    [self setSlideShowHidden:_headerView.carousel.currentItemIndex == kTopChannelIndex];
+    [self setSlideShowHidden:_channelIndex == kTopChannelIndex];
 }
 
 - (void)enterControllerByType:(id)dataItem {

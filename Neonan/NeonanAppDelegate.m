@@ -26,9 +26,10 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
+    [[SessionManager sharedManager] clear];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
     
     self.navController = [[NNNavigationController alloc] init];
     self.navController.logoHidden = NO;

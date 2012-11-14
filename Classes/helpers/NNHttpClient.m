@@ -51,7 +51,6 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
               failure:(void (^)(ResponseError *error))failure {
     NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:parameters];
     AFHTTPRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSLog(@"json:%@", JSON);
         if ([JSON objectForKey:@"error"]) {
             ResponseError *error = [ResponseError parse:[JSON objectForKey:@"error"]];
             if (failure) {

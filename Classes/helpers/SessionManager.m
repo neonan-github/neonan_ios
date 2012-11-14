@@ -8,6 +8,10 @@
 
 #import "SessionManager.h"
 #import "SignController.h"
+#import <SSKeychain.h>
+#import "SignResult.h"
+
+static NSString *kServiceName = @"neonan.com";
 
 @interface SessionManager ()
 
@@ -31,6 +35,10 @@
     self.token = token;
 }
 
+- (NSString *)getToken {
+    return self.token;
+}
+
 - (void)requsetToken:(UIViewController *)controller success:(void (^)(NSString *token))success {
     if (_token) {
         if (success) {
@@ -40,9 +48,44 @@
         return;
     }
     
-    SignController *signController = [[SignController alloc] init];
-    signController.success = success;
-    [controller.navigationController presentModalViewController:signController animated:YES];
+    NSArray *accounts = [SSKeychain accountsForService:kServiceName];
+    if (!accounts || accounts.count < 1) {
+        SignController *signController = [[SignController alloc] init];
+        signController.success = success;
+        [controller.navigationController presentModalViewController:signController animated:YES];
+    } else {
+        NSString *email = [[accounts objectAtIndex:0] objectForKey:kSSKeychainAccountKey];
+        NSString *password = [SSKeychain passwordForService:kServiceName account:email];
+        [self signWithEmail:email andPassword:password atPath:@"login" success:success failure:nil];
+    }
+}
+
+- (void)signWithEmail:(NSString *)email
+          andPassword:(NSString *)password
+               atPath:(NSString *)path
+              success:(void (^)(NSString *))success
+              failure:(void (^)(ResponseError *error))failure {
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:email, @"email", password, @"password", nil];
+    [[NNHttpClient sharedClient] postAtPath:path parameters:parameters responseClass:[SignResult class] success:^(id<Jsonable> response) {
+        NSString *token = ((SignResult *)response).token;
+        [[SessionManager sharedManager] storeToken:token];
+        [SSKeychain setPassword:password forService:kServiceName account:email];
+        if (success) {
+            success(token);
+        }
+    } failure:^(ResponseError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)clear {
+    self.token = nil;
+//    NSArray *accounts = [SSKeychain accountsForService:kServiceName];
+//    [accounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//        [SSKeychain deletePasswordForService:kServiceName account:[obj objectForKey:kSSKeychainAccountKey]];
+//    }];
 }
 
 @end
