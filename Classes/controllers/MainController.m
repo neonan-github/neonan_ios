@@ -212,7 +212,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = [NSArray arrayWithObjects:@"首页", @"睿知", @"酷玩", @"宝贝", @"视频", @"精选", @"howto", @"女人", nil];
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"睿知", @"酷玩", @"宝贝", @"视频", @"精选", @"HowTo", @"女人", nil];
     }
     
     return  _channelTexts;
@@ -568,8 +568,12 @@ headerView = _headerView;
             controller = [[BabyDetailController alloc] init];
             [controller performSelector:@selector(setContentType:) withObject:[dataItem contentType]];
             [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
+            
             if ([dataItem isKindOfClass:[BabyItem class]]) {
                 ((BabyDetailController *)controller).voted = [dataItem voted];
+                [controller performSelector:@selector(setContentTitle:) withObject:[dataItem babyName]];
+            } else {
+                [controller performSelector:@selector(setContentTitle:) withObject:[dataItem title]];
             }
             break;
             

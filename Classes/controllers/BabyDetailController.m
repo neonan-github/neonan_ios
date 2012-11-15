@@ -64,10 +64,13 @@ FoldableTextBoxDelegate>
     frame.origin.y = -4;
     navBottomLine.frame = frame;
     
-    UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 240, 30)];
+    UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 250, 30)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.numberOfLines = 0;
+    titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     titleLabel.font = [UIFont systemFontOfSize:13];
+    titleLabel.text = _contentTitle;
     
     UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(245, 5, 35, 25)];
     likeButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10);
@@ -85,7 +88,8 @@ FoldableTextBoxDelegate>
     [shareButton setImage:[UIImage imageFromFile:@"icon_share.png"] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     
-    UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35)];
+    CGFloat delta = [self adjustLayout:_contentTitle];
+    UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35 + delta)];
     titleBox.backgroundColor = DarkThemeColor;
     [titleBox addSubview:navBottomLine];
     [titleBox addSubview:titleLabel];
@@ -321,13 +325,25 @@ FoldableTextBoxDelegate>
 
 #pragma mark - Private UI related
 
+- (CGFloat)adjustLayout:(NSString *)title {
+    CGFloat titleOriginalHeight = _titleLabel.frame.size.height;
+    CGFloat titleAdjustedHeight = [UIHelper computeHeightForLabel:_titleLabel withText:title];
+    CGFloat delta = titleAdjustedHeight - titleOriginalHeight;
+    
+    CGRect frame = _titleLabel.frame;
+    frame.size.height = titleAdjustedHeight;
+    _titleLabel.frame = frame;
+
+    return delta;
+}
+
 - (void)updateData {
     [_slideShowView reloadData];
     [self slideShowViewItemIndexDidChange:_slideShowView];
     
     _likeButton.enabled = !_dataModel.voted;
     
-    _titleLabel.text = _dataModel.title;
+//    _titleLabel.text = _dataModel.title;
 }
 
 @end

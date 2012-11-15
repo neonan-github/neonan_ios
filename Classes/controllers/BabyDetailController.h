@@ -14,6 +14,7 @@
 
 @property (copy, nonatomic) NSString *contentType;
 @property (copy, nonatomic) NSString *contentId;
+@property (copy, nonatomic) NSString *contentTitle;
 @property (assign, nonatomic) BOOL voted;
 
 @end
