@@ -13,6 +13,7 @@
 
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *bindInfoLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *inputLimitLabel;
+@property (unsafe_unretained, nonatomic) IBOutlet UIImageView *textBgView;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextView *textView;
 
 @property (strong, nonatomic) LoadingView *loadingView;
@@ -47,6 +48,9 @@
     [navRightButton setTitle:@"分享" forState:UIControlStateNormal];
     [navRightButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
+    
+    UIImage* textBgImage = [[UIImage imageFromFile:@"bg_share_edit.png"] stretchableImageWithLeftCapWidth:27 topCapHeight:27];
+    [_textBgView setImage:textBgImage];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,6 +64,7 @@
     [self setInputLimitLabel:nil];
     [self setTextView:nil];
     self.loadingView = nil;
+    [self setTextBgView:nil];
     [super viewDidUnload];
 }
 

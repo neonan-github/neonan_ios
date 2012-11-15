@@ -328,6 +328,7 @@ headerView = _headerView;
 #pragma mark - CircleHeaderViewDelegate methods
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
+    _tableView.dataSource = nil;
     [self performSelector:@selector(onChannelChanged) withObject:nil afterDelay:0.3];
 }
 
@@ -541,6 +542,7 @@ headerView = _headerView;
     self.channelIndex = _headerView.carousel.currentItemIndex;
     
     self.dataModel = nil;
+    _tableView.dataSource = self;
     [_tableView reloadData];
     
     self.slideShowModel = nil;
