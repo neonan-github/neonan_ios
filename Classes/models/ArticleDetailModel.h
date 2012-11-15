@@ -17,4 +17,5 @@
 @property (strong, nonatomic) NSString *shareUrl;
 
 @property (readonly, nonatomic) NSString *date;
+@property (copy, nonatomic) NSString *contentId;
 @end

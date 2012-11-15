@@ -59,6 +59,7 @@
     [self addSubview:entryImageView];
     
     UIButton *doneButton = self.doneButton = [self setUpDoneButton];
+    doneButton.enabled = NO;
     [self addSubview:doneButton];
     
     UIButton *countButton = self.countButton = [[UIButton alloc] initWithFrame:CGRectMake(10, (frame.size.height - 22) / 2, 28, 22)];
@@ -67,7 +68,6 @@
     countButton.titleLabel.font = [UIFont systemFontOfSize:9];
     countButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [countButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [countButton setTitle:@"23" forState:UIControlStateNormal];
     [self addSubview:countButton];
     
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -225,11 +225,13 @@
             _active = YES;
             _textView.text = _text;
             _placeHolderView.hidden = YES;
+            _doneButton.enabled = YES;
         } else if (yDelta > 200) {// keyboard hide
             [self performSelector:@selector(noActived) withObject:nil afterDelay:0.3f];//键盘完全隐藏后，改为非激活状态
             _text = _textView.text;
             _textView.text = @"";
             _placeHolderView.hidden = NO;
+            _doneButton.enabled = NO;
         }
         
         NSLog(@"positon changed:%f %f", oldY, newY);

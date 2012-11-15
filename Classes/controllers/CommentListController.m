@@ -9,16 +9,19 @@
 #import "CommentListController.h"
 #import "NNNavigationController.h"
 #import "CommentBox.h"
-#import "CommentModel.h"
 #import "CommentCell.h"
 
 #import "CommentListModel.h"
+#import "ShareHelper.h"
 
 #import <SVPullToRefresh.h>
 
 #define CELL_CONTENT_WIDTH 320.0f
 #define CELL_CONTENT_MARGIN 10.0f
 #define COMMENT_BOX_ORIGINAL_HEIGHT 40.0f
+
+static const NSUInteger kRequestCount = 20;
+static NSString * const kRequestCountString = @"20";
 
 typedef enum {
     requestTypeRefresh = 0,
@@ -33,6 +36,7 @@ typedef enum {
 //@property (nonatomic, strong) UIButton *commentButton;
 
 //@property (nonatomic, strong) NSMutableArray *comments;
+@property (strong, nonatomic) ShareHelper *shareHelper;
 @property (nonatomic, strong) CommentListModel *dataModel;
 @end
 
@@ -49,6 +53,10 @@ typedef enum {
     UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
+    _titleLabel.text = _articleInfo.title;
+    
+    [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+    
     _tableView.backgroundColor = DarkThemeColor;
     _tableView.dataSource = self;
     _tableView.delegate = self;
@@ -56,11 +64,11 @@ typedef enum {
     [_tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
-        [self requestForComments:@"111" withRequestType:requestTypeRefresh];
+        [self requestForComments:_articleInfo.contentId withRequestType:requestTypeRefresh];
     }];
     [_tableView addInfiniteScrollingWithActionHandler:^{
         // add data to data source, insert new cells into table view
-        [self requestForComments:@"111" withRequestType:requestTypeAppend];
+        [self requestForComments:_articleInfo.contentId withRequestType:requestTypeAppend];
     }];
     _tableView.showsInfiniteScrolling = NO;
     
@@ -70,6 +78,8 @@ typedef enum {
 //        [self.comments addObject:comment];
 //    }
 
+    [_commentBox.countButton setTitle:[NSString stringWithFormat:@"%u", _articleInfo.commentNum] forState:UIControlStateNormal];
+    _commentBox.countButton.enabled = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -120,6 +130,12 @@ typedef enum {
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [_tableView.pullToRefreshView triggerRefresh];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -260,24 +276,56 @@ typedef enum {
 	[UIView commitAnimations];
 }
 
-- (void)requestForComments:(NSString *)contentId withRequestType:(requestType)requestType {
-//    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
-//    
-//    [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
-//        if (requestType == requestTypeAppend) {
-//            [self.dataModel appendMoreData:response];
-//        } else {
-//            self.dataModel = response;
-//        }
-//        
-//        [self updateTableView];
-//    } failure:^(ResponseError *error) {
-//        NSLog(@"error:%@", error.message);
-//        [UIHelper alertWithMessage:error.message];
-//        [_tableView.pullToRefreshView stopAnimating];
-//        [_tableView.infiniteScrollingView stopAnimating];
-//    }];
+#pragma mark - Prviate UI related
 
+- (void)updateTableView {
+    [_tableView reloadData];
+    [_tableView.pullToRefreshView stopAnimating];
+    [_tableView.infiniteScrollingView stopAnimating];
+    
+    _tableView.showsInfiniteScrolling = [_dataModel totalCount] > [_dataModel items].count;
+}
+
+#pragma mark - Private Request methods
+
+- (void)requestForComments:(NSString *)contentId withRequestType:(requestType)requestType {
+    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:contentId, @"content_id",
+                                [NSString stringWithFormat:@"%u", offset], @"offset",
+                                kRequestCountString, @"count",  nil];
+
+    [[NNHttpClient sharedClient] getAtPath:@"comments_show" parameters:parameters responseClass:[CommentListModel class] success:^(id<Jsonable> response) {
+        if (requestType == requestTypeAppend) {
+            [self.dataModel appendMoreData:response];
+        } else {
+            self.dataModel = response;
+        }
+        
+        [self updateTableView];
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+        [_tableView.pullToRefreshView stopAnimating];
+        [_tableView.infiniteScrollingView stopAnimating];
+    }];
+
+}
+
+#pragma mark - Private methods
+
+- (void)share {
+    if (!_dataModel) {
+        return;
+    }
+    
+    if (!self.shareHelper) {
+        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
+    }
+    
+    _shareHelper.title = _articleInfo.title;
+    _shareHelper.shareUrl = _articleInfo.shareUrl;
+    [_shareHelper showShareView];
 }
 
 @end

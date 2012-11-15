@@ -24,4 +24,5 @@
 @property (assign, nonatomic) NSUInteger totalCount;
 @property (strong, nonatomic) NSArray *items;
 
+- (void)appendMoreData:(CommentListModel *)data;
 @end

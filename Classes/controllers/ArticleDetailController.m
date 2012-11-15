@@ -219,6 +219,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
     [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         self.dataModel = response;
+        _dataModel.contentId = _contentId;
         [self updateData];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
@@ -246,7 +247,6 @@ static NSString *kHtmlTemplate = @"<html> \n"
 
 #pragma mark - Private methods
 
-
 - (void)share {
     if (!_dataModel) {
         return;
@@ -268,6 +268,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
 
 - (void)showComments {
     CommentListController *controller = [[CommentListController alloc] init];
+    controller.articleInfo = self.dataModel;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
