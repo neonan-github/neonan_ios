@@ -11,5 +11,6 @@
 @interface ArticleDetailController : UIViewController
 
 @property (copy, nonatomic) NSString *contentId;
+@property (copy, nonatomic) NSString *contentTitle;
 
 @end

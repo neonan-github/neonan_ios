@@ -35,6 +35,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
 
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *extraInfoLabel;
+@property (unsafe_unretained, nonatomic) IBOutlet UIImageView *titleLineView;
 @property (unsafe_unretained, nonatomic) IBOutlet UIWebView *textView;
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
@@ -46,6 +47,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
 - (void)requestForHtml:(NSString *)contentId;
 - (void)updateData;
 
+- (void)adjustLayout:(NSString *)title;
 @end
 
 @implementation ArticleDetailController
@@ -69,6 +71,9 @@ static NSString *kHtmlTemplate = @"<html> \n"
     // Create a custom back button
     UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
+    [self adjustLayout:_contentTitle];
+    _titleLabel.text = _contentTitle;
     
     [_textView removeShadow];
     _textView.scalesPageToFit = YES;
@@ -98,6 +103,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
     [self setCommentBox:nil];
     [self setShareButton:nil];
     self.shareHelper = nil;
+    [self setTitleLineView:nil];
     [super viewDidUnload];
 }
 
@@ -252,12 +258,39 @@ static NSString *kHtmlTemplate = @"<html> \n"
 
 #pragma mark - Private UI related
 
+- (void)adjustLayout:(NSString *)title {
+    CGFloat titleOriginalHeight = _titleLabel.frame.size.height;
+    CGFloat titleAdjustedHeight = [UIHelper computeHeightForLabel:_titleLabel withText:title];
+    CGFloat delta = titleAdjustedHeight - titleOriginalHeight;
+    
+    CGRect frame = _titleLabel.frame;
+    frame.size.height = titleAdjustedHeight;
+    _titleLabel.frame = frame;
+    
+    frame = _extraInfoLabel.frame;
+    frame.origin.y += delta;
+    _extraInfoLabel.frame = frame;
+    
+    frame = _titleLineView.frame;
+    frame.origin.y += delta;
+    _titleLineView.frame = frame;
+    
+    frame = _textView.frame;
+    frame.origin.y += delta;
+    frame.size.height -= delta;
+    _textView.frame = frame;
+}
+
 - (void)renderHtml:(NSString *)html {
     // Load HTML data
     //	NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"article_sample.html" ofType:nil];
     //	NSString *html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:NULL];
     
     NSString *formattedHTML = [NSString stringWithFormat:kHtmlTemplate, @"helvetica", [NSNumber numberWithInt:2], html];
+    //filter video
+    formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"<object.+<embed.+?>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
+    //adjust image width
+    formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"style=\"[^\"]+\"" withString:@"style=\"width:100%;\"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
     [_textView loadHTMLString:formattedHTML baseURL:nil];
 }
 

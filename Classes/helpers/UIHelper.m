@@ -28,6 +28,13 @@
     return  (NSUInteger)(size.height / font.lineHeight);
 }
 
++ (CGFloat)computeHeightForLabel:(UILabel *)label withText:(NSString *)text {
+    CGFloat originalHeight = label.frame.size.height;
+    
+    NSUInteger lines = [UIHelper computeContentLines:text withWidth:label.frame.size.width andFont:label.font];
+    return originalHeight + (lines - 1) * label.font.lineHeight;
+}
+
 + (void)setBackAction:(SEL)action forController:(UIViewController *)controller withImage:(UIImage *)image {
     UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [backButton setBackgroundImage:image forState:UIControlStateNormal];

@@ -561,6 +561,7 @@ headerView = _headerView;
         case contentTypeArticle:
             controller = [[ArticleDetailController alloc] init];
             [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
+            [controller performSelector:@selector(setContentTitle:) withObject:[dataItem title]];
             break;
             
         case contentTypeSlide:

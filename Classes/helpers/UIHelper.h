@@ -53,6 +53,7 @@
 + (void)view:(UIView *)view alignBottomTo:(float)bottom;
 
 + (NSUInteger)computeContentLines:(NSString *)content withWidth:(CGFloat)width andFont:(UIFont *)font;
++ (CGFloat)computeHeightForLabel:(UILabel *)label withText:(NSString *)text;
 
 + (void)setBackAction:(SEL)action forController:(UIViewController *)controller withImage:(UIImage *)image;
 
