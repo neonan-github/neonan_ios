@@ -16,5 +16,5 @@
 @property (nonatomic, unsafe_unretained) UIButton *doneButton;
 @property (nonatomic, unsafe_unretained) UIImageView *placeHolderView;
 
-@property (nonatomic, strong) NSString *text;
+@property (nonatomic, copy) NSString *text;
 @end

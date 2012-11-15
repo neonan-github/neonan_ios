@@ -15,6 +15,7 @@
 #import "ShareHelper.h"
 
 #import <SVPullToRefresh.h>
+#import <MBProgressHUD.h>
 
 #define CELL_CONTENT_WIDTH 320.0f
 #define CELL_CONTENT_MARGIN 10.0f
@@ -80,6 +81,8 @@ typedef enum {
 
     [_commentBox.countButton setTitle:[NSString stringWithFormat:@"%u", _articleInfo.commentNum] forState:UIControlStateNormal];
     _commentBox.countButton.enabled = NO;
+    
+    [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside]; 
 }
 
 - (void)didReceiveMemoryWarning
@@ -312,6 +315,30 @@ typedef enum {
 
 }
 
+- (void)publishComment:(NSString *)comment withContentId:(NSString *)contentId {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    [sessionManager requsetToken:self success:^(NSString *token) {
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
+                                    contentId, @"content_id", comment, @"content", nil];
+        
+        [[NNHttpClient sharedClient] postAtPath:@"comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            _articleInfo.commentNum++;
+            [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_articleInfo.commentNum].description forState:UIControlStateNormal];
+            _commentBox.text = @"";
+            
+            [_tableView.pullToRefreshView triggerRefresh];
+        } failure:^(ResponseError *error) {
+            NSLog(@"error:%@", error.message);
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [UIHelper alertWithMessage:error.message];
+        }];
+        
+    }];
+}
+
 #pragma mark - Private methods
 
 - (void)share {
@@ -326,6 +353,16 @@ typedef enum {
     _shareHelper.title = _articleInfo.title;
     _shareHelper.shareUrl = _articleInfo.shareUrl;
     [_shareHelper showShareView];
+}
+
+- (void)publish:(UIButton *)button {
+    NSString *comment = _commentBox.text;
+    if (comment.length < 1) {
+        [UIHelper alertWithMessage:@"评论不能为空"];
+        return;
+    }
+    
+    [self publishComment:_commentBox.text withContentId:_articleInfo.contentId];
 }
 
 @end

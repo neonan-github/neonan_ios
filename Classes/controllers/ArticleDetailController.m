@@ -227,6 +227,29 @@ static NSString *kHtmlTemplate = @"<html> \n"
     }];
 }
 
+- (void)publishComment:(NSString *)comment withContentId:(NSString *)contentId {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    [sessionManager requsetToken:self success:^(NSString *token) {
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
+                                    contentId, @"content_id", comment, @"content", nil];
+        
+        [[NNHttpClient sharedClient] postAtPath:@"comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            _dataModel.commentNum++;
+            [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];
+            _commentBox.countButton.enabled = _dataModel.commentNum > 0;
+            _commentBox.text = @"";
+        } failure:^(ResponseError *error) {
+            NSLog(@"error:%@", error.message);
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [UIHelper alertWithMessage:error.message];
+        }];
+
+    }];
+}
+
 #pragma mark - Private UI related
 
 - (void)renderHtml:(NSString *)html {
@@ -242,6 +265,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
     _titleLabel.text = _dataModel.title;
     _extraInfoLabel.text = [NSString stringWithFormat:@"%@ 编辑：%@", _dataModel.date, _dataModel.author];
     [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];
+    _commentBox.countButton.enabled = _dataModel.commentNum > 0;
     [self renderHtml:_dataModel.content];
 }
 
@@ -262,8 +286,13 @@ static NSString *kHtmlTemplate = @"<html> \n"
 }
 
 - (void)publish:(UIButton *)button {
-    SignController *controller = [[SignController alloc] init];
-    [self.navigationController presentModalViewController:controller animated:YES];
+    NSString *comment = _commentBox.text;
+    if (comment.length < 1) {
+        [UIHelper alertWithMessage:@"评论不能为空"];
+        return;
+    }
+    
+    [self publishComment:_commentBox.text withContentId:_contentId];
 }
 
 - (void)showComments {

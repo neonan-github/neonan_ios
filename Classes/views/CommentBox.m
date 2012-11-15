@@ -100,7 +100,11 @@
 }
 
 - (NSString *)text {
-    return _textView.text;
+    return [_text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
+- (void)setText:(NSString *)text {
+    _text = [text copy];
 }
 
 - (void)setRightView:(UIView *)view {
