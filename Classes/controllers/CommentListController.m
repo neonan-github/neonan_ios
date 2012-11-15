@@ -32,6 +32,7 @@ typedef enum {
 @interface CommentListController ()
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
+@property (unsafe_unretained, nonatomic) IBOutlet UIImageView *titleLineView;
 @property (nonatomic, unsafe_unretained) IBOutlet UITableView *tableView;
 @property (nonatomic, unsafe_unretained) IBOutlet CommentBox *commentBox;
 //@property (nonatomic, strong) UIButton *commentButton;
@@ -54,6 +55,7 @@ typedef enum {
     UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
+    [self adjustLayout:_articleInfo.title];
     _titleLabel.text = _articleInfo.title;
     
     [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
@@ -106,6 +108,7 @@ typedef enum {
 - (void)viewDidUnload
 {
     [self cleanUp];
+    [self setTitleLineView:nil];
     [super viewDidUnload];
 }
 
@@ -280,6 +283,25 @@ typedef enum {
 }
 
 #pragma mark - Prviate UI related
+
+- (void)adjustLayout:(NSString *)title {
+    CGFloat titleOriginalHeight = _titleLabel.frame.size.height;
+    CGFloat titleAdjustedHeight = [UIHelper computeHeightForLabel:_titleLabel withText:title];
+    CGFloat delta = titleAdjustedHeight - titleOriginalHeight;
+    
+    CGRect frame = _titleLabel.frame;
+    frame.size.height = titleAdjustedHeight;
+    _titleLabel.frame = frame;
+    
+    frame = _titleLineView.frame;
+    frame.origin.y += delta;
+    _titleLineView.frame = frame;
+    
+    frame = _tableView.frame;
+    frame.origin.y += delta;
+    frame.size.height -= delta;
+    _tableView.frame = frame;
+}
 
 - (void)updateTableView {
     [_tableView reloadData];
