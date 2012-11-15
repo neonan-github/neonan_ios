@@ -36,7 +36,7 @@
         }
         else {
             [mailController setSubject:title];
-            [mailController setMessageBody:content isHTML:NO];
+            [mailController setMessageBody:[NSString stringWithFormat:@"%@\n%@", content, sharedUrl] isHTML:NO];
         }
         
          if(self.rootViewController)
