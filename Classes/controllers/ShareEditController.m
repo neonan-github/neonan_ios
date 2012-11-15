@@ -9,16 +9,22 @@
 #import "ShareEditController.h"
 #import "LoadingView.h"
 
-@interface ShareEditController ()
+const NSUInteger kMaxInputLimit = 30;
+
+@interface ShareEditController () <UITextViewDelegate>
 
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *bindInfoLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *inputLimitLabel;
+@property (unsafe_unretained, nonatomic) IBOutlet UIImageView *textBgView;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextView *textView;
 
 @property (strong, nonatomic) LoadingView *loadingView;
+@property (unsafe_unretained, nonatomic) UIButton *shareButton;
 
 - (void)loadingViewDidDismissed;
 - (void)loadingViewDelayClose;
+
+- (void)updateLimitHit;
 @end
 
 @implementation ShareEditController
@@ -43,10 +49,21 @@
     UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    UIButton *navRightButton = [UIHelper createBarButton:5];
+    UIButton *navRightButton = self.shareButton = [UIHelper createBarButton:5];
     [navRightButton setTitle:@"分享" forState:UIControlStateNormal];
     [navRightButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
+    
+    _bindInfoLabel.text = [_shareItem isVerified] ? @"已绑定" : @"未绑定";
+    
+    UIImage* textBgImage = [[UIImage imageFromFile:@"bg_share_edit.png"] stretchableImageWithLeftCapWidth:27 topCapHeight:27];
+    [_textBgView setImage:textBgImage];
+    
+    _textView.delegate = self;
+    _textView.text = [NSString stringWithFormat:@" // %@", [_shareItem sharedText]];
+    _textView.selectedRange = NSMakeRange(0, 0);
+    
+    [self updateLimitHit];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,6 +77,8 @@
     [self setInputLimitLabel:nil];
     [self setTextView:nil];
     self.loadingView = nil;
+    self.shareButton = nil;
+    [self setTextBgView:nil];
     [super viewDidUnload];
 }
 
@@ -151,6 +170,12 @@
     [self performSelector:@selector(loadingViewDelayClose) withObject:nil afterDelay:1];
 }
 
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView {
+    [self updateLimitHit];
+}
+
 #pragma mark - Public methods
 
 -(NSString *)getTrackUrl:(NSString *)source trackCB:(BOOL)trackCB site:(NSString *)site
@@ -187,6 +212,20 @@
     self.loadingView = nil;
 }
 
+- (void)updateLimitHit {
+    NSInteger lengthRemain = kMaxInputLimit - _textView.text.length;
+    if (lengthRemain < 0) {
+        _inputLimitLabel.text = [NSString stringWithFormat:@"已超%d个字", -lengthRemain];
+        _inputLimitLabel.textColor = [UIColor redColor];
+        self.shareButton.enabled = NO;
+        return;
+    }
+    
+    _inputLimitLabel.text = [NSString stringWithFormat:@"还可输入%d个字", lengthRemain];
+    _inputLimitLabel.textColor = [UIColor whiteColor];
+    self.shareButton.enabled = YES;
+}
+
 - (void)share {
     NSString *text = _textView.text;
     if(!text || [text isEqualToString:@""]) {
@@ -196,7 +235,7 @@
     }
     
     if([_shareItem conformsToProtocol:@protocol(SHSOAuthSharerProtocol)])  {
-        [((id<SHSOAuthSharerProtocol>)_shareItem) shareText:[_shareItem sharedText]];
+        [((id<SHSOAuthSharerProtocol>)_shareItem) shareText:_textView.text];
     }
 }
 
