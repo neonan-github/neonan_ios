@@ -18,8 +18,11 @@
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
 
+static const NSUInteger kTagSSImageView = 1000;
+static const NSUInteger kTagSSprogressView = 1001;
+
 @interface BabyDetailController () <SlideShowViewDataSource, SlideShowViewDelegate,
-FoldableTextBoxDelegate>
+FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, unsafe_unretained) UIView *titleBox;
 @property (nonatomic, unsafe_unretained) UILabel *titleLabel;
@@ -159,6 +162,40 @@ FoldableTextBoxDelegate>
     _textBox.expanded = NO;
 }
 
+#pragma mark - UIScrollViewDelegate methods for Image Zoom
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return [scrollView viewWithTag:kTagSSImageView];
+}
+
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    UIImageView *imageView = (UIImageView *)[scrollView viewWithTag:kTagSSImageView];
+    CGRect innerFrame = imageView.frame;
+    CGRect scrollerBounds = scrollView.bounds;
+    
+    if ( ( innerFrame.size.width < scrollerBounds.size.width ) || ( innerFrame.size.height < scrollerBounds.size.height ) )
+    {
+        CGFloat tempx = imageView.center.x - ( scrollerBounds.size.width / 2 );
+        CGFloat tempy = imageView.center.y - ( scrollerBounds.size.height / 2 );
+        CGPoint myScrollViewOffset = CGPointMake( tempx, tempy);
+        
+        scrollView.contentOffset = myScrollViewOffset;
+    }
+    
+    UIEdgeInsets anEdgeInset = { 0, 0, 0, 0};
+    if ( scrollerBounds.size.width > innerFrame.size.width )
+    {
+        anEdgeInset.left = (scrollerBounds.size.width - innerFrame.size.width) / 2;
+        anEdgeInset.right = -anEdgeInset.left;  // I don't know why this needs to be negative, but that's what works
+    }
+    if ( scrollerBounds.size.height > innerFrame.size.height )
+    {
+        anEdgeInset.top = (scrollerBounds.size.height - innerFrame.size.height) / 2;
+        anEdgeInset.bottom = -anEdgeInset.top;  // I don't know why this needs to be negative, but that's what works
+    }
+    scrollView.contentInset = anEdgeInset;
+}
+
 #pragma mark - SlideShowViewDataSource methods
 
 - (NSUInteger)numberOfItemsInSlideShowView:(SlideShowView *)slideShowView {
@@ -170,12 +207,24 @@ FoldableTextBoxDelegate>
 
 - (UIView *)slideShowView:(SlideShowView *)slideShowView viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
     if (!view) {
-        view = [[UIImageView alloc] init];
-        view.clipsToBounds = YES;
-        view.contentMode = UIViewContentModeScaleAspectFit;
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:slideShowView.bounds];
+        imageView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+        imageView.clipsToBounds = YES;
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.tag = kTagSSImageView;
+        imageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+        
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:slideShowView.bounds];
+        scrollView.delegate = self;
+        scrollView.scrollEnabled = NO;
+        scrollView.contentSize = imageView.frame.size;
+        scrollView.minimumZoomScale = 0.5;
+        scrollView.maximumZoomScale = 2.0;
+        [scrollView addSubview:imageView];
+        view = scrollView;
         
         UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        progressView.tag = 1000;
+        progressView.tag = kTagSSprogressView;
         
         CGRect frame = progressView.frame;
         frame.origin.x = (slideShowView.bounds.size.width - frame.size.width) / 2;
@@ -184,9 +233,11 @@ FoldableTextBoxDelegate>
         [view addSubview:progressView];
     }
     
-    UIActivityIndicatorView *progressView = (UIActivityIndicatorView *)[view viewWithTag:1000];
+    UIImageView *imageView = (UIImageView *)[view viewWithTag:kTagSSImageView];
+    UIActivityIndicatorView *progressView = (UIActivityIndicatorView *)[view viewWithTag:kTagSSprogressView];
     NSURL *imgUrl = [NSURL URLWithString:[_dataModel.imgUrls objectAtIndex:index]];
-    [((UIImageView *)view) setImageWithURL:imgUrl success:^(UIImage *image, BOOL cached) {
+    [imageView setImageWithURL:imgUrl success:^(UIImage *image, BOOL cached) {
+//        ((UIScrollView *)view).contentSize = imageView.frame.size;
         [progressView stopAnimating];
     } failure:nil];
     
@@ -204,6 +255,12 @@ FoldableTextBoxDelegate>
 
 - (void)slideShowViewItemIndexDidChange:(SlideShowView *)slideShowView {
     NSUInteger currentIndex = slideShowView.carousel.currentItemIndex;
+    NSArray *visibleItems = slideShowView.carousel.visibleItemViews;
+    for (UIScrollView *scrollView in visibleItems) {
+        [UIView beginAnimations:nil context:nil];
+        scrollView.zoomScale = 1.0;
+        [UIView commitAnimations];
+    }
     [self.pageControl setCurrentPage:currentIndex];
     _textBox.text = [_dataModel.descriptions objectAtIndex:(_dataModel.descriptions.count > 1 ? currentIndex : 0)];
 }
