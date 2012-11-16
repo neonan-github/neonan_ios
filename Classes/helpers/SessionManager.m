@@ -107,7 +107,7 @@ static NSString *const kPasswordKey = @"password";
 }
 
 - (void)signOut {
-    [self clear];
+    self.token = nil;
     
     NSArray *accounts = [SSKeychain accountsForService:kServiceName];
     [accounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

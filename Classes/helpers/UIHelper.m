@@ -91,8 +91,13 @@
 }
 
 + (void)alertWithMessage:(NSString *)message {
-    BlockAlertView *alertView = [BlockAlertView alertWithTitle:nil message:message];
-    [alertView setCancelButtonWithTitle:@"确定" block:nil];
+    static UIAlertView *alertView = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+    });
+    
+    alertView.message = message;
     [alertView show];
 }
 
