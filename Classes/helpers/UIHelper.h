@@ -10,7 +10,6 @@
 #import <UIKit/UIKit.h>
 
 #import "CustomNavigationBar.h"
-#import <BlockAlertView.h>
 
 #define NavBar                              self.navigationController.navigationBar
 #define TabBar                              self.tabBarController.tabBar
