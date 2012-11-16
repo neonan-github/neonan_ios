@@ -22,6 +22,7 @@
 #import <SVPullToRefresh.h>
 #import <TTTAttributedLabel.h>
 #import <NYXImagesKit.h>
+#import <UIAlertView+Blocks.h>
 
 #import "BabyDetailController.h"
 #import "CommentListController.h"
@@ -79,6 +80,7 @@ typedef enum {
 - (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType;
 - (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
 
+- (void)updateUserStatus;
 - (void)updateTableView;
 - (void)updateSlideShow;
 - (void)onChannelChanged;
@@ -231,6 +233,8 @@ headerView = _headerView;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self updateUserStatus];
     
     if (_slideShowView.carousel.currentItemIndex < 1) {
         [self.slideShowView reloadData];
@@ -412,6 +416,29 @@ headerView = _headerView;
     return -1;
 }
 
+- (void)signIn {
+    [[SessionManager sharedManager] requsetToken:self success:nil];
+}
+
+- (void)signOut {
+    RIButtonItem *cancelItem = [RIButtonItem item];
+    cancelItem.label = @"取消";
+    
+    RIButtonItem *okItem = [RIButtonItem item];
+    okItem.label = @"确定";
+    okItem.action = ^
+    {
+        [[SessionManager sharedManager] signOut];
+        [self updateUserStatus];
+    };
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"确定注销？"
+                                               cancelButtonItem:cancelItem
+                                               otherButtonItems:okItem, nil];
+    [alertView show];
+}
+
 #pragma mark - Private Request methods
 
 - (void)requestForSlideShow:(NSString *)channel {
@@ -528,6 +555,22 @@ headerView = _headerView;
     cell.tag = indexPath.row;
     
     return cell;
+}
+
+- (void)updateUserStatus {
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    
+    [self.navLeftButton setImage:(tokenAvailable ? [UIImage imageFromFile:@"icon_user_highlighted.png"] :
+                                  [UIImage imageFromFile:@"icon_user_normal.png"])
+                        forState:UIControlStateNormal];
+    
+    [self.navLeftButton removeTarget:nil
+                       action:NULL
+             forControlEvents:UIControlEventAllEvents];
+    [self.navLeftButton addTarget:self
+                           action:(tokenAvailable ? @selector(signOut) : @selector(signIn))
+                 forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)updateTableView {
