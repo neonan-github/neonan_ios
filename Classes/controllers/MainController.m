@@ -250,11 +250,11 @@ headerView = _headerView;
         [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     }
     
-//    if (!_dataModel) {
-    [_tableView.pullToRefreshView triggerRefresh];
-//    } else {
-//        [_tableView reloadData];
-//    }
+    if (!_dataModel) {
+        [_tableView.pullToRefreshView triggerRefresh];
+    } else {
+        [_tableView reloadData];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -282,7 +282,9 @@ headerView = _headerView;
         [view addGestureRecognizer:tapRecognizer];
     }
     
-    [((UIImageView *)view) setImage:[UIImage imageNamed:@"img_slide_show_place_holder.png"]];
+    [((UIImageView *)view) setImage:[UIImage imageNamed:(_headerView.currentItemIndex == kBabyChannelIndex ?
+                                                         @"img_baby_slide_show_place_holder.png" :
+                                                         @"img_common_slide_show_place_holder.png")]];
     
     if (_slideShowModel.list) {
         NSString *imgUrl = [[_slideShowModel.list objectAtIndex:index] imgUrl];
@@ -340,6 +342,7 @@ headerView = _headerView;
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
     _tableView.dataSource = nil;
+    [_slideShowView stopAutoScroll];
     [self performSelector:@selector(onChannelChanged) withObject:nil afterDelay:0.3];
 }
 
@@ -546,7 +549,7 @@ headerView = _headerView;
     }
     
     BabyItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
-    [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.photoUrl]];
+    [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.photoUrl] placeholderImage:[UIImage imageNamed:@"img_baby_photo_place_holder.png"]];
     cell.titleLabel.text = dataItem.babyName;
     cell.scoreLabel.text = [NSString stringWithFormat:@"%u票", dataItem.voteNum];
     cell.videoShots = dataItem.videoShots;
@@ -602,6 +605,8 @@ headerView = _headerView;
     [_tableView.pullToRefreshView triggerRefresh];
     
     [self setSlideShowHidden:_channelIndex == kTopChannelIndex];
+    
+    [_slideShowView startAutoScroll:2];
 }
 
 - (void)enterControllerByType:(id)dataItem {

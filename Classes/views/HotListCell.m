@@ -40,7 +40,7 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         titleLabel.numberOfLines = 2;
         titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         titleLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
-        titleLabel.font = [UIFont systemFontOfSize:9];
+        titleLabel.font = [UIFont systemFontOfSize:12];
         
         TTTAttributedLabel *descriptionLabel = self.descriptionLabel = [[TTTAttributedLabel alloc] init];
         descriptionLabel.backgroundColor = [UIColor clearColor];
@@ -51,7 +51,7 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         TTTAttributedLabel *dateLabel = self.dateLabel = [[TTTAttributedLabel alloc] init];
         dateLabel.backgroundColor = [UIColor clearColor];
         dateLabel.textColor = HEXCOLOR(0x555555);
-        dateLabel.font = [UIFont systemFontOfSize:6];
+        dateLabel.font = [UIFont systemFontOfSize:9];
         dateLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentBottom;
         
         [self.contentView addSubview:thumbnail];

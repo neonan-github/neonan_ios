@@ -199,7 +199,8 @@ static const NSInteger kTagItemPlayButton = 2001;
     
     UIButton *itemView = (UIButton *)view;
     view.tag = index;
-//    [itemView setBackgroundImage:[UIImage imageFromFile:@"baby_detail.jpg"] forState:UIControlStateNormal];
+    
+    [itemView setBackgroundImage:[UIImage imageFromFile:@"img_baby_video_place_holder.png"] forState:UIControlStateNormal];
     SDWebImageManager *manager = [SDWebImageManager sharedManager];
     [manager downloadWithURL:[_videoShots objectAtIndex:index]
                     delegate:self
