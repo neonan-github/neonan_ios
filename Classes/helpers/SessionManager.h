@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const kServiceName;
+
 @interface SessionManager : NSObject
 
 + (SessionManager *)sharedManager;

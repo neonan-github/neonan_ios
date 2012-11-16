@@ -11,7 +11,7 @@
 #import <SSKeychain.h>
 #import "SignResult.h"
 
-static NSString *const kServiceName = @"neonan.com";
+NSString *const kServiceName = @"neonan.com";
 static NSString *const kAccountKey = @"account";
 static NSString *const kPasswordKey = @"password";
 
@@ -91,7 +91,6 @@ static NSString *const kPasswordKey = @"password";
     [[NNHttpClient sharedClient] postAtPath:path parameters:parameters responseClass:[SignResult class] success:^(id<Jsonable> response) {
         NSString *token = ((SignResult *)response).token;
         [[SessionManager sharedManager] storeToken:token];
-        [SSKeychain setPassword:password forService:kServiceName account:email];
         if (success) {
             success(token);
         }

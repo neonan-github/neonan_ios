@@ -10,6 +10,7 @@
 #import "NNNavigationController.h"
 #import <DCRoundSwitch.h>
 #import <MBProgressHUD.h>
+#import <SSKeychain.h>
 
 #import "SignResult.h"
 #import "SessionManager.h"
@@ -212,10 +213,16 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     password = [password md5];
     [[SessionManager sharedManager] signWithEmail:email andPassword:password atPath:path success:^(NSString *token) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (self.rememberSwitch.isOn) {
+            [SSKeychain setPassword:password forService:kServiceName account:email];
+        }
+        
         if (_success) {
             _success(token);
         }
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
         [self close];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
