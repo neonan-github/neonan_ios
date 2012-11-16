@@ -349,7 +349,12 @@ headerView = _headerView;
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
     _tableView.dataSource = nil;
+    [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"work_list"];
+    [_tableView.pullToRefreshView stopAnimating];
+    [_tableView.infiniteScrollingView stopAnimating];
+    
     [_slideShowView stopAutoScroll];
+    
     [self performSelector:@selector(onChannelChanged) withObject:nil afterDelay:0.3];
 }
 
@@ -471,13 +476,16 @@ headerView = _headerView;
     Class responseClass = isBabyChannel ? [BabyListModel class] : [CommonListModel class];
     
     [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
-        if (requestType == requestTypeAppend) {
-            [self.dataModel appendMoreData:response];
-        } else {
-            self.dataModel = response;
+        if (isBabyChannel == (_channelIndex == kBabyChannelIndex)) {
+            if (requestType == requestTypeAppend) {
+                [self.dataModel appendMoreData:response];
+            } else {
+                self.dataModel = response;
+            }
+            
+            [self updateTableView];
         }
         
-        [self updateTableView];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
@@ -597,8 +605,6 @@ headerView = _headerView;
 }
 
 - (void)onChannelChanged {
-    [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"work_list"];
-    
     _tableView.dataSource = self;
     
     self.dataModel = nil;
