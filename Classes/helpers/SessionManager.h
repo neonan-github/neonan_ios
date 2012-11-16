@@ -22,6 +22,7 @@
               success:(void (^)(NSString *))success
               failure:(void (^)(ResponseError *error))failure;
 
-- (void)clear;
+- (void)clear;// 只清除token
+- (void)signOut;// 注销 清除token和保存的帐号
 
 @end

@@ -104,10 +104,15 @@ static NSString *const kPasswordKey = @"password";
 
 - (void)clear {
     self.token = nil;
-//    NSArray *accounts = [SSKeychain accountsForService:kServiceName];
-//    [accounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-//        [SSKeychain deletePasswordForService:kServiceName account:[obj objectForKey:kSSKeychainAccountKey]];
-//    }];
+}
+
+- (void)signOut {
+    [self clear];
+    
+    NSArray *accounts = [SSKeychain accountsForService:kServiceName];
+    [accounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [SSKeychain deletePasswordForService:kServiceName account:[obj objectForKey:kSSKeychainAccountKey]];
+    }];
 }
 
 @end
