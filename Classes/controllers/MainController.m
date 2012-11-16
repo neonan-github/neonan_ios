@@ -114,18 +114,25 @@ headerView = _headerView;
     
     float layoutY = 0;
     
-    CircleHeaderView *headerView = self.headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, 30)];
-    headerView.delegate = self;
-    headerView.titles = self.channelTexts;
-    [headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
-    [headerView reloadData];
-    [self.view addSubview:headerView];
+//    CircleHeaderView *headerView = self.headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, 30)];
+//    headerView.delegate = self;
+//    headerView.titles = self.channelTexts;
+//    [headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
+//    [headerView reloadData];
+//    [self.view addSubview:headerView];
     
     layoutY += 30;
     SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, kSlideShowHeight)];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
     [self.view addSubview:slideShowView];
+    
+    CircleHeaderView *headerView = self.headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 50)];
+    headerView.delegate = self;
+    headerView.titles = self.channelTexts;
+    [headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
+    [headerView reloadData];
+    [self.view addSubview:headerView];
     
     TTTAttributedLabel *slideShowTextLabel = self.slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + kSlideShowHeight - 16, CompatibleScreenWidth, 16)];
     slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
@@ -592,14 +599,15 @@ headerView = _headerView;
 - (void)onChannelChanged {
     [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"work_list"];
     
-    self.channelIndex = _headerView.carousel.currentItemIndex;
+    _tableView.dataSource = self;
     
     self.dataModel = nil;
-    _tableView.dataSource = self;
     [_tableView reloadData];
     
     self.slideShowModel = nil;
     [_slideShowView reloadData];
+    
+    self.channelIndex = _headerView.carousel.currentItemIndex;
     
     [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     [_tableView.pullToRefreshView triggerRefresh];

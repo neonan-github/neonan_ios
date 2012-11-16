@@ -8,6 +8,8 @@
 
 #import "CircleHeaderView.h"
 
+static const CGFloat kBottomPadding = 20;// 扩大触摸区域
+
 @interface CircleHeaderView () {
     UIFont *_smallFont, *_bigFont;
 }
@@ -26,24 +28,26 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        self.backgroundColor = [UIColor clearColor];
+        
+        UIImageView *backgroundView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height - kBottomPadding)];
         backgroundView.image = [UIImage imageFromFile:@"bg_header_view.png"];
         [self addSubview:backgroundView];
-        self.backgroundColor = [UIColor blackColor];
         
         iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         carousel.scrollEnabled = NO;
         carousel.dataSource = self;
         carousel.delegate = self;
+        carousel.contentOffset = CGSizeMake(0, -kBottomPadding / 2);
         [self addSubview:carousel];
         
         UIImage *indicatorImg = [UIImage imageFromFile:@"img_header_indicator.png"];
-        UIImageView *indicatorView = [[UIImageView alloc] initWithFrame:CGRectMake((frame.size.width - indicatorImg.size.width) / 2, (frame.size.height - indicatorImg.size.height) / 2, indicatorImg.size.width, indicatorImg.size.height)];
+        UIImageView *indicatorView = [[UIImageView alloc] initWithFrame:CGRectMake((frame.size.width - indicatorImg.size.width) / 2, (frame.size.height -kBottomPadding - indicatorImg.size.height) / 2, indicatorImg.size.width, indicatorImg.size.height)];
         indicatorView.image = indicatorImg;
         [self addSubview:indicatorView];
         
         UIImage *bottomLineImg = [UIImage imageFromFile:@"img_header_view_bottom_line.png"];
-        UIImageView *bottomLineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, frame.size.height - bottomLineImg.size.height + 3, frame.size.width, bottomLineImg.size.height)];
+        UIImageView *bottomLineView = [[UIImageView alloc] initWithFrame:CGRectMake(0, frame.size.height - kBottomPadding - bottomLineImg.size.height + 3, frame.size.width, bottomLineImg.size.height)];
         bottomLineView.image = bottomLineImg;
         [self addSubview:bottomLineView];
         
@@ -109,7 +113,7 @@
     
     UILabel *label;
     if (!view) {
-        label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width / 4, self.frame.size.height)];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width / 4, self.frame.size.height - kBottomPadding)];
         label.textAlignment = UITextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
