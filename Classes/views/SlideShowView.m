@@ -28,8 +28,6 @@
         carousel.dataSource = self;
         carousel.delegate = self;
         [self addSubview:carousel];
-        
-        self.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }

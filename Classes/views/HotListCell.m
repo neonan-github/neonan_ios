@@ -12,6 +12,9 @@ static const float kCellMarginLeft = 10;
 static const float kCellMarginTop = 5;
 static const float kCellMarginBottom = 5;
 
+// 图片长宽比
+static const CGFloat kThumbNailRatio = 320.f / 185.f;
+
 @implementation HotListCell
 @synthesize thumbnail = _thumbnail, titleLabel = _titleLabel,
 descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
@@ -74,9 +77,10 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     const float contentHeight = cellHeight - kCellMarginTop - kCellMarginBottom;
     
     float x = kCellMarginLeft;
-    self.thumbnail.frame = CGRectMake(x, kCellMarginTop, 75, contentHeight);
+    CGFloat thumbnailWidth = contentHeight * kThumbNailRatio;
+    self.thumbnail.frame = CGRectMake(x, kCellMarginTop, thumbnailWidth, contentHeight);
     
-    x += 75 + kCellMarginLeft;
+    x += thumbnailWidth + kCellMarginLeft;
     self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x, contentHeight * 2 / 3);
     self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, cellWidth - x, contentHeight / 3);
     self.dateLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, 55, contentHeight / 3);

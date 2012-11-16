@@ -34,6 +34,7 @@ static const NSUInteger kTopChannelIndex = 5;
 static const NSUInteger kBabyChannelIndex = 3;
 static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
+static const CGFloat kSlideShowHeight = 110.f;
 
 typedef enum {
     listTypeLatest = 0,
@@ -119,12 +120,12 @@ headerView = _headerView;
     [self.view addSubview:headerView];
     
     layoutY += 30;
-    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, 120)];
+    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, kSlideShowHeight)];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
     [self.view addSubview:slideShowView];
     
-    TTTAttributedLabel *slideShowTextLabel = self.slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenWidth, 16)];
+    TTTAttributedLabel *slideShowTextLabel = self.slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + kSlideShowHeight - 16, CompatibleScreenWidth, 16)];
     slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     slideShowTextLabel.clipsToBounds = YES;
     slideShowTextLabel.font = [UIFont systemFontOfSize:8];
@@ -133,7 +134,7 @@ headerView = _headerView;
     slideShowTextLabel.backgroundColor = RGBA(6, 6, 6, 0.7);
     [self.view addSubview:slideShowTextLabel];
     
-    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, layoutY + 120 - 16, CompatibleScreenWidth - 10, 16)];
+    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, layoutY + kSlideShowHeight - 16, CompatibleScreenWidth - 10, 16)];
     pageControl.indicatorDiameter = 5;
     pageControl.indicatorMargin = 4;
     pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x00a9ff);
@@ -141,7 +142,7 @@ headerView = _headerView;
     pageControl.userInteractionEnabled = NO;
     [self.view addSubview:pageControl];
     
-    layoutY += 120;
+    layoutY += kSlideShowHeight;
     UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, CompatibleContainerHeight - layoutY) style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -230,14 +231,15 @@ headerView = _headerView;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (_slideShowView.carousel.currentItemIndex < 1) {
+        [self.slideShowView reloadData];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if (_slideShowView.carousel.currentItemIndex == 0) {
-        [self.slideShowView reloadData];
-    }
     [self.slideShowView startAutoScroll:2];
     
     if (!_slideShowModel) {
@@ -262,7 +264,7 @@ headerView = _headerView;
 #pragma mark - SlideShowViewDataSource methods
 
 - (NSUInteger)numberOfItemsInSlideShowView:(SlideShowView *)slideShowView {
-    NSUInteger count = _slideShowModel ? MainSlideShowCount : _slideShowModel.list.count;
+    NSUInteger count = !_slideShowModel ? MainSlideShowCount : _slideShowModel.list.count;
     [self.pageControl setNumberOfPages:count];
     return count;
 }
@@ -276,16 +278,21 @@ headerView = _headerView;
         [view addGestureRecognizer:tapRecognizer];
     }
     
-    NSString *imgUrl = _slideShowModel.list ? [[_slideShowModel.list objectAtIndex:index] imgUrl] : nil;
-    [[SDWebImageManager sharedManager] downloadWithURL:[NSURL URLWithString:imgUrl]
-                                              delegate:self
-                                               options:0
-                                               success:^(UIImage *image, BOOL cached)
-            {
-                UIImage *cropedImage = [[image scaleByFactor:view.frame.size.width / image.size.width] cropToSize:view.frame.size usingMode:NYXCropModeTopCenter];
-                [((UIImageView *)view) setImage:cropedImage];
-            }
-                                               failure:nil];
+    [((UIImageView *)view) setImage:[UIImage imageNamed:@"img_slide_show_place_holder.png"]];
+    
+    if (_slideShowModel.list) {
+        NSString *imgUrl = [[_slideShowModel.list objectAtIndex:index] imgUrl];
+        [[SDWebImageManager sharedManager] downloadWithURL:[NSURL URLWithString:imgUrl]
+                                                  delegate:self
+                                                   options:0
+                                                   success:^(UIImage *image, BOOL cached)
+         {
+             UIImage *cropedImage = [[image scaleByFactor:view.frame.size.width / image.size.width] cropToSize:view.frame.size usingMode:NYXCropModeTopCenter];
+             [((UIImageView *)view) setImage:cropedImage];
+         }
+                                                   failure:nil];
+    }
+    
     view.tag = index;
     
     return view;
@@ -495,7 +502,7 @@ headerView = _headerView;
     }
     
     CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
-    [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl]];
+    [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl] placeholderImage:[UIImage imageNamed:@"img_common_list_place_holder.png"]];
     cell.titleLabel.text = dataItem.title;
     cell.dateLabel.text = dataItem.date;
     
