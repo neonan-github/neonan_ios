@@ -52,7 +52,7 @@
             ((UIScrollView *)subview).bounces = NO;
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_videoUrl]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self parseVideoUrl:_videoUrl]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20];
     [_webView loadRequest:request];
 }
 
@@ -112,7 +112,47 @@
     [self performSelector:@selector(autoPlay) withObject:nil afterDelay:1];
 }
 
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [UIHelper alertWithMessage:@"网络连接失败"];
+}
+
 #pragma mark - Private methods
+
+- (NSString *)parseVideoUrl:(NSString *)url {
+    static NSString *tudou1 = @"http://www.tudou.com/v/";
+    static NSString *tudou1_1 = @"http://www.tudou.com/programs/view/";
+    static NSString *tudou2 = @"http://www.tudou.com/programs/view/html5embed.action?code=";
+    static NSString *youku1 = @"http://player.youku.com/player.php/sid/";
+    static NSString *youku1_1 = @"http://v.youku.com/v_show/id_";
+    static NSString *youku2 = @"http://player.youku.com/embed/";
+    
+    if (url == nil || url.length == 0) {
+        
+    } else if ([url rangeOfString:tudou1].location == 0) {
+        int location = [url rangeOfString:@"/" options:NSCaseInsensitiveSearch range:NSMakeRange(tudou1.length, url.length - tudou1.length)].location;
+        if (location < url.length && location > tudou1.length) {
+            return [NSString stringWithFormat:@"%@%@", tudou2, [url substringWithRange:NSMakeRange(tudou1.length, location - tudou1.length)]];
+        }
+    } else if ([url rangeOfString:tudou1_1].location == 0) {
+        int location = [url rangeOfString:@"?" options:NSCaseInsensitiveSearch range:NSMakeRange(tudou1_1.length, url.length - tudou1_1.length)].location;
+        if (location < url.length && location > tudou1_1.length) {
+            return [NSString stringWithFormat:@"%@%@", tudou2, [url substringWithRange:NSMakeRange(tudou1_1.length, location - tudou1_1.length)]];
+        }
+    } else if ([url rangeOfString:youku1].location == 0) {
+        int location = [url rangeOfString:@"/" options:NSCaseInsensitiveSearch range:NSMakeRange(youku1.length, url.length - youku1.length)].location;
+        if (location < url.length && location > youku1.length) {
+            return [NSString stringWithFormat:@"%@%@", youku2, [url substringWithRange:NSMakeRange(youku1.length, location - youku1.length)]];
+        }
+    } else if ([url rangeOfString:youku1_1].location == 0) {
+        int location = [url rangeOfString:@"." options:NSCaseInsensitiveSearch range:NSMakeRange(youku1_1.length, url.length - youku1_1.length)].location;
+        if (location < url.length && location > youku1_1.length) {
+            return [NSString stringWithFormat:@"%@%@", youku2, [url substringWithRange:NSMakeRange(youku1_1.length, location - youku1_1.length)]];
+        }
+    }
+    
+    return url;
+}
 
 - (UIButton *)findButtonInView:(UIView *)view {
     UIButton *button = nil;

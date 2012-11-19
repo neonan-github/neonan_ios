@@ -14,6 +14,8 @@
 
 #import <AFNetworkActivityIndicatorManager.h>
 #import <SSKeychain.h>
+#import "SDURLCache.h"
+#import <AFNetworking.h>
 
 @implementation NeonanAppDelegate
 
@@ -21,12 +23,13 @@
 {
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     
-    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:1024 * 1024 diskCapacity:1024 * 1024 * 5 diskPath:nil];
+//    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:1024 * 1024 diskCapacity:1024 * 1024 * 5 diskPath:nil];
+    SDURLCache *URLCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024   // 1MB mem cache
+                                                         diskCapacity:1024*1024*5 // 5MB disk cache
+                                                             diskPath:[SDURLCache defaultCachePath]];
     [NSURLCache setSharedURLCache:URLCache];
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    
-    [[SessionManager sharedManager] clear];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.

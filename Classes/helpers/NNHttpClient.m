@@ -9,6 +9,7 @@
 #import "NNHttpClient.h"
 #import <AFJSONRequestOperation.h>
 #import "ResponseError.h"
+#import "NNJSONRequestOperation.h"
 
 static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
 
@@ -50,7 +51,7 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
               success:(void (^)(id<Jsonable> response))success
               failure:(void (^)(ResponseError *error))failure {
     NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:parameters];
-    AFHTTPRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+    NNJSONRequestOperation *operation = [NNJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSLog(@"response json:%@", JSON);
         if ([JSON objectForKey:@"error"]) {
             ResponseError *error = [ResponseError parse:[JSON objectForKey:@"error"]];
@@ -71,6 +72,9 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
         }
         NSLog(@"%@", [error localizedDescription]);
     }];
+    
+    operation.allowOfflineMode = [method isEqualToString:@"GET"];
+    
     [operation start];
 }
 

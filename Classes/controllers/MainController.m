@@ -496,13 +496,14 @@ headerView = _headerView;
 
 - (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType {
     NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
+    BOOL isBabyChannel = [channel isEqualToString:@"baby"];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
                                 [self requestStringForType:type], @"sort_type",
                                 [NSString stringWithFormat:@"%u", offset], @"offset",
                                 kRequestCountString, @"count", nil];
     
     SessionManager *sessionManager = [SessionManager sharedManager];
-    if ([sessionManager getToken] || [sessionManager canAutoLogin]) {
+    if (isBabyChannel && ([sessionManager getToken] || [sessionManager canAutoLogin])) {
         [sessionManager requsetToken:self success:^(NSString *token) {
             [parameters setValue:token forKey:@"token"];
             [self requestForList:parameters withRequestType:requestType];

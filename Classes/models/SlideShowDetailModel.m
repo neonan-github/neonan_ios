@@ -15,7 +15,7 @@
 @end
 
 @implementation SlideShowDetailModel
-@synthesize title, descriptions, shareUrl, imgUrls, brief;
+@synthesize title, descriptions, shareUrl, imgUrls, brief, voted;
 
 + (id<Jsonable>)parse:(NSDictionary *)JSON {
     DCParserConfiguration *config = [DCParserConfiguration configuration];
@@ -42,6 +42,10 @@
     }
     
     return [NSArray arrayWithObject:brief];
+}
+
+- (BOOL)voted {
+    return voted && [[SessionManager sharedManager] canAutoLogin];
 }
 
 @end

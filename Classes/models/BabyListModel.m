@@ -10,7 +10,7 @@
 #import "VideoModel.h"
 
 @implementation BabyItem
-@synthesize contentId, babyName, videos, photoUrl, voteNum;
+@synthesize contentId, babyName, videos, photoUrl, voteNum, voted;
 
 - (NSString *)contentType {
     return @"baby";
@@ -18,6 +18,10 @@
 
 - (NSString *)contentId {
     return [contentId description];
+}
+
+- (BOOL)voted {
+    return voted && [[SessionManager sharedManager] canAutoLogin];
 }
 
 - (NSArray *)videoShots {
