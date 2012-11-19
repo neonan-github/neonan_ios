@@ -43,12 +43,14 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
         titleLabel.font = [UIFont systemFontOfSize:12];
         
         TTTAttributedLabel *descriptionLabel = self.descriptionLabel = [[TTTAttributedLabel alloc] init];
+        descriptionLabel.textAlignment = NSTextAlignmentLeft;
         descriptionLabel.backgroundColor = [UIColor clearColor];
         descriptionLabel.textColor = HEXCOLOR(0x555555);
+        descriptionLabel.font = [UIFont systemFontOfSize:9];
         descriptionLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentBottom;
-        descriptionLabel.font = [UIFont systemFontOfSize:7];
         
         TTTAttributedLabel *dateLabel = self.dateLabel = [[TTTAttributedLabel alloc] init];
+        dateLabel.textAlignment = NSTextAlignmentRight;
         dateLabel.backgroundColor = [UIColor clearColor];
         dateLabel.textColor = HEXCOLOR(0x555555);
         dateLabel.font = [UIFont systemFontOfSize:9];
@@ -83,7 +85,7 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     x += thumbnailWidth + kCellMarginLeft;
     self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x, contentHeight * 2 / 3);
     self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, cellWidth - x, contentHeight / 3);
-    self.dateLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, 55, contentHeight / 3);
+    self.dateLabel.frame = CGRectMake(cellWidth - 65, kCellMarginTop + contentHeight * 2 / 3, 55, contentHeight / 3);
 }
 
 @end

@@ -22,6 +22,18 @@
     return [contentId description];
 }
 
+- (NSString *)readableContentType {
+    if ([contentType isEqualToString:@"video"]) {
+        return @"视频";
+    }
+    
+    if ([contentType isEqualToString:@"article"]) {
+        return @"文章";
+    }
+    
+    return @"图集";
+}
+
 @end
 
 @implementation CommonListModel

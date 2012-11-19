@@ -97,7 +97,6 @@
 #pragma mark - iCarouselDelegate methods
 
 - (void)carouselWillBeginDecelerating:(iCarousel *)carousel {
-    NSLog(@"carouselWillBeginDecelerating");
     if (_previousIndex != carousel.currentItemIndex) {
         [carousel scrollToItemAtIndex:carousel.currentItemIndex animated:YES];
     }
@@ -105,25 +104,21 @@
 }
 
 - (void)carouselDidEndDecelerating:(iCarousel *)carousel {
-    NSLog(@"didEndDecelerating");
     [self startAutoScroll:self.slideInterval];
 }
 
 - (void)carouselWillBeginDragging:(iCarousel *)carousel {
-    NSLog(@"carouselWillBeginDragging");
     _previousIndex = carousel.currentItemIndex;
     [self stopAutoScroll]; 
 }
 
 - (void)carouselDidEndDragging:(iCarousel *)carousel willDecelerate:(BOOL)decelerate {
-    NSLog(@"didEndDragging decelerate:%@ offset:%f itemWidth:%f", (decelerate ? @"y" : @"n"), self.carousel.scrollOffset, self.carousel.itemWidth);
     if (!decelerate) {
         [self startAutoScroll:self.slideInterval];
     } 
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
-    NSLog(@"carouselCurrentItemIndexDidChange");
     if (self.delegate) {
         [self.delegate slideShowViewItemIndexDidChange:self];
     }
@@ -155,18 +150,10 @@
 }
 
 - (void)carouselWillBeginScrollingAnimation:(iCarousel *)carousel {
-    NSLog(@"carouselWillBeginScrollingAnimation");
     if (_previousIndex != carousel.currentItemIndex) {
         _previousIndex = carousel.currentItemIndex;
         [carousel scrollToItemAtIndex:carousel.currentItemIndex animated:YES];
     }
 }
 
-- (void)carouselDidEndScrollingAnimation:(iCarousel *)carousel {
-   NSLog(@"carouselDidEndScrollingAnimation"); 
-}
-
-- (void)carouselDidScroll:(iCarousel *)carousel {
-   NSLog(@"carouselDidScroll:"); 
-}
 @end

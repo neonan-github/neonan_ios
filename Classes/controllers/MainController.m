@@ -466,7 +466,6 @@ headerView = _headerView;
         NSLog(@"requestForSlideShow response count:%u", _slideShowModel.list.count);
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
-        [UIHelper alertWithMessage:error.message];
     }];
 }
 
@@ -549,6 +548,7 @@ headerView = _headerView;
     CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl] placeholderImage:[UIImage imageNamed:@"img_common_list_place_holder.png"]];
     cell.titleLabel.text = dataItem.title;
+    cell.descriptionLabel.text = dataItem.readableContentType;
     cell.dateLabel.text = dataItem.date;
     
     return cell;

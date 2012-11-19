@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSNumber *dateMillis;
 
 @property (readonly, nonatomic) NSString *date;
+@property (readonly, nonatomic) NSString *readableContentType;
 @end
 
 @interface CommonListModel : NSObject <Jsonable>
