@@ -15,6 +15,7 @@
 #import <AFNetworkActivityIndicatorManager.h>
 #import <SSKeychain.h>
 #import "SDURLCache.h"
+#import "NNURLCache.h"
 #import <AFNetworking.h>
 
 @implementation NeonanAppDelegate
@@ -23,11 +24,7 @@
 {
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     
-//    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:1024 * 1024 diskCapacity:1024 * 1024 * 5 diskPath:nil];
-    SDURLCache *URLCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024   // 1MB mem cache
-                                                         diskCapacity:1024*1024*5 // 5MB disk cache
-                                                             diskPath:[SDURLCache defaultCachePath]];
-    [NSURLCache setSharedURLCache:URLCache];
+    [NSURLCache setSharedURLCache:[self createURLCache]];
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
@@ -68,6 +65,22 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+}
+
+#pragma mark - Private methods
+
+- (NSURLCache *)createURLCache {
+    if (SYSTEM_VERSION_LESS_THAN(@"5.0")) {
+        SDURLCache *URLCache = [[SDURLCache alloc] initWithMemoryCapacity:1024 * 1024   // 1MB mem cache
+                                                             diskCapacity:1024 * 1024 * 5 // 5MB disk cache
+                                                                 diskPath:[SDURLCache defaultCachePath]];
+        return URLCache;
+    }
+    
+    NSURLCache *URLCache = [[NNURLCache alloc] initWithMemoryCapacity:1024 * 1024
+                                                         diskCapacity:1024 * 1024 * 5
+                                                             diskPath:nil];
+    return URLCache;
 }
 
 @end

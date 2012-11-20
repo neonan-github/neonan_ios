@@ -30,10 +30,10 @@
     return requestOperation;
 }
 
-- (NSString *)tokenInUrl:(NSString *)url {
-    DDURLParser *parser = [[DDURLParser alloc] initWithURLString:url];
-    return [parser valueForVariable:@"token"];
-}
+//- (NSString *)tokenInUrl:(NSString *)url {
+//    DDURLParser *parser = [[DDURLParser alloc] initWithURLString:url];
+//    return [parser valueForVariable:@"token"];
+//}
 
 - (NSCachedURLResponse *)findCachedResponse:(NSURLRequest *)request {
     NSCachedURLResponse *cachedResponse = [[NSURLCache sharedURLCache] cachedResponseForRequest:request];
@@ -41,18 +41,18 @@
         return cachedResponse;
     }
     
-    NSString *url = request.URL.absoluteString;
-    NSString *tokenInUrl = [self tokenInUrl:url];
-    if (tokenInUrl) {
-        NSRange tokenPrefixRange = [url rangeOfString:@"&token="];
-        NSString *newUrl = [url substringToIndex:tokenPrefixRange.location];
-        NSString *stringAfter = [url substringFromIndex:tokenPrefixRange.location + tokenPrefixRange.length];
-        NSRange tokenEndRange = [stringAfter rangeOfString:@"&"];
-        if (tokenEndRange.length > 0) {
-            newUrl = [newUrl stringByAppendingString:[stringAfter substringFromIndex:tokenEndRange.location]];
-        }
-        return [[NSURLCache sharedURLCache] cachedResponseForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:newUrl]]];
-    }
+//    NSString *url = request.URL.absoluteString;
+//    NSString *tokenInUrl = [self tokenInUrl:url];
+//    if (tokenInUrl) {
+//        NSRange tokenPrefixRange = [url rangeOfString:@"&token="];
+//        NSString *newUrl = [url substringToIndex:tokenPrefixRange.location];
+//        NSString *stringAfter = [url substringFromIndex:tokenPrefixRange.location + tokenPrefixRange.length];
+//        NSRange tokenEndRange = [stringAfter rangeOfString:@"&"];
+//        if (tokenEndRange.length > 0) {
+//            newUrl = [newUrl stringByAppendingString:[stringAfter substringFromIndex:tokenEndRange.location]];
+//        }
+//        return [[NSURLCache sharedURLCache] cachedResponseForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:newUrl]]];
+//    }
     
     return nil;
 }

@@ -23,6 +23,7 @@
 		340A1350163142F100E8D594 /* bg_comment_input.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A134C163142F100E8D594 /* bg_comment_input.png */; };
 		340A1372163170BE00E8D594 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A1371163170BE00E8D594 /* CommentCell.m */; };
 		341CB04C165B59DA00BF1D76 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 341CB04E165B59DA00BF1D76 /* Localizable.strings */; };
+		341CB053165B744300BF1D76 /* NNURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 341CB052165B744300BF1D76 /* NNURLCache.m */; };
 		34268EF7165B209E00DEEF63 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 34268EF6165B209E00DEEF63 /* icon.png */; };
 		34268EF9165B20A500DEEF63 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34268EF8165B20A500DEEF63 /* icon@2x.png */; };
 		3432926F1647B2230070B66A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3432926E1647B2230070B66A /* MessageUI.framework */; };
@@ -208,6 +209,8 @@
 		341CB04D165B59DA00BF1D76 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		341CB04F165B59E000BF1D76 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		341CB050165B59E100BF1D76 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		341CB051165B744300BF1D76 /* NNURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNURLCache.h; sourceTree = "<group>"; };
+		341CB052165B744300BF1D76 /* NNURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNURLCache.m; sourceTree = "<group>"; };
 		34268EF6165B209E00DEEF63 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
 		34268EF8165B20A500DEEF63 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../icon@2x.png"; sourceTree = "<group>"; };
 		3432926C1647B2140070B66A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -880,6 +883,8 @@
 				34E17E12164B5CB100810CD4 /* Constants.h */,
 				34730239165339B200E3C763 /* SessionManager.h */,
 				3473023A165339B200E3C763 /* SessionManager.m */,
+				341CB051165B744300BF1D76 /* NNURLCache.h */,
+				341CB052165B744300BF1D76 /* NNURLCache.m */,
 			);
 			path = helpers;
 			sourceTree = "<group>";
@@ -1246,6 +1251,7 @@
 				3470DBD21653B14000273244 /* CommentListModel.m in Sources */,
 				34B018891659C76C00940CC1 /* SDURLCache.m in Sources */,
 				34011A56165A1BCA007A8FD6 /* NNJSONRequestOperation.m in Sources */,
+				341CB053165B744300BF1D76 /* NNURLCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
