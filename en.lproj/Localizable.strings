@@ -2,7 +2,7 @@
   Localizable.strings
   Neonan
 
-  Created by capricorn on 12-11-12.
+  Created by capricorn on 12-11-20.
   Copyright (c) 2012年 neonan. All rights reserved.
 */
 "Last Updated: %@" = "%@";
@@ -16,4 +16,3 @@
 "Data not found!" = "数据不存在";
 "Not auth!" = "尚未登录";
 "User has already voted the baby!" = "已投票";
-
