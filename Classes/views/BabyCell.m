@@ -132,6 +132,10 @@ static const NSInteger kTagItemPlayButton = 2001;
     _voteButton.enabled = !voted;
 }
 
+- (void)reset {
+    [self.carousel scrollToItemAtIndex:0 animated:NO];
+}
+
 #pragma mark - Override
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {

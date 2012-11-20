@@ -562,6 +562,8 @@ headerView = _headerView;
     if (!cell) {
         cell = [[BabyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:babyCellIdentifier];
         cell.delegate = self;
+    } else {
+        [cell reset];
     }
     
     BabyItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
