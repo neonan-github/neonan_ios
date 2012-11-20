@@ -51,6 +51,7 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
               success:(void (^)(id<Jsonable> response))success
               failure:(void (^)(ResponseError *error))failure {
     NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:parameters];
+    request.timeoutInterval = 20;
     NNJSONRequestOperation *operation = [NNJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         NSLog(@"response json:%@", JSON);
         if ([JSON objectForKey:@"error"]) {

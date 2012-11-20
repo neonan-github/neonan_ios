@@ -9,6 +9,7 @@
 #import "SessionManager.h"
 #import "SignController.h"
 #import <SSKeychain.h>
+#import <Reachability.h>
 #import "SignResult.h"
 
 NSString *const kServiceName = @"neonan.com";
@@ -83,7 +84,7 @@ static NSString *const kPasswordKey = @"password";
 }
 
 - (BOOL)canAutoLogin {
-    return [self checkAccountInKeyChain] != nil;
+    return [self checkAccountInKeyChain] != nil && [Reachability reachabilityForInternetConnection].isReachable;;
 }
 
 - (void)signWithEmail:(NSString *)email

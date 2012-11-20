@@ -43,9 +43,14 @@
     
     NSString *url = request.URL.absoluteString;
     NSString *tokenInUrl = [self tokenInUrl:url];
-    NSString *newUrl = nil;
     if (tokenInUrl) {
-        newUrl = [url stringByReplacingOccurrencesOfString:@"token=.+&" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, url.length)];
+        NSRange tokenPrefixRange = [url rangeOfString:@"&token="];
+        NSString *newUrl = [url substringToIndex:tokenPrefixRange.location];
+        NSString *stringAfter = [url substringFromIndex:tokenPrefixRange.location + tokenPrefixRange.length];
+        NSRange tokenEndRange = [stringAfter rangeOfString:@"&"];
+        if (tokenEndRange.length > 0) {
+            newUrl = [newUrl stringByAppendingString:[stringAfter substringFromIndex:tokenEndRange.location]];
+        }
         return [[NSURLCache sharedURLCache] cachedResponseForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:newUrl]]];
     }
     

@@ -433,7 +433,8 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
     }
 
     NSLog(@"storeCachedResponse cp 1");
-    [super storeCachedResponse:cachedResponse forRequest:[self createKeyRequest:request]];
+    NSURLRequest *keyRequest = [self createKeyRequest:request];
+    [super storeCachedResponse:cachedResponse forRequest:keyRequest];
 
     if (cachedResponse.storagePolicy == NSURLCacheStorageAllowed
         && [cachedResponse.response isKindOfClass:[NSHTTPURLResponse self]]
@@ -452,7 +453,7 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
                                                                     selector:@selector(storeToDisk:)
                                                                       object:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                               cachedResponse, @"cachedResponse",
-                                                                              request, @"request",
+                                                                              keyRequest, @"request",
                                                                               expirationDate, @"expirationDate",
                                                                               nil]] autorelease]];
     }
@@ -541,14 +542,15 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
     NSString *url = request.URL.absoluteString;
     NSString *tokenInUrl = [self tokenInUrl:url];
     if (tokenInUrl) {
-        NSString *newUrl = [url stringByReplacingOccurrencesOfString:@"token=.+&" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, url.length)];
-        NSLog(@"new url:%@", newUrl);
-        if ([request isKindOfClass:[NSMutableURLRequest class]]) {
-            [((NSMutableURLRequest *)request) setURL:[NSURL URLWithString:newUrl]];
-            return request;
-        } else {
-            return [NSURLRequest requestWithURL:[NSURL URLWithString:newUrl]];
+        NSRange tokenPrefixRange = [url rangeOfString:@"&token="];
+        NSString *newUrl = [url substringToIndex:tokenPrefixRange.location];
+        NSString *stringAfter = [url substringFromIndex:tokenPrefixRange.location + tokenPrefixRange.length];
+        NSRange tokenEndRange = [stringAfter rangeOfString:@"&"];
+        if (tokenEndRange.length > 0) {
+            newUrl = [newUrl stringByAppendingString:[stringAfter substringFromIndex:tokenEndRange.location]];
         }
+        NSLog(@"new url:%@", newUrl);
+        return [NSURLRequest requestWithURL:[NSURL URLWithString:newUrl]];
     }
     
     return request;
