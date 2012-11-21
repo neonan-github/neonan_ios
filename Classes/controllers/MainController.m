@@ -125,6 +125,7 @@ headerView = _headerView;
     SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, slideShowHeight)];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
+    slideShowView.clipsToBounds = YES;
     
     TTTAttributedLabel *slideShowTextLabel = self.slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, slideShowHeight - 16, CompatibleScreenWidth, 16)];
     slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
@@ -144,8 +145,8 @@ headerView = _headerView;
     pageControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     [slideShowView addSubview:pageControl];
     
-    [self addObserver:self forKeyPath:@"slideShowView.frame" options:NSKeyValueObservingOptionOld context:NULL];
-    [self.view addSubview:slideShowView];
+//    [self addObserver:self forKeyPath:@"slideShowView.frame" options:NSKeyValueObservingOptionOld context:NULL];
+//    [self.view addSubview:slideShowView];
     
     CircleHeaderView *headerView = self.headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 50)];
     headerView.delegate = self;
@@ -154,19 +155,21 @@ headerView = _headerView;
     [headerView reloadData];
     [self.view addSubview:headerView];
     
-    layoutY += slideShowHeight;
+//    layoutY += slideShowHeight;
     UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, CompatibleContainerHeight - layoutY) style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.backgroundColor = DarkThemeColor;
-//    NSDateFormatter *formatter = tableView.pullToRefreshView.dateFormatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"YYYY MM DD HH:MM:SS"];
+    tableView.tableHeaderView = slideShowView;
     tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
+        if (!_slideShowModel) {
+            [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
+        }
         [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:requestTypeRefresh];
     }];
     [tableView addInfiniteScrollingWithActionHandler:^{
@@ -175,12 +178,6 @@ headerView = _headerView;
     }];
     tableView.showsInfiniteScrolling = NO;
     [self.view addSubview:tableView];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)cleanUp
@@ -202,6 +199,9 @@ headerView = _headerView;
     
     self.headerView.delegate = nil;
     self.headerView = nil;
+    
+    self.slideShowModel = nil;
+    self.dataModel = nil;
 }
 
 - (void)viewDidUnload
@@ -258,11 +258,7 @@ headerView = _headerView;
     
     [self.slideShowView startAutoScroll:2];
     
-    if (!_slideShowModel) {
-        [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
-    }
-    
-    if (!_dataModel) {
+    if (!_dataModel || !_slideShowModel) {
         [_tableView.pullToRefreshView triggerRefresh];
     } else {
         [_tableView reloadData];
@@ -642,6 +638,7 @@ headerView = _headerView;
     CGRect frame = _slideShowView.frame;
     frame.size.height = [self slideShowHeightForChannel:_channelIndex];
     _slideShowView.frame = frame;
+    _tableView.tableHeaderView = _slideShowView;
     
     [_slideShowView startAutoScroll:2];
 }
@@ -683,26 +680,26 @@ headerView = _headerView;
     [self enterControllerByType:[_slideShowModel.list objectAtIndex:index]];
 }
 
-#pragma mark - KVO
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if([keyPath isEqualToString:@"slideShowView.frame"]) {
-        CGRect oldFrame = CGRectNull;
-        CGRect newFrame = CGRectNull;
-        if([change objectForKey:@"old"] != [NSNull null]) {
-            oldFrame = [[change objectForKey:@"old"] CGRectValue];
-        }
-        if([object valueForKeyPath:keyPath] != [NSNull null]) {
-            newFrame = [[object valueForKeyPath:keyPath] CGRectValue];
-        }
-        
-        CGFloat delta = newFrame.size.height - oldFrame.size.height;
-        
-        CGRect frame = self.tableView.frame;
-        frame.origin.y += delta;
-        frame.size.height -= delta;
-        self.tableView.frame = frame;
-    }
-}
+//#pragma mark - KVO
+//
+//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+//    if([keyPath isEqualToString:@"slideShowView.frame"]) {
+//        CGRect oldFrame = CGRectNull;
+//        CGRect newFrame = CGRectNull;
+//        if([change objectForKey:@"old"] != [NSNull null]) {
+//            oldFrame = [[change objectForKey:@"old"] CGRectValue];
+//        }
+//        if([object valueForKeyPath:keyPath] != [NSNull null]) {
+//            newFrame = [[object valueForKeyPath:keyPath] CGRectValue];
+//        }
+//        
+//        CGFloat delta = newFrame.size.height - oldFrame.size.height;
+//        
+//        CGRect frame = self.tableView.frame;
+//        frame.origin.y += delta;
+//        frame.size.height -= delta;
+//        self.tableView.frame = frame;
+//    }
+//}
 
 @end
