@@ -167,9 +167,7 @@ headerView = _headerView;
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
-        if (!_slideShowModel) {
-            [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
-        }
+        [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
         [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:requestTypeRefresh];
     }];
     [tableView addInfiniteScrollingWithActionHandler:^{
