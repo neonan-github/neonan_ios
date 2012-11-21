@@ -18,6 +18,7 @@
 @property (nonatomic, unsafe_unretained) id<SlideShowViewDataSource> dataSource;
 @property (nonatomic, unsafe_unretained) id<SlideShowViewDelegate> delegate;
 
+- (BOOL)isScrolling;
 - (void)reloadData;
 - (void)startAutoScroll:(double)interval;
 - (void)stopAutoScroll;

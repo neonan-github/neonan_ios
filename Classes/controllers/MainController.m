@@ -178,6 +178,8 @@ headerView = _headerView;
     }];
     tableView.showsInfiniteScrolling = NO;
     [self.view addSubview:tableView];
+    
+    [self addObserver:self forKeyPath:@"tableView.contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (void)cleanUp
@@ -680,9 +682,9 @@ headerView = _headerView;
     [self enterControllerByType:[_slideShowModel.list objectAtIndex:index]];
 }
 
-//#pragma mark - KVO
-//
-//- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 //    if([keyPath isEqualToString:@"slideShowView.frame"]) {
 //        CGRect oldFrame = CGRectNull;
 //        CGRect newFrame = CGRectNull;
@@ -700,6 +702,13 @@ headerView = _headerView;
 //        frame.size.height -= delta;
 //        self.tableView.frame = frame;
 //    }
-//}
+    if ([keyPath isEqualToString:@"tableView.contentOffset"]) {
+        if (_tableView.contentOffset.y > [self slideShowHeightForChannel:_channelIndex] || _tableView.isDragging) {
+            [_slideShowView stopAutoScroll];
+        } else {
+            [_slideShowView startAutoScroll:2];
+        }
+    }
+}
 
 @end

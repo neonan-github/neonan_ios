@@ -55,7 +55,15 @@
     [_carousel scrollToItemAtIndex:index animated:YES];
 }
 
+- (BOOL)isScrolling {
+    return _slideTimer != nil;
+}
+
 - (void)startAutoScroll:(double)interval {
+    if ([self isScrolling]) {
+        [self stopAutoScroll];
+    }
+    
     self.slideInterval = interval;
     if (!_slideTimer || _slideTimer.timeInterval != interval) {
         [self stopAutoScroll];
