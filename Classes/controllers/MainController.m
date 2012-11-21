@@ -35,7 +35,6 @@ static const NSUInteger kTopChannelIndex = 5;
 static const NSUInteger kBabyChannelIndex = 3;
 static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
-static const CGFloat kSlideShowHeight = 110.f;
 
 typedef enum {
     listTypeLatest = 0,
@@ -80,12 +79,12 @@ typedef enum {
 - (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType;
 - (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
 
+- (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex;
 - (void)updateUserStatus;
 - (void)updateTableView;
 - (void)updateSlideShow;
 - (void)onChannelChanged;
 - (void)onSlideShowItemClicked:(UIView *)view;
-- (void)setSlideShowHidden:(BOOL)hidden;
 - (void)enterControllerByType:(id)item;
 @end
 
@@ -122,9 +121,30 @@ headerView = _headerView;
 //    [self.view addSubview:headerView];
     
     layoutY += 30;
-    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, kSlideShowHeight)];
+    CGFloat slideShowHeight = [self slideShowHeightForChannel:_channelIndex];
+    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, slideShowHeight)];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
+    
+    TTTAttributedLabel *slideShowTextLabel = self.slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, slideShowHeight - 16, CompatibleScreenWidth, 16)];
+    slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    slideShowTextLabel.clipsToBounds = YES;
+    slideShowTextLabel.font = [UIFont systemFontOfSize:10];
+    slideShowTextLabel.textColor = [UIColor whiteColor];
+    slideShowTextLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    slideShowTextLabel.backgroundColor = RGBA(6, 6, 6, 0.7);
+    [slideShowView addSubview:slideShowTextLabel];
+    
+    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, slideShowHeight - 16, CompatibleScreenWidth - 10, 16)];
+    pageControl.indicatorDiameter = 5;
+    pageControl.indicatorMargin = 4;
+    pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x00a9ff);
+    pageControl.alignment = SMPageControlAlignmentRight;
+    pageControl.userInteractionEnabled = NO;
+    pageControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    [slideShowView addSubview:pageControl];
+    
+    [self addObserver:self forKeyPath:@"slideShowView.frame" options:NSKeyValueObservingOptionOld context:NULL];
     [self.view addSubview:slideShowView];
     
     CircleHeaderView *headerView = self.headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 50)];
@@ -134,24 +154,7 @@ headerView = _headerView;
     [headerView reloadData];
     [self.view addSubview:headerView];
     
-    TTTAttributedLabel *slideShowTextLabel = self.slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + kSlideShowHeight - 16, CompatibleScreenWidth, 16)];
-    slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
-    slideShowTextLabel.clipsToBounds = YES;
-    slideShowTextLabel.font = [UIFont systemFontOfSize:8];
-    slideShowTextLabel.textColor = [UIColor whiteColor];
-//    slideShowTextLabel.text = @"绅士必备 木质调香水最佳推荐";
-    slideShowTextLabel.backgroundColor = RGBA(6, 6, 6, 0.7);
-    [self.view addSubview:slideShowTextLabel];
-    
-    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, layoutY + kSlideShowHeight - 16, CompatibleScreenWidth - 10, 16)];
-    pageControl.indicatorDiameter = 5;
-    pageControl.indicatorMargin = 4;
-    pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x00a9ff);
-    pageControl.alignment = SMPageControlAlignmentRight;
-    pageControl.userInteractionEnabled = NO;
-    [self.view addSubview:pageControl];
-    
-    layoutY += kSlideShowHeight;
+    layoutY += slideShowHeight;
     UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, CompatibleContainerHeight - layoutY) style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -242,6 +245,8 @@ headerView = _headerView;
     [super viewWillAppear:animated];
     
     [self updateUserStatus];
+    
+    [_headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
     
     if (_slideShowView.carousel.currentItemIndex < 1) {
         [self.slideShowView reloadData];
@@ -336,7 +341,7 @@ headerView = _headerView;
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return _channelIndex == kBabyChannelIndex ? 80 : 60;
+    return _channelIndex == kBabyChannelIndex ? 80 : 70;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -578,6 +583,19 @@ headerView = _headerView;
     return cell;
 }
 
+- (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex {
+    switch (channelIndex) {
+        case kBabyChannelIndex:
+            return 110;
+        
+        case kTopChannelIndex:
+            return 0;
+            
+        default:
+            return 150;
+    }
+}
+
 - (void)updateUserStatus {
     SessionManager *sessionManager = [SessionManager sharedManager];
     BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
@@ -621,7 +639,9 @@ headerView = _headerView;
     [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     [_tableView.pullToRefreshView triggerRefresh];
     
-    [self setSlideShowHidden:_channelIndex == kTopChannelIndex];
+    CGRect frame = _slideShowView.frame;
+    frame.size.height = [self slideShowHeightForChannel:_channelIndex];
+    _slideShowView.frame = frame;
     
     [_slideShowView startAutoScroll:2];
 }
@@ -663,16 +683,25 @@ headerView = _headerView;
     [self enterControllerByType:[_slideShowModel.list objectAtIndex:index]];
 }
 
-- (void)setSlideShowHidden:(BOOL)hidden {
-    if (_slideShowView.hidden != hidden) {
-        [UIView beginAnimations:nil context:nil];
-        _slideShowView.hidden = hidden;
-        CGRect frame = _tableView.frame;
-        CGFloat delta = _slideShowView.frame.size.height * (hidden ? 1 : -1);
-        frame.origin.y -= delta;
-        frame.size.height += delta;
-        _tableView.frame = frame;
-        [UIView commitAnimations];
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if([keyPath isEqualToString:@"slideShowView.frame"]) {
+        CGRect oldFrame = CGRectNull;
+        CGRect newFrame = CGRectNull;
+        if([change objectForKey:@"old"] != [NSNull null]) {
+            oldFrame = [[change objectForKey:@"old"] CGRectValue];
+        }
+        if([object valueForKeyPath:keyPath] != [NSNull null]) {
+            newFrame = [[object valueForKeyPath:keyPath] CGRectValue];
+        }
+        
+        CGFloat delta = newFrame.size.height - oldFrame.size.height;
+        
+        CGRect frame = self.tableView.frame;
+        frame.origin.y += delta;
+        frame.size.height -= delta;
+        self.tableView.frame = frame;
     }
 }
 

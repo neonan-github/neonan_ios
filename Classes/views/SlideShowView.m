@@ -19,6 +19,7 @@
     if ((self = [super initWithFrame:frame]))
     {
         iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        carousel.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         carousel.decelerationRate = 0.0f;// carousel stops immediately when released
         carousel.ignorePerpendicularSwipes = YES;
 //        self.carousel.scrollToItemBoundary = NO;
@@ -88,8 +89,8 @@
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
+//    view.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     UIView *cell = [self.dataSource slideShowView:self viewForItemAtIndex:index reusingView:view];
-    cell.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     
     return cell;
 }
