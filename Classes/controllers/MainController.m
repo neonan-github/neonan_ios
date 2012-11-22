@@ -37,11 +37,6 @@ static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
 
 typedef enum {
-    listTypeLatest = 0,
-    listTypeHotest
-} listType;
-
-typedef enum {
     requestTypeRefresh = 0,
     requestTypeAppend
 } requestType;
@@ -218,6 +213,7 @@ headerView = _headerView;
 - (void)setType:(listType)type {
     if (_type != type) {
         _type = type;
+        ((NeonanAppDelegate *)ApplicationDelegate).listSortType = type;
         [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
         [_tableView.pullToRefreshView triggerRefresh];
     }

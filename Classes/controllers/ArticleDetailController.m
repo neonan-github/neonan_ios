@@ -22,6 +22,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
 "<head> \n"
 "<style type=\"text/css\"> \n"
 "body {font-family: \"%@\"; font-size: %@em; color: white; padding: 1em;}\n"
+//"img {width: 300px;}\n"
 "a:link {color: white; text-decoration: none;}\n"
 "a:visited {color: white; text-decoration: none;}\n"
 "a:hover {color: white; text-decoration: none;}\n"
@@ -66,6 +67,12 @@ static NSString *kHtmlTemplate = @"<html> \n"
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = DarkThemeColor;
+    UISwipeGestureRecognizer *swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    [swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer:swipeLeftRecognizer];
+    UISwipeGestureRecognizer *swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    [swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:swipeRightRecognizer];
     
     CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
     // Create a custom back button
@@ -287,10 +294,11 @@ static NSString *kHtmlTemplate = @"<html> \n"
     //	NSString *html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:NULL];
     
     NSString *formattedHTML = [NSString stringWithFormat:kHtmlTemplate, @"helvetica", [NSNumber numberWithInt:2], html];
-    //filter video
-    formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"<object.+<embed.+?>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
+    //filter video,href,style
+    formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"href=\"[^\"]+\"|<object.+<embed.+?>|style=\"[^\"]+\"" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
     //adjust image width
-    formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"style=\"[^\"]+\"" withString:@"style=\"width:100%;\"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
+    formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"<img" withString:@"<img style=\"width:100%;\"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
+    NSLog(@"formattedHTML:%@", formattedHTML);
     [_textView loadHTMLString:formattedHTML baseURL:nil];
 }
 
@@ -332,6 +340,84 @@ static NSString *kHtmlTemplate = @"<html> \n"
     CommentListController *controller = [[CommentListController alloc] init];
     controller.articleInfo = self.dataModel;
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+////    [self.view removeFromSuperview];
+//    
+//    if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {// next
+//    } else {// previous
+//    }
+//    
+////    CATransition *transition = [CATransition animation];
+////    transition.duration = 0.75;
+////    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+////    transition.type = kCATransitionPush;
+////    transition.subtype =kCATransitionFromRight;
+////    transition.delegate = self;
+////    UIView *superView = self.view.superview;
+////    [superView.layer addAnimation:transition forKey:nil];
+////    [superView addSubview:self.view];
+    CALayer *layerBack = [CALayer layer];
+    UIImage *cacheImage = [UIImage imageFromView:self.view];
+//    layerBack.bounds = self.view.bounds;
+    layerBack.frame = CGRectMake(-320, 0, 320, 504);
+    
+//    layerBack.bounds=CGRectMake(0.0f,0.0f,cacheImage.size.width,cacheImage.size.height);
+//    layerBack.position=CGPointMake(200,200);
+    
+    layerBack.contents = (id)cacheImage.CGImage;
+    [self.view.layer insertSublayer:layerBack above:self.view.layer];
+    self.textView.hidden = YES;
+//    self.view.layer.frame = CGRectMake(0, 0, 640, 504);
+    
+//    [self.view.layer setNeedsDisplay];
+    
+    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+//    opacityAnimation.duration = 10;
+    opacityAnimation.toValue  = [NSNumber numberWithFloat:1.0f];
+    opacityAnimation.fromValue  = [NSNumber numberWithFloat:1.0f];
+//    [self.view.layer addAnimation:opacityAnimation forKey:@"opacity"];
+    
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+//    animation.duration = 3;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    animation.fromValue = [NSValue valueWithCGPoint:CGPointMake(320, 252)];
+    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(160, 252)];
+//    [self.view.layer addAnimation:animation forKey:@"position"];
+    
+    CAAnimationGroup *animationgroup = [CAAnimationGroup animation];
+    animationgroup.animations = [NSArray arrayWithObjects:animation, opacityAnimation, nil];
+    animationgroup.duration = 10.0f;
+    animationgroup.fillMode = kCAFillModeForwards;
+//    CATransition *transition = [CATransition animation];
+//    transition.duration = 10;
+//    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+//    transition.type = kCATransitionMoveIn;
+//    transition.subtype =kCATransitionFromRight;
+//    transition.delegate = self;
+    [self.view.layer addAnimation:animationgroup forKey:@"animatePath"];
+    
+//    UIView *superview = self.view.superview;
+//    [self.view removeFromSuperview];
+//    [self.view.layer ];
+    
+//    [layerBack setNeedsDisplay];
+    
+    // Remove old view
+//    [self.titleLabel removeFromSuperview];
+//    
+//    // Inser new view at right index
+//    [self.view addSubview:self.titleLabel];
+//    
+//    // Create the transition
+//    CATransition *animation = [CATransition animation];
+//    [animation setDelegate:self];
+//    [animation setType:kCATransitionPush];
+//    [animation setSubtype:kCATransitionFromLeft];
+//    [animation setDuration:0.5f];
+//    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+//    [[self.view layer] addAnimation:animation forKey:@"pushIn"];
 }
 
 @end

@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    ActionCommon = 0,
+    ActionNext,
+    ActionPrevious,
+} ActionType;
+
 @interface ArticleDetailController : UIViewController
 
+@property (assign, nonatomic) ActionType actionType;
 @property (copy, nonatomic) NSString *contentId;
 @property (copy, nonatomic) NSString *contentTitle;
 

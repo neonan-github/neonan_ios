@@ -112,4 +112,13 @@
     return [UIImage imageWithData:imageData];
 }
 
++ (UIImage *)imageFromView:(UIView *)view {
+    UIGraphicsBeginImageContext(view.bounds.size);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return viewImage;
+}
+
 @end
