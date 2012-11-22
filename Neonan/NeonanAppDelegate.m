@@ -7,33 +7,48 @@
 //
 
 #import "NeonanAppDelegate.h"
+#import "MainController.h"
+
+#import "ResponseError.h"
+#import "SignResult.h"
+
+#import <AFNetworkActivityIndicatorManager.h>
+#import <SSKeychain.h>
+#import "SDURLCache.h"
+#import <AFNetworking.h>
 
 @implementation NeonanAppDelegate
 
-- (void)dealloc
-{
-    [_rootViewController release];
-    [_window release];
-    [super dealloc];
-}
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     
-    _rootViewController = [[NeonanViewController alloc] init];
-    [self.window addSubview:_rootViewController.view];
-    [_rootViewController launch];
+//    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:1024 * 1024 diskCapacity:1024 * 1024 * 5 diskPath:nil];
+    SDURLCache *URLCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024   // 1MB mem cache
+                                                         diskCapacity:1024*1024*5 // 5MB disk cache
+                                                             diskPath:[SDURLCache defaultCachePath]];
+    [NSURLCache setSharedURLCache:URLCache];
+    
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    
+    self.navController = [[NNNavigationController alloc] init];
+    self.navController.logoHidden = NO;
+    self.window.rootViewController = self.navController;
+       
+    UIViewController *controller = [[MainController alloc] init];
+    [self.navController pushViewController:controller animated:NO];
+    self.navController.navigationItem.leftBarButtonItem = nil;
     
     [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    [_rootViewController enterBackground];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -44,7 +59,6 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    [_rootViewController enterForeground];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -54,7 +68,6 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [_rootViewController exit];
 }
 
 @end

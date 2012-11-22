@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NeonanViewController.h"
+#import "MainController.h"
+#import "NNNavigationController.h"
 
-@interface NeonanAppDelegate : UIResponder <UIApplicationDelegate> {
-    NeonanViewController *_rootViewController;
-}
+@interface NeonanAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) NNNavigationController *navController;
 
 @end
