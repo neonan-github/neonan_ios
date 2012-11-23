@@ -70,12 +70,12 @@
 #pragma mark - Private methods
 
 - (NSURLCache *)createURLCache {
-    if (SYSTEM_VERSION_LESS_THAN(@"5.0")) {
-        SDURLCache *URLCache = [[SDURLCache alloc] initWithMemoryCapacity:1024 * 1024   // 1MB mem cache
-                                                             diskCapacity:1024 * 1024 * 5 // 5MB disk cache
-                                                                 diskPath:[SDURLCache defaultCachePath]];
-        return URLCache;
-    }
+//    if (SYSTEM_VERSION_LESS_THAN(@"5.0")) {
+//        SDURLCache *URLCache = [[SDURLCache alloc] initWithMemoryCapacity:1024 * 1024   // 1MB mem cache
+//                                                             diskCapacity:1024 * 1024 * 5 // 5MB disk cache
+//                                                                 diskPath:[SDURLCache defaultCachePath]];
+//        return URLCache;
+//    }
     
     NSURLCache *URLCache = [[NNURLCache alloc] initWithMemoryCapacity:1024 * 1024
                                                          diskCapacity:1024 * 1024 * 5

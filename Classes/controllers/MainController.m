@@ -80,7 +80,7 @@ typedef enum {
 - (void)updateSlideShow;
 - (void)onChannelChanged;
 - (void)onSlideShowItemClicked:(UIView *)view;
-- (void)enterControllerByType:(id)item;
+- (void)enterControllerByType:(id)dataItem atOffset:(NSUInteger)offset;
 @end
 
 @implementation MainController
@@ -213,7 +213,6 @@ headerView = _headerView;
 - (void)setType:(listType)type {
     if (_type != type) {
         _type = type;
-        ((NeonanAppDelegate *)ApplicationDelegate).listSortType = type;
         [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
         [_tableView.pullToRefreshView triggerRefresh];
     }
@@ -338,7 +337,7 @@ headerView = _headerView;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     id dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
-    [self enterControllerByType:dataItem];
+    [self enterControllerByType:dataItem atOffset:indexPath.row];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -639,32 +638,34 @@ headerView = _headerView;
     [_slideShowView startAutoScroll:2];
 }
 
-- (void)enterControllerByType:(id)dataItem {
-    UIViewController *controller;
+- (void)enterControllerByType:(id)dataItem atOffset:(NSUInteger)offset{
+    id controller;
     
     switch ([self judgeContentType:dataItem]) {
         case contentTypeArticle:
             controller = [[ArticleDetailController alloc] init];
-            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
-            [controller performSelector:@selector(setContentTitle:) withObject:[dataItem title]];
+            [controller setContentId:[dataItem contentId]];
+            [controller setContentTitle:[dataItem title]];
+            [controller setSortType:_type];
+            [controller setOffset:offset];
             break;
             
         case contentTypeSlide:
             controller = [[BabyDetailController alloc] init];
-            [controller performSelector:@selector(setContentType:) withObject:[dataItem contentType]];
-            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
+            [controller setContentType:[dataItem contentType]];
+            [controller setContentId:[dataItem contentId]];
             
             if ([dataItem isKindOfClass:[BabyItem class]]) {
-                ((BabyDetailController *)controller).voted = [dataItem voted];
-                [controller performSelector:@selector(setContentTitle:) withObject:[dataItem babyName]];
+                [controller setVoted:[dataItem voted]];
+                [controller setContentTitle:[dataItem babyName]];
             } else {
-                [controller performSelector:@selector(setContentTitle:) withObject:[dataItem title]];
+                [controller setContentTitle:[dataItem title]];
             }
             break;
             
         case contentTypeVideo:
             controller = [[VideoPlayController alloc] init];
-            [controller performSelector:@selector(setVideoUrl:) withObject:[dataItem videoUrl]];
+            [controller setVideoUrl:[dataItem videoUrl]];
     }
     
     [self.navigationController pushViewController:controller animated:YES];
@@ -673,7 +674,7 @@ headerView = _headerView;
 - (void)onSlideShowItemClicked:(UIGestureRecognizer *)recognizer {
     NSInteger index = recognizer.view.tag;
     
-    [self enterControllerByType:[_slideShowModel.list objectAtIndex:index]];
+    [self enterControllerByType:[_slideShowModel.list objectAtIndex:index] atOffset:0];
 }
 
 #pragma mark - KVO

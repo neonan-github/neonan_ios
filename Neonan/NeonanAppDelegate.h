@@ -16,5 +16,4 @@
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) NNNavigationController *navController;
 
-@property (nonatomic, assign) listType listSortType;
 @end

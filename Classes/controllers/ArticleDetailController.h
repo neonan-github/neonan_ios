@@ -10,6 +10,8 @@
 
 @interface ArticleDetailController : UIViewController
 
+@property (assign, nonatomic) listType sortType;
+@property (assign, nonatomic) NSUInteger offset;
 @property (copy, nonatomic) NSString *contentId;
 @property (copy, nonatomic) NSString *contentTitle;
 

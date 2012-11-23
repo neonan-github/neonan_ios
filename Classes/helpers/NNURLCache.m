@@ -37,26 +37,35 @@
     return [NSURLRequest requestWithURL:[NSURL URLWithString:[self createKeyUrl:request.URL.absoluteString]]];
 }
 
-- (void)storeCachedResponse:(NSCachedURLResponse *)cachedResponse forRequest:(NSURLRequest *)request
+- (id)initWithMemoryCapacity:(NSUInteger)memoryCapacity diskCapacity:(NSUInteger)diskCapacity diskPath:(NSString *)path
 {
-    if (request.cachePolicy == NSURLRequestReloadIgnoringLocalCacheData
-        || request.cachePolicy == NSURLRequestReloadIgnoringLocalAndRemoteCacheData
-        || request.cachePolicy == NSURLRequestReloadIgnoringCacheData)
-    {
-        // When cache is ignored for read, it's a good idea not to store the result as well as this option
-        // have big chance to be used every times in the future for the same request.
-        // NOTE: This is a change regarding default URLCache behavior
-        return;
+    if (!path && [self superclass] == [SDURLCache class]) {
+        path = [SDURLCache defaultCachePath];
     }
     
+    if ((self = [super initWithMemoryCapacity:memoryCapacity diskCapacity:diskCapacity diskPath:path]))
+    {
+
+    }
+    
+    return self;
+}
+
+- (void)storeCachedResponse:(NSCachedURLResponse *)cachedResponse forRequest:(NSURLRequest *)request
+{
     NSURLRequest *keyRequest = [NNURLCache createKeyRequest:request];
     [super storeCachedResponse:cachedResponse forRequest:keyRequest];
 }
 
 - (NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request
 {
-    NSLog(@"request url:%@", request.URL.absoluteString);
     return [super cachedResponseForRequest:[NNURLCache createKeyRequest:request]];
+}
+
+- (void)removeCachedResponseForRequest:(NSURLRequest *)request
+{
+    NSURLRequest *keyRequest = [NNURLCache createKeyRequest:request];
+    [super removeCachedResponseForRequest:keyRequest];
 }
 
 @end

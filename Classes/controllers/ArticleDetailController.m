@@ -16,6 +16,7 @@
 #import <UIWebView+RemoveShadow.h>
 #import <MBProgressHUD.h>
 
+#import "NearWorksModel.h"
 #import "ArticleDetailModel.h"
 
 static NSString *kHtmlTemplate = @"<html> \n"
@@ -44,11 +45,11 @@ static NSString *kHtmlTemplate = @"<html> \n"
 @property (strong, nonatomic) ShareHelper *shareHelper;
 
 @property (strong, nonatomic) ArticleDetailModel *dataModel;
+@property (strong, nonatomic) NearWorksModel *nearWorks;
 
 @property (unsafe_unretained, nonatomic) CALayer *cacheLayer;
 @property (assign, nonatomic) BOOL isAnimating;
 
-- (void)requestForHtml:(NSString *)contentId;
 - (void)updateData;
 
 - (void)adjustLayout:(NSString *)title;
@@ -103,6 +104,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    self.dataModel = nil;
 }
 
 - (void)viewDidUnload {
@@ -111,9 +113,13 @@ static NSString *kHtmlTemplate = @"<html> \n"
     [self setTextView:nil];
     [self setCommentBox:nil];
     [self setShareButton:nil];
-    self.shareHelper = nil;
     [self setTitleLineView:nil];
+    
+    self.shareHelper = nil;
     self.cacheLayer = nil;
+    
+    self.nearWorks = nil;
+    
     [super viewDidUnload];
 }
 
@@ -132,10 +138,14 @@ static NSString *kHtmlTemplate = @"<html> \n"
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    if (_dataModel) {
-        [self updateData];
+    if (_nearWorks) {
+        if (_dataModel) {
+            [self updateData];
+        } else {
+            [self requestForContent:_contentId showHUD:YES];
+        }
     } else {
-        [self requestForHtml:_contentId];
+        [self requestForNearWorks];
     }
 }
 
@@ -224,14 +234,36 @@ static NSString *kHtmlTemplate = @"<html> \n"
 
 #pragma mark - Private Request methods
 
-- (void)requestForHtml:(NSString *)contentId {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES]; 
+- (void)requestForNearWorks {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
+                                _contentId, @"content_id", _sortType == listTypeHotest ? @"hot" : @"new", @"sort_type",
+                                @"women", @"channel", [NSString stringWithFormat:@"%u", _offset], @"offset",
+                                [NSString stringWithFormat:@"%u", 5], @"count", [NSNumber numberWithInteger:1], @"direction", nil];
+    
+    [[NNHttpClient sharedClient] getAtPath:@"near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
+        self.nearWorks = response;
+        NSLog(@"nearworks %@", _nearWorks.items);
+        
+        [self requestForContent:_contentId showHUD:NO];
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
+}
+
+- (void)requestForContent:(NSString *)contentId showHUD:(BOOL)showHUD {
+    if (showHUD) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
     
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
                                 contentId, @"content_id", nil];
     
     [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
         self.dataModel = response;
         _dataModel.contentId = _contentId;
         [self updateData];
@@ -318,8 +350,6 @@ static NSString *kHtmlTemplate = @"<html> \n"
     
     [self renderHtml:_dataModel.content];
     _textView.hidden = NO;
-    
-    self.dataModel = nil;
 }
 
 - (void)clearContents {
@@ -404,7 +434,6 @@ static NSString *kHtmlTemplate = @"<html> \n"
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     self.isAnimating = !flag;
     [self.cacheLayer removeFromSuperlayer];
-    [self requestForHtml:@"8779"];
 }
 
 @end
