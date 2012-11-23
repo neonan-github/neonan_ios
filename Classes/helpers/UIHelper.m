@@ -31,8 +31,10 @@
 + (CGFloat)computeHeightForLabel:(UILabel *)label withText:(NSString *)text {
     CGFloat originalHeight = label.frame.size.height;
     
-    NSUInteger lines = [UIHelper computeContentLines:text withWidth:label.frame.size.width andFont:label.font];
-    return originalHeight + (lines - 1) * label.font.lineHeight;
+    NSInteger originalLines = [UIHelper computeContentLines:label.text withWidth:label.frame.size.width andFont:label.font];
+    NSInteger newlines = [UIHelper computeContentLines:text withWidth:label.frame.size.width andFont:label.font];
+    
+    return originalHeight + (newlines - (originalLines > 0 ? originalLines : 1)) * label.font.lineHeight;
 }
 
 + (void)setBackAction:(SEL)action forController:(UIViewController *)controller withImage:(UIImage *)image {

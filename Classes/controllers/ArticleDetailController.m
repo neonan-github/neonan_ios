@@ -45,6 +45,9 @@ static NSString *kHtmlTemplate = @"<html> \n"
 
 @property (strong, nonatomic) ArticleDetailModel *dataModel;
 
+@property (unsafe_unretained, nonatomic) CALayer *cacheLayer;
+@property (assign, nonatomic) BOOL isAnimating;
+
 - (void)requestForHtml:(NSString *)contentId;
 - (void)updateData;
 
@@ -100,7 +103,6 @@ static NSString *kHtmlTemplate = @"<html> \n"
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    self.dataModel = nil;
 }
 
 - (void)viewDidUnload {
@@ -111,6 +113,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
     [self setShareButton:nil];
     self.shareHelper = nil;
     [self setTitleLineView:nil];
+    self.cacheLayer = nil;
     [super viewDidUnload];
 }
 
@@ -146,7 +149,6 @@ static NSString *kHtmlTemplate = @"<html> \n"
 #pragma mark - UIWebViewDelegate methods
 
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
-    NSLog(@"shouldStartLoadWithRequest type:%d", navigationType);
     if(navigationType == UIWebViewNavigationTypeLinkClicked) {
         return NO;
     }
@@ -154,8 +156,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-   [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName(\"a\").removeAttribute(\"href\");"]; 
-//   [webView stringByEvaluatingJavaScriptFromString:@"document.anchors[\"ancDevx\"].removeAttribute(\"href\");"]; 
+//   [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName(\"a\").removeAttribute(\"href\");"]; 
 }
 
 #pragma mark - Keyboard events handle
@@ -303,11 +304,33 @@ static NSString *kHtmlTemplate = @"<html> \n"
 }
 
 - (void)updateData {
-    _titleLabel.text = _dataModel.title;
+    self.contentTitle = _dataModel.title;
+    [self adjustLayout:_contentTitle];
+    
+    _titleLabel.text = _contentTitle;
+    _titleLabel.hidden = NO;
+    
     _extraInfoLabel.text = [NSString stringWithFormat:@"%@ 编辑：%@", _dataModel.date, _dataModel.author];
+    _extraInfoLabel.hidden = NO;
+    
     [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];
     _commentBox.countButton.enabled = _dataModel.commentNum > 0;
+    
     [self renderHtml:_dataModel.content];
+    _textView.hidden = NO;
+    
+    self.dataModel = nil;
+}
+
+- (void)clearContents {
+    _titleLabel.hidden = YES;
+    _extraInfoLabel.hidden = YES;
+    
+    _commentBox.text = @"";
+    [_commentBox.countButton setTitle:@"" forState:UIControlStateNormal];
+    _commentBox.countButton.enabled = NO;
+    
+    _textView.hidden = YES;
 }
 
 #pragma mark - Private methods
@@ -343,81 +366,45 @@ static NSString *kHtmlTemplate = @"<html> \n"
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer {
-////    [self.view removeFromSuperview];
-//    
-//    if (recognizer.direction == UISwipeGestureRecognizerDirectionLeft) {// next
-//    } else {// previous
-//    }
-//    
-////    CATransition *transition = [CATransition animation];
-////    transition.duration = 0.75;
-////    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-////    transition.type = kCATransitionPush;
-////    transition.subtype =kCATransitionFromRight;
-////    transition.delegate = self;
-////    UIView *superView = self.view.superview;
-////    [superView.layer addAnimation:transition forKey:nil];
-////    [superView addSubview:self.view];
-    CALayer *layerBack = [CALayer layer];
+    if (_isAnimating) {
+        return;
+    }
+    
+    self.isAnimating = YES;
+    
+    CGFloat viewWidth = self.view.frame.size.width;
+    CGFloat viewHeight = self.view.frame.size.height;
+    BOOL next = recognizer.direction == UISwipeGestureRecognizerDirectionLeft;
+    
+    CALayer *cacheLayer = self.cacheLayer = [CALayer layer];
+    
     UIImage *cacheImage = [UIImage imageFromView:self.view];
-//    layerBack.bounds = self.view.bounds;
-    layerBack.frame = CGRectMake(-320, 0, 320, 504);
+    cacheLayer.frame = CGRectMake((next ? -1 : 1) * viewWidth, 0, viewWidth, viewHeight);
     
-//    layerBack.bounds=CGRectMake(0.0f,0.0f,cacheImage.size.width,cacheImage.size.height);
-//    layerBack.position=CGPointMake(200,200);
+    cacheLayer.contents = (id)cacheImage.CGImage;
+    [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
     
-    layerBack.contents = (id)cacheImage.CGImage;
-    [self.view.layer insertSublayer:layerBack above:self.view.layer];
-    self.textView.hidden = YES;
-//    self.view.layer.frame = CGRectMake(0, 0, 640, 504);
-    
-//    [self.view.layer setNeedsDisplay];
-    
-    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-//    opacityAnimation.duration = 10;
-    opacityAnimation.toValue  = [NSNumber numberWithFloat:1.0f];
-    opacityAnimation.fromValue  = [NSNumber numberWithFloat:1.0f];
-//    [self.view.layer addAnimation:opacityAnimation forKey:@"opacity"];
+    [self clearContents];
     
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
-//    animation.duration = 3;
+//    animation.duration = 5;
+    animation.delegate = self;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    animation.fromValue = [NSValue valueWithCGPoint:CGPointMake(320, 252)];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(160, 252)];
-//    [self.view.layer addAnimation:animation forKey:@"position"];
-    
-    CAAnimationGroup *animationgroup = [CAAnimationGroup animation];
-    animationgroup.animations = [NSArray arrayWithObjects:animation, opacityAnimation, nil];
-    animationgroup.duration = 10.0f;
-    animationgroup.fillMode = kCAFillModeForwards;
-//    CATransition *transition = [CATransition animation];
-//    transition.duration = 10;
-//    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-//    transition.type = kCATransitionMoveIn;
-//    transition.subtype =kCATransitionFromRight;
-//    transition.delegate = self;
-    [self.view.layer addAnimation:animationgroup forKey:@"animatePath"];
-    
-//    UIView *superview = self.view.superview;
-//    [self.view removeFromSuperview];
-//    [self.view.layer ];
-    
-//    [layerBack setNeedsDisplay];
-    
-    // Remove old view
-//    [self.titleLabel removeFromSuperview];
-//    
-//    // Inser new view at right index
-//    [self.view addSubview:self.titleLabel];
-//    
-//    // Create the transition
-//    CATransition *animation = [CATransition animation];
-//    [animation setDelegate:self];
-//    [animation setType:kCATransitionPush];
-//    [animation setSubtype:kCATransitionFromLeft];
-//    [animation setDuration:0.5f];
-//    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-//    [[self.view layer] addAnimation:animation forKey:@"pushIn"];
+    animation.fromValue = [NSValue valueWithCGPoint:CGPointMake((next ? 1.5f : -0.5f) * viewWidth, viewHeight / 2)];
+    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(viewWidth / 2, viewHeight / 2)];
+    animation.fillMode = kCAFillModeBackwards;
+    [self.view.layer addAnimation:animation forKey:@"position"];
+}
+
+#pragma mark - CAAnimationDelegate methods
+
+- (void)animationDidStart:(CAAnimation *)anim {
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    self.isAnimating = !flag;
+    [self.cacheLayer removeFromSuperlayer];
+    [self requestForHtml:@"8779"];
 }
 
 @end
