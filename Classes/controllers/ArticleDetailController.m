@@ -33,6 +33,9 @@ static NSString *kHtmlTemplate = @"<html> \n"
 "<body>%@</body> \n"
 "</html>";
 
+static NSString * const kDirectionLeft = @"-1";
+static NSString * const kDirectionRight = @"1";
+
 @interface ArticleDetailController () <UIWebViewDelegate>
 
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
@@ -45,7 +48,8 @@ static NSString *kHtmlTemplate = @"<html> \n"
 @property (strong, nonatomic) ShareHelper *shareHelper;
 
 @property (strong, nonatomic) ArticleDetailModel *dataModel;
-@property (strong, nonatomic) NearWorksModel *nearWorks;
+@property (strong, nonatomic) NearWorksModel *idList;
+@property (assign, nonatomic) NSUInteger idIndex;
 
 @property (unsafe_unretained, nonatomic) CALayer *cacheLayer;
 @property (assign, nonatomic) BOOL isAnimating;
@@ -98,6 +102,8 @@ static NSString *kHtmlTemplate = @"<html> \n"
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
     
     [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self initIdList];
 }
 
 - (void)didReceiveMemoryWarning
@@ -118,7 +124,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
     self.shareHelper = nil;
     self.cacheLayer = nil;
     
-    self.nearWorks = nil;
+    self.idList = nil;
     
     [super viewDidUnload];
 }
@@ -138,14 +144,14 @@ static NSString *kHtmlTemplate = @"<html> \n"
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    if (_nearWorks) {
-        if (_dataModel) {
-            [self updateData];
-        } else {
-            [self requestForContent:_contentId showHUD:YES];
-        }
+    if (!_idList) {
+        return;
+    }
+    
+    if (_dataModel) {
+        [self updateData];
     } else {
-        [self requestForNearWorks];
+        [self requestForContent:_contentId showHUD:YES];
     }
 }
 
@@ -166,7 +172,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-//   [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName(\"a\").removeAttribute(\"href\");"]; 
+//   [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName(\"a\").removeAttribute(\"href\");"];
 }
 
 #pragma mark - Keyboard events handle
@@ -234,19 +240,25 @@ static NSString *kHtmlTemplate = @"<html> \n"
 
 #pragma mark - Private Request methods
 
-- (void)requestForNearWorks {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
+- (void)requestForNearWorks:(BOOL)next success:(void (^)())success {
+    NSUInteger count = 5;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
-                                _contentId, @"content_id", _sortType == listTypeHotest ? @"hot" : @"new", @"sort_type",
-                                @"women", @"channel", [NSString stringWithFormat:@"%u", _offset], @"offset",
-                                [NSString stringWithFormat:@"%u", 5], @"count", [NSNumber numberWithInteger:1], @"direction", nil];
+                                _contentId, @"content_id",
+                                _sortType == SortTypeHotest ? @"hot" : @"new", @"sort_type",
+                                _channel, @"channel",
+                                [NSNumber numberWithUnsignedInteger:_offset], @"offset",
+                                [NSNumber numberWithUnsignedInteger:count], @"count",
+                                next ? @"1" : @"-1", @"direction", nil];
     
     [[NNHttpClient sharedClient] getAtPath:@"near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
-        self.nearWorks = response;
-        NSLog(@"nearworks %@", _nearWorks.items);
+        @synchronized(self.idList) {
+            [self.idList insertMoreData:response withMode:next];
+            self.idIndex = self.idIndex + (next ? 0 : 1) * count;
+        }
         
-        [self requestForContent:_contentId showHUD:NO];
+        if (success) {
+            success();
+        }
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
@@ -360,10 +372,29 @@ static NSString *kHtmlTemplate = @"<html> \n"
     [_commentBox.countButton setTitle:@"" forState:UIControlStateNormal];
     _commentBox.countButton.enabled = NO;
     
+    [self renderHtml:@""];
     _textView.hidden = YES;
 }
 
 #pragma mark - Private methods
+
+- (void)initIdList {
+    if (!_idList) {
+        self.idList = [[NearWorksModel alloc] init];
+        NearItem *item = [[NearItem alloc] init];
+        item.contentId = _contentId;
+        item.contentType = @"article";
+        item.offset = _offset;
+        _idList.items = [NSMutableArray arrayWithObject:item];
+        
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [self requestForNearWorks:NO success:^{
+            [self requestForNearWorks:YES success:^{
+                [self requestForContent:[_idList.items objectAtIndex:_idIndex] showHUD:NO];
+            }];
+        }];
+    }
+}
 
 - (void)share {
     if (!_dataModel) {
@@ -415,6 +446,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
     [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
     
     [self clearContents];
+    [self requestForNearWorks:next success:nil];
     
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
 //    animation.duration = 5;
@@ -422,7 +454,6 @@ static NSString *kHtmlTemplate = @"<html> \n"
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     animation.fromValue = [NSValue valueWithCGPoint:CGPointMake((next ? 1.5f : -0.5f) * viewWidth, viewHeight / 2)];
     animation.toValue = [NSValue valueWithCGPoint:CGPointMake(viewWidth / 2, viewHeight / 2)];
-    animation.fillMode = kCAFillModeBackwards;
     [self.view.layer addAnimation:animation forKey:@"position"];
 }
 

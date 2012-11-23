@@ -26,4 +26,23 @@
     return [parser parseDictionary:JSON];
 }
 
+- (void)insertMoreData:(NearWorksModel *)data withMode:(BOOL)append {
+    NSMutableArray *array;
+    if ([self.items isKindOfClass:[NSMutableArray class]]) {
+        array = (NSMutableArray *)self.items;
+    } else {
+        array = [NSMutableArray array];
+    }
+    
+    for (id object in data.items) {
+        if (append) {
+            [array addObject:object];
+        } else {
+            [array insertObject:object atIndex:0];
+        }
+    }
+    
+    self.items = array;
+}
+
 @end

@@ -61,17 +61,17 @@ typedef enum {
 @property (nonatomic, assign) NSUInteger channelIndex;
 
 @property (nonatomic, strong) MainSlideShowModel *slideShowModel;
-@property (nonatomic, assign) listType type;
+@property (nonatomic, assign) SortType type;
 @property (nonatomic, strong) id dataModel;// BabyListModel or CommonListModel;
 
 - (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 
-- (NSString *)stringForType:(listType)type;
+- (NSString *)stringForType:(SortType)type;
 - (contentType)judgeContentType:(id)item;
 
 - (void)requestForSlideShow:(NSString *)channel;
-- (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType;
+- (void)requestForList:(NSString *)channel withListType:(SortType)type andRequestType:(requestType)requestType;
 - (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
 
 - (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex;
@@ -210,7 +210,7 @@ headerView = _headerView;
     [self cleanUp];
 }
 
-- (void)setType:(listType)type {
+- (void)setType:(SortType)type {
     if (_type != type) {
         _type = type;
         [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
@@ -376,8 +376,8 @@ headerView = _headerView;
 
 #pragma mark - Private methods
 
-- (NSString *)stringForType:(listType)type {
-    if (type == listTypeLatest) {
+- (NSString *)stringForType:(SortType)type {
+    if (type == SortTypeLatest) {
         return @"最新";
     }
 
@@ -401,8 +401,8 @@ headerView = _headerView;
     return contentTypeSlide;
 }
 
-- (NSString *)requestStringForType:(listType)type {
-    if (type == listTypeLatest) {
+- (NSString *)requestStringForType:(SortType)type {
+    if (type == SortTypeLatest) {
         return @"new";
     }
     
@@ -410,7 +410,7 @@ headerView = _headerView;
 }
 
 - (void)switchListType {
-    listType newType = _type == listTypeLatest ? listTypeHotest : listTypeLatest;
+    SortType newType = _type == SortTypeLatest ? SortTypeHotest : SortTypeLatest;
     self.type = newType;
 }
 
@@ -490,7 +490,7 @@ headerView = _headerView;
  
 }
 
-- (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType {
+- (void)requestForList:(NSString *)channel withListType:(SortType)type andRequestType:(requestType)requestType {
     NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
     BOOL isBabyChannel = [channel isEqualToString:@"baby"];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
@@ -648,6 +648,7 @@ headerView = _headerView;
             [controller setContentTitle:[dataItem title]];
             [controller setSortType:_type];
             [controller setOffset:offset];
+            [controller setChannel:[self.channelTexts objectAtIndex:_channelIndex]];
             break;
             
         case contentTypeSlide:

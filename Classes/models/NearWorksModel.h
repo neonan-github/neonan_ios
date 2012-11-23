@@ -16,4 +16,6 @@
 
 @interface NearWorksModel : NSObject <Jsonable>
 @property (strong, nonatomic) NSArray *items;
+
+- (void)insertMoreData:(NearWorksModel *)data withMode:(BOOL)append;
 @end
