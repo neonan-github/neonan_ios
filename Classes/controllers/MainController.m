@@ -220,7 +220,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = [NSArray arrayWithObjects:@"首页", @"睿知", @"酷玩", @"宝贝", @"视频", @"精选", @"HowTo", @"女人", nil];
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", @"宝贝", @"视频", @"精选", @"女人", nil];
     }
     
     return  _channelTexts;
@@ -228,7 +228,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"baby", @"video", @"top", @"qa", @"women", nil];
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"baby", @"video", @"top", @"women", nil];
     }
     
     return _channelTypes;
