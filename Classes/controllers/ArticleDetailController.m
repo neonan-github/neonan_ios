@@ -48,8 +48,8 @@ static NSString * const kDirectionRight = @"1";
 @property (strong, nonatomic) ShareHelper *shareHelper;
 
 @property (strong, nonatomic) ArticleDetailModel *dataModel;
-@property (strong, nonatomic) NearWorksModel *idList;
-@property (assign, nonatomic) NSUInteger idIndex;
+@property (strong, nonatomic) NearWorksModel *idModel;
+@property (assign, nonatomic) NSInteger idIndex;
 
 @property (unsafe_unretained, nonatomic) CALayer *cacheLayer;
 @property (assign, nonatomic) BOOL isAnimating;
@@ -102,8 +102,6 @@ static NSString * const kDirectionRight = @"1";
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
     
     [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self initIdList];
 }
 
 - (void)didReceiveMemoryWarning
@@ -124,7 +122,7 @@ static NSString * const kDirectionRight = @"1";
     self.shareHelper = nil;
     self.cacheLayer = nil;
     
-    self.idList = nil;
+    self.idModel = nil;
     
     [super viewDidUnload];
 }
@@ -144,13 +142,10 @@ static NSString * const kDirectionRight = @"1";
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    if (!_idList) {
-        return;
-    }
     
-    if (_dataModel) {
-        [self updateData];
-    } else {
+    if (!_idModel) {
+        [self initIdList];
+    } else if (!_dataModel) {
         [self requestForContent:_contentId showHUD:YES];
     }
 }
@@ -241,7 +236,7 @@ static NSString * const kDirectionRight = @"1";
 #pragma mark - Private Request methods
 
 - (void)requestForNearWorks:(BOOL)next success:(void (^)())success {
-    NSUInteger count = 5;
+    static NSUInteger count = 1;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
                                 _contentId, @"content_id",
                                 _sortType == SortTypeHotest ? @"hot" : @"new", @"sort_type",
@@ -251,9 +246,11 @@ static NSString * const kDirectionRight = @"1";
                                 next ? @"1" : @"-1", @"direction", nil];
     
     [[NNHttpClient sharedClient] getAtPath:@"near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
-        @synchronized(self.idList) {
-            [self.idList insertMoreData:response withMode:next];
-            self.idIndex = self.idIndex + (next ? 0 : 1) * count;
+        @synchronized(_idModel) {
+            if (!next) {
+                self.idIndex = _idIndex + [[((NearWorksModel *)response) items] count];
+            }
+            [_idModel insertMoreData:response withMode:next];
         }
         
         if (success) {
@@ -271,7 +268,8 @@ static NSString * const kDirectionRight = @"1";
     }
     
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
-                                contentId, @"content_id", nil];
+                                contentId, @"content_id", [NSNumber numberWithUnsignedInteger:_offset], @"offset",
+                                nil];
     
     [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -343,7 +341,6 @@ static NSString * const kDirectionRight = @"1";
     formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"href=\"[^\"]+\"|<object.+<embed.+?>|style=\"[^\"]+\"" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
     //adjust image width
     formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"<img" withString:@"<img style=\"width:100%;\"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
-    NSLog(@"formattedHTML:%@", formattedHTML);
     [_textView loadHTMLString:formattedHTML baseURL:nil];
 }
 
@@ -365,6 +362,8 @@ static NSString * const kDirectionRight = @"1";
 }
 
 - (void)clearContents {
+    self.dataModel = nil;
+    
     _titleLabel.hidden = YES;
     _extraInfoLabel.hidden = YES;
     
@@ -379,18 +378,19 @@ static NSString * const kDirectionRight = @"1";
 #pragma mark - Private methods
 
 - (void)initIdList {
-    if (!_idList) {
-        self.idList = [[NearWorksModel alloc] init];
+    if (!_idModel) {
+        self.idModel = [[NearWorksModel alloc] init];
         NearItem *item = [[NearItem alloc] init];
         item.contentId = _contentId;
         item.contentType = @"article";
         item.offset = _offset;
-        _idList.items = [NSMutableArray arrayWithObject:item];
+        _idModel.items = [NSMutableArray arrayWithObjects:item, nil];
         
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [self requestForNearWorks:NO success:^{
             [self requestForNearWorks:YES success:^{
-                [self requestForContent:[_idList.items objectAtIndex:_idIndex] showHUD:NO];
+                self.contentId = [[_idModel.items objectAtIndex:_idIndex] contentId];
+                [self requestForContent:_contentId showHUD:NO];
             }];
         }];
     }
@@ -427,15 +427,24 @@ static NSString * const kDirectionRight = @"1";
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer {
-    if (_isAnimating) {
+    if (_isAnimating || !_dataModel) {
         return;
     }
+    
+    BOOL next = recognizer.direction == UISwipeGestureRecognizerDirectionLeft;
+    
+    NSInteger idIndex = _idIndex;
+    idIndex += (next ? 1 : -1);
+    if (idIndex < 0 || idIndex >= _idModel.items.count) {// 到头或尾
+        return;
+    }
+    
+    self.idIndex = idIndex;
     
     self.isAnimating = YES;
     
     CGFloat viewWidth = self.view.frame.size.width;
     CGFloat viewHeight = self.view.frame.size.height;
-    BOOL next = recognizer.direction == UISwipeGestureRecognizerDirectionLeft;
     
     CALayer *cacheLayer = self.cacheLayer = [CALayer layer];
     
@@ -446,7 +455,16 @@ static NSString * const kDirectionRight = @"1";
     [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
     
     [self clearContents];
-    [self requestForNearWorks:next success:nil];
+    
+    NSString *contentId = self.contentId = [[_idModel.items objectAtIndex:_idIndex] contentId];
+    if ((idIndex == 0 && !next) || (idIndex == _idModel.items.count - 1 && next)) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [self requestForNearWorks:next success:^{ // 获取上或下id
+            [self requestForContent:contentId showHUD:NO];
+        }];
+    } else {
+        [self requestForContent:contentId showHUD:YES];
+    }
     
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
 //    animation.duration = 5;

@@ -255,9 +255,10 @@ headerView = _headerView;
     
     if (!_dataModel || !_slideShowModel) {
         [_tableView.pullToRefreshView triggerRefresh];
-    } else {
-        [_tableView reloadData];
     }
+//    else {
+//        [_tableView reloadData];
+//    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -648,7 +649,7 @@ headerView = _headerView;
             [controller setContentTitle:[dataItem title]];
             [controller setSortType:_type];
             [controller setOffset:offset];
-            [controller setChannel:[self.channelTexts objectAtIndex:_channelIndex]];
+            [controller setChannel:[self.channelTypes objectAtIndex:_channelIndex]];
             break;
             
         case contentTypeSlide:
