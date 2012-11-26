@@ -389,7 +389,9 @@ static NSString * const kDirectionRight = @"1";
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [self requestForNearWorks:NO success:^{
             [self requestForNearWorks:YES success:^{
-                self.contentId = [[_idModel.items objectAtIndex:_idIndex] contentId];
+                NearItem *currentItem = [_idModel.items objectAtIndex:_idIndex];
+                self.offset = [currentItem offset];
+                self.contentId = [currentItem contentId];
                 [self requestForContent:_contentId showHUD:NO];
             }];
         }];
@@ -456,7 +458,9 @@ static NSString * const kDirectionRight = @"1";
     
     [self clearContents];
     
-    NSString *contentId = self.contentId = [[_idModel.items objectAtIndex:_idIndex] contentId];
+    NearItem *currentItem = [_idModel.items objectAtIndex:_idIndex];
+    self.offset = [currentItem offset];
+    NSString *contentId = self.contentId = [currentItem contentId];
     if ((idIndex == 0 && !next) || (idIndex == _idModel.items.count - 1 && next)) {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [self requestForNearWorks:next success:^{ // 获取上或下id
