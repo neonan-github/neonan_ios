@@ -13,6 +13,7 @@
 #import <SDImageCache.h>
 
 #import "SlideShowDetailModel.h"
+#import "NearWorksModel.h"
 #import "ShareHelper.h"
 
 static const float kDescriptionShrinkedLines = 4;
@@ -33,11 +34,20 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) FoldableTextBox *textBox;
 
-@property (nonatomic, strong) SlideShowDetailModel *dataModel;
+@property (nonatomic, strong) UIActivityIndicatorView *progressView;
+
 @property (strong, nonatomic) ShareHelper *shareHelper;
+
+@property (nonatomic, strong) SlideShowDetailModel *dataModel;
+@property (strong, nonatomic) NearWorksModel *idModel;
+@property (assign, nonatomic) NSInteger idIndex;
+
+@property (unsafe_unretained, nonatomic) CALayer *cacheLayer;
+@property (assign, nonatomic) BOOL isAnimating;
 
 - (void)requestForSlideShow;
 - (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
+- (void)showProgressView;
 
 - (void)updateData;
 @end
@@ -55,6 +65,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, -NavBarHeight, CompatibleScreenWidth, CompatibleScreenHeight - StatusBarHeight)];
+    slideShowView.wrap = NO;
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
     slideShowView.backgroundColor = DarkThemeColor;
@@ -124,6 +135,8 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 - (void)cleanUp
 {
+    self.cacheLayer = nil;
+    
     self.titleLabel = nil;
     self.likeButton = nil;
     self.shareButton = nil;
@@ -137,6 +150,10 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     
     self.textBox.delegate = nil;
     self.textBox = nil;
+    
+    self.progressView = nil;
+    
+    self.idModel = nil;
 }
 
 - (void)viewDidUnload
@@ -154,11 +171,12 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 {
     [super viewWillAppear:animated];
     
-    if (_dataModel) {
-        [self updateData];
-    } else {
+    if (!_idModel) {
+        [self initIdList];
+    } else if (!_dataModel) {
         [self requestForSlideShow];
     }
+    
     _textBox.expanded = NO;
 }
 
@@ -208,6 +226,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 - (UIView *)slideShowView:(SlideShowView *)slideShowView viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
     if (!view) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:slideShowView.bounds];
+        imageView.backgroundColor = DarkThemeColor;
         imageView.layer.anchorPoint = CGPointMake(0.5, 0.5);
         imageView.clipsToBounds = YES;
         imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -265,6 +284,55 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     _textBox.text = [_dataModel.descriptions objectAtIndex:(_dataModel.descriptions.count > 1 ? currentIndex : 0)];
 }
 
+- (void)slideShowView:(SlideShowView *)slideShowView overSwipWithDirection:(UISwipeGestureRecognizerDirection)direction {
+    if (_isAnimating || !_dataModel) {
+        return;
+    }
+    
+    BOOL next = direction == UISwipeGestureRecognizerDirectionLeft;
+    
+    NSInteger idIndex = _idIndex;
+    idIndex += (next ? 1 : -1);
+    if (idIndex < 0 || idIndex >= _idModel.items.count) {// 到头或尾
+        return;
+    }
+    
+    self.idIndex = idIndex;
+    
+    self.isAnimating = YES;
+    
+    CGFloat viewWidth = self.view.frame.size.width;
+    CGFloat viewHeight = self.view.frame.size.height;
+    
+    CALayer *cacheLayer = self.cacheLayer = [CALayer layer];
+    UIImage *cacheImage = [UIImage imageFromView:self.view];
+    cacheLayer.frame = CGRectMake((next ? -1 : 1) * viewWidth, 0, viewWidth, viewHeight);
+    cacheLayer.contents = (id)cacheImage.CGImage;
+    [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
+    
+    [self clearContents];
+    
+    NearItem *currentItem = [_idModel.items objectAtIndex:_idIndex];
+    self.offset = [currentItem offset];
+    self.contentId = [currentItem contentId];
+    self.contentType = [currentItem contentType];
+    if ((idIndex == 0 && !next) || (idIndex == _idModel.items.count - 1 && next)) {
+        [self requestForNearWorks:next success:^{ // 获取上或下id
+            [self requestForSlideShow];
+        }];
+    } else {
+        [self requestForSlideShow];
+    }
+    
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+//    animation.duration = 5;
+    animation.delegate = self;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    animation.fromValue = [NSValue valueWithCGPoint:CGPointMake((next ? 1.5f : -0.5f) * viewWidth, viewHeight / 2)];
+    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(viewWidth / 2, viewHeight / 2)];
+    [self.view.layer addAnimation:animation forKey:@"position"];
+}
+
 #pragma mark - FoldableTextBoxDelegate methods
 
 - (void)onFrameChanged:(CGRect)frame {
@@ -273,6 +341,27 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 }
 
 #pragma mark - Private methods
+
+- (void)initIdList {
+    if (!_idModel) {
+        self.idModel = [[NearWorksModel alloc] init];
+        NearItem *item = [[NearItem alloc] init];
+        item.contentId = _contentId;
+        item.contentType = _contentType;
+        item.offset = _offset;
+        _idModel.items = [NSMutableArray arrayWithObjects:item, nil];
+        
+        [self requestForNearWorks:NO success:^{
+            [self requestForNearWorks:YES success:^{
+                NearItem *currentItem = [_idModel.items objectAtIndex:_idIndex];
+                self.offset = [currentItem offset];
+                self.contentId = [currentItem contentId];
+                self.contentType = [currentItem contentType];
+                [self requestForSlideShow];
+            }];
+        }];
+    }
+}
 
 - (void)tap:(UITapGestureRecognizer *)recognizer {
     BOOL hidden = !self.navigationController.navigationBarHidden;
@@ -324,6 +413,36 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 #pragma mark - Private Request methods
 
+- (void)requestForNearWorks:(BOOL)next success:(void (^)())success {
+    [self showProgressView];
+    
+    static NSUInteger count = 1;
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:_contentType, @"content_type",
+                                _contentId, @"content_id",
+                                _sortType == SortTypeHotest ? @"hot" : @"new", @"sort_type",
+                                _channel, @"channel",
+                                [NSNumber numberWithUnsignedInteger:_offset], @"offset",
+                                [NSNumber numberWithUnsignedInteger:count], @"count",
+                                next ? @"1" : @"-1", @"direction", nil];
+    
+    [[NNHttpClient sharedClient] getAtPath:@"near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
+        @synchronized(_idModel) {
+            if (!next) {
+                self.idIndex = _idIndex + [[((NearWorksModel *)response) items] count];
+            }
+            [_idModel insertMoreData:response withMode:next];
+        }
+        
+        if (success) {
+            success();
+        }
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
+}
+
+
 - (void)requestForSlideShowWithParams:(NSDictionary *)parameters success:(void (^)())success {
     [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[SlideShowDetailModel class] success:^(id<Jsonable> response) {
         self.dataModel = response;
@@ -339,13 +458,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 }
 
 - (void)requestForSlideShow {
-    UIActivityIndicatorView *progressView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    CGRect frame = progressView.frame;
-    frame.origin.x = (_slideShowView.bounds.size.width - frame.size.width) / 2;
-    frame.origin.y = (_slideShowView.bounds.size.height - frame.size.height) / 2;
-    progressView.frame = frame;
-    [_slideShowView addSubview:progressView];
-    [progressView startAnimating];
+    [self showProgressView];
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:_contentType, @"content_type",
                                 _contentId, @"content_id", nil];
@@ -355,12 +468,12 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         [sessionManager requsetToken:self success:^(NSString *token) {
             [parameters setValue:token forKey:@"token"];
             [self requestForSlideShowWithParams:parameters success:^{
-                [progressView removeFromSuperview];
+                [_progressView removeFromSuperview];
             }];
         }];
     } else {
         [self requestForSlideShowWithParams:parameters success:^{
-            [progressView removeFromSuperview];
+            [_progressView removeFromSuperview];
         }];
     }
 }
@@ -382,6 +495,21 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 #pragma mark - Private UI related
 
+- (void)showProgressView {
+    if (!_progressView) {
+        UIActivityIndicatorView *progressView = self.progressView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        CGRect frame = progressView.frame;
+        frame.origin.x = (_slideShowView.bounds.size.width - frame.size.width) / 2;
+        frame.origin.y = (_slideShowView.bounds.size.height - frame.size.height) / 2;
+        progressView.frame = frame;
+    }
+    
+    if (!_progressView.superview) {
+        [_slideShowView addSubview:_progressView];
+        [_progressView startAnimating];
+    }
+}
+
 - (CGFloat)adjustLayout:(NSString *)title {
     CGFloat titleOriginalHeight = _titleLabel.frame.size.height;
     CGFloat titleAdjustedHeight = [UIHelper computeHeightForLabel:_titleLabel withText:title];
@@ -400,7 +528,29 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     
     _likeButton.enabled = !_dataModel.voted;
     
-//    _titleLabel.text = _dataModel.title;
+    _titleLabel.text = _dataModel.title;
+    _titleLabel.hidden = NO;
+}
+
+- (void)clearContents {
+    self.dataModel = nil;
+    
+    _titleLabel.hidden = YES;
+    _likeButton.enabled = YES;
+    
+    [_slideShowView reloadData];
+    
+    _textBox.text = @"";
+}
+
+#pragma mark - CAAnimationDelegate methods
+
+- (void)animationDidStart:(CAAnimation *)anim {
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    self.isAnimating = !flag;
+    [self.cacheLayer removeFromSuperlayer];
 }
 
 @end

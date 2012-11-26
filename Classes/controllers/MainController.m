@@ -656,6 +656,9 @@ headerView = _headerView;
             controller = [[BabyDetailController alloc] init];
             [controller setContentType:[dataItem contentType]];
             [controller setContentId:[dataItem contentId]];
+            [controller setSortType:_type];
+            [controller setOffset:offset];
+            [controller setChannel:[self.channelTypes objectAtIndex:_channelIndex]];
             
             if ([dataItem isKindOfClass:[BabyItem class]]) {
                 [controller setVoted:[dataItem voted]];

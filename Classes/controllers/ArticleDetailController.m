@@ -236,7 +236,7 @@ static NSString * const kDirectionRight = @"1";
 #pragma mark - Private Request methods
 
 - (void)requestForNearWorks:(BOOL)next success:(void (^)())success {
-    static NSUInteger count = 1;
+    static NSUInteger count = 3;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
                                 _contentId, @"content_id",
                                 _sortType == SortTypeHotest ? @"hot" : @"new", @"sort_type",
@@ -449,10 +449,8 @@ static NSString * const kDirectionRight = @"1";
     CGFloat viewHeight = self.view.frame.size.height;
     
     CALayer *cacheLayer = self.cacheLayer = [CALayer layer];
-    
     UIImage *cacheImage = [UIImage imageFromView:self.view];
     cacheLayer.frame = CGRectMake((next ? -1 : 1) * viewWidth, 0, viewWidth, viewHeight);
-    
     cacheLayer.contents = (id)cacheImage.CGImage;
     [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
     

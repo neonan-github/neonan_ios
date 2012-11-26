@@ -115,12 +115,18 @@
 }
 
 + (UIImage *)imageFromView:(UIView *)view {
-    UIGraphicsBeginImageContext(view.bounds.size);
+    if(UIGraphicsBeginImageContextWithOptions != NULL)
+    {
+        UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, 0.0);
+    } else {
+        UIGraphicsBeginImageContext(view.frame.size);
+    }
+    
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    return viewImage;
+    return image;
 }
 
 @end
