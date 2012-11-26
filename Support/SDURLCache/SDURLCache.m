@@ -9,7 +9,6 @@
 #import "SDURLCache.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "NNURLCache.h"
-#import <DDURLParser.h>
 
 static NSTimeInterval const kSDURLCacheInfoDefaultMinCacheInterval = 5 * 60; // 5 minute
 static NSString *const kSDURLCacheInfoFileName = @"cacheInfo.plist";
@@ -423,8 +422,7 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
         return;
     }
 
-    NSURLRequest *keyRequest = [NNURLCache createKeyRequest:request];
-    [super storeCachedResponse:cachedResponse forRequest:keyRequest];
+    [super storeCachedResponse:cachedResponse forRequest:request];
 
     if (cachedResponse.storagePolicy == NSURLCacheStorageAllowed
         && [cachedResponse.response isKindOfClass:[NSHTTPURLResponse self]]
@@ -442,7 +440,7 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
                                                                     selector:@selector(storeToDisk:)
                                                                       object:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                               cachedResponse, @"cachedResponse",
-                                                                              keyRequest, @"request",
+                                                                              request, @"request",
                                                                               expirationDate, @"expirationDate",
                                                                               nil]] autorelease]];
     }
@@ -450,15 +448,13 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
 
 - (NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request
 {
-    NSURLRequest *keyRequest = [NNURLCache createKeyRequest:request];
-    NSLog(@"request url:%@", keyRequest.URL.absoluteString);
-    NSCachedURLResponse *memoryResponse = [super cachedResponseForRequest:keyRequest];
+    NSCachedURLResponse *memoryResponse = [super cachedResponseForRequest:request];
     if (memoryResponse)
     {
         return memoryResponse;
     }
 
-    NSString *cacheKey = [SDURLCache cacheKeyForURL:keyRequest.URL];
+    NSString *cacheKey = [SDURLCache cacheKeyForURL:request.URL];
 
     // NOTE: We don't handle expiration here as even staled cache data is necessary for NSURLConnection to handle cache revalidation.
     //       Staled cache data is also needed for cachePolicies which force the use of the cache.
@@ -476,7 +472,7 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
                 diskCacheInfoDirty = YES;
 
                 // OPTI: Store the response to memory cache for potential future requests
-                [super storeCachedResponse:diskResponse forRequest:keyRequest];
+                [super storeCachedResponse:diskResponse forRequest:request];
                 return diskResponse;
             }
         }
@@ -492,9 +488,8 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
 
 - (void)removeCachedResponseForRequest:(NSURLRequest *)request
 {
-    NSURLRequest *keyRequest = [NNURLCache createKeyRequest:request];
-    [super removeCachedResponseForRequest:keyRequest];
-    [self removeCachedResponseForCachedKeys:[NSArray arrayWithObject:[SDURLCache cacheKeyForURL:keyRequest.URL]]];
+    [super removeCachedResponseForRequest:request];
+    [self removeCachedResponseForCachedKeys:[NSArray arrayWithObject:[SDURLCache cacheKeyForURL:request.URL]]];
     [self saveCacheInfo];
 }
 

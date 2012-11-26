@@ -16,12 +16,14 @@
 #import <UIWebView+RemoveShadow.h>
 #import <MBProgressHUD.h>
 
+#import "NearWorksModel.h"
 #import "ArticleDetailModel.h"
 
 static NSString *kHtmlTemplate = @"<html> \n"
 "<head> \n"
 "<style type=\"text/css\"> \n"
 "body {font-family: \"%@\"; font-size: %@em; color: white; padding: 1em;}\n"
+//"img {width: 300px;}\n"
 "a:link {color: white; text-decoration: none;}\n"
 "a:visited {color: white; text-decoration: none;}\n"
 "a:hover {color: white; text-decoration: none;}\n"
@@ -30,6 +32,9 @@ static NSString *kHtmlTemplate = @"<html> \n"
 "</head> \n"
 "<body>%@</body> \n"
 "</html>";
+
+static NSString * const kDirectionLeft = @"-1";
+static NSString * const kDirectionRight = @"1";
 
 @interface ArticleDetailController () <UIWebViewDelegate>
 
@@ -43,8 +48,12 @@ static NSString *kHtmlTemplate = @"<html> \n"
 @property (strong, nonatomic) ShareHelper *shareHelper;
 
 @property (strong, nonatomic) ArticleDetailModel *dataModel;
+@property (strong, nonatomic) NearWorksModel *idModel;
+@property (assign, nonatomic) NSInteger idIndex;
 
-- (void)requestForHtml:(NSString *)contentId;
+@property (unsafe_unretained, nonatomic) CALayer *cacheLayer;
+@property (assign, nonatomic) BOOL isAnimating;
+
 - (void)updateData;
 
 - (void)adjustLayout:(NSString *)title;
@@ -66,6 +75,12 @@ static NSString *kHtmlTemplate = @"<html> \n"
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = DarkThemeColor;
+    UISwipeGestureRecognizer *swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    [swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer:swipeLeftRecognizer];
+    UISwipeGestureRecognizer *swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    [swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:swipeRightRecognizer];
     
     CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
     // Create a custom back button
@@ -102,8 +117,13 @@ static NSString *kHtmlTemplate = @"<html> \n"
     [self setTextView:nil];
     [self setCommentBox:nil];
     [self setShareButton:nil];
-    self.shareHelper = nil;
     [self setTitleLineView:nil];
+    
+    self.shareHelper = nil;
+    self.cacheLayer = nil;
+    
+    self.idModel = nil;
+    
     [super viewDidUnload];
 }
 
@@ -122,10 +142,11 @@ static NSString *kHtmlTemplate = @"<html> \n"
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    if (_dataModel) {
-        [self updateData];
-    } else {
-        [self requestForHtml:_contentId];
+    
+    if (!_idModel) {
+        [self initIdList];
+    } else if (!_dataModel) {
+        [self requestForContent:_contentId showHUD:YES];
     }
 }
 
@@ -139,7 +160,6 @@ static NSString *kHtmlTemplate = @"<html> \n"
 #pragma mark - UIWebViewDelegate methods
 
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
-    NSLog(@"shouldStartLoadWithRequest type:%d", navigationType);
     if(navigationType == UIWebViewNavigationTypeLinkClicked) {
         return NO;
     }
@@ -147,8 +167,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-   [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName(\"a\").removeAttribute(\"href\");"]; 
-//   [webView stringByEvaluatingJavaScriptFromString:@"document.anchors[\"ancDevx\"].removeAttribute(\"href\");"]; 
+//   [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName(\"a\").removeAttribute(\"href\");"];
 }
 
 #pragma mark - Keyboard events handle
@@ -216,14 +235,45 @@ static NSString *kHtmlTemplate = @"<html> \n"
 
 #pragma mark - Private Request methods
 
-- (void)requestForHtml:(NSString *)contentId {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES]; 
+- (void)requestForNearWorks:(BOOL)next success:(void (^)())success {
+    static NSUInteger count = 1;
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
+                                _contentId, @"content_id",
+                                _sortType == SortTypeHotest ? @"hot" : @"new", @"sort_type",
+                                _channel, @"channel",
+                                [NSNumber numberWithUnsignedInteger:_offset], @"offset",
+                                [NSNumber numberWithUnsignedInteger:count], @"count",
+                                next ? @"1" : @"-1", @"direction", nil];
+    
+    [[NNHttpClient sharedClient] getAtPath:@"near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
+        @synchronized(_idModel) {
+            if (!next) {
+                self.idIndex = _idIndex + [[((NearWorksModel *)response) items] count];
+            }
+            [_idModel insertMoreData:response withMode:next];
+        }
+        
+        if (success) {
+            success();
+        }
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [UIHelper alertWithMessage:error.message];
+    }];
+}
+
+- (void)requestForContent:(NSString *)contentId showHUD:(BOOL)showHUD {
+    if (showHUD) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    }
     
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
-                                contentId, @"content_id", nil];
+                                contentId, @"content_id", [NSNumber numberWithUnsignedInteger:_offset], @"offset",
+                                nil];
     
     [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
         self.dataModel = response;
         _dataModel.contentId = _contentId;
         [self updateData];
@@ -287,22 +337,64 @@ static NSString *kHtmlTemplate = @"<html> \n"
     //	NSString *html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:NULL];
     
     NSString *formattedHTML = [NSString stringWithFormat:kHtmlTemplate, @"helvetica", [NSNumber numberWithInt:2], html];
-    //filter video
-    formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"<object.+<embed.+?>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
+    //filter video,href,style
+    formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"href=\"[^\"]+\"|<object.+<embed.+?>|style=\"[^\"]+\"" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
     //adjust image width
-    formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"style=\"[^\"]+\"" withString:@"style=\"width:100%;\"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
+    formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"<img" withString:@"<img style=\"width:100%;\"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
     [_textView loadHTMLString:formattedHTML baseURL:nil];
 }
 
 - (void)updateData {
-    _titleLabel.text = _dataModel.title;
+    self.contentTitle = _dataModel.title;
+    [self adjustLayout:_contentTitle];
+    
+    _titleLabel.text = _contentTitle;
+    _titleLabel.hidden = NO;
+    
     _extraInfoLabel.text = [NSString stringWithFormat:@"%@ 编辑：%@", _dataModel.date, _dataModel.author];
+    _extraInfoLabel.hidden = NO;
+    
     [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];
     _commentBox.countButton.enabled = _dataModel.commentNum > 0;
+    
     [self renderHtml:_dataModel.content];
+    _textView.hidden = NO;
+}
+
+- (void)clearContents {
+    self.dataModel = nil;
+    
+    _titleLabel.hidden = YES;
+    _extraInfoLabel.hidden = YES;
+    
+    _commentBox.text = @"";
+    [_commentBox.countButton setTitle:@"" forState:UIControlStateNormal];
+    _commentBox.countButton.enabled = NO;
+    
+    [self renderHtml:@""];
+    _textView.hidden = YES;
 }
 
 #pragma mark - Private methods
+
+- (void)initIdList {
+    if (!_idModel) {
+        self.idModel = [[NearWorksModel alloc] init];
+        NearItem *item = [[NearItem alloc] init];
+        item.contentId = _contentId;
+        item.contentType = @"article";
+        item.offset = _offset;
+        _idModel.items = [NSMutableArray arrayWithObjects:item, nil];
+        
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [self requestForNearWorks:NO success:^{
+            [self requestForNearWorks:YES success:^{
+                self.contentId = [[_idModel.items objectAtIndex:_idIndex] contentId];
+                [self requestForContent:_contentId showHUD:NO];
+            }];
+        }];
+    }
+}
 
 - (void)share {
     if (!_dataModel) {
@@ -332,6 +424,65 @@ static NSString *kHtmlTemplate = @"<html> \n"
     CommentListController *controller = [[CommentListController alloc] init];
     controller.articleInfo = self.dataModel;
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+    if (_isAnimating || !_dataModel) {
+        return;
+    }
+    
+    BOOL next = recognizer.direction == UISwipeGestureRecognizerDirectionLeft;
+    
+    NSInteger idIndex = _idIndex;
+    idIndex += (next ? 1 : -1);
+    if (idIndex < 0 || idIndex >= _idModel.items.count) {// 到头或尾
+        return;
+    }
+    
+    self.idIndex = idIndex;
+    
+    self.isAnimating = YES;
+    
+    CGFloat viewWidth = self.view.frame.size.width;
+    CGFloat viewHeight = self.view.frame.size.height;
+    
+    CALayer *cacheLayer = self.cacheLayer = [CALayer layer];
+    
+    UIImage *cacheImage = [UIImage imageFromView:self.view];
+    cacheLayer.frame = CGRectMake((next ? -1 : 1) * viewWidth, 0, viewWidth, viewHeight);
+    
+    cacheLayer.contents = (id)cacheImage.CGImage;
+    [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
+    
+    [self clearContents];
+    
+    NSString *contentId = self.contentId = [[_idModel.items objectAtIndex:_idIndex] contentId];
+    if ((idIndex == 0 && !next) || (idIndex == _idModel.items.count - 1 && next)) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [self requestForNearWorks:next success:^{ // 获取上或下id
+            [self requestForContent:contentId showHUD:NO];
+        }];
+    } else {
+        [self requestForContent:contentId showHUD:YES];
+    }
+    
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+//    animation.duration = 5;
+    animation.delegate = self;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    animation.fromValue = [NSValue valueWithCGPoint:CGPointMake((next ? 1.5f : -0.5f) * viewWidth, viewHeight / 2)];
+    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(viewWidth / 2, viewHeight / 2)];
+    [self.view.layer addAnimation:animation forKey:@"position"];
+}
+
+#pragma mark - CAAnimationDelegate methods
+
+- (void)animationDidStart:(CAAnimation *)anim {
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    self.isAnimating = !flag;
+    [self.cacheLayer removeFromSuperlayer];
 }
 
 @end

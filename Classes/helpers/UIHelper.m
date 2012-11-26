@@ -31,8 +31,10 @@
 + (CGFloat)computeHeightForLabel:(UILabel *)label withText:(NSString *)text {
     CGFloat originalHeight = label.frame.size.height;
     
-    NSUInteger lines = [UIHelper computeContentLines:text withWidth:label.frame.size.width andFont:label.font];
-    return originalHeight + (lines - 1) * label.font.lineHeight;
+    NSInteger originalLines = [UIHelper computeContentLines:label.text withWidth:label.frame.size.width andFont:label.font];
+    NSInteger newlines = [UIHelper computeContentLines:text withWidth:label.frame.size.width andFont:label.font];
+    
+    return originalHeight + (newlines - (originalLines > 0 ? originalLines : 1)) * label.font.lineHeight;
 }
 
 + (void)setBackAction:(SEL)action forController:(UIViewController *)controller withImage:(UIImage *)image {
@@ -110,6 +112,15 @@
     NSString *fileLocation = [[NSBundle mainBundle] pathForResource:[splits objectAtIndex:0] ofType:[splits objectAtIndex:1]];
     NSData *imageData = [NSData dataWithContentsOfFile:fileLocation];
     return [UIImage imageWithData:imageData];
+}
+
++ (UIImage *)imageFromView:(UIView *)view {
+    UIGraphicsBeginImageContext(view.bounds.size);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return viewImage;
 }
 
 @end

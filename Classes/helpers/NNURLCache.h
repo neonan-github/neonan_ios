@@ -7,7 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SDURLCache.h"
 
-@interface NNURLCache : NSURLCache
+#ifndef CacheSuperClass
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_5_0
+    #define CacheSuperClass NSURLCache
+#else
+    #define CacheSuperClass SDURLCache
+#endif
+#endif
+
+@interface NNURLCache : CacheSuperClass
 + (NSURLRequest *)createKeyRequest:(NSURLRequest *)request;
 @end

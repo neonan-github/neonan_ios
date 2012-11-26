@@ -37,11 +37,6 @@ static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
 
 typedef enum {
-    listTypeLatest = 0,
-    listTypeHotest
-} listType;
-
-typedef enum {
     requestTypeRefresh = 0,
     requestTypeAppend
 } requestType;
@@ -66,17 +61,17 @@ typedef enum {
 @property (nonatomic, assign) NSUInteger channelIndex;
 
 @property (nonatomic, strong) MainSlideShowModel *slideShowModel;
-@property (nonatomic, assign) listType type;
+@property (nonatomic, assign) SortType type;
 @property (nonatomic, strong) id dataModel;// BabyListModel or CommonListModel;
 
 - (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 
-- (NSString *)stringForType:(listType)type;
+- (NSString *)stringForType:(SortType)type;
 - (contentType)judgeContentType:(id)item;
 
 - (void)requestForSlideShow:(NSString *)channel;
-- (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType;
+- (void)requestForList:(NSString *)channel withListType:(SortType)type andRequestType:(requestType)requestType;
 - (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
 
 - (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex;
@@ -85,7 +80,7 @@ typedef enum {
 - (void)updateSlideShow;
 - (void)onChannelChanged;
 - (void)onSlideShowItemClicked:(UIView *)view;
-- (void)enterControllerByType:(id)item;
+- (void)enterControllerByType:(id)dataItem atOffset:(NSUInteger)offset;
 @end
 
 @implementation MainController
@@ -215,7 +210,7 @@ headerView = _headerView;
     [self cleanUp];
 }
 
-- (void)setType:(listType)type {
+- (void)setType:(SortType)type {
     if (_type != type) {
         _type = type;
         [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
@@ -225,7 +220,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = [NSArray arrayWithObjects:@"首页", @"睿知", @"酷玩", @"宝贝", @"视频", @"精选", @"HowTo", @"女人", nil];
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", @"宝贝", @"视频", @"精选", @"女人", nil];
     }
     
     return  _channelTexts;
@@ -233,7 +228,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"baby", @"video", @"top", @"qa", @"women", nil];
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"baby", @"video", @"top", @"women", nil];
     }
     
     return _channelTypes;
@@ -260,9 +255,10 @@ headerView = _headerView;
     
     if (!_dataModel || !_slideShowModel) {
         [_tableView.pullToRefreshView triggerRefresh];
-    } else {
-        [_tableView reloadData];
     }
+//    else {
+//        [_tableView reloadData];
+//    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -342,7 +338,7 @@ headerView = _headerView;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     id dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
-    [self enterControllerByType:dataItem];
+    [self enterControllerByType:dataItem atOffset:indexPath.row];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -381,8 +377,8 @@ headerView = _headerView;
 
 #pragma mark - Private methods
 
-- (NSString *)stringForType:(listType)type {
-    if (type == listTypeLatest) {
+- (NSString *)stringForType:(SortType)type {
+    if (type == SortTypeLatest) {
         return @"最新";
     }
 
@@ -406,8 +402,8 @@ headerView = _headerView;
     return contentTypeSlide;
 }
 
-- (NSString *)requestStringForType:(listType)type {
-    if (type == listTypeLatest) {
+- (NSString *)requestStringForType:(SortType)type {
+    if (type == SortTypeLatest) {
         return @"new";
     }
     
@@ -415,7 +411,7 @@ headerView = _headerView;
 }
 
 - (void)switchListType {
-    listType newType = _type == listTypeLatest ? listTypeHotest : listTypeLatest;
+    SortType newType = _type == SortTypeLatest ? SortTypeHotest : SortTypeLatest;
     self.type = newType;
 }
 
@@ -495,7 +491,7 @@ headerView = _headerView;
  
 }
 
-- (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType {
+- (void)requestForList:(NSString *)channel withListType:(SortType)type andRequestType:(requestType)requestType {
     NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
     BOOL isBabyChannel = [channel isEqualToString:@"baby"];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
@@ -643,32 +639,35 @@ headerView = _headerView;
     [_slideShowView startAutoScroll:2];
 }
 
-- (void)enterControllerByType:(id)dataItem {
-    UIViewController *controller;
+- (void)enterControllerByType:(id)dataItem atOffset:(NSUInteger)offset{
+    id controller;
     
     switch ([self judgeContentType:dataItem]) {
         case contentTypeArticle:
             controller = [[ArticleDetailController alloc] init];
-            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
-            [controller performSelector:@selector(setContentTitle:) withObject:[dataItem title]];
+            [controller setContentId:[dataItem contentId]];
+            [controller setContentTitle:[dataItem title]];
+            [controller setSortType:_type];
+            [controller setOffset:offset];
+            [controller setChannel:[self.channelTypes objectAtIndex:_channelIndex]];
             break;
             
         case contentTypeSlide:
             controller = [[BabyDetailController alloc] init];
-            [controller performSelector:@selector(setContentType:) withObject:[dataItem contentType]];
-            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
+            [controller setContentType:[dataItem contentType]];
+            [controller setContentId:[dataItem contentId]];
             
             if ([dataItem isKindOfClass:[BabyItem class]]) {
-                ((BabyDetailController *)controller).voted = [dataItem voted];
-                [controller performSelector:@selector(setContentTitle:) withObject:[dataItem babyName]];
+                [controller setVoted:[dataItem voted]];
+                [controller setContentTitle:[dataItem babyName]];
             } else {
-                [controller performSelector:@selector(setContentTitle:) withObject:[dataItem title]];
+                [controller setContentTitle:[dataItem title]];
             }
             break;
             
         case contentTypeVideo:
             controller = [[VideoPlayController alloc] init];
-            [controller performSelector:@selector(setVideoUrl:) withObject:[dataItem videoUrl]];
+            [controller setVideoUrl:[dataItem videoUrl]];
     }
     
     [self.navigationController pushViewController:controller animated:YES];
@@ -677,7 +676,7 @@ headerView = _headerView;
 - (void)onSlideShowItemClicked:(UIGestureRecognizer *)recognizer {
     NSInteger index = recognizer.view.tag;
     
-    [self enterControllerByType:[_slideShowModel.list objectAtIndex:index]];
+    [self enterControllerByType:[_slideShowModel.list objectAtIndex:index] atOffset:0];
 }
 
 #pragma mark - KVO

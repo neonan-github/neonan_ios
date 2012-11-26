@@ -66,5 +66,6 @@
 @interface UIImage (UIImageUtil)
 
 + (UIImage *)imageFromFile:(NSString *)fileName;
++ (UIImage *)imageFromView:(UIView *)view;
 
 @end
