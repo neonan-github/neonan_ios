@@ -19,6 +19,8 @@
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
 
+static const CGFloat kTitleLabelOriginalHeight = 30;
+
 static const NSUInteger kTagSSImageView = 1000;
 static const NSUInteger kTagSSprogressView = 1001;
 
@@ -78,13 +80,13 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     frame.origin.y = -4;
     navBottomLine.frame = frame;
     
-    UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 250, 30)];
+    UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 250, 20)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
     titleLabel.numberOfLines = 0;
     titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     titleLabel.font = [UIFont systemFontOfSize:13];
-    titleLabel.text = _contentTitle;
     
     UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(245, 5, 35, 25)];
     likeButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10);
@@ -102,8 +104,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     [shareButton setImage:[UIImage imageFromFile:@"icon_share.png"] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     
-    CGFloat delta = [self adjustLayout:_contentTitle];
-    UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35 + delta)];
+    UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35)];
     titleBox.backgroundColor = DarkThemeColor;
     [titleBox addSubview:navBottomLine];
     [titleBox addSubview:titleLabel];
@@ -177,7 +178,13 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         [self requestForSlideShow];
     }
     
+    [self adjustLayout:_contentTitle];
+    _titleLabel.text = _contentTitle;
     _textBox.expanded = NO;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 #pragma mark - UIScrollViewDelegate methods for Image Zoom
@@ -518,6 +525,10 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     CGRect frame = _titleLabel.frame;
     frame.size.height = titleAdjustedHeight;
     _titleLabel.frame = frame;
+    
+    frame = _titleBox.frame;
+    frame.size.height += delta;
+    _titleBox.frame = frame;
 
     return delta;
 }
@@ -528,7 +539,8 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     
     _likeButton.enabled = !_dataModel.voted;
     
-    _titleLabel.text = _dataModel.title;
+    [self adjustLayout:_dataModel.title];
+    _titleLabel.text = self.contentTitle = _dataModel.title;
     _titleLabel.hidden = NO;
 }
 
