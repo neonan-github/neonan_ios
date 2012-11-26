@@ -346,6 +346,7 @@ headerView = _headerView;
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
     _tableView.dataSource = nil;
+    [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"image_list"];
     [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"work_list"];
     [_tableView.pullToRefreshView stopAnimating];
     [_tableView.infiniteScrollingView stopAnimating];
