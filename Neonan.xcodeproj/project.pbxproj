@@ -170,10 +170,11 @@
 		34E95AC71648FF1000DCD229 /* ShareEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E95AC51648FF1000DCD229 /* ShareEditController.m */; };
 		34E95AC81648FF1000DCD229 /* ShareEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E95AC61648FF1000DCD229 /* ShareEditController.xib */; };
 		34E95ACB164905FE00DCD229 /* ShareHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E95ACA164905FE00DCD229 /* ShareHelper.m */; };
-		34E9FDD416646E5F00F90A88 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD216646E5F00F90A88 /* libPushSDK.a */; };
 		34E9FDD716646E8E00F90A88 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD616646E8E00F90A88 /* CFNetwork.framework */; };
 		34E9FDD916646EA500F90A88 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD816646EA500F90A88 /* CoreTelephony.framework */; };
 		34E9FDDB16646F4700F90A88 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E9FDDA16646F4700F90A88 /* PushConfig.plist */; };
+		34E9FDE016648BE300F90A88 /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDDE16648BE300F90A88 /* libPushSDK-Simulator.a */; };
+		34E9FDE116648BE300F90A88 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDDF16648BE300F90A88 /* libPushSDK.a */; };
 		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
 		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFE16265E9400B0672C /* CoreGraphics.framework */; };
@@ -457,11 +458,12 @@
 		34E95AC61648FF1000DCD229 /* ShareEditController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ShareEditController.xib; path = ../Classes/controllers/ShareEditController.xib; sourceTree = "<group>"; };
 		34E95AC9164905FE00DCD229 /* ShareHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareHelper.h; sourceTree = "<group>"; };
 		34E95ACA164905FE00DCD229 /* ShareHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareHelper.m; sourceTree = "<group>"; };
-		34E9FDD016646E5F00F90A88 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
-		34E9FDD216646E5F00F90A88 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		34E9FDD616646E8E00F90A88 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		34E9FDD816646EA500F90A88 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		34E9FDDA16646F4700F90A88 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
+		34E9FDDD16648BE300F90A88 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
+		34E9FDDE16648BE300F90A88 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
+		34E9FDDF16648BE300F90A88 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53816AFA16265E9400B0672C /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		53816AFC16265E9400B0672C /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -497,7 +499,8 @@
 				53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */,
 				53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */,
 				F912E5785A5344D991F500B6 /* libPods.a in Frameworks */,
-				34E9FDD416646E5F00F90A88 /* libPushSDK.a in Frameworks */,
+				34E9FDE016648BE300F90A88 /* libPushSDK-Simulator.a in Frameworks */,
+				34E9FDE116648BE300F90A88 /* libPushSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -918,16 +921,17 @@
 		34E9FDCE16646E5F00F90A88 /* JPush */ = {
 			isa = PBXGroup;
 			children = (
-				34E9FDCF16646E5F00F90A88 /* lib */,
+				34E9FDDC16648BE300F90A88 /* lib */,
 			);
 			path = JPush;
 			sourceTree = "<group>";
 		};
-		34E9FDCF16646E5F00F90A88 /* lib */ = {
+		34E9FDDC16648BE300F90A88 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				34E9FDD016646E5F00F90A88 /* APService.h */,
-				34E9FDD216646E5F00F90A88 /* libPushSDK.a */,
+				34E9FDDD16648BE300F90A88 /* APService.h */,
+				34E9FDDE16648BE300F90A88 /* libPushSDK-Simulator.a */,
+				34E9FDDF16648BE300F90A88 /* libPushSDK.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";
