@@ -175,6 +175,7 @@
 		34E9FDDB16646F4700F90A88 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E9FDDA16646F4700F90A88 /* PushConfig.plist */; };
 		34E9FDE016648BE300F90A88 /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDDE16648BE300F90A88 /* libPushSDK-Simulator.a */; };
 		34E9FDE116648BE300F90A88 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDDF16648BE300F90A88 /* libPushSDK.a */; };
+		34E9FDE51664A13C00F90A88 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDE41664A13C00F90A88 /* libFlurry.a */; };
 		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
 		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFE16265E9400B0672C /* CoreGraphics.framework */; };
@@ -464,6 +465,8 @@
 		34E9FDDD16648BE300F90A88 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		34E9FDDE16648BE300F90A88 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
 		34E9FDDF16648BE300F90A88 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
+		34E9FDE31664A13C00F90A88 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		34E9FDE41664A13C00F90A88 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53816AFA16265E9400B0672C /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		53816AFC16265E9400B0672C /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -501,6 +504,7 @@
 				F912E5785A5344D991F500B6 /* libPods.a in Frameworks */,
 				34E9FDE016648BE300F90A88 /* libPushSDK-Simulator.a in Frameworks */,
 				34E9FDE116648BE300F90A88 /* libPushSDK.a in Frameworks */,
+				34E9FDE51664A13C00F90A88 /* libFlurry.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -936,6 +940,15 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
+		34E9FDE21664A13C00F90A88 /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				34E9FDE31664A13C00F90A88 /* Flurry.h */,
+				34E9FDE41664A13C00F90A88 /* libFlurry.a */,
+			);
+			path = Flurry;
+			sourceTree = "<group>";
+		};
 		53816AEB16265E9400B0672C = {
 			isa = PBXGroup;
 			children = (
@@ -1018,6 +1031,7 @@
 		53816B2116265FB100B0672C /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				34E9FDE21664A13C00F90A88 /* Flurry */,
 				34E9FDCE16646E5F00F90A88 /* JPush */,
 				34B018861659C76C00940CC1 /* SDURLCache */,
 				3480045F1648D6C200EED346 /* SFHFKeychainUtils */,
@@ -1396,6 +1410,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Support/JPush/lib\"",
+					"\"$(SRCROOT)/Support/Flurry\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -1450,6 +1465,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Support/JPush/lib\"",
+					"\"$(SRCROOT)/Support/Flurry\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (

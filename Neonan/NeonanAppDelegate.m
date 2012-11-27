@@ -12,11 +12,14 @@
 #import <AFNetworkActivityIndicatorManager.h>
 #import "NNURLCache.h"
 #import "APService.h"
+#import "Flurry.h"
 
 @implementation NeonanAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Flurry startSession:@"VKBQM8MR7GP8V94YR43B"];
+    
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     
     [NSURLCache setSharedURLCache:[self createURLCache]];
