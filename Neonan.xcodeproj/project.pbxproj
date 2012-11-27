@@ -124,6 +124,8 @@
 		3484357616437A4B0073468D /* SignResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 3484357516437A4B0073468D /* SignResult.m */; };
 		348435A81643C1C00073468D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 348435A71643C1C00073468D /* Security.framework */; };
 		348435B81643C6540073468D /* MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 348435B71643C6540073468D /* MD5.m */; };
+		34915FF01664C76A0019CEA7 /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34915FEE1664C76A0019CEA7 /* libPushSDK-Simulator.a */; };
+		34915FF11664C76A0019CEA7 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34915FEF1664C76A0019CEA7 /* libPushSDK.a */; };
 		34925B1D164D127C00146B37 /* ArticleDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34925B1C164D127C00146B37 /* ArticleDetailModel.m */; };
 		3499BF131627D3F70084B838 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3499BF121627D3F70084B838 /* MediaPlayer.framework */; };
 		34A8883E1654B76600A8D987 /* bg_share_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A8883D1654B76600A8D987 /* bg_share_edit.png */; };
@@ -173,8 +175,6 @@
 		34E9FDD716646E8E00F90A88 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD616646E8E00F90A88 /* CFNetwork.framework */; };
 		34E9FDD916646EA500F90A88 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD816646EA500F90A88 /* CoreTelephony.framework */; };
 		34E9FDDB16646F4700F90A88 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E9FDDA16646F4700F90A88 /* PushConfig.plist */; };
-		34E9FDE016648BE300F90A88 /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDDE16648BE300F90A88 /* libPushSDK-Simulator.a */; };
-		34E9FDE116648BE300F90A88 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDDF16648BE300F90A88 /* libPushSDK.a */; };
 		34E9FDE51664A13C00F90A88 /* libFlurry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDE41664A13C00F90A88 /* libFlurry.a */; };
 		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
 		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -397,6 +397,9 @@
 		348435A71643C1C00073468D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		348435B61643C6540073468D /* MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MD5.h; sourceTree = "<group>"; };
 		348435B71643C6540073468D /* MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MD5.m; sourceTree = "<group>"; };
+		34915FED1664C76A0019CEA7 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
+		34915FEE1664C76A0019CEA7 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
+		34915FEF1664C76A0019CEA7 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		34925B1B164D127C00146B37 /* ArticleDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArticleDetailModel.h; sourceTree = "<group>"; };
 		34925B1C164D127C00146B37 /* ArticleDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleDetailModel.m; sourceTree = "<group>"; };
 		3499BF121627D3F70084B838 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -462,9 +465,6 @@
 		34E9FDD616646E8E00F90A88 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		34E9FDD816646EA500F90A88 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		34E9FDDA16646F4700F90A88 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
-		34E9FDDD16648BE300F90A88 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
-		34E9FDDE16648BE300F90A88 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
-		34E9FDDF16648BE300F90A88 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		34E9FDE31664A13C00F90A88 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		34E9FDE41664A13C00F90A88 /* libFlurry.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry.a; sourceTree = "<group>"; };
 		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -502,9 +502,9 @@
 				53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */,
 				53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */,
 				F912E5785A5344D991F500B6 /* libPods.a in Frameworks */,
-				34E9FDE016648BE300F90A88 /* libPushSDK-Simulator.a in Frameworks */,
-				34E9FDE116648BE300F90A88 /* libPushSDK.a in Frameworks */,
 				34E9FDE51664A13C00F90A88 /* libFlurry.a in Frameworks */,
+				34915FF01664C76A0019CEA7 /* libPushSDK-Simulator.a in Frameworks */,
+				34915FF11664C76A0019CEA7 /* libPushSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -828,6 +828,16 @@
 			path = LoadingView;
 			sourceTree = "<group>";
 		};
+		34915FEC1664C76A0019CEA7 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				34915FED1664C76A0019CEA7 /* APService.h */,
+				34915FEE1664C76A0019CEA7 /* libPushSDK-Simulator.a */,
+				34915FEF1664C76A0019CEA7 /* libPushSDK.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
 		3499BEC01626DAAF0084B838 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -925,19 +935,9 @@
 		34E9FDCE16646E5F00F90A88 /* JPush */ = {
 			isa = PBXGroup;
 			children = (
-				34E9FDDC16648BE300F90A88 /* lib */,
+				34915FEC1664C76A0019CEA7 /* lib */,
 			);
 			path = JPush;
-			sourceTree = "<group>";
-		};
-		34E9FDDC16648BE300F90A88 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				34E9FDDD16648BE300F90A88 /* APService.h */,
-				34E9FDDE16648BE300F90A88 /* libPushSDK-Simulator.a */,
-				34E9FDDF16648BE300F90A88 /* libPushSDK.a */,
-			);
-			path = lib;
 			sourceTree = "<group>";
 		};
 		34E9FDE21664A13C00F90A88 /* Flurry */ = {
@@ -1456,7 +1456,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_OBJCPP_ARC_ABI = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Michael Yang";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neonan/Neonan-Prefix.pch";
@@ -1499,6 +1499,7 @@
 					UIKit,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "BF9C10CA-94A2-475D-BAAB-BEB0EA777F9F";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
