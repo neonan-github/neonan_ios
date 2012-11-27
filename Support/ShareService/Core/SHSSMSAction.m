@@ -20,7 +20,7 @@
        if([MFMessageComposeViewController canSendText])
        {
            MFMessageComposeViewController *smsController=[[MFMessageComposeViewController alloc] init];
-           CustomNavigationBar *navigationBar = [[CustomNavigationBar alloc] init];
+           CustomNavigationBar *navigationBar = [[[CustomNavigationBar alloc] init] autorelease];
            navigationBar.topLineColor = RGB(32, 32, 32);
            navigationBar.bottomLineColor = RGB(32, 32, 32);
            navigationBar.gradientStartColor = RGB(32, 32, 32);

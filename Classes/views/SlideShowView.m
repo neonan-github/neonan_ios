@@ -10,6 +10,7 @@
 
 @interface SlideShowView ()
 @property (assign, nonatomic) NSUInteger previousIndex;
+@property (assign, nonatomic) CGFloat startScrollOffset;// 记录drag开始时的scrollOffset
 @end
 
 @implementation SlideShowView
@@ -18,12 +19,15 @@
 {
     if ((self = [super initWithFrame:frame]))
     {
+        _wrap = YES;
+        
         iCarousel *carousel = self.carousel = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        carousel.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         carousel.decelerationRate = 0.0f;// carousel stops immediately when released
         carousel.ignorePerpendicularSwipes = YES;
 //        self.carousel.scrollToItemBoundary = NO;
 //        carousel.stopAtItemBoundary = NO;
-        carousel.bounces = YES;
+        carousel.bounces = NO;
         carousel.clipsToBounds = YES;
         carousel.dataSource = self;
         carousel.delegate = self;
@@ -54,7 +58,15 @@
     [_carousel scrollToItemAtIndex:index animated:YES];
 }
 
+- (BOOL)isScrolling {
+    return _slideTimer != nil;
+}
+
 - (void)startAutoScroll:(double)interval {
+    if ([self isScrolling]) {
+        [self stopAutoScroll];
+    }
+    
     self.slideInterval = interval;
     if (!_slideTimer || _slideTimer.timeInterval != interval) {
         [self stopAutoScroll];
@@ -88,8 +100,8 @@
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
+//    view.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     UIView *cell = [self.dataSource slideShowView:self viewForItemAtIndex:index reusingView:view];
-    cell.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     
     return cell;
 }
@@ -97,6 +109,7 @@
 #pragma mark - iCarouselDelegate methods
 
 - (void)carouselWillBeginDecelerating:(iCarousel *)carousel {
+    NSLog(@"carouselWillBeginDecelerating");
     if (_previousIndex != carousel.currentItemIndex) {
         [carousel scrollToItemAtIndex:carousel.currentItemIndex animated:YES];
     }
@@ -104,18 +117,35 @@
 }
 
 - (void)carouselDidEndDecelerating:(iCarousel *)carousel {
+    NSLog(@"carouselDidEndDecelerating");
     [self startAutoScroll:self.slideInterval];
 }
 
 - (void)carouselWillBeginDragging:(iCarousel *)carousel {
+    self.startScrollOffset = carousel.scrollOffset;
+    NSLog(@"carouselWillBeginDragging:%f", _startScrollOffset);
     _previousIndex = carousel.currentItemIndex;
     [self stopAutoScroll]; 
 }
 
 - (void)carouselDidEndDragging:(iCarousel *)carousel willDecelerate:(BOOL)decelerate {
+    CGFloat endScrollOffset = carousel.scrollOffset;
+    NSLog(@"carouselDidEndDragging:%f", endScrollOffset);
+    
+    if (_startScrollOffset == 0.0f && endScrollOffset == 0.0f) {// 已划到头，但继续往左划
+        if ([_delegate respondsToSelector:@selector(slideShowView:overSwipWithDirection:)]) {
+            [_delegate slideShowView:self overSwipWithDirection:UISwipeGestureRecognizerDirectionRight];
+        }
+    } else if (_startScrollOffset == carousel.numberOfItems - 1 &&
+               endScrollOffset == carousel.numberOfItems - 1) {// 已划到尾，但继续往右划
+        if ([_delegate respondsToSelector:@selector(slideShowView:overSwipWithDirection:)]) {
+            [_delegate slideShowView:self overSwipWithDirection:UISwipeGestureRecognizerDirectionLeft];
+        }
+    }
+    
     if (!decelerate) {
         [self startAutoScroll:self.slideInterval];
-    } 
+    }
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
@@ -135,7 +165,7 @@
     {
         case iCarouselOptionWrap:
         {
-            return YES;
+            return _wrap;
         }
         case iCarouselOptionSpacing:
         {

@@ -14,10 +14,13 @@
 @property (nonatomic, assign) NSTimeInterval slideInterval;
 @property (nonatomic, strong) NSTimer *slideTimer;
 
+@property (nonatomic, assign) BOOL wrap;
+
 @property (nonatomic, unsafe_unretained) iCarousel *carousel;
 @property (nonatomic, unsafe_unretained) id<SlideShowViewDataSource> dataSource;
 @property (nonatomic, unsafe_unretained) id<SlideShowViewDelegate> delegate;
 
+- (BOOL)isScrolling;
 - (void)reloadData;
 - (void)startAutoScroll:(double)interval;
 - (void)stopAutoScroll;
@@ -33,5 +36,9 @@
 @protocol SlideShowViewDelegate <NSObject>
 
 - (void)slideShowViewItemIndexDidChange:(SlideShowView *)slideShowView;
+
+@optional
+
+- (void)slideShowView:(SlideShowView *)slideShowView overSwipWithDirection:(UISwipeGestureRecognizerDirection)direction;
 
 @end

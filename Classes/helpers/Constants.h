@@ -8,5 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    SortTypeLatest = 0,
+    SortTypeHotest
+} SortType;
+
 //MainController
 #define MainSlideShowCount 6

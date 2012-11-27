@@ -9,25 +9,20 @@
 #import "NeonanAppDelegate.h"
 #import "MainController.h"
 
-#import "ResponseError.h"
-#import "SignResult.h"
-
 #import <AFNetworkActivityIndicatorManager.h>
-#import <SSKeychain.h>
-#import "SDURLCache.h"
-#import <AFNetworking.h>
+#import "NNURLCache.h"
+#import "APService.h"
+#import "Flurry.h"
 
 @implementation NeonanAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Flurry startSession:@"VKBQM8MR7GP8V94YR43B"];
+    
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     
-//    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:1024 * 1024 diskCapacity:1024 * 1024 * 5 diskPath:nil];
-    SDURLCache *URLCache = [[SDURLCache alloc] initWithMemoryCapacity:1024*1024   // 1MB mem cache
-                                                         diskCapacity:1024*1024*5 // 5MB disk cache
-                                                             diskPath:[SDURLCache defaultCachePath]];
-    [NSURLCache setSharedURLCache:URLCache];
+    [NSURLCache setSharedURLCache:[self createURLCache]];
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
@@ -43,6 +38,12 @@
     self.navController.navigationItem.leftBarButtonItem = nil;
     
     [self.window makeKeyAndVisible];
+    
+    // JPush Required
+    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                   UIRemoteNotificationTypeSound |
+                                                   UIRemoteNotificationTypeAlert)];
+    [APService setupWithOption:launchOptions];
     
     return YES;
 }
@@ -68,6 +69,34 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
+    // JPush Required
+    [APService registerDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    // JPush Required
+    [APService handleRemoteNotification:userInfo];
+}
+
+#pragma mark - Private methods
+
+- (NSURLCache *)createURLCache {
+//    if (SYSTEM_VERSION_LESS_THAN(@"5.0")) {
+//        SDURLCache *URLCache = [[SDURLCache alloc] initWithMemoryCapacity:1024 * 1024   // 1MB mem cache
+//                                                             diskCapacity:1024 * 1024 * 5 // 5MB disk cache
+//                                                                 diskPath:[SDURLCache defaultCachePath]];
+//        return URLCache;
+//    }
+    
+    NSURLCache *URLCache = [[NNURLCache alloc] initWithMemoryCapacity:1024 * 1024
+                                                         diskCapacity:1024 * 1024 * 5
+                                                             diskPath:nil];
+    return URLCache;
 }
 
 @end

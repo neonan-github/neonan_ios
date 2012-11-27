@@ -35,12 +35,6 @@ static const NSUInteger kTopChannelIndex = 5;
 static const NSUInteger kBabyChannelIndex = 3;
 static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
-static const CGFloat kSlideShowHeight = 110.f;
-
-typedef enum {
-    listTypeLatest = 0,
-    listTypeHotest
-} listType;
 
 typedef enum {
     requestTypeRefresh = 0,
@@ -67,26 +61,26 @@ typedef enum {
 @property (nonatomic, assign) NSUInteger channelIndex;
 
 @property (nonatomic, strong) MainSlideShowModel *slideShowModel;
-@property (nonatomic, assign) listType type;
+@property (nonatomic, assign) SortType type;
 @property (nonatomic, strong) id dataModel;// BabyListModel or CommonListModel;
 
 - (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
 
-- (NSString *)stringForType:(listType)type;
+- (NSString *)stringForType:(SortType)type;
 - (contentType)judgeContentType:(id)item;
 
 - (void)requestForSlideShow:(NSString *)channel;
-- (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType;
+- (void)requestForList:(NSString *)channel withListType:(SortType)type andRequestType:(requestType)requestType;
 - (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
 
+- (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex;
 - (void)updateUserStatus;
 - (void)updateTableView;
 - (void)updateSlideShow;
 - (void)onChannelChanged;
 - (void)onSlideShowItemClicked:(UIView *)view;
-- (void)setSlideShowHidden:(BOOL)hidden;
-- (void)enterControllerByType:(id)item;
+- (void)enterControllerByType:(id)dataItem atOffset:(NSUInteger)offset;
 @end
 
 @implementation MainController
@@ -122,10 +116,32 @@ headerView = _headerView;
 //    [self.view addSubview:headerView];
     
     layoutY += 30;
-    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, kSlideShowHeight)];
+    CGFloat slideShowHeight = [self slideShowHeightForChannel:_channelIndex];
+    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, slideShowHeight)];
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
-    [self.view addSubview:slideShowView];
+    slideShowView.clipsToBounds = YES;
+    
+    TTTAttributedLabel *slideShowTextLabel = self.slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, slideShowHeight - 16, CompatibleScreenWidth, 16)];
+    slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    slideShowTextLabel.clipsToBounds = YES;
+    slideShowTextLabel.font = [UIFont systemFontOfSize:10];
+    slideShowTextLabel.textColor = [UIColor whiteColor];
+    slideShowTextLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    slideShowTextLabel.backgroundColor = RGBA(6, 6, 6, 0.7);
+    [slideShowView addSubview:slideShowTextLabel];
+    
+    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, slideShowHeight - 16, CompatibleScreenWidth - 10, 16)];
+    pageControl.indicatorDiameter = 5;
+    pageControl.indicatorMargin = 4;
+    pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x00a9ff);
+    pageControl.alignment = SMPageControlAlignmentRight;
+    pageControl.userInteractionEnabled = NO;
+    pageControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    [slideShowView addSubview:pageControl];
+    
+//    [self addObserver:self forKeyPath:@"slideShowView.frame" options:NSKeyValueObservingOptionOld context:NULL];
+//    [self.view addSubview:slideShowView];
     
     CircleHeaderView *headerView = self.headerView = [[CircleHeaderView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 50)];
     headerView.delegate = self;
@@ -134,36 +150,19 @@ headerView = _headerView;
     [headerView reloadData];
     [self.view addSubview:headerView];
     
-    TTTAttributedLabel *slideShowTextLabel = self.slideShowTextLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, layoutY + kSlideShowHeight - 16, CompatibleScreenWidth, 16)];
-    slideShowTextLabel.textInsets = UIEdgeInsetsMake(0, 10, 0, 0);
-    slideShowTextLabel.clipsToBounds = YES;
-    slideShowTextLabel.font = [UIFont systemFontOfSize:8];
-    slideShowTextLabel.textColor = [UIColor whiteColor];
-//    slideShowTextLabel.text = @"绅士必备 木质调香水最佳推荐";
-    slideShowTextLabel.backgroundColor = RGBA(6, 6, 6, 0.7);
-    [self.view addSubview:slideShowTextLabel];
-    
-    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, layoutY + kSlideShowHeight - 16, CompatibleScreenWidth - 10, 16)];
-    pageControl.indicatorDiameter = 5;
-    pageControl.indicatorMargin = 4;
-    pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x00a9ff);
-    pageControl.alignment = SMPageControlAlignmentRight;
-    pageControl.userInteractionEnabled = NO;
-    [self.view addSubview:pageControl];
-    
-    layoutY += kSlideShowHeight;
+//    layoutY += slideShowHeight;
     UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, CompatibleContainerHeight - layoutY) style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.backgroundColor = DarkThemeColor;
-//    NSDateFormatter *formatter = tableView.pullToRefreshView.dateFormatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"YYYY MM DD HH:MM:SS"];
+    tableView.tableHeaderView = slideShowView;
     tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
+        [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
         [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:requestTypeRefresh];
     }];
     [tableView addInfiniteScrollingWithActionHandler:^{
@@ -172,12 +171,8 @@ headerView = _headerView;
     }];
     tableView.showsInfiniteScrolling = NO;
     [self.view addSubview:tableView];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    [self addObserver:self forKeyPath:@"tableView.contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (void)cleanUp
@@ -199,6 +194,9 @@ headerView = _headerView;
     
     self.headerView.delegate = nil;
     self.headerView = nil;
+    
+    self.slideShowModel = nil;
+    self.dataModel = nil;
 }
 
 - (void)viewDidUnload
@@ -212,7 +210,7 @@ headerView = _headerView;
     [self cleanUp];
 }
 
-- (void)setType:(listType)type {
+- (void)setType:(SortType)type {
     if (_type != type) {
         _type = type;
         [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
@@ -222,7 +220,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = [NSArray arrayWithObjects:@"首页", @"睿知", @"酷玩", @"宝贝", @"视频", @"精选", @"HowTo", @"女人", nil];
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", @"宝贝", @"视频", @"精选", @"女人", nil];
     }
     
     return  _channelTexts;
@@ -230,7 +228,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"baby", @"video", @"top", @"qa", @"women", nil];
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"baby", @"video", @"top", @"women", nil];
     }
     
     return _channelTypes;
@@ -243,6 +241,8 @@ headerView = _headerView;
     
     [self updateUserStatus];
     
+    [_headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
+    
     if (_slideShowView.carousel.currentItemIndex < 1) {
         [self.slideShowView reloadData];
     }
@@ -253,15 +253,12 @@ headerView = _headerView;
     
     [self.slideShowView startAutoScroll:2];
     
-    if (!_slideShowModel) {
-        [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
-    }
-    
-    if (!_dataModel) {
+    if (!_dataModel || !_slideShowModel) {
         [_tableView.pullToRefreshView triggerRefresh];
-    } else {
-        [_tableView reloadData];
     }
+//    else {
+//        [_tableView reloadData];
+//    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -336,12 +333,12 @@ headerView = _headerView;
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return _channelIndex == kBabyChannelIndex ? 80 : 60;
+    return _channelIndex == kBabyChannelIndex ? 80 : 70;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     id dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
-    [self enterControllerByType:dataItem];
+    [self enterControllerByType:dataItem atOffset:indexPath.row];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -349,6 +346,7 @@ headerView = _headerView;
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
     _tableView.dataSource = nil;
+    [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"image_list"];
     [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"work_list"];
     [_tableView.pullToRefreshView stopAnimating];
     [_tableView.infiniteScrollingView stopAnimating];
@@ -380,8 +378,8 @@ headerView = _headerView;
 
 #pragma mark - Private methods
 
-- (NSString *)stringForType:(listType)type {
-    if (type == listTypeLatest) {
+- (NSString *)stringForType:(SortType)type {
+    if (type == SortTypeLatest) {
         return @"最新";
     }
 
@@ -405,8 +403,8 @@ headerView = _headerView;
     return contentTypeSlide;
 }
 
-- (NSString *)requestStringForType:(listType)type {
-    if (type == listTypeLatest) {
+- (NSString *)requestStringForType:(SortType)type {
+    if (type == SortTypeLatest) {
         return @"new";
     }
     
@@ -414,7 +412,7 @@ headerView = _headerView;
 }
 
 - (void)switchListType {
-    listType newType = _type == listTypeLatest ? listTypeHotest : listTypeLatest;
+    SortType newType = _type == SortTypeLatest ? SortTypeHotest : SortTypeLatest;
     self.type = newType;
 }
 
@@ -494,7 +492,7 @@ headerView = _headerView;
  
 }
 
-- (void)requestForList:(NSString *)channel withListType:(listType)type andRequestType:(requestType)requestType {
+- (void)requestForList:(NSString *)channel withListType:(SortType)type andRequestType:(requestType)requestType {
     NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
     BOOL isBabyChannel = [channel isEqualToString:@"baby"];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
@@ -562,6 +560,8 @@ headerView = _headerView;
     if (!cell) {
         cell = [[BabyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:babyCellIdentifier];
         cell.delegate = self;
+    } else {
+        [cell reset];
     }
     
     BabyItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
@@ -574,6 +574,19 @@ headerView = _headerView;
     cell.tag = indexPath.row;
     
     return cell;
+}
+
+- (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex {
+    switch (channelIndex) {
+        case kBabyChannelIndex:
+            return 110;
+        
+        case kTopChannelIndex:
+            return 0;
+            
+        default:
+            return 150;
+    }
 }
 
 - (void)updateUserStatus {
@@ -619,37 +632,46 @@ headerView = _headerView;
     [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     [_tableView.pullToRefreshView triggerRefresh];
     
-    [self setSlideShowHidden:_channelIndex == kTopChannelIndex];
+    CGRect frame = _slideShowView.frame;
+    frame.size.height = [self slideShowHeightForChannel:_channelIndex];
+    _slideShowView.frame = frame;
+    _tableView.tableHeaderView = _slideShowView;
     
     [_slideShowView startAutoScroll:2];
 }
 
-- (void)enterControllerByType:(id)dataItem {
-    UIViewController *controller;
+- (void)enterControllerByType:(id)dataItem atOffset:(NSUInteger)offset{
+    id controller;
     
     switch ([self judgeContentType:dataItem]) {
         case contentTypeArticle:
             controller = [[ArticleDetailController alloc] init];
-            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
-            [controller performSelector:@selector(setContentTitle:) withObject:[dataItem title]];
+            [controller setContentId:[dataItem contentId]];
+            [controller setContentTitle:[dataItem title]];
+            [controller setSortType:_type];
+            [controller setOffset:offset];
+            [controller setChannel:[self.channelTypes objectAtIndex:_channelIndex]];
             break;
             
         case contentTypeSlide:
             controller = [[BabyDetailController alloc] init];
-            [controller performSelector:@selector(setContentType:) withObject:[dataItem contentType]];
-            [controller performSelector:@selector(setContentId:) withObject:[dataItem contentId]];
+            [controller setContentType:[dataItem contentType]];
+            [controller setContentId:[dataItem contentId]];
+            [controller setSortType:_type];
+            [controller setOffset:offset];
+            [controller setChannel:[self.channelTypes objectAtIndex:_channelIndex]];
             
             if ([dataItem isKindOfClass:[BabyItem class]]) {
-                ((BabyDetailController *)controller).voted = [dataItem voted];
-                [controller performSelector:@selector(setContentTitle:) withObject:[dataItem babyName]];
+                [controller setVoted:[dataItem voted]];
+                [controller setContentTitle:[dataItem babyName]];
             } else {
-                [controller performSelector:@selector(setContentTitle:) withObject:[dataItem title]];
+                [controller setContentTitle:[dataItem title]];
             }
             break;
             
         case contentTypeVideo:
             controller = [[VideoPlayController alloc] init];
-            [controller performSelector:@selector(setVideoUrl:) withObject:[dataItem videoUrl]];
+            [controller setVideoUrl:[dataItem videoUrl]];
     }
     
     [self.navigationController pushViewController:controller animated:YES];
@@ -658,19 +680,35 @@ headerView = _headerView;
 - (void)onSlideShowItemClicked:(UIGestureRecognizer *)recognizer {
     NSInteger index = recognizer.view.tag;
     
-    [self enterControllerByType:[_slideShowModel.list objectAtIndex:index]];
+    [self enterControllerByType:[_slideShowModel.list objectAtIndex:index] atOffset:0];
 }
 
-- (void)setSlideShowHidden:(BOOL)hidden {
-    if (_slideShowView.hidden != hidden) {
-        [UIView beginAnimations:nil context:nil];
-        _slideShowView.hidden = hidden;
-        CGRect frame = _tableView.frame;
-        CGFloat delta = _slideShowView.frame.size.height * (hidden ? 1 : -1);
-        frame.origin.y -= delta;
-        frame.size.height += delta;
-        _tableView.frame = frame;
-        [UIView commitAnimations];
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+//    if([keyPath isEqualToString:@"slideShowView.frame"]) {
+//        CGRect oldFrame = CGRectNull;
+//        CGRect newFrame = CGRectNull;
+//        if([change objectForKey:@"old"] != [NSNull null]) {
+//            oldFrame = [[change objectForKey:@"old"] CGRectValue];
+//        }
+//        if([object valueForKeyPath:keyPath] != [NSNull null]) {
+//            newFrame = [[object valueForKeyPath:keyPath] CGRectValue];
+//        }
+//        
+//        CGFloat delta = newFrame.size.height - oldFrame.size.height;
+//        
+//        CGRect frame = self.tableView.frame;
+//        frame.origin.y += delta;
+//        frame.size.height -= delta;
+//        self.tableView.frame = frame;
+//    }
+    if ([keyPath isEqualToString:@"tableView.contentOffset"]) {
+        if (_tableView.contentOffset.y > [self slideShowHeightForChannel:_channelIndex] || _tableView.isDragging) {
+            [_slideShowView stopAutoScroll];
+        } else {
+            [_slideShowView startAutoScroll:2];
+        }
     }
 }
 

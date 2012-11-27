@@ -8,7 +8,7 @@
 
 #import "SDURLCache.h"
 #import <CommonCrypto/CommonDigest.h>
-#import <DDURLParser.h>
+#import "NNURLCache.h"
 
 static NSTimeInterval const kSDURLCacheInfoDefaultMinCacheInterval = 5 * 60; // 5 minute
 static NSString *const kSDURLCacheInfoFileName = @"cacheInfo.plist";
@@ -100,15 +100,12 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
  */
 + (NSDate *)expirationDateFromHeaders:(NSDictionary *)headers withStatusCode:(NSInteger)status
 {
-    NSLog(@"expirationDateFromHeaders cp 0");
-    
     if (status != 200 && status != 203 && status != 300 && status != 301 && status != 302 && status != 307 && status != 410)
     {
         // Uncacheable response status code
         return nil;
     }
 
-    NSLog(@"expirationDateFromHeaders cp 1");
     // Check Pragma: no-cache
     NSString *pragma = [headers objectForKey:@"Pragma"];
     if (pragma && [pragma isEqualToString:@"no-cache"])
@@ -117,7 +114,6 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
         return nil;
     }
 
-    NSLog(@"expirationDateFromHeaders cp 2");
     // Define "now" based on the request
     NSString *date = [headers objectForKey:@"Date"];
     NSDate *now;
@@ -131,7 +127,6 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
         now = [NSDate date];
     }
 
-    NSLog(@"expirationDateFromHeaders cp 3");
     // Look at info from the Cache-Control: max-age=n header
     NSString *cacheControl = [headers objectForKey:@"Cache-Control"];
     if (cacheControl)
@@ -163,7 +158,6 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
         }
     }
 
-    NSLog(@"expirationDateFromHeaders cp 4");
     // If not Cache-Control found, look at the Expires header
     NSString *expires = [headers objectForKey:@"Expires"];
     if (expires)
@@ -186,14 +180,12 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
         }
     }
 
-    NSLog(@"expirationDateFromHeaders cp 5");
     if (status == 302 || status == 307)
     {
         // If not explict cache control defined, do not cache those status
         return nil;
     }
 
-    NSLog(@"expirationDateFromHeaders cp 6");
     // If no cache control defined, try some heristic to determine an expiration date
     NSString *lastModified = [headers objectForKey:@"Last-Modified"];
     if (lastModified)
@@ -215,7 +207,6 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
         }
     }
 
-    NSLog(@"expirationDateFromHeaders cp 7");
     // If nothing permitted to define the cache expiration delay nor to restrict its cacheability, use a default cache expiration delay
     return [[[NSDate alloc] initWithTimeInterval:kSDURLCacheDefault sinceDate:now] autorelease];
 
@@ -421,7 +412,6 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
 
 - (void)storeCachedResponse:(NSCachedURLResponse *)cachedResponse forRequest:(NSURLRequest *)request
 {
-    NSLog(@"storeCachedResponse cp 0");
     if (request.cachePolicy == NSURLRequestReloadIgnoringLocalCacheData
         || request.cachePolicy == NSURLRequestReloadIgnoringLocalAndRemoteCacheData
         || request.cachePolicy == NSURLRequestReloadIgnoringCacheData)
@@ -432,9 +422,7 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
         return;
     }
 
-    NSLog(@"storeCachedResponse cp 1");
-    NSURLRequest *keyRequest = [self createKeyRequest:request];
-    [super storeCachedResponse:cachedResponse forRequest:keyRequest];
+    [super storeCachedResponse:cachedResponse forRequest:request];
 
     if (cachedResponse.storagePolicy == NSURLCacheStorageAllowed
         && [cachedResponse.response isKindOfClass:[NSHTTPURLResponse self]]
@@ -448,12 +436,11 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
             return;
         }
 
-        NSLog(@"storeCachedResponse cp 3");
         [ioQueue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self
                                                                     selector:@selector(storeToDisk:)
                                                                       object:[NSDictionary dictionaryWithObjectsAndKeys:
                                                                               cachedResponse, @"cachedResponse",
-                                                                              keyRequest, @"request",
+                                                                              request, @"request",
                                                                               expirationDate, @"expirationDate",
                                                                               nil]] autorelease]];
     }
@@ -461,15 +448,12 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
 
 - (NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request
 {
-    NSLog(@"cachedResponseForRequest cp 0");
     NSCachedURLResponse *memoryResponse = [super cachedResponseForRequest:request];
     if (memoryResponse)
     {
-        NSLog(@"memoryResponse:%@", memoryResponse);
         return memoryResponse;
     }
 
-    NSLog(@"cachedResponseForRequest cp 1");
     NSString *cacheKey = [SDURLCache cacheKeyForURL:request.URL];
 
     // NOTE: We don't handle expiration here as even staled cache data is necessary for NSURLConnection to handle cache revalidation.
@@ -489,14 +473,11 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
 
                 // OPTI: Store the response to memory cache for potential future requests
                 [super storeCachedResponse:diskResponse forRequest:request];
-                NSLog(@"cachedResponseForRequest cp 2");
-                NSLog(@"diskResponse:%@", diskResponse);
                 return diskResponse;
             }
         }
     }
 
-    NSLog(@"cachedResponseForRequest cp 3");
     return nil;
 }
 
@@ -529,32 +510,5 @@ static float const kSDURLCacheDefault = 3600 * 24; // Default cache expiration d
     [ioQueue release], ioQueue = nil;
     [super dealloc];
 }
-
-#pragma mark - Private methods
-
-- (NSString *)tokenInUrl:(NSString *)url {
-    DDURLParser *parser = [[DDURLParser alloc] initWithURLString:url];
-    return [parser valueForVariable:@"token"];
-}
-
-// 作为缓存的key，url中不应有token
-- (NSURLRequest *)createKeyRequest:(NSURLRequest *)request {
-    NSString *url = request.URL.absoluteString;
-    NSString *tokenInUrl = [self tokenInUrl:url];
-    if (tokenInUrl) {
-        NSRange tokenPrefixRange = [url rangeOfString:@"&token="];
-        NSString *newUrl = [url substringToIndex:tokenPrefixRange.location];
-        NSString *stringAfter = [url substringFromIndex:tokenPrefixRange.location + tokenPrefixRange.length];
-        NSRange tokenEndRange = [stringAfter rangeOfString:@"&"];
-        if (tokenEndRange.length > 0) {
-            newUrl = [newUrl stringByAppendingString:[stringAfter substringFromIndex:tokenEndRange.location]];
-        }
-        NSLog(@"new url:%@", newUrl);
-        return [NSURLRequest requestWithURL:[NSURL URLWithString:newUrl]];
-    }
-    
-    return request;
-}
-
 
 @end

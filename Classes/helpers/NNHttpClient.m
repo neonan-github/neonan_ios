@@ -53,18 +53,25 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
     NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:parameters];
     request.timeoutInterval = 20;
     NNJSONRequestOperation *operation = [NNJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-        NSLog(@"response json:%@", JSON);
+        
+//        NSLog(@"response json:%@", JSON);
+        
         if ([JSON objectForKey:@"error"]) {
             ResponseError *error = [ResponseError parse:[JSON objectForKey:@"error"]];
             if (failure) {
-                failure(error);
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    failure(error);
+                });
             }
             
             return;
         }
         
         if (success) {
-            success(responseClass ? [responseClass parse:JSON] : nil);
+            id<Jsonable> response = responseClass ? [responseClass parse:JSON] : nil;
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                success(response);
+            });
         }
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (failure) {
@@ -74,6 +81,7 @@ static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
         NSLog(@"%@", [error localizedDescription]);
     }];
     
+    operation.successCallbackQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     operation.allowOfflineMode = [method isEqualToString:@"GET"];
     
     [operation start];

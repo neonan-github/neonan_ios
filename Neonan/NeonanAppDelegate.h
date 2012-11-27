@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MainController.h"
+#import "Constants.h"
 #import "NNNavigationController.h"
 
 @interface NeonanAppDelegate : UIResponder <UIApplicationDelegate>

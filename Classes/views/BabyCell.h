@@ -26,6 +26,8 @@
 @property (nonatomic, assign) BOOL voted;
 
 @property (nonatomic, unsafe_unretained) id<BabyCellDelegate> delegate;
+
+- (void)reset;
 @end
 
 @protocol BabyCellDelegate <NSObject>

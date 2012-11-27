@@ -31,8 +31,10 @@
 + (CGFloat)computeHeightForLabel:(UILabel *)label withText:(NSString *)text {
     CGFloat originalHeight = label.frame.size.height;
     
-    NSUInteger lines = [UIHelper computeContentLines:text withWidth:label.frame.size.width andFont:label.font];
-    return originalHeight + (lines - 1) * label.font.lineHeight;
+    NSInteger originalLines = [UIHelper computeContentLines:label.text withWidth:label.frame.size.width andFont:label.font];
+    NSInteger newlines = [UIHelper computeContentLines:text withWidth:label.frame.size.width andFont:label.font];
+    
+    return originalHeight + (newlines - (originalLines > 0 ? originalLines : 1)) * label.font.lineHeight;
 }
 
 + (void)setBackAction:(SEL)action forController:(UIViewController *)controller withImage:(UIImage *)image {
@@ -101,6 +103,61 @@
     [alertView show];
 }
 
++ (CAAnimation *)createBounceAnimation:(NNDirection)direction {
+    // these three values are subject to experimentation
+	CGFloat initialMomentum = 150.0f; // positive is upwards, per sec
+	CGFloat gravityConstant = 250.0f; // downwards pull per sec
+	CGFloat dampeningFactorPerBounce = 0.0;  // percent of rebound
+    
+	// internal values for the calculation
+	CGFloat momentum = initialMomentum; // momentum starts with initial value
+	CGFloat positionOffset = 0; // we begin at the original position
+	CGFloat slicesPerSecond = 10.0f; // how many values per second to calculate
+	CGFloat lowerMomentumCutoff = 5.0f; // below this upward momentum animation ends
+    
+	CGFloat duration = 0;
+	NSMutableArray *values = [NSMutableArray array];
+    
+    CGFloat xFactor = 0, yFactor = 0;
+    if (direction == NNDirectionLeft) {
+        xFactor = 1;
+    } else if (direction == NNDirectionRight) {
+        xFactor = -1;
+    } else if (direction == NNDirectionTop) {
+        yFactor = 1;
+    } else {// bottom
+        yFactor = -1;
+    }
+    
+	do
+	{
+		duration += 0.3f/slicesPerSecond;
+		positionOffset+=momentum/slicesPerSecond;
+        
+		if (positionOffset<0)
+		{
+			positionOffset=0;
+			momentum=-momentum*dampeningFactorPerBounce;
+		}
+        
+		// gravity pulls the momentum down
+		momentum -= gravityConstant/slicesPerSecond;
+        
+		CATransform3D transform = CATransform3DMakeTranslation(xFactor * positionOffset, yFactor * positionOffset, 0);
+		[values addObject:[NSValue valueWithCATransform3D:transform]];
+	} while (!(positionOffset==0 && momentum < lowerMomentumCutoff));
+    
+	CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+	animation.repeatCount = 1;
+	animation.duration = duration;
+	animation.fillMode = kCAFillModeForwards;
+	animation.values = values;
+	animation.removedOnCompletion = YES; // final stage is equal to starting stage
+	animation.autoreverses = NO;
+
+    return animation;
+}
+
 @end
 
 @implementation UIImage (UIImageUtil)
@@ -110,6 +167,21 @@
     NSString *fileLocation = [[NSBundle mainBundle] pathForResource:[splits objectAtIndex:0] ofType:[splits objectAtIndex:1]];
     NSData *imageData = [NSData dataWithContentsOfFile:fileLocation];
     return [UIImage imageWithData:imageData];
+}
+
++ (UIImage *)imageFromView:(UIView *)view {
+    if(UIGraphicsBeginImageContextWithOptions != NULL)
+    {
+        UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, 0.0);
+    } else {
+        UIGraphicsBeginImageContext(view.frame.size);
+    }
+    
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 @end
