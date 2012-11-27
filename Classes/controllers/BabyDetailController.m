@@ -106,6 +106,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     
     UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35)];
     titleBox.backgroundColor = DarkThemeColor;
+    titleBox.clipsToBounds = YES;
     [titleBox addSubview:navBottomLine];
     [titleBox addSubview:titleLabel];
     [titleBox addSubview:likeButton];
@@ -301,6 +302,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     NSInteger idIndex = _idIndex;
     idIndex += (next ? 1 : -1);
     if (idIndex < 0 || idIndex >= _idModel.items.count) {// 到头或尾
+        [self performBounce:!next];
         return;
     }
     
@@ -553,6 +555,13 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     [_slideShowView reloadData];
     
     _textBox.text = @"";
+}
+
+- (void)performBounce:(BOOL)left {
+    CAAnimation *animation = [UIHelper createBounceAnimation:left ? NNDirectionLeft : NNDirectionRight];
+    [CATransaction begin];
+    [self.view.layer addAnimation:animation forKey:@"bounceAnimation"];
+    [CATransaction commit];
 }
 
 #pragma mark - CAAnimationDelegate methods

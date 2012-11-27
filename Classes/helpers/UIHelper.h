@@ -46,6 +46,13 @@
 
 #define DarkThemeColor                      RGB(26, 26, 26)
 
+typedef enum {
+    NNDirectionLeft = 0,
+    NNDirectionTop,
+    NNDirectionRight,
+    NNDirectionBottom
+} NNDirection;
+
 @interface UIHelper : NSObject
 + (void)fitScrollView:(UIScrollView *)scrollView withMaxHeight:(float)maxHeight;// make scrollview sizeToFit
 
@@ -61,6 +68,7 @@
 
 + (void)alertWithMessage:(NSString *)message;
 
++ (CAAnimation *)createBounceAnimation:(NNDirection)direction;
 @end
 
 @interface UIImage (UIImageUtil)

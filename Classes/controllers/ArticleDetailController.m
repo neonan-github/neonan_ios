@@ -375,6 +375,13 @@ static NSString * const kDirectionRight = @"1";
     _textView.hidden = YES;
 }
 
+- (void)performBounce:(BOOL)left {
+    CAAnimation *animation = [UIHelper createBounceAnimation:left ? NNDirectionLeft : NNDirectionRight];
+    [CATransaction begin];
+    [self.view.layer addAnimation:animation forKey:@"bounceAnimation"];
+    [CATransaction commit];
+}
+
 #pragma mark - Private methods
 
 - (void)initIdList {
@@ -438,6 +445,7 @@ static NSString * const kDirectionRight = @"1";
     NSInteger idIndex = _idIndex;
     idIndex += (next ? 1 : -1);
     if (idIndex < 0 || idIndex >= _idModel.items.count) {// 到头或尾
+        [self performBounce:!next];
         return;
     }
     

@@ -103,6 +103,61 @@
     [alertView show];
 }
 
++ (CAAnimation *)createBounceAnimation:(NNDirection)direction {
+    // these three values are subject to experimentation
+	CGFloat initialMomentum = 150.0f; // positive is upwards, per sec
+	CGFloat gravityConstant = 250.0f; // downwards pull per sec
+	CGFloat dampeningFactorPerBounce = 0.0;  // percent of rebound
+    
+	// internal values for the calculation
+	CGFloat momentum = initialMomentum; // momentum starts with initial value
+	CGFloat positionOffset = 0; // we begin at the original position
+	CGFloat slicesPerSecond = 10.0f; // how many values per second to calculate
+	CGFloat lowerMomentumCutoff = 5.0f; // below this upward momentum animation ends
+    
+	CGFloat duration = 0;
+	NSMutableArray *values = [NSMutableArray array];
+    
+    CGFloat xFactor = 0, yFactor = 0;
+    if (direction == NNDirectionLeft) {
+        xFactor = 1;
+    } else if (direction == NNDirectionRight) {
+        xFactor = -1;
+    } else if (direction == NNDirectionTop) {
+        yFactor = 1;
+    } else {// bottom
+        yFactor = -1;
+    }
+    
+	do
+	{
+		duration += 0.3f/slicesPerSecond;
+		positionOffset+=momentum/slicesPerSecond;
+        
+		if (positionOffset<0)
+		{
+			positionOffset=0;
+			momentum=-momentum*dampeningFactorPerBounce;
+		}
+        
+		// gravity pulls the momentum down
+		momentum -= gravityConstant/slicesPerSecond;
+        
+		CATransform3D transform = CATransform3DMakeTranslation(xFactor * positionOffset, yFactor * positionOffset, 0);
+		[values addObject:[NSValue valueWithCATransform3D:transform]];
+	} while (!(positionOffset==0 && momentum < lowerMomentumCutoff));
+    
+	CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+	animation.repeatCount = 1;
+	animation.duration = duration;
+	animation.fillMode = kCAFillModeForwards;
+	animation.values = values;
+	animation.removedOnCompletion = YES; // final stage is equal to starting stage
+	animation.autoreverses = NO;
+
+    return animation;
+}
+
 @end
 
 @implementation UIImage (UIImageUtil)
