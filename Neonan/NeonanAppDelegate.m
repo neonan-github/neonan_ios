@@ -9,14 +9,9 @@
 #import "NeonanAppDelegate.h"
 #import "MainController.h"
 
-#import "ResponseError.h"
-#import "SignResult.h"
-
 #import <AFNetworkActivityIndicatorManager.h>
-#import <SSKeychain.h>
-#import "SDURLCache.h"
 #import "NNURLCache.h"
-#import <AFNetworking.h>
+#import "APService.h"
 
 @implementation NeonanAppDelegate
 
@@ -40,6 +35,12 @@
     self.navController.navigationItem.leftBarButtonItem = nil;
     
     [self.window makeKeyAndVisible];
+    
+    // JPush Required
+    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                   UIRemoteNotificationTypeSound |
+                                                   UIRemoteNotificationTypeAlert)];
+    [APService setupWithOption:launchOptions];
     
     return YES;
 }
@@ -65,6 +66,18 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+}
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
+    // JPush Required
+    [APService registerDeviceToken:deviceToken];
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    // JPush Required
+    [APService handleRemoteNotification:userInfo];
 }
 
 #pragma mark - Private methods
