@@ -38,14 +38,18 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *progressView;
 
-@property (strong, nonatomic) ShareHelper *shareHelper;
+@property (nonatomic, strong) ShareHelper *shareHelper;
 
 @property (nonatomic, strong) SlideShowDetailModel *dataModel;
-@property (strong, nonatomic) NearWorksModel *idModel;
-@property (assign, nonatomic) NSInteger idIndex;
+@property (nonatomic, strong) NearWorksModel *idModel;
+@property (nonatomic, assign) NSInteger idIndex;
 
-@property (unsafe_unretained, nonatomic) CALayer *cacheLayer;
-@property (assign, nonatomic) BOOL isAnimating;
+@property (nonatomic, unsafe_unretained) CALayer *cacheLayer;
+@property (nonatomic, assign) BOOL isAnimating;
+
+// 放大后的图片可能滚动到边界的判断条件
+@property (nonatomic, assign) CGFloat zoomDragBeginX;
+@property (nonatomic, assign) CGFloat zoomDragBeginY;
 
 - (void)requestForSlideShow;
 - (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
@@ -190,36 +194,67 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 #pragma mark - UIScrollViewDelegate methods for Image Zoom
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat contentOffsetX = scrollView.contentOffset.x;
+    CGFloat contentOffsetY = scrollView.contentOffset.y;
+    if (ABS(_zoomDragBeginY - contentOffsetY) > ABS(_zoomDragBeginX - contentOffsetX)) {
+        return;
+    }
+    
+    NSInteger toIndex = 0;
+    
+    iCarousel *carousel = _slideShowView.carousel;
+    
+    if (_zoomDragBeginX < 1 && contentOffsetX <= _zoomDragBeginX) {
+        toIndex = carousel.currentItemIndex - 1;
+    } else if (_zoomDragBeginX > scrollView.contentSize.width - [scrollView viewWithTag:kTagSSImageView].bounds.size.width - 1 &&
+               contentOffsetX >= _zoomDragBeginX) {
+        toIndex = carousel.currentItemIndex + 1;
+    } else {
+        return;
+    }
+    
+    scrollView.scrollEnabled = NO;
+    scrollView.scrollEnabled = YES;
+    if (toIndex < 0 || toIndex >= carousel.numberOfItems) {
+        [self slideShowView:_slideShowView overSwipWithDirection:toIndex < 0 ? UISwipeGestureRecognizerDirectionRight : UISwipeGestureRecognizerDirectionLeft];
+    } else {
+        [carousel scrollToItemAtIndex:toIndex animated:YES];
+    }
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    self.zoomDragBeginX = scrollView.contentOffset.x;
+    self.zoomDragBeginY = scrollView.contentOffset.y;
+}
+
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return [scrollView viewWithTag:kTagSSImageView];
 }
 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView {
     UIImageView *imageView = (UIImageView *)[scrollView viewWithTag:kTagSSImageView];
-    CGRect innerFrame = imageView.frame;
-    CGRect scrollerBounds = scrollView.bounds;
     
-    if ( ( innerFrame.size.width < scrollerBounds.size.width ) || ( innerFrame.size.height < scrollerBounds.size.height ) )
-    {
-        CGFloat tempx = imageView.center.x - ( scrollerBounds.size.width / 2 );
-        CGFloat tempy = imageView.center.y - ( scrollerBounds.size.height / 2 );
-        CGPoint myScrollViewOffset = CGPointMake( tempx, tempy);
-        
-        scrollView.contentOffset = myScrollViewOffset;
-    }
+    CGSize boundsSize = scrollView.bounds.size;
+    CGRect frameToCenter = imageView.frame;
     
-    UIEdgeInsets anEdgeInset = { 0, 0, 0, 0};
-    if ( scrollerBounds.size.width > innerFrame.size.width )
-    {
-        anEdgeInset.left = (scrollerBounds.size.width - innerFrame.size.width) / 2;
-        anEdgeInset.right = -anEdgeInset.left;  // I don't know why this needs to be negative, but that's what works
-    }
-    if ( scrollerBounds.size.height > innerFrame.size.height )
-    {
-        anEdgeInset.top = (scrollerBounds.size.height - innerFrame.size.height) / 2;
-        anEdgeInset.bottom = -anEdgeInset.top;  // I don't know why this needs to be negative, but that's what works
-    }
-    scrollView.contentInset = anEdgeInset;
+    // Horizontally
+    if (frameToCenter.size.width < boundsSize.width) {
+        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2.0);
+	} else {
+        frameToCenter.origin.x = 0;
+	}
+    
+    // Vertically
+    if (frameToCenter.size.height < boundsSize.height) {
+        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2.0);
+	} else {
+        frameToCenter.origin.y = 0;
+	}
+    
+	// Center
+	if (!CGRectEqualToRect(imageView.frame, frameToCenter))
+		imageView.frame = frameToCenter;
 }
 
 #pragma mark - SlideShowViewDataSource methods
@@ -228,13 +263,11 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     NSUInteger count = _dataModel.imgUrls.count;
     [self.pageControl setNumberOfPages:count];
     return count;
-    
 }
 
 - (UIView *)slideShowView:(SlideShowView *)slideShowView viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
     if (!view) {
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:slideShowView.bounds];
-        imageView.backgroundColor = DarkThemeColor;
         imageView.layer.anchorPoint = CGPointMake(0.5, 0.5);
         imageView.clipsToBounds = YES;
         imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -242,11 +275,14 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         imageView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
         
         UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:slideShowView.bounds];
+        scrollView.backgroundColor = DarkThemeColor;
         scrollView.delegate = self;
-        scrollView.scrollEnabled = NO;
-        scrollView.contentSize = imageView.frame.size;
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.showsVerticalScrollIndicator = NO;
+//        scrollView.scrollEnabled = NO;
+//        scrollView.contentSize = imageView.frame.size;
         scrollView.minimumZoomScale = 0.5;
-        scrollView.maximumZoomScale = 2.0;
+        scrollView.maximumZoomScale = 3.0;
         [scrollView addSubview:imageView];
         view = scrollView;
         
@@ -264,7 +300,13 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     UIActivityIndicatorView *progressView = (UIActivityIndicatorView *)[view viewWithTag:kTagSSprogressView];
     NSURL *imgUrl = [NSURL URLWithString:[_dataModel.imgUrls objectAtIndex:index]];
     [imageView setImageWithURL:imgUrl success:^(UIImage *image, BOOL cached) {
-//        ((UIScrollView *)view).contentSize = imageView.frame.size;
+        CGRect frame = imageView.frame;
+        frame.size.height = image.size.height / image.size.width * frame.size.width;
+        frame.origin.y = (view.bounds.size.height - frame.size.height) / 2;
+        imageView.frame = frame;
+        
+        ((UIScrollView *)view).contentSize = imageView.bounds.size;
+        
         [progressView stopAnimating];
     } failure:nil];
     
@@ -571,6 +613,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     self.isAnimating = !flag;
+    [self.cacheLayer removeAllAnimations];
     [self.cacheLayer removeFromSuperlayer];
 }
 
