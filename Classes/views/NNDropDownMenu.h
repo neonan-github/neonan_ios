@@ -12,13 +12,19 @@
 
 - (void)setIconImage:(UIImage *)image andHighlightedImage:(UIImage *)highlightedImage;
 - (void)setText:(NSString *)text withColor:(UIColor *)color andHighlightedColor:(UIColor *)highlightedColor;
+- (void)setText:(NSString *)text;
 
 @end
+
+typedef void(^ItemClickedBlock)(NNMenuItem *item, NSUInteger index);
 
 @interface NNDropDownMenu : UIWindow
 @property (nonatomic, assign) CGFloat topPadding;
 @property (nonatomic, assign) CGFloat itemHeight;
 @property (nonatomic, assign, getter = isShowing) BOOL showing;
+@property (nonatomic, readonly) NSArray *items;
+
+@property (nonatomic, copy) ItemClickedBlock onItemClicked;
 
 - (void)addItem:(NNMenuItem *)item;
 - (void)showMenu;

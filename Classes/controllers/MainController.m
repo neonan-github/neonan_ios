@@ -59,6 +59,9 @@ typedef enum {
 @property (nonatomic, unsafe_unretained) CircleHeaderView *headerView;
 @property (nonatomic, strong) NNDropDownMenu *dropDownMenu;
 
+@property (nonatomic, strong) NSArray *menuTexts;
+@property (nonatomic, strong) NSArray *menuIcons;
+
 @property (nonatomic, strong) NSArray *channelTexts;
 @property (nonatomic, strong) NSArray *channelTypes;
 @property (nonatomic, assign) NSUInteger channelIndex;
@@ -239,19 +242,62 @@ headerView = _headerView;
     return _channelTypes;
 }
 
+- (NSArray *)menuTexts {
+    if (!_menuTexts) {
+        _menuTexts = @[@"意见反馈", @"关于我们", @"登陆", @"清除缓存"];
+    }
+    
+    return _menuTexts;
+}
+
+- (NSArray *)menuIcons {
+    if (!_menuIcons) {
+        _menuIcons = @[@"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png", @"icon_clear_normal.png"];
+    }
+    
+    return _menuIcons;
+}
+
 - (NNDropDownMenu *)dropDownMenu {
     if (!_dropDownMenu) {
         _dropDownMenu = [[NNDropDownMenu alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleScreenHeight)];
         _dropDownMenu.topPadding = NavBarHeight + StatusBarHeight;
-        _dropDownMenu.itemHeight = 24;
+        _dropDownMenu.itemHeight = 30;
         
-        for (NSUInteger i = 0; i < 4; i++) {
-            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 24)];
-            [item setText:@"关于我们" withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
-            [item setIconImage:[UIImage imageFromFile:@"icon_about_normal.png"] andHighlightedImage:[UIImage imageFromFile:@"icon_config_highlighted.png"]];
+        [self.menuTexts enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
+            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 30)];
+            [item setText:text withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
+            UIImage *iconImage = [UIImage imageFromFile:self.menuIcons[idx]];
+            [item setIconImage:iconImage andHighlightedImage:[iconImage opacity:0.5]];
             [_dropDownMenu addItem:item];
-        }
+        }];
+        
+        __unsafe_unretained NNDropDownMenu *weakRef = _dropDownMenu;
+        _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
+            switch (index) {
+                case 0: //意见反馈
+                    break;
+                    
+                case 1: //关于我们
+                    break;
+
+                case 2: //登陆／注销
+                    break;
+                
+                case 3: //清除缓存
+                    break;
+            }
+            
+            if ([weakRef isKindOfClass:[NNDropDownMenu class]]) {
+                [weakRef dismissMenu];
+            }
+        };
     }
+    
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    NNMenuItem *signItem = _dropDownMenu.items[2];
+    [signItem setText:tokenAvailable ? @"注销" : @"登陆"];
     
     return _dropDownMenu;
 }

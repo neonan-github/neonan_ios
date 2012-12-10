@@ -34,6 +34,10 @@
     return self;
 }
 
+- (NSArray *)items {
+    return _containerView.subviews;
+}
+
 - (void)setTopPadding:(CGFloat)topPadding {
     _topPadding = topPadding;
     
@@ -103,7 +107,7 @@
         }];
         
         [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-            self.alpha = 0.75f;
+            self.alpha = 1;
         } completion:^(BOOL finished) {
         }];
         
@@ -145,13 +149,14 @@
 }
 
 - (void)itemClicked:(NNMenuItem *)item {
-    NSLog(@"itemClicked:%d", item.tag);
-    [self dismissMenu];
+    if (self.onItemClicked) {
+        self.onItemClicked(item, item.tag);
+    }
 }
 
 @end
 
-static const CGFloat kIconPadding = 9;
+static const CGFloat kIconPadding = 5;
 
 @interface NNMenuItem ()
 @property (nonatomic, unsafe_unretained) UIImageView *iconView;
@@ -165,17 +170,17 @@ static const CGFloat kIconPadding = 9;
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        UIImageView *iconView = self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(kIconPadding, 0, 20, 20)];
+        UIImageView *iconView = self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(kIconPadding, 0, 15, 15)];
         CGPoint center = iconView.center;
         center.y = frame.size.height / 2;
         iconView.center = center;
-        iconView.contentMode = UIViewContentModeCenter;
+        iconView.contentMode = UIViewContentModeScaleAspectFit;
         iconView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
         [self addSubview:iconView];
         
-        CGFloat leftPadding = kIconPadding + 20 + kIconPadding;
+        CGFloat leftPadding = kIconPadding + 15 + kIconPadding;
         UILabel *textLabel = self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftPadding, 0, frame.size.width - leftPadding, frame.size.height)];
-        textLabel.font = [UIFont systemFontOfSize:13];
+        textLabel.font = [UIFont boldSystemFontOfSize:14];
         textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         textLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:textLabel]; 
@@ -202,6 +207,10 @@ static const CGFloat kIconPadding = 9;
     _textLabel.text = text;
     _textLabel.textColor = color;
     _textLabel.highlightedTextColor = highlightedColor;
+}
+
+- (void)setText:(NSString *)text {
+    _textLabel.text = text;
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
