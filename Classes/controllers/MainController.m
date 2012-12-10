@@ -75,7 +75,6 @@ typedef enum {
 - (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
 
 - (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex;
-- (void)updateUserStatus;
 - (void)updateTableView;
 - (void)updateSlideShow;
 - (void)onChannelChanged;
@@ -95,8 +94,8 @@ headerView = _headerView;
     self.view.backgroundColor = DarkThemeColor;
     
     UIButton *navLeftButton = self.navLeftButton = [UIHelper createBarButton:0];
-    [navLeftButton setImage:[UIImage imageFromFile:@"icon_user_normal.png"] forState:UIControlStateNormal];
-    UIImage *userHighlightedImage = [UIImage imageFromFile:@"icon_user_highlighted.png"];
+    [navLeftButton setImage:[UIImage imageFromFile:@"icon_config_normal.png"] forState:UIControlStateNormal];
+    UIImage *userHighlightedImage = [UIImage imageFromFile:@"icon_config_highlighted.png"];
     [navLeftButton setImage:userHighlightedImage forState:UIControlStateHighlighted];
     [navLeftButton setImage:userHighlightedImage forState:UIControlStateSelected];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
@@ -239,7 +238,7 @@ headerView = _headerView;
 {
     [super viewWillAppear:animated];
     
-    [self updateUserStatus];
+//    [self updateUserStatus];
     
     [_headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
     
@@ -442,7 +441,7 @@ headerView = _headerView;
     okItem.action = ^
     {
         [[SessionManager sharedManager] signOut];
-        [self updateUserStatus];
+//        [self updateUserStatus];
     };
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
@@ -589,21 +588,21 @@ headerView = _headerView;
     }
 }
 
-- (void)updateUserStatus {
-    SessionManager *sessionManager = [SessionManager sharedManager];
-    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
-    
-    [self.navLeftButton setImage:(tokenAvailable ? [UIImage imageFromFile:@"icon_user_highlighted.png"] :
-                                  [UIImage imageFromFile:@"icon_user_normal.png"])
-                        forState:UIControlStateNormal];
-    
-    [self.navLeftButton removeTarget:nil
-                       action:NULL
-             forControlEvents:UIControlEventAllEvents];
-    [self.navLeftButton addTarget:self
-                           action:(tokenAvailable ? @selector(signOut) : @selector(signIn))
-                 forControlEvents:UIControlEventTouchUpInside];
-}
+//- (void)updateUserStatus {
+//    SessionManager *sessionManager = [SessionManager sharedManager];
+//    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+//    
+//    [self.navLeftButton setImage:(tokenAvailable ? [UIImage imageFromFile:@"icon_config_highlighted.png"] :
+//                                  [UIImage imageFromFile:@"icon_config_normal.png"])
+//                        forState:UIControlStateNormal];
+//    
+//    [self.navLeftButton removeTarget:nil
+//                       action:NULL
+//             forControlEvents:UIControlEventAllEvents];
+//    [self.navLeftButton addTarget:self
+//                           action:(tokenAvailable ? @selector(signOut) : @selector(signIn))
+//                 forControlEvents:UIControlEventTouchUpInside];
+//}
 
 - (void)updateTableView {
     [_tableView reloadData];
