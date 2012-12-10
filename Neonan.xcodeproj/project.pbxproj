@@ -135,6 +135,8 @@
 		349EF6211675D9850086A7F1 /* icon_about_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 349EF6201675D9850086A7F1 /* icon_about_normal.png */; };
 		349EF6231675D9C90086A7F1 /* icon_sign_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 349EF6221675D9C90086A7F1 /* icon_sign_normal.png */; };
 		349EF6251675DAC90086A7F1 /* icon_clear_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 349EF6241675DAC90086A7F1 /* icon_clear_normal.png */; };
+		349EF62D1675E92E0086A7F1 /* AboutController.m in Sources */ = {isa = PBXBuildFile; fileRef = 349EF62B1675E92E0086A7F1 /* AboutController.m */; };
+		349EF62E1675E92E0086A7F1 /* AboutController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349EF62C1675E92E0086A7F1 /* AboutController.xib */; };
 		34A8883E1654B76600A8D987 /* bg_share_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 34A8883D1654B76600A8D987 /* bg_share_edit.png */; };
 		34AB4A3C164CA1C30011B8F9 /* CommonListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AB4A3B164CA1C30011B8F9 /* CommonListModel.m */; };
 		34AB4A3F164CD3050011B8F9 /* SlideShowDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AB4A3E164CD3050011B8F9 /* SlideShowDetailModel.m */; };
@@ -433,6 +435,9 @@
 		349EF6201675D9850086A7F1 /* icon_about_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_about_normal.png; sourceTree = "<group>"; };
 		349EF6221675D9C90086A7F1 /* icon_sign_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sign_normal.png; sourceTree = "<group>"; };
 		349EF6241675DAC90086A7F1 /* icon_clear_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_clear_normal.png; sourceTree = "<group>"; };
+		349EF62A1675E92E0086A7F1 /* AboutController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutController.h; sourceTree = "<group>"; };
+		349EF62B1675E92E0086A7F1 /* AboutController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutController.m; sourceTree = "<group>"; };
+		349EF62C1675E92E0086A7F1 /* AboutController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutController.xib; path = ../Classes/controllers/AboutController.xib; sourceTree = "<group>"; };
 		34A8883D1654B76600A8D987 /* bg_share_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_share_edit.png; sourceTree = "<group>"; };
 		34AB4A3A164CA1C30011B8F9 /* CommonListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonListModel.h; sourceTree = "<group>"; };
 		34AB4A3B164CA1C30011B8F9 /* CommonListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonListModel.m; sourceTree = "<group>"; };
@@ -594,6 +599,8 @@
 				340716F6164128E7006E40FE /* VideoPlayController.m */,
 				34E95AC41648FF1000DCD229 /* ShareEditController.h */,
 				34E95AC51648FF1000DCD229 /* ShareEditController.m */,
+				349EF62A1675E92E0086A7F1 /* AboutController.h */,
+				349EF62B1675E92E0086A7F1 /* AboutController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -633,6 +640,7 @@
 		347AAB60163672FC00D243BA /* layouts */ = {
 			isa = PBXGroup;
 			children = (
+				349EF62C1675E92E0086A7F1 /* AboutController.xib */,
 				347AAB5C163672E500D243BA /* SignController.xib */,
 				3401FDFB1636A1D700FAF971 /* ArticleDetailController.xib */,
 				34CB8FF3163FDFD40001AD87 /* CommentListController.xib */,
@@ -1311,6 +1319,7 @@
 				349EF6211675D9850086A7F1 /* icon_about_normal.png in Resources */,
 				349EF6231675D9C90086A7F1 /* icon_sign_normal.png in Resources */,
 				349EF6251675DAC90086A7F1 /* icon_clear_normal.png in Resources */,
+				349EF62E1675E92E0086A7F1 /* AboutController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1446,6 +1455,7 @@
 				34F575061671DE9600D20195 /* DCReferenceKeyParser.m in Sources */,
 				34F575071671DE9600D20195 /* DCSimpleConverter.m in Sources */,
 				349EF6151675A62C0086A7F1 /* NNDropDownMenu.m in Sources */,
+				349EF62D1675E92E0086A7F1 /* AboutController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,7 @@
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
 #import "SignController.h"
+#import "AboutController.h"
 
 #import "SMPageControl.h"
 #import "HotListCell.h"
@@ -280,6 +281,7 @@ headerView = _headerView;
                     break;
                     
                 case 1: //关于我们
+                    [weakSelf showAboutController];
                     break;
 
                 case 2: //登陆注销
@@ -442,6 +444,7 @@ headerView = _headerView;
 - (void)playVideo:(NSString *)videoUrl {
     VideoPlayController *controller = [[VideoPlayController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
     controller.videoUrl = videoUrl;
     [self.navigationController presentModalViewController:navController animated:YES];
 }
@@ -502,7 +505,11 @@ headerView = _headerView;
 - (void)sign {
     SessionManager *sessionManager = [SessionManager sharedManager];
     BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [self performSelector:tokenAvailable ? @selector(signOut) : @selector(signIn)];
+#pragma clang diagnostic pop
 }
 
 - (void)signIn {
@@ -526,6 +533,14 @@ headerView = _headerView;
                                                cancelButtonItem:cancelItem
                                                otherButtonItems:okItem, nil];
     [alertView show];
+}
+
+- (void)showAboutController {
+    AboutController *controller = [[AboutController alloc] init];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
+    
+    [self.navigationController presentModalViewController:navController animated:YES];
 }
 
 #pragma mark - Private Request methods
