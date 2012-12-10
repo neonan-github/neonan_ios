@@ -498,7 +498,7 @@ headerView = _headerView;
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
                                 [self requestStringForType:type], @"sort_type",
                                 [NSString stringWithFormat:@"%u", offset], @"offset",
-                                kRequestCountString, @"count", nil];
+                                kRequestCountString, @"count", @"true", @"filter", nil];
     
     SessionManager *sessionManager = [SessionManager sharedManager];
     if (isBabyChannel && ([sessionManager getToken] || [sessionManager canAutoLogin])) {

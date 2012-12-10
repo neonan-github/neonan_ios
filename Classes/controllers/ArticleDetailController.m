@@ -243,7 +243,7 @@ static NSString * const kDirectionRight = @"1";
                                 _channel, @"channel",
                                 [NSNumber numberWithUnsignedInteger:_offset], @"offset",
                                 [NSNumber numberWithUnsignedInteger:count], @"count",
-                                next ? @"1" : @"-1", @"direction", nil];
+                                next ? @"1" : @"-1", @"direction", @"true", @"filter", nil];
     
     [[NNHttpClient sharedClient] getAtPath:@"near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
         @synchronized(_idModel) {
