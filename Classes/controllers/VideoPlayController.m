@@ -8,6 +8,7 @@
 
 #import "VideoPlayController.h"
 #import "MathHelper.h"
+#import "UrlModel.h"
 
 #import <MBProgressHUD.h>
 
@@ -52,8 +53,11 @@
             ((UIScrollView *)subview).bounces = NO;
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self parseVideoUrl:_videoUrl]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20];
-    [_webView loadRequest:request];
+    [self requestUrl:^(NSString * url) {
+        self.videoUrl = url;
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self parseVideoUrl:url]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20];
+        [_webView loadRequest:request];
+    }];    
 }
 
 - (void)didReceiveMemoryWarning
@@ -118,6 +122,27 @@
 }
 
 #pragma mark - Private methods
+
+- (void)requestUrl:(void (^)(NSString *))completion {
+    if (_videoUrl) {
+        if (completion) {
+            completion(_videoUrl);
+        }
+    } else {
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:_contentId, @"content_id",
+                                    @"video", @"content_type", nil];
+        
+        [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[UrlModel class] success:^(id<Jsonable> response)
+        {
+            if (completion) {
+                completion(((UrlModel *)response).url);
+            }
+        } failure:^(ResponseError *error) {
+            [UIHelper alertWithMessage:error.message];
+            NSLog(@"error:%@", error.message);
+        }];
+    }
+}
 
 - (NSString *)parseVideoUrl:(NSString *)url {
     static NSString *tudou1 = @"http://www.tudou.com/v/";

@@ -31,8 +31,8 @@
 #import "BabyListModel.h"
 #import "CommonListModel.h"
 
-static const NSUInteger kTopChannelIndex = 5;
-static const NSUInteger kBabyChannelIndex = 3;
+static const NSUInteger kTopChannelIndex = 4;
+static const NSUInteger kBabyChannelIndex = NSUIntegerMax;
 static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
 
@@ -220,7 +220,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", @"宝贝", @"视频", @"精选", @"女人", nil];
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", @"视频", @"精选", @"女人", nil];
     }
     
     return  _channelTexts;
@@ -228,7 +228,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"baby", @"video", @"top", @"women", nil];
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", @"video", @"top", @"women", nil];
     }
     
     return _channelTypes;
@@ -498,7 +498,7 @@ headerView = _headerView;
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
                                 [self requestStringForType:type], @"sort_type",
                                 [NSString stringWithFormat:@"%u", offset], @"offset",
-                                kRequestCountString, @"count", nil];
+                                kRequestCountString, @"count", @"true", @"filter", nil];
     
     SessionManager *sessionManager = [SessionManager sharedManager];
     if (isBabyChannel && ([sessionManager getToken] || [sessionManager canAutoLogin])) {

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <DCKeyValueObjectMapping.h>
+#import "DCKeyValueObjectMapping.h"
 
 @protocol Jsonable <NSObject>
 

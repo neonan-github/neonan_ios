@@ -14,6 +14,10 @@
 #import "APService.h"
 #import "Flurry.h"
 
+#import "ArticleDetailController.h"
+#import "VideoPlayController.h"
+#import "BabyDetailController.h"
+
 @implementation NeonanAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -22,12 +26,17 @@
     
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    
     [NSURLCache setSharedURLCache:[self createURLCache]];
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+    // JPush
+//    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeSound |
+//                                                   UIRemoteNotificationTypeAlert)];
+//    [APService setupWithOption:launchOptions];
     
     self.navController = [[NNNavigationController alloc] init];
     self.navController.logoHidden = NO;
@@ -35,15 +44,13 @@
        
     UIViewController *controller = [[MainController alloc] init];
     [self.navController pushViewController:controller animated:NO];
-    self.navController.navigationItem.leftBarButtonItem = nil;
+    
+//    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+//    if (remoteNotif) {
+//        [self enterControllerByType:[remoteNotif objectForKey:@"content_type"] andId:[remoteNotif objectForKey:@"content_id"]];
+//    }
     
     [self.window makeKeyAndVisible];
-    
-    // JPush Required
-    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                   UIRemoteNotificationTypeSound |
-                                                   UIRemoteNotificationTypeAlert)];
-    [APService setupWithOption:launchOptions];
     
     return YES;
 }
@@ -72,18 +79,49 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    
-    // JPush Required
-    [APService registerDeviceToken:deviceToken];
+    // JPush
+//    [APService registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    // JPush
+//    [APService handleRemoteNotification:userInfo];
     
-    // JPush Required
-    [APService handleRemoteNotification:userInfo];
+//    if (application.applicationState == UIApplicationStateActive) {
+//        return;
+//    }
+//    
+//    [self.navController popToRootViewControllerAnimated:NO];
+//    [self.navController dismissModalViewControllerAnimated:NO];
+//    
+//    NSLog(@"userInfo:%@", userInfo);
+//    [self enterControllerByType:[userInfo objectForKey:@"content_type"] andId:[userInfo objectForKey:@"content_id"]];
 }
 
 #pragma mark - Private methods
+
+- (void)enterControllerByType:(NSString *)contentType andId:(NSString *)contentId {
+    Class controllerClass;
+    if ([contentType isEqualToString:@"article"]) {
+        controllerClass = [ArticleDetailController class];
+    } else if ([contentType isEqualToString:@"video"]) {
+        controllerClass = [VideoPlayController class];
+    } else {
+        controllerClass = [BabyDetailController class];
+    }
+    
+    id controller = [[controllerClass alloc] init];
+    [controller setContentId:contentId];
+    if ([controller respondsToSelector:@selector(setChannel:)]) {
+        [controller setChannel:@"home"];
+    }
+    
+    if ([controller respondsToSelector:@selector(setContentType:)]) {
+        [controller setContentType:contentType];
+    }
+    
+    [self.navController pushViewController:controller animated:YES];
+}
 
 - (NSURLCache *)createURLCache {
 //    if (SYSTEM_VERSION_LESS_THAN(@"5.0")) {
