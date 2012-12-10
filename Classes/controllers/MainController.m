@@ -22,6 +22,7 @@
 #import "CustomNavigationBar.h"
 #import "NNDropDownMenu.h"
 
+#import <SDImageCache.h>
 #import <SVPullToRefresh.h>
 #import <TTTAttributedLabel.h>
 #import <NYXImagesKit.h>
@@ -289,6 +290,7 @@ headerView = _headerView;
                     break;
                 
                 case 3: //清除缓存
+                    [weakSelf clearCache];
                     break;
             }
             
@@ -541,6 +543,17 @@ headerView = _headerView;
     navController.logoHidden = NO;
     
     [self.navigationController presentModalViewController:navController animated:YES];
+}
+
+- (void)clearCache {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        [imageCache clearMemory];
+        [imageCache clearDisk];
+        [imageCache cleanDisk];
+        
+        [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    });
 }
 
 #pragma mark - Private Request methods
