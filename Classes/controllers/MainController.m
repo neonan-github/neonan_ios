@@ -19,6 +19,8 @@
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
 #import "CustomNavigationBar.h"
+#import "NNDropDownMenu.h"
+
 #import <SVPullToRefresh.h>
 #import <TTTAttributedLabel.h>
 #import <NYXImagesKit.h>
@@ -55,6 +57,10 @@ typedef enum {
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) UITableView *tableView;
 @property (nonatomic, unsafe_unretained) CircleHeaderView *headerView;
+@property (nonatomic, strong) NNDropDownMenu *dropDownMenu;
+
+@property (nonatomic, strong) NSArray *menuTexts;
+@property (nonatomic, strong) NSArray *menuIcons;
 
 @property (nonatomic, strong) NSArray *channelTexts;
 @property (nonatomic, strong) NSArray *channelTypes;
@@ -98,6 +104,7 @@ headerView = _headerView;
     UIImage *userHighlightedImage = [UIImage imageFromFile:@"icon_config_highlighted.png"];
     [navLeftButton setImage:userHighlightedImage forState:UIControlStateHighlighted];
     [navLeftButton setImage:userHighlightedImage forState:UIControlStateSelected];
+    [navLeftButton addTarget:self action:@selector(toggleDropDownMenu) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
     UIButton *navRightButton = self.navRightButton = [UIHelper createBarButton:5];
@@ -179,6 +186,8 @@ headerView = _headerView;
     self.navLeftButton = nil;
     self.navRightButton = nil;
     
+    self.dropDownMenu = nil;
+    
     self.slideShowView.delegate = nil;
     self.slideShowView.dataSource = nil;
     self.slideShowView = nil;
@@ -231,6 +240,66 @@ headerView = _headerView;
     }
     
     return _channelTypes;
+}
+
+- (NSArray *)menuTexts {
+    if (!_menuTexts) {
+        _menuTexts = @[@"意见反馈", @"关于我们", @"登陆", @"清除缓存"];
+    }
+    
+    return _menuTexts;
+}
+
+- (NSArray *)menuIcons {
+    if (!_menuIcons) {
+        _menuIcons = @[@"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png", @"icon_clear_normal.png"];
+    }
+    
+    return _menuIcons;
+}
+
+- (NNDropDownMenu *)dropDownMenu {
+    if (!_dropDownMenu) {
+        _dropDownMenu = [[NNDropDownMenu alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleScreenHeight)];
+        _dropDownMenu.topPadding = NavBarHeight + StatusBarHeight;
+        _dropDownMenu.itemHeight = 30;
+        
+        [self.menuTexts enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
+            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 30)];
+            [item setText:text withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
+            UIImage *iconImage = [UIImage imageFromFile:self.menuIcons[idx]];
+            [item setIconImage:iconImage andHighlightedImage:[iconImage opacity:0.5]];
+            [_dropDownMenu addItem:item];
+        }];
+        
+        __unsafe_unretained NNDropDownMenu *weakRef = _dropDownMenu;
+        _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
+            switch (index) {
+                case 0: //意见反馈
+                    break;
+                    
+                case 1: //关于我们
+                    break;
+
+                case 2: //登陆／注销
+                    break;
+                
+                case 3: //清除缓存
+                    break;
+            }
+            
+            if ([weakRef isKindOfClass:[NNDropDownMenu class]]) {
+                [weakRef dismissMenu];
+            }
+        };
+    }
+    
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    NNMenuItem *signItem = _dropDownMenu.items[2];
+    [signItem setText:tokenAvailable ? @"注销" : @"登陆"];
+    
+    return _dropDownMenu;
 }
 
 #pragma mark - UIViewController life cycle
@@ -680,6 +749,10 @@ headerView = _headerView;
     NSInteger index = recognizer.view.tag;
     
     [self enterControllerByType:[_slideShowModel.list objectAtIndex:index] atOffset:0];
+}
+
+- (void)toggleDropDownMenu {
+    [self.dropDownMenu showMenu];
 }
 
 #pragma mark - KVO
