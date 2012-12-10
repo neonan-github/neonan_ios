@@ -272,7 +272,8 @@ headerView = _headerView;
             [_dropDownMenu addItem:item];
         }];
         
-        __unsafe_unretained NNDropDownMenu *weakRef = _dropDownMenu;
+        __unsafe_unretained MainController *weakSelf = self;
+        __unsafe_unretained NNDropDownMenu *weakMenu = _dropDownMenu;
         _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
             switch (index) {
                 case 0: //意见反馈
@@ -281,15 +282,16 @@ headerView = _headerView;
                 case 1: //关于我们
                     break;
 
-                case 2: //登陆／注销
+                case 2: //登陆注销
+                    [weakSelf sign];
                     break;
                 
                 case 3: //清除缓存
                     break;
             }
             
-            if ([weakRef isKindOfClass:[NNDropDownMenu class]]) {
-                [weakRef dismissMenu];
+            if ([weakMenu isKindOfClass:[NNDropDownMenu class]]) {
+                [weakMenu dismissMenu];
             }
         };
     }
@@ -495,6 +497,12 @@ headerView = _headerView;
     }
     
     return -1;
+}
+
+- (void)sign {
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    [self performSelector:tokenAvailable ? @selector(signOut) : @selector(signIn)];
 }
 
 - (void)signIn {
