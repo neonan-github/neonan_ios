@@ -19,6 +19,8 @@
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
 #import "CustomNavigationBar.h"
+#import "NNDropDownMenu.h"
+
 #import <SVPullToRefresh.h>
 #import <TTTAttributedLabel.h>
 #import <NYXImagesKit.h>
@@ -55,6 +57,7 @@ typedef enum {
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) UITableView *tableView;
 @property (nonatomic, unsafe_unretained) CircleHeaderView *headerView;
+@property (nonatomic, strong) NNDropDownMenu *dropDownMenu;
 
 @property (nonatomic, strong) NSArray *channelTexts;
 @property (nonatomic, strong) NSArray *channelTypes;
@@ -98,6 +101,7 @@ headerView = _headerView;
     UIImage *userHighlightedImage = [UIImage imageFromFile:@"icon_config_highlighted.png"];
     [navLeftButton setImage:userHighlightedImage forState:UIControlStateHighlighted];
     [navLeftButton setImage:userHighlightedImage forState:UIControlStateSelected];
+    [navLeftButton addTarget:self action:@selector(toggleDropDownMenu) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
     UIButton *navRightButton = self.navRightButton = [UIHelper createBarButton:5];
@@ -179,6 +183,8 @@ headerView = _headerView;
     self.navLeftButton = nil;
     self.navRightButton = nil;
     
+    self.dropDownMenu = nil;
+    
     self.slideShowView.delegate = nil;
     self.slideShowView.dataSource = nil;
     self.slideShowView = nil;
@@ -231,6 +237,23 @@ headerView = _headerView;
     }
     
     return _channelTypes;
+}
+
+- (NNDropDownMenu *)dropDownMenu {
+    if (!_dropDownMenu) {
+        _dropDownMenu = [[NNDropDownMenu alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleScreenHeight)];
+        _dropDownMenu.topPadding = NavBarHeight + StatusBarHeight;
+        _dropDownMenu.itemHeight = 24;
+        
+        for (NSUInteger i = 0; i < 4; i++) {
+            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 24)];
+            [item setText:@"关于我们" withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
+            [item setIconImage:[UIImage imageFromFile:@"icon_about_normal.png"] andHighlightedImage:[UIImage imageFromFile:@"icon_config_highlighted.png"]];
+            [_dropDownMenu addItem:item];
+        }
+    }
+    
+    return _dropDownMenu;
 }
 
 #pragma mark - UIViewController life cycle
@@ -680,6 +703,10 @@ headerView = _headerView;
     NSInteger index = recognizer.view.tag;
     
     [self enterControllerByType:[_slideShowModel.list objectAtIndex:index] atOffset:0];
+}
+
+- (void)toggleDropDownMenu {
+    [self.dropDownMenu showMenu];
 }
 
 #pragma mark - KVO
