@@ -23,7 +23,7 @@
         
         CAGradientLayer *gradient = [CAGradientLayer layer];
         gradient.frame = self.bounds;
-        gradient.colors = [NSArray arrayWithObjects:(id)RGBA(0, 0, 0, .95).CGColor, (id)RGBA(0, 0, 0, .77).CGColor, nil];
+        gradient.colors = [NSArray arrayWithObjects:(id)RGBA(0, 0, 0, .65).CGColor, (id)RGBA(0, 0, 0, .99).CGColor, (id)RGBA(0, 0, 0, .80).CGColor, (id)RGBA(0, 0, 0, .60).CGColor, nil];
         [self.layer insertSublayer:gradient atIndex:0];
 
 //        self.backgroundColor = [UIColor blackColor];
@@ -156,7 +156,7 @@
 
 @end
 
-static const CGFloat kIconPadding = 5;
+static const CGFloat kIconPadding = 12;
 
 @interface NNMenuItem ()
 @property (nonatomic, unsafe_unretained) UIImageView *iconView;
@@ -170,7 +170,7 @@ static const CGFloat kIconPadding = 5;
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        UIImageView *iconView = self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(kIconPadding, 0, 15, 15)];
+        UIImageView *iconView = self.iconView = [[UIImageView alloc] initWithFrame:CGRectMake(kIconPadding, 0, 20, 20)];
         CGPoint center = iconView.center;
         center.y = frame.size.height / 2;
         iconView.center = center;
@@ -178,9 +178,9 @@ static const CGFloat kIconPadding = 5;
         iconView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
         [self addSubview:iconView];
         
-        CGFloat leftPadding = kIconPadding + 15 + kIconPadding;
+        CGFloat leftPadding = kIconPadding + 20 + kIconPadding;
         UILabel *textLabel = self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(leftPadding, 0, frame.size.width - leftPadding, frame.size.height)];
-        textLabel.font = [UIFont boldSystemFontOfSize:14];
+        textLabel.font = [UIFont boldSystemFontOfSize:16];
         textLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         textLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:textLabel]; 

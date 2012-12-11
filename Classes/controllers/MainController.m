@@ -107,6 +107,7 @@ headerView = _headerView;
     UIImage *userHighlightedImage = [UIImage imageFromFile:@"icon_config_highlighted.png"];
     [navLeftButton setImage:userHighlightedImage forState:UIControlStateHighlighted];
     [navLeftButton setImage:userHighlightedImage forState:UIControlStateSelected];
+    [navLeftButton setImage:userHighlightedImage forState:UIControlStateDisabled];
     [navLeftButton addTarget:self action:@selector(toggleDropDownMenu) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
@@ -247,7 +248,7 @@ headerView = _headerView;
 
 - (NSArray *)menuTexts {
     if (!_menuTexts) {
-        _menuTexts = @[@"意见反馈", @"关于我们", @"登陆", @"清除缓存"];
+        _menuTexts = @[@"清除缓存", @"意见反馈", @"关于我们", @"登陆"];
     }
     
     return _menuTexts;
@@ -255,7 +256,7 @@ headerView = _headerView;
 
 - (NSArray *)menuIcons {
     if (!_menuIcons) {
-        _menuIcons = @[@"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png", @"icon_clear_normal.png"];
+        _menuIcons = @[@"icon_clear_normal.png", @"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png"];
     }
     
     return _menuIcons;
@@ -265,10 +266,10 @@ headerView = _headerView;
     if (!_dropDownMenu) {
         _dropDownMenu = [[NNDropDownMenu alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleScreenHeight)];
         _dropDownMenu.topPadding = NavBarHeight + StatusBarHeight;
-        _dropDownMenu.itemHeight = 30;
+        _dropDownMenu.itemHeight = 40;
         
         [self.menuTexts enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
-            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 30)];
+            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 40)];
             [item setText:text withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
             UIImage *iconImage = [UIImage imageFromFile:self.menuIcons[idx]];
             [item setIconImage:iconImage andHighlightedImage:[iconImage opacity:0.5]];
@@ -279,20 +280,20 @@ headerView = _headerView;
         __unsafe_unretained NNDropDownMenu *weakMenu = _dropDownMenu;
         _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
             switch (index) {
-                case 0: //意见反馈
+                case 0: //清除缓存
+                    [weakSelf clearCache];
+                    break;
+                    
+                case 1: //意见反馈
                     [weakSelf showFeedbackController];
                     break;
                     
-                case 1: //关于我们
+                case 2: //关于我们
                     [weakSelf showAboutController];
                     break;
 
-                case 2: //登陆注销
+                case 3: //登陆注销
                     [weakSelf sign];
-                    break;
-                
-                case 3: //清除缓存
-                    [weakSelf clearCache];
                     break;
             }
             
@@ -304,7 +305,7 @@ headerView = _headerView;
     
     SessionManager *sessionManager = [SessionManager sharedManager];
     BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
-    NNMenuItem *signItem = _dropDownMenu.items[2];
+    NNMenuItem *signItem = _dropDownMenu.items[3];
     [signItem setText:tokenAvailable ? @"注销" : @"登陆"];
     
     return _dropDownMenu;

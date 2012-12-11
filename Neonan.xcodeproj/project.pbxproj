@@ -1614,7 +1614,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Support/JPush/lib\"",
-					"\"$(SRCROOT)/Support/Flurry\"",
 					"\"$(SRCROOT)/Support/UMeng\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
@@ -1670,7 +1669,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Support/JPush/lib\"",
-					"\"$(SRCROOT)/Support/Flurry\"",
 					"\"$(SRCROOT)/Support/UMeng\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;

@@ -10,6 +10,9 @@
 
 @interface AboutController ()
 
+@property (unsafe_unretained, nonatomic) IBOutlet UITextView *descriptionView;
+@property (unsafe_unretained, nonatomic) IBOutlet UILabel *rightLabel;
+
 @end
 
 @implementation AboutController
@@ -33,6 +36,9 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
     self.view.backgroundColor = DarkThemeColor;
+    
+    _descriptionView.text = [NSString stringWithFormat:_descriptionView.text, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+    _rightLabel.text = @"牛朝（上海）信息科技有限公司 版权所有\nCopyright © 2012 牛男NEO.com Inc.\nAll Rights Reserved.";
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,4 +51,9 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+- (void)viewDidUnload {
+    self.rightLabel = nil;
+    self.descriptionView = nil;
+    [super viewDidUnload];
+}
 @end
