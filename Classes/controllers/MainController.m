@@ -52,7 +52,7 @@ typedef enum {
     contentTypeVideo
 } contentType;
 
-@interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate>
+@interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate, NNDropDownMenuDelegate>
 @property (nonatomic, unsafe_unretained) UIButton *navLeftButton;
 @property (nonatomic, unsafe_unretained) UIButton *navRightButton;
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
@@ -104,10 +104,9 @@ headerView = _headerView;
     
     UIButton *navLeftButton = self.navLeftButton = [UIHelper createBarButton:0];
     [navLeftButton setImage:[UIImage imageFromFile:@"icon_config_normal.png"] forState:UIControlStateNormal];
-    UIImage *userHighlightedImage = [UIImage imageFromFile:@"icon_config_highlighted.png"];
-    [navLeftButton setImage:userHighlightedImage forState:UIControlStateHighlighted];
-    [navLeftButton setImage:userHighlightedImage forState:UIControlStateSelected];
-    [navLeftButton setImage:userHighlightedImage forState:UIControlStateDisabled];
+    UIImage *highlightedImage = [UIImage imageFromFile:@"icon_config_highlighted.png"];
+    [navLeftButton setImage:highlightedImage forState:UIControlStateHighlighted];
+    [navLeftButton setImage:highlightedImage forState:UIControlStateSelected];
     [navLeftButton addTarget:self action:@selector(toggleDropDownMenu) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
@@ -190,7 +189,10 @@ headerView = _headerView;
     self.navLeftButton = nil;
     self.navRightButton = nil;
     
-    self.dropDownMenu = nil;
+    if (_dropDownMenu) {
+        self.dropDownMenu.menuDelegate = nil;
+        self.dropDownMenu = nil;
+    }
     
     self.slideShowView.delegate = nil;
     self.slideShowView.dataSource = nil;
@@ -267,6 +269,7 @@ headerView = _headerView;
         _dropDownMenu = [[NNDropDownMenu alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleScreenHeight)];
         _dropDownMenu.topPadding = NavBarHeight + StatusBarHeight;
         _dropDownMenu.itemHeight = 40;
+        _dropDownMenu.menuDelegate = self;
         
         [self.menuTexts enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
             NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 40)];
@@ -452,6 +455,12 @@ headerView = _headerView;
     navController.logoHidden = NO;
     controller.videoUrl = videoUrl;
     [self.navigationController presentModalViewController:navController animated:YES];
+}
+
+#pragma mark - NNDropDownMenuDelegate methods
+
+- (void)onMenuDismissed {
+    self.navLeftButton.selected = NO;
 }
 
 #pragma mark - Private methods
@@ -799,6 +808,7 @@ headerView = _headerView;
 }
 
 - (void)toggleDropDownMenu {
+    self.navLeftButton.selected = YES;
     [self.dropDownMenu showMenu];
 }
 

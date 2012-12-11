@@ -18,11 +18,20 @@
 
 typedef void(^ItemClickedBlock)(NNMenuItem *item, NSUInteger index);
 
+@protocol NNDropDownMenuDelegate <NSObject>
+
+@optional
+- (void)onMenuDismissed;
+
+@end
+
 @interface NNDropDownMenu : UIWindow
 @property (nonatomic, assign) CGFloat topPadding;
 @property (nonatomic, assign) CGFloat itemHeight;
 @property (nonatomic, assign, getter = isShowing) BOOL showing;
 @property (nonatomic, readonly) NSArray *items;
+
+@property (nonatomic, unsafe_unretained) id<NNDropDownMenuDelegate> menuDelegate;
 
 @property (nonatomic, copy) ItemClickedBlock onItemClicked;
 
@@ -31,3 +40,5 @@ typedef void(^ItemClickedBlock)(NNMenuItem *item, NSUInteger index);
 - (void)dismissMenu;
 
 @end
+
+

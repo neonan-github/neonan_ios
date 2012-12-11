@@ -140,6 +140,10 @@
                     *stop = YES;
                 }
             }];
+            
+            if (_menuDelegate && [_menuDelegate respondsToSelector:@selector(onMenuDismissed)]) {
+                [_menuDelegate onMenuDismissed];
+            }
         }];
     });
 }
