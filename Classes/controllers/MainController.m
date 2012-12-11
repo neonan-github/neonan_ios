@@ -12,6 +12,8 @@
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
 #import "SignController.h"
+#import "AboutController.h"
+#import "FeedbackController.h"
 
 #import "SMPageControl.h"
 #import "HotListCell.h"
@@ -21,6 +23,7 @@
 #import "CustomNavigationBar.h"
 #import "NNDropDownMenu.h"
 
+#import <SDImageCache.h>
 #import <SVPullToRefresh.h>
 #import <TTTAttributedLabel.h>
 #import <NYXImagesKit.h>
@@ -272,24 +275,29 @@ headerView = _headerView;
             [_dropDownMenu addItem:item];
         }];
         
-        __unsafe_unretained NNDropDownMenu *weakRef = _dropDownMenu;
+        __unsafe_unretained MainController *weakSelf = self;
+        __unsafe_unretained NNDropDownMenu *weakMenu = _dropDownMenu;
         _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
             switch (index) {
                 case 0: //意见反馈
+                    [weakSelf showFeedbackController];
                     break;
                     
                 case 1: //关于我们
+                    [weakSelf showAboutController];
                     break;
 
-                case 2: //登陆／注销
+                case 2: //登陆注销
+                    [weakSelf sign];
                     break;
                 
                 case 3: //清除缓存
+                    [weakSelf clearCache];
                     break;
             }
             
-            if ([weakRef isKindOfClass:[NNDropDownMenu class]]) {
-                [weakRef dismissMenu];
+            if ([weakMenu isKindOfClass:[NNDropDownMenu class]]) {
+                [weakMenu dismissMenu];
             }
         };
     }
@@ -440,6 +448,7 @@ headerView = _headerView;
 - (void)playVideo:(NSString *)videoUrl {
     VideoPlayController *controller = [[VideoPlayController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
     controller.videoUrl = videoUrl;
     [self.navigationController presentModalViewController:navController animated:YES];
 }
@@ -497,6 +506,16 @@ headerView = _headerView;
     return -1;
 }
 
+- (void)sign {
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [self performSelector:tokenAvailable ? @selector(signOut) : @selector(signIn)];
+#pragma clang diagnostic pop
+}
+
 - (void)signIn {
     [[SessionManager sharedManager] requsetToken:self success:nil];
 }
@@ -518,6 +537,33 @@ headerView = _headerView;
                                                cancelButtonItem:cancelItem
                                                otherButtonItems:okItem, nil];
     [alertView show];
+}
+
+- (void)showAboutController {
+    AboutController *controller = [[AboutController alloc] init];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
+    
+    [self.navigationController presentModalViewController:navController animated:YES];
+}
+
+- (void)showFeedbackController {
+    FeedbackController *controller = [[FeedbackController alloc] init];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
+    
+    [self.navigationController presentModalViewController:navController animated:YES];
+}
+
+- (void)clearCache {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        [imageCache clearMemory];
+        [imageCache clearDisk];
+        [imageCache cleanDisk];
+        
+        [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    });
 }
 
 #pragma mark - Private Request methods

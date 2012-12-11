@@ -12,7 +12,7 @@
 #import <AFNetworkActivityIndicatorManager.h>
 #import "NNURLCache.h"
 #import "APService.h"
-#import "Flurry.h"
+//#import "Flurry.h"
 
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
@@ -22,7 +22,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Flurry startSession:@"VKBQM8MR7GP8V94YR43B"];
+//    [Flurry startSession:@"VKBQM8MR7GP8V94YR43B"];
     
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     

@@ -9,7 +9,7 @@
 #import "ShareEditController.h"
 #import "LoadingView.h"
 
-const NSUInteger kMaxInputLimit = 30;
+const NSUInteger kMaxInputLimit = 140;
 
 @interface ShareEditController () <UITextViewDelegate>
 
@@ -86,8 +86,12 @@ const NSUInteger kMaxInputLimit = 30;
     [super viewWillAppear:animated];
     
     CGRect frame = _textView.frame;
-    frame.size.height = self.view.frame.size.height - 76 - KeyboardPortraitHeight;
+    frame.size.height = self.view.frame.size.height - frame.origin.y - KeyboardPortraitHeight - 10;
     _textView.frame = frame;
+    
+    frame = _textBgView.frame;
+    frame.size.height = _textView.frame.size.height;
+    _textBgView.frame = frame;
     
     [_textView becomeFirstResponder];
 }
