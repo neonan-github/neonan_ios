@@ -158,6 +158,8 @@
 		34C56BFC1676E9C10013ECE6 /* bg_share_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BFB1676E9C10013ECE6 /* bg_share_edit.png */; };
 		34C56BFE1676E9F80013ECE6 /* icon_down_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BFD1676E9F80013ECE6 /* icon_down_select.png */; };
 		34C56C001676EA230013ECE6 /* bg_feedback_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BFF1676EA230013ECE6 /* bg_feedback_edit.png */; };
+		34C56C24167702820013ECE6 /* SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C56C23167702820013ECE6 /* SVPullToRefresh.m */; };
+		34C56C3E16770BCD0013ECE6 /* SSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C56C3D16770BCD0013ECE6 /* SSTextView.m */; };
 		34C81B4F162BF78000DA093B /* BabyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C81B4E162BF78000DA093B /* BabyCell.m */; };
 		34CB8FC2163F6D170001AD87 /* icon_disclosure_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */; };
 		34CB8FC5163F6FE60001AD87 /* icon_disclosure_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FC4163F6FE60001AD87 /* icon_disclosure_highlighted.png */; };
@@ -472,6 +474,10 @@
 		34C56BFB1676E9C10013ECE6 /* bg_share_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_share_edit.png; sourceTree = "<group>"; };
 		34C56BFD1676E9F80013ECE6 /* icon_down_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_down_select.png; sourceTree = "<group>"; };
 		34C56BFF1676EA230013ECE6 /* bg_feedback_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_feedback_edit.png; sourceTree = "<group>"; };
+		34C56C22167702820013ECE6 /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
+		34C56C23167702820013ECE6 /* SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVPullToRefresh.m; sourceTree = "<group>"; };
+		34C56C3C16770BCD0013ECE6 /* SSTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSTextView.h; sourceTree = "<group>"; };
+		34C56C3D16770BCD0013ECE6 /* SSTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSTextView.m; sourceTree = "<group>"; };
 		34C81B4D162BF78000DA093B /* BabyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCell.h; sourceTree = "<group>"; };
 		34C81B4E162BF78000DA093B /* BabyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyCell.m; sourceTree = "<group>"; };
 		34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_disclosure_normal.png; sourceTree = "<group>"; };
@@ -1006,6 +1012,24 @@
 			path = UMeng;
 			sourceTree = "<group>";
 		};
+		34C56C21167702820013ECE6 /* SVPullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				34C56C22167702820013ECE6 /* SVPullToRefresh.h */,
+				34C56C23167702820013ECE6 /* SVPullToRefresh.m */,
+			);
+			path = SVPullToRefresh;
+			sourceTree = "<group>";
+		};
+		34C56C3B16770BCD0013ECE6 /* SSTextView */ = {
+			isa = PBXGroup;
+			children = (
+				34C56C3C16770BCD0013ECE6 /* SSTextView.h */,
+				34C56C3D16770BCD0013ECE6 /* SSTextView.m */,
+			);
+			path = SSTextView;
+			sourceTree = "<group>";
+		};
 		34D46496162FCA7500D8EE28 /* helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1173,6 +1197,8 @@
 		53816B2116265FB100B0672C /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				34C56C3B16770BCD0013ECE6 /* SSTextView */,
+				34C56C21167702820013ECE6 /* SVPullToRefresh */,
 				34C56BE81676CE390013ECE6 /* UMeng */,
 				34F574D31671DE9600D20195 /* KeyValueObjectMapping */,
 				34E9FDCE16646E5F00F90A88 /* JPush */,
@@ -1486,6 +1512,8 @@
 				349EF6151675A62C0086A7F1 /* NNDropDownMenu.m in Sources */,
 				349EF62D1675E92E0086A7F1 /* AboutController.m in Sources */,
 				34C56BF11676CEE00013ECE6 /* FeedbackController.m in Sources */,
+				34C56C24167702820013ECE6 /* SVPullToRefresh.m in Sources */,
+				34C56C3E16770BCD0013ECE6 /* SSTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

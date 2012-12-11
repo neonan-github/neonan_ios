@@ -1,5 +1,6 @@
 platform :ios
-pod 'SVPullToRefresh',     '~> 0.3'
+
+#pod 'SVPullToRefresh',     '~> 0.3'
 pod 'iCarousel',           '~> 1.7.2'
 pod 'HPGrowingTextView',   '~> 0.0.1'
 #pod 'NSLogger',            '~> 1.1' 
@@ -18,3 +19,4 @@ pod 'MBProgressHUD',       '~> 0.5'
 pod 'UIAlertView-Blocks',  '~> 0.0.1'
 pod 'Reachability',        '~> 3.1.0'
 pod 'DDURLParser',         '~> 0.0.1'
+pod 'ActionSheetPicker',   '~> 0.0.1'
