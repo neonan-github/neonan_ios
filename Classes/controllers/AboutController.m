@@ -31,6 +31,8 @@
     [navLeftButton setTitle:@"关闭" forState:UIControlStateNormal];
     [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
+    
+    self.view.backgroundColor = DarkThemeColor;
 }
 
 - (void)didReceiveMemoryWarning

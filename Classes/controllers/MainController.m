@@ -13,6 +13,7 @@
 #import "VideoPlayController.h"
 #import "SignController.h"
 #import "AboutController.h"
+#import "FeedbackController.h"
 
 #import "SMPageControl.h"
 #import "HotListCell.h"
@@ -279,6 +280,7 @@ headerView = _headerView;
         _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
             switch (index) {
                 case 0: //意见反馈
+                    [weakSelf showFeedbackController];
                     break;
                     
                 case 1: //关于我们
@@ -539,6 +541,14 @@ headerView = _headerView;
 
 - (void)showAboutController {
     AboutController *controller = [[AboutController alloc] init];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
+    
+    [self.navigationController presentModalViewController:navController animated:YES];
+}
+
+- (void)showFeedbackController {
+    FeedbackController *controller = [[FeedbackController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     navController.logoHidden = NO;
     
