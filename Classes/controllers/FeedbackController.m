@@ -42,7 +42,7 @@
 - (UMFeedback *)umFeedback {
     if (!_umFeedback) {
         _umFeedback = [UMFeedback sharedInstance];
-        [_umFeedback setAppkey:@"50c1b8545270150f81000018" delegate:self];
+        [_umFeedback setAppkey:UMengAppKey delegate:self];
     }
     
     return _umFeedback;

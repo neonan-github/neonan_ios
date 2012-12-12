@@ -124,6 +124,8 @@
 		3484357616437A4B0073468D /* SignResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 3484357516437A4B0073468D /* SignResult.m */; };
 		348435A81643C1C00073468D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 348435A71643C1C00073468D /* Security.framework */; };
 		348435B81643C6540073468D /* MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 348435B71643C6540073468D /* MD5.m */; };
+		348BCEF61678312C00D8FCB5 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */; };
+		348BCEF91678314E00D8FCB5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 348BCEF81678314E00D8FCB5 /* libz.dylib */; };
 		34915FF01664C76A0019CEA7 /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34915FEE1664C76A0019CEA7 /* libPushSDK-Simulator.a */; };
 		34915FF11664C76A0019CEA7 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34915FEF1664C76A0019CEA7 /* libPushSDK.a */; };
 		34925B1D164D127C00146B37 /* ArticleDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34925B1C164D127C00146B37 /* ArticleDetailModel.m */; };
@@ -430,6 +432,9 @@
 		348435A71643C1C00073468D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		348435B61643C6540073468D /* MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MD5.h; sourceTree = "<group>"; };
 		348435B71643C6540073468D /* MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MD5.m; sourceTree = "<group>"; };
+		348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
+		348BCEF51678312C00D8FCB5 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
+		348BCEF81678314E00D8FCB5 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		34915FED1664C76A0019CEA7 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		34915FEE1664C76A0019CEA7 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
 		34915FEF1664C76A0019CEA7 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
@@ -580,6 +585,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				348BCEF91678314E00D8FCB5 /* libz.dylib in Frameworks */,
 				34E9FDD916646EA500F90A88 /* CoreTelephony.framework in Frameworks */,
 				34E9FDD716646E8E00F90A88 /* CFNetwork.framework in Frameworks */,
 				34BE36AC16520F860018B3A8 /* CoreFoundation.framework in Frameworks */,
@@ -595,6 +601,7 @@
 				34915FF01664C76A0019CEA7 /* libPushSDK-Simulator.a in Frameworks */,
 				34915FF11664C76A0019CEA7 /* libPushSDK.a in Frameworks */,
 				34C56BEC1676CE390013ECE6 /* libUMFeedback.a in Frameworks */,
+				348BCEF61678312C00D8FCB5 /* libMobClickLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,6 +1013,8 @@
 		34C56BE81676CE390013ECE6 /* UMeng */ = {
 			isa = PBXGroup;
 			children = (
+				348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */,
+				348BCEF51678312C00D8FCB5 /* MobClick.h */,
 				34C56BE91676CE390013ECE6 /* libUMFeedback.a */,
 				34C56BEB1676CE390013ECE6 /* UMFeedback.h */,
 			);
@@ -1139,6 +1148,7 @@
 		53816AF916265E9400B0672C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				348BCEF81678314E00D8FCB5 /* libz.dylib */,
 				34E9FDD816646EA500F90A88 /* CoreTelephony.framework */,
 				34E9FDD616646E8E00F90A88 /* CFNetwork.framework */,
 				34BE36AB16520F860018B3A8 /* CoreFoundation.framework */,

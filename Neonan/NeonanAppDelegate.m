@@ -13,6 +13,7 @@
 #import "NNURLCache.h"
 #import "APService.h"
 //#import "Flurry.h"
+#import "MobClick.h"
 
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
@@ -23,6 +24,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 //    [Flurry startSession:@"VKBQM8MR7GP8V94YR43B"];
+    [MobClick startWithAppkey:UMengAppKey];
     
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     

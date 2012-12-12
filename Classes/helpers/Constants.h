@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define UMengAppKey @"50c1b8545270150f81000018"
+
 typedef enum {
     SortTypeLatest = 0,
     SortTypeHotest
@@ -15,3 +17,4 @@ typedef enum {
 
 //MainController
 #define MainSlideShowCount 6
+
