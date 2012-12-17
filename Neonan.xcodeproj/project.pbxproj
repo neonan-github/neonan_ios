@@ -38,6 +38,8 @@
 		346614D51635138700B1FF5A /* BabyDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614D41635138700B1FF5A /* BabyDetailController.m */; };
 		346614DB163521C500B1FF5A /* CommentListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614DA163521C500B1FF5A /* CommentListController.m */; };
 		346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614ED1635489B00B1FF5A /* FoldableTextBox.m */; };
+		346C706C167EBAF000EA0057 /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 346C706A167EBAF000EA0057 /* libPushSDK-Simulator.a */; };
+		346C706D167EBAF000EA0057 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 346C706B167EBAF000EA0057 /* libPushSDK.a */; };
 		3470DBD21653B14000273244 /* CommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3470DBD11653B14000273244 /* CommentListModel.m */; };
 		3473023B165339B200E3C763 /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3473023A165339B200E3C763 /* SessionManager.m */; };
 		347AAB5D163672E500D243BA /* SignController.m in Sources */ = {isa = PBXBuildFile; fileRef = 347AAB5B163672E500D243BA /* SignController.m */; };
@@ -126,8 +128,6 @@
 		348435B81643C6540073468D /* MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 348435B71643C6540073468D /* MD5.m */; };
 		348BCEF61678312C00D8FCB5 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */; };
 		348BCEF91678314E00D8FCB5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 348BCEF81678314E00D8FCB5 /* libz.dylib */; };
-		34915FF01664C76A0019CEA7 /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34915FEE1664C76A0019CEA7 /* libPushSDK-Simulator.a */; };
-		34915FF11664C76A0019CEA7 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34915FEF1664C76A0019CEA7 /* libPushSDK.a */; };
 		34925B1D164D127C00146B37 /* ArticleDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34925B1C164D127C00146B37 /* ArticleDetailModel.m */; };
 		3499BF131627D3F70084B838 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3499BF121627D3F70084B838 /* MediaPlayer.framework */; };
 		349EF606167590CA0086A7F1 /* icon_config_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 349EF604167590CA0086A7F1 /* icon_config_highlighted.png */; };
@@ -277,6 +277,9 @@
 		346614DA163521C500B1FF5A /* CommentListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListController.m; sourceTree = "<group>"; };
 		346614EC1635489B00B1FF5A /* FoldableTextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoldableTextBox.h; sourceTree = "<group>"; };
 		346614ED1635489B00B1FF5A /* FoldableTextBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoldableTextBox.m; sourceTree = "<group>"; };
+		346C7069167EBAF000EA0057 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
+		346C706A167EBAF000EA0057 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
+		346C706B167EBAF000EA0057 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		3470DBD01653B14000273244 /* CommentListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListModel.h; sourceTree = "<group>"; };
 		3470DBD11653B14000273244 /* CommentListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListModel.m; sourceTree = "<group>"; };
 		34730239165339B200E3C763 /* SessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionManager.h; sourceTree = "<group>"; };
@@ -435,9 +438,6 @@
 		348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		348BCEF51678312C00D8FCB5 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		348BCEF81678314E00D8FCB5 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		34915FED1664C76A0019CEA7 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
-		34915FEE1664C76A0019CEA7 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
-		34915FEF1664C76A0019CEA7 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		34925B1B164D127C00146B37 /* ArticleDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArticleDetailModel.h; sourceTree = "<group>"; };
 		34925B1C164D127C00146B37 /* ArticleDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleDetailModel.m; sourceTree = "<group>"; };
 		3499BF121627D3F70084B838 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -598,10 +598,10 @@
 				53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */,
 				53816AFF16265E9400B0672C /* CoreGraphics.framework in Frameworks */,
 				F912E5785A5344D991F500B6 /* libPods.a in Frameworks */,
-				34915FF01664C76A0019CEA7 /* libPushSDK-Simulator.a in Frameworks */,
-				34915FF11664C76A0019CEA7 /* libPushSDK.a in Frameworks */,
 				34C56BEC1676CE390013ECE6 /* libUMFeedback.a in Frameworks */,
 				348BCEF61678312C00D8FCB5 /* libMobClickLibrary.a in Frameworks */,
+				346C706C167EBAF000EA0057 /* libPushSDK-Simulator.a in Frameworks */,
+				346C706D167EBAF000EA0057 /* libPushSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -665,6 +665,24 @@
 				340E0209165F4B860094DCCE /* NearWorksModel.m */,
 			);
 			path = models;
+			sourceTree = "<group>";
+		};
+		346C7067167EBAF000EA0057 /* JPush */ = {
+			isa = PBXGroup;
+			children = (
+				346C7068167EBAF000EA0057 /* lib */,
+			);
+			path = JPush;
+			sourceTree = "<group>";
+		};
+		346C7068167EBAF000EA0057 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				346C7069167EBAF000EA0057 /* APService.h */,
+				346C706A167EBAF000EA0057 /* libPushSDK-Simulator.a */,
+				346C706B167EBAF000EA0057 /* libPushSDK.a */,
+			);
+			path = lib;
 			sourceTree = "<group>";
 		};
 		347AAB60163672FC00D243BA /* layouts */ = {
@@ -931,16 +949,6 @@
 			path = LoadingView;
 			sourceTree = "<group>";
 		};
-		34915FEC1664C76A0019CEA7 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				34915FED1664C76A0019CEA7 /* APService.h */,
-				34915FEE1664C76A0019CEA7 /* libPushSDK-Simulator.a */,
-				34915FEF1664C76A0019CEA7 /* libPushSDK.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
 		3499BEC01626DAAF0084B838 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1073,14 +1081,6 @@
 			path = SMPageControl;
 			sourceTree = "<group>";
 		};
-		34E9FDCE16646E5F00F90A88 /* JPush */ = {
-			isa = PBXGroup;
-			children = (
-				34915FEC1664C76A0019CEA7 /* lib */,
-			);
-			path = JPush;
-			sourceTree = "<group>";
-		};
 		34F574D31671DE9600D20195 /* KeyValueObjectMapping */ = {
 			isa = PBXGroup;
 			children = (
@@ -1207,11 +1207,11 @@
 		53816B2116265FB100B0672C /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				346C7067167EBAF000EA0057 /* JPush */,
 				34C56C3B16770BCD0013ECE6 /* SSTextView */,
 				34C56C21167702820013ECE6 /* SVPullToRefresh */,
 				34C56BE81676CE390013ECE6 /* UMeng */,
 				34F574D31671DE9600D20195 /* KeyValueObjectMapping */,
-				34E9FDCE16646E5F00F90A88 /* JPush */,
 				34B018861659C76C00940CC1 /* SDURLCache */,
 				3480045F1648D6C200EED346 /* SFHFKeychainUtils */,
 				348003D31648D6C200EED346 /* ShareService */,

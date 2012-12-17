@@ -250,7 +250,7 @@ headerView = _headerView;
 
 - (NSArray *)menuTexts {
     if (!_menuTexts) {
-        _menuTexts = @[@"清除缓存", @"意见反馈", @"关于我们", @"登陆"];
+        _menuTexts = @[@"清除缓存", @"意见反馈", @"关于我们", @"登录"];
     }
     
     return _menuTexts;
@@ -309,7 +309,7 @@ headerView = _headerView;
     SessionManager *sessionManager = [SessionManager sharedManager];
     BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
     NNMenuItem *signItem = _dropDownMenu.items[3];
-    [signItem setText:tokenAvailable ? @"注销" : @"登陆"];
+    [signItem setText:tokenAvailable ? @"注销" : @"登录"];
     
     return _dropDownMenu;
 }
