@@ -38,7 +38,6 @@
 		346614D51635138700B1FF5A /* BabyDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614D41635138700B1FF5A /* BabyDetailController.m */; };
 		346614DB163521C500B1FF5A /* CommentListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614DA163521C500B1FF5A /* CommentListController.m */; };
 		346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614ED1635489B00B1FF5A /* FoldableTextBox.m */; };
-		346C706C167EBAF000EA0057 /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 346C706A167EBAF000EA0057 /* libPushSDK-Simulator.a */; };
 		346C706D167EBAF000EA0057 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 346C706B167EBAF000EA0057 /* libPushSDK.a */; };
 		3470DBD21653B14000273244 /* CommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3470DBD11653B14000273244 /* CommentListModel.m */; };
 		3473023B165339B200E3C763 /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3473023A165339B200E3C763 /* SessionManager.m */; };
@@ -600,7 +599,6 @@
 				F912E5785A5344D991F500B6 /* libPods.a in Frameworks */,
 				34C56BEC1676CE390013ECE6 /* libUMFeedback.a in Frameworks */,
 				348BCEF61678312C00D8FCB5 /* libMobClickLibrary.a in Frameworks */,
-				346C706C167EBAF000EA0057 /* libPushSDK-Simulator.a in Frameworks */,
 				346C706D167EBAF000EA0057 /* libPushSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
