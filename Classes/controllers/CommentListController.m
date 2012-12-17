@@ -14,7 +14,7 @@
 #import "CommentListModel.h"
 #import "ShareHelper.h"
 
-#import <SVPullToRefresh.h>
+#import "SVPullToRefresh.h"
 #import <MBProgressHUD.h>
 
 #define CELL_CONTENT_WIDTH 320.0f

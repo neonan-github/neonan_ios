@@ -12,6 +12,8 @@
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
 #import "SignController.h"
+#import "AboutController.h"
+#import "FeedbackController.h"
 
 #import "SMPageControl.h"
 #import "HotListCell.h"
@@ -19,6 +21,9 @@
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
 #import "CustomNavigationBar.h"
+#import "NNDropDownMenu.h"
+
+#import <SDImageCache.h>
 #import <SVPullToRefresh.h>
 #import <TTTAttributedLabel.h>
 #import <NYXImagesKit.h>
@@ -47,7 +52,7 @@ typedef enum {
     contentTypeVideo
 } contentType;
 
-@interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate>
+@interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate, NNDropDownMenuDelegate>
 @property (nonatomic, unsafe_unretained) UIButton *navLeftButton;
 @property (nonatomic, unsafe_unretained) UIButton *navRightButton;
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
@@ -55,6 +60,10 @@ typedef enum {
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) UITableView *tableView;
 @property (nonatomic, unsafe_unretained) CircleHeaderView *headerView;
+@property (nonatomic, strong) NNDropDownMenu *dropDownMenu;
+
+@property (nonatomic, strong) NSArray *menuTexts;
+@property (nonatomic, strong) NSArray *menuIcons;
 
 @property (nonatomic, strong) NSArray *channelTexts;
 @property (nonatomic, strong) NSArray *channelTypes;
@@ -75,7 +84,6 @@ typedef enum {
 - (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
 
 - (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex;
-- (void)updateUserStatus;
 - (void)updateTableView;
 - (void)updateSlideShow;
 - (void)onChannelChanged;
@@ -95,10 +103,11 @@ headerView = _headerView;
     self.view.backgroundColor = DarkThemeColor;
     
     UIButton *navLeftButton = self.navLeftButton = [UIHelper createBarButton:0];
-    [navLeftButton setImage:[UIImage imageFromFile:@"icon_user_normal.png"] forState:UIControlStateNormal];
-    UIImage *userHighlightedImage = [UIImage imageFromFile:@"icon_user_highlighted.png"];
-    [navLeftButton setImage:userHighlightedImage forState:UIControlStateHighlighted];
-    [navLeftButton setImage:userHighlightedImage forState:UIControlStateSelected];
+    [navLeftButton setImage:[UIImage imageFromFile:@"icon_config_normal.png"] forState:UIControlStateNormal];
+    UIImage *highlightedImage = [UIImage imageFromFile:@"icon_config_highlighted.png"];
+    [navLeftButton setImage:highlightedImage forState:UIControlStateHighlighted];
+    [navLeftButton setImage:highlightedImage forState:UIControlStateSelected];
+    [navLeftButton addTarget:self action:@selector(toggleDropDownMenu) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
     UIButton *navRightButton = self.navRightButton = [UIHelper createBarButton:5];
@@ -180,6 +189,11 @@ headerView = _headerView;
     self.navLeftButton = nil;
     self.navRightButton = nil;
     
+    if (_dropDownMenu) {
+        self.dropDownMenu.menuDelegate = nil;
+        self.dropDownMenu = nil;
+    }
+    
     self.slideShowView.delegate = nil;
     self.slideShowView.dataSource = nil;
     self.slideShowView = nil;
@@ -234,12 +248,78 @@ headerView = _headerView;
     return _channelTypes;
 }
 
+- (NSArray *)menuTexts {
+    if (!_menuTexts) {
+        _menuTexts = @[@"清除缓存", @"意见反馈", @"关于我们", @"登录"];
+    }
+    
+    return _menuTexts;
+}
+
+- (NSArray *)menuIcons {
+    if (!_menuIcons) {
+        _menuIcons = @[@"icon_clear_normal.png", @"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png"];
+    }
+    
+    return _menuIcons;
+}
+
+- (NNDropDownMenu *)dropDownMenu {
+    if (!_dropDownMenu) {
+        _dropDownMenu = [[NNDropDownMenu alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleScreenHeight)];
+        _dropDownMenu.topPadding = NavBarHeight + StatusBarHeight;
+        _dropDownMenu.itemHeight = 40;
+        _dropDownMenu.menuDelegate = self;
+        
+        [self.menuTexts enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
+            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 40)];
+            [item setText:text withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
+            UIImage *iconImage = [UIImage imageFromFile:self.menuIcons[idx]];
+            [item setIconImage:iconImage andHighlightedImage:[iconImage opacity:0.5]];
+            [_dropDownMenu addItem:item];
+        }];
+        
+        __unsafe_unretained MainController *weakSelf = self;
+        __unsafe_unretained NNDropDownMenu *weakMenu = _dropDownMenu;
+        _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
+            switch (index) {
+                case 0: //清除缓存
+                    [weakSelf clearCache];
+                    break;
+                    
+                case 1: //意见反馈
+                    [weakSelf showFeedbackController];
+                    break;
+                    
+                case 2: //关于我们
+                    [weakSelf showAboutController];
+                    break;
+
+                case 3: //登陆注销
+                    [weakSelf sign];
+                    break;
+            }
+            
+            if ([weakMenu isKindOfClass:[NNDropDownMenu class]]) {
+                [weakMenu dismissMenu];
+            }
+        };
+    }
+    
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    NNMenuItem *signItem = _dropDownMenu.items[3];
+    [signItem setText:tokenAvailable ? @"注销" : @"登录"];
+    
+    return _dropDownMenu;
+}
+
 #pragma mark - UIViewController life cycle
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self updateUserStatus];
+//    [self updateUserStatus];
     
     [_headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
     
@@ -372,8 +452,15 @@ headerView = _headerView;
 - (void)playVideo:(NSString *)videoUrl {
     VideoPlayController *controller = [[VideoPlayController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
     controller.videoUrl = videoUrl;
     [self.navigationController presentModalViewController:navController animated:YES];
+}
+
+#pragma mark - NNDropDownMenuDelegate methods
+
+- (void)onMenuDismissed {
+    self.navLeftButton.selected = NO;
 }
 
 #pragma mark - Private methods
@@ -429,6 +516,16 @@ headerView = _headerView;
     return -1;
 }
 
+- (void)sign {
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [self performSelector:tokenAvailable ? @selector(signOut) : @selector(signIn)];
+#pragma clang diagnostic pop
+}
+
 - (void)signIn {
     [[SessionManager sharedManager] requsetToken:self success:nil];
 }
@@ -442,7 +539,7 @@ headerView = _headerView;
     okItem.action = ^
     {
         [[SessionManager sharedManager] signOut];
-        [self updateUserStatus];
+//        [self updateUserStatus];
     };
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
@@ -450,6 +547,33 @@ headerView = _headerView;
                                                cancelButtonItem:cancelItem
                                                otherButtonItems:okItem, nil];
     [alertView show];
+}
+
+- (void)showAboutController {
+    AboutController *controller = [[AboutController alloc] init];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
+    
+    [self.navigationController presentModalViewController:navController animated:YES];
+}
+
+- (void)showFeedbackController {
+    FeedbackController *controller = [[FeedbackController alloc] init];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
+    
+    [self.navigationController presentModalViewController:navController animated:YES];
+}
+
+- (void)clearCache {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        SDImageCache *imageCache = [SDImageCache sharedImageCache];
+        [imageCache clearMemory];
+        [imageCache clearDisk];
+        [imageCache cleanDisk];
+        
+        [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    });
 }
 
 #pragma mark - Private Request methods
@@ -589,21 +713,21 @@ headerView = _headerView;
     }
 }
 
-- (void)updateUserStatus {
-    SessionManager *sessionManager = [SessionManager sharedManager];
-    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
-    
-    [self.navLeftButton setImage:(tokenAvailable ? [UIImage imageFromFile:@"icon_user_highlighted.png"] :
-                                  [UIImage imageFromFile:@"icon_user_normal.png"])
-                        forState:UIControlStateNormal];
-    
-    [self.navLeftButton removeTarget:nil
-                       action:NULL
-             forControlEvents:UIControlEventAllEvents];
-    [self.navLeftButton addTarget:self
-                           action:(tokenAvailable ? @selector(signOut) : @selector(signIn))
-                 forControlEvents:UIControlEventTouchUpInside];
-}
+//- (void)updateUserStatus {
+//    SessionManager *sessionManager = [SessionManager sharedManager];
+//    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+//    
+//    [self.navLeftButton setImage:(tokenAvailable ? [UIImage imageFromFile:@"icon_config_highlighted.png"] :
+//                                  [UIImage imageFromFile:@"icon_config_normal.png"])
+//                        forState:UIControlStateNormal];
+//    
+//    [self.navLeftButton removeTarget:nil
+//                       action:NULL
+//             forControlEvents:UIControlEventAllEvents];
+//    [self.navLeftButton addTarget:self
+//                           action:(tokenAvailable ? @selector(signOut) : @selector(signIn))
+//                 forControlEvents:UIControlEventTouchUpInside];
+//}
 
 - (void)updateTableView {
     [_tableView reloadData];
@@ -681,6 +805,11 @@ headerView = _headerView;
     NSInteger index = recognizer.view.tag;
     
     [self enterControllerByType:[_slideShowModel.list objectAtIndex:index] atOffset:0];
+}
+
+- (void)toggleDropDownMenu {
+    self.navLeftButton.selected = YES;
+    [self.dropDownMenu showMenu];
 }
 
 #pragma mark - KVO
