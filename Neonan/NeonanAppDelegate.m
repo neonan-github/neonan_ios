@@ -35,10 +35,12 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
+#ifndef DEBUG
     // JPush
     [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeSound |
                                                    UIRemoteNotificationTypeAlert)];
     [APService setupWithOption:launchOptions];
+#endif
     
     self.navController = [[NNNavigationController alloc] init];
     self.navController.logoHidden = NO;
@@ -81,13 +83,17 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+#ifndef DEBUG
     // JPush
     [APService registerDeviceToken:deviceToken];
+#endif
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+#ifndef DEBUG
     // JPush
     [APService handleRemoteNotification:userInfo];
+#endif
     
 //    if (application.applicationState == UIApplicationStateActive) {
 //        return;
