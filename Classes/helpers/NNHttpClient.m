@@ -11,7 +11,7 @@
 #import "ResponseError.h"
 #import "NNJSONRequestOperation.h"
 
-static NSString * const kAPIBaseURLString = @"http://neonan.com:5211/api/";
+static NSString * const kAPIBaseURLString = @"http://www.neonan.com:5211/api/";
 
 @implementation NNHttpClient
 
