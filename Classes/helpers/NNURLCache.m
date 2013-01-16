@@ -20,7 +20,7 @@
 + (NSString *)createKeyUrl:(NSString *)url {
     NSString *tokenInUrl = [self tokenInUrl:url];
     if (tokenInUrl) {
-        NSRange tokenPrefixRange = [url rangeOfString:@"&token="];
+        NSRange tokenPrefixRange = [url rangeOfString:@"&?token=" options:NSRegularExpressionSearch];
         NSString *newUrl = [url substringToIndex:tokenPrefixRange.location];
         NSString *stringAfter = [url substringFromIndex:tokenPrefixRange.location + tokenPrefixRange.length];
         NSRange tokenEndRange = [stringAfter rangeOfString:@"&"];
