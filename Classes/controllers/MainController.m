@@ -36,7 +36,7 @@
 #import "BabyListModel.h"
 #import "CommonListModel.h"
 
-static const NSUInteger kTopChannelIndex = 4;
+static const NSUInteger kTopicChannelIndex = 4;
 static const NSUInteger kBabyChannelIndex = NSIntegerMax;
 static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
@@ -173,7 +173,9 @@ headerView = _headerView;
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
-        [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
+        if (_channelIndex != kTopicChannelIndex) {
+            [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
+        }
         [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:requestTypeRefresh];
     }];
     [tableView addInfiniteScrollingWithActionHandler:^{
@@ -236,7 +238,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", /*@"宝贝",*/ @"视频", @"精选", @"女人", nil];
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", /*@"宝贝",*/ @"视频", @"专题", @"女人", nil];
     }
     
     return  _channelTexts;
@@ -244,7 +246,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"top", @"women", nil];
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"topic", @"women", nil];
     }
     
     return _channelTypes;
@@ -707,7 +709,7 @@ headerView = _headerView;
         case kBabyChannelIndex:
             return 110;
         
-        case kTopChannelIndex:
+        case kTopicChannelIndex:
             return 0;
             
         default:
@@ -755,7 +757,6 @@ headerView = _headerView;
     
     self.channelIndex = _headerView.carousel.currentItemIndex;
     
-    [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     [_tableView.pullToRefreshView triggerRefresh];
     
     CGRect frame = _slideShowView.frame;
