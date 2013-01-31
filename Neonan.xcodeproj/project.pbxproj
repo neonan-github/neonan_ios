@@ -147,7 +147,6 @@
 		34AC9C6F163E5DB10020DE4B /* bg_bar_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C6E163E5DB10020DE4B /* bg_bar_button.png */; };
 		34AC9C75163E75870020DE4B /* bg_header_view.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C74163E75870020DE4B /* bg_header_view.png */; };
 		34AC9C77163E80770020DE4B /* img_header_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C76163E80770020DE4B /* img_header_indicator.png */; };
-		34B018891659C76C00940CC1 /* SDURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B018881659C76C00940CC1 /* SDURLCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		34B2B77F16380F4500F75977 /* bg_btn_sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B2B77E16380F4500F75977 /* bg_btn_sign.png */; };
 		34B2B7821638113200F75977 /* img_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B2B7811638113200F75977 /* img_logo.png */; };
 		34B618A3164A0DFE00842F15 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3432926C1647B2140070B66A /* SystemConfiguration.framework */; };
@@ -469,8 +468,6 @@
 		34AC9C6E163E5DB10020DE4B /* bg_bar_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_bar_button.png; sourceTree = "<group>"; };
 		34AC9C74163E75870020DE4B /* bg_header_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_header_view.png; sourceTree = "<group>"; };
 		34AC9C76163E80770020DE4B /* img_header_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_header_indicator.png; sourceTree = "<group>"; };
-		34B018871659C76C00940CC1 /* SDURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDURLCache.h; sourceTree = "<group>"; };
-		34B018881659C76C00940CC1 /* SDURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDURLCache.m; sourceTree = "<group>"; };
 		34B2B77E16380F4500F75977 /* bg_btn_sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_btn_sign.png; sourceTree = "<group>"; };
 		34B2B7811638113200F75977 /* img_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_logo.png; sourceTree = "<group>"; };
 		34BE36A81651F76B0018B3A8 /* UrlModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UrlModel.h; sourceTree = "<group>"; };
@@ -1021,15 +1018,6 @@
 			path = CustomNavigationBar;
 			sourceTree = "<group>";
 		};
-		34B018861659C76C00940CC1 /* SDURLCache */ = {
-			isa = PBXGroup;
-			children = (
-				34B018871659C76C00940CC1 /* SDURLCache.h */,
-				34B018881659C76C00940CC1 /* SDURLCache.m */,
-			);
-			path = SDURLCache;
-			sourceTree = "<group>";
-		};
 		34C56BE81676CE390013ECE6 /* UMeng */ = {
 			isa = PBXGroup;
 			children = (
@@ -1224,7 +1212,6 @@
 				34C56C21167702820013ECE6 /* SVPullToRefresh */,
 				34C56BE81676CE390013ECE6 /* UMeng */,
 				34F574D31671DE9600D20195 /* KeyValueObjectMapping */,
-				34B018861659C76C00940CC1 /* SDURLCache */,
 				3480045F1648D6C200EED346 /* SFHFKeychainUtils */,
 				348003D31648D6C200EED346 /* ShareService */,
 				34AC9C68163E41640020DE4B /* CustomNavigationBar */,
@@ -1516,7 +1503,6 @@
 				34BE36AA1651F76B0018B3A8 /* UrlModel.m in Sources */,
 				3473023B165339B200E3C763 /* SessionManager.m in Sources */,
 				3470DBD21653B14000273244 /* CommentListModel.m in Sources */,
-				34B018891659C76C00940CC1 /* SDURLCache.m in Sources */,
 				34011A56165A1BCA007A8FD6 /* NNJSONRequestOperation.m in Sources */,
 				341CB053165B744300BF1D76 /* NNURLCache.m in Sources */,
 				340E020A165F4B860094DCCE /* NearWorksModel.m in Sources */,
@@ -1640,7 +1626,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neonan/Neonan-Prefix.pch";
 				INFOPLIST_FILE = "Neonan/Neonan-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Support/JPush/lib\"",
@@ -1695,7 +1681,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neonan/Neonan-Prefix.pch";
 				INFOPLIST_FILE = "Neonan/Neonan-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Support/JPush/lib\"",
