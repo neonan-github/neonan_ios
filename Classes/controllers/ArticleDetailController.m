@@ -358,7 +358,8 @@ static NSString * const kDirectionRight = @"1";
     _commentBox.countButton.enabled = _dataModel.commentNum > 0;
     
     [self renderHtml:_dataModel.content];
-    _textView.hidden = NO;
+    [_textView performSelector:@selector(setHidden:) withObject:nil afterDelay:0.5];
+//    _textView.hidden = NO;
 }
 
 - (void)clearContents {
@@ -371,7 +372,7 @@ static NSString * const kDirectionRight = @"1";
     [_commentBox.countButton setTitle:@"" forState:UIControlStateNormal];
     _commentBox.countButton.enabled = NO;
     
-    [self renderHtml:@""];
+    [_textView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];
     _textView.hidden = YES;
 }
 

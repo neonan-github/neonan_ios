@@ -24,6 +24,7 @@
 #import "SlideShowView.h"
 #import "CustomNavigationBar.h"
 #import "NNDropDownMenu.h"
+#import "NNTableView.h"
 
 #import <SDImageCache.h>
 #import <SVPullToRefresh.h>
@@ -62,7 +63,7 @@ typedef enum {
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) TTTAttributedLabel *slideShowTextLabel;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
-@property (nonatomic, unsafe_unretained) UITableView *tableView;
+@property (nonatomic, unsafe_unretained) NNTableView *tableView;
 @property (nonatomic, unsafe_unretained) CircleHeaderView *headerView;
 @property (nonatomic, strong) NNDropDownMenu *dropDownMenu;
 
@@ -164,7 +165,7 @@ headerView = _headerView;
     [self.view addSubview:headerView];
     
 //    layoutY += slideShowHeight;
-    UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, CompatibleContainerHeight - layoutY) style:UITableViewStylePlain];
+    UITableView *tableView = self.tableView = [[NNTableView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, CompatibleContainerHeight - layoutY) style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -446,7 +447,6 @@ headerView = _headerView;
 #pragma mark - CircleHeaderViewDelegate methods
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
-    _tableView.dataSource = nil;
     [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"image_list"];
     [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"work_list"];
     [_tableView.pullToRefreshView stopAnimating];
@@ -454,7 +454,10 @@ headerView = _headerView;
     
     [_slideShowView stopAutoScroll];
     
-    [self performSelector:@selector(onChannelChanged) withObject:nil afterDelay:0.3];
+    [_tableView doUntilLoaded:^{
+        _tableView.dataSource = nil;
+        [self performSelector:@selector(onChannelChanged) withObject:nil afterDelay:0.3];
+    }];
 }
 
 #pragma mark - BabyCellDelegate methods
