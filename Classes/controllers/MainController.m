@@ -18,6 +18,7 @@
 #import "SMPageControl.h"
 #import "HotListCell.h"
 #import "BabyCell.h"
+#import "TopicCell.h"
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
 #import "CustomNavigationBar.h"
@@ -407,6 +408,10 @@ headerView = _headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_channelIndex == kTopicChannelIndex) {
+        return [self createTopicCell:tableView forRowAtIndexPath:indexPath];
+    }
+    
     if (_channelIndex == kBabyChannelIndex) {
         return [self createBabyCell:tableView forRowAtIndexPath:indexPath];
     }
@@ -417,6 +422,10 @@ headerView = _headerView;
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_channelIndex == kTopicChannelIndex) {
+        return [TopicCell getContentHeight:@"dkfjdkfjdkfjdkfjdkfjdklfjkldfjkldjfkldjfkldjfklajfajf;dkjfjdk" width:320];
+    }
+    
     return _channelIndex == kBabyChannelIndex ? 80 : 70;
 }
 
@@ -700,6 +709,21 @@ headerView = _headerView;
     cell.videoUrls = dataItem.videoUrls;
     cell.voted = dataItem.voted;
     cell.tag = indexPath.row;
+    
+    return cell;
+}
+
+- (UITableViewCell *)createTopicCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath  {
+    static NSString *topicCellIdentifier = @"TopicCell";
+    
+    TopicCell *cell = [tableView dequeueReusableCellWithIdentifier:topicCellIdentifier];
+    if (!cell) {
+        cell = [[TopicCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:topicCellIdentifier];
+    }
+    
+    cell.displayView.image = [UIImage imageNamed:@"img_topic_sample.png"];
+    cell.topicLabel.text = @"dkfjdkfjdkfjdkfjdkfjdklfjkldfjkldjfkldjfkldjfklajfajf;dkjfjdk";
+//    BabyItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
     
     return cell;
 }

@@ -35,8 +35,8 @@ static const CGFloat kImageRatio = 9 / 16.0; // height : width
     return kBorderMargin + contentWidth * kImageRatio + kLabelPadding * 2 + size.height;
 }
 
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
         self.customBackgroundColor = DarkThemeColor;
@@ -44,14 +44,20 @@ static const CGFloat kImageRatio = 9 / 16.0; // height : width
         self.selectionGradientStartColor = DarkThemeColor;
         self.selectionGradientEndColor = DarkThemeColor;
         
-        CGFloat contentWidth = frame.size.width - 2 * kBorderMargin;
+        CGFloat contentWidth = self.width - 2 * kBorderMargin;
         UIImageView *displayView = self.displayView = [[UIImageView alloc] initWithFrame:CGRectMake(kBorderMargin, kBorderMargin,
                                                                                                 contentWidth, contentWidth * kImageRatio)];
         displayView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
+        displayView.layer.borderWidth = 5;
+        displayView.layer.borderColor = RGBA(255, 255, 255, 0.3).CGColor;
         [self addSubview:displayView];
         
         CGFloat layoutY = kBorderMargin + contentWidth * kImageRatio + kLabelPadding;
         UILabel *topicLabel = self.topicLabel = [[UILabel alloc] initWithFrame:CGRectMake(kBorderMargin, layoutY, contentWidth, 0)];
+        topicLabel.backgroundColor = [UIColor clearColor];
+        topicLabel.textColor = [UIColor whiteColor];
+        topicLabel.numberOfLines = 0;
+        topicLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [self addSubview:topicLabel];
     }
     return self;

@@ -23,6 +23,7 @@
 		340A1350163142F100E8D594 /* bg_comment_input.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A134C163142F100E8D594 /* bg_comment_input.png */; };
 		340A1372163170BE00E8D594 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A1371163170BE00E8D594 /* CommentCell.m */; };
 		340E020A165F4B860094DCCE /* NearWorksModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E0209165F4B860094DCCE /* NearWorksModel.m */; };
+		341565CB16BA13260012B2C7 /* img_topic_sample.png in Resources */ = {isa = PBXBuildFile; fileRef = 341565CA16BA13260012B2C7 /* img_topic_sample.png */; };
 		341CB04C165B59DA00BF1D76 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 341CB04E165B59DA00BF1D76 /* Localizable.strings */; };
 		341CB053165B744300BF1D76 /* NNURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 341CB052165B744300BF1D76 /* NNURLCache.m */; };
 		34268EF7165B209E00DEEF63 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 34268EF6165B209E00DEEF63 /* icon.png */; };
@@ -248,6 +249,7 @@
 		340A1371163170BE00E8D594 /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
 		340E0208165F4B860094DCCE /* NearWorksModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearWorksModel.h; sourceTree = "<group>"; };
 		340E0209165F4B860094DCCE /* NearWorksModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearWorksModel.m; sourceTree = "<group>"; };
+		341565CA16BA13260012B2C7 /* img_topic_sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_topic_sample.png; sourceTree = "<group>"; };
 		341CB040165B56FE00BF1D76 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		341CB041165B571000BF1D76 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		341CB04D165B59DA00BF1D76 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -997,6 +999,7 @@
 				3453220016390EC2002137E6 /* img_comment_placeholder.png */,
 				340716E41640EB12006E40FE /* img_user_input.png */,
 				340716E61640ED7D006E40FE /* img_password_input.png */,
+				341565CA16BA13260012B2C7 /* img_topic_sample.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1388,6 +1391,7 @@
 				34C56BFC1676E9C10013ECE6 /* bg_share_edit.png in Resources */,
 				34C56BFE1676E9F80013ECE6 /* icon_down_select.png in Resources */,
 				34C56C001676EA230013ECE6 /* bg_feedback_edit.png in Resources */,
+				341565CB16BA13260012B2C7 /* img_topic_sample.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
