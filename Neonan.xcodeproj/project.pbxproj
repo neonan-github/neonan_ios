@@ -24,6 +24,8 @@
 		340A1372163170BE00E8D594 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A1371163170BE00E8D594 /* CommentCell.m */; };
 		340E020A165F4B860094DCCE /* NearWorksModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E0209165F4B860094DCCE /* NearWorksModel.m */; };
 		341565CB16BA13260012B2C7 /* img_topic_sample.png in Resources */ = {isa = PBXBuildFile; fileRef = 341565CA16BA13260012B2C7 /* img_topic_sample.png */; };
+		341565F916BA18CB0012B2C7 /* GridListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 341565F816BA18CB0012B2C7 /* GridListController.m */; };
+		3415660716BA1C7F0012B2C7 /* GridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3415660616BA1C7F0012B2C7 /* GridCell.m */; };
 		341CB04C165B59DA00BF1D76 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 341CB04E165B59DA00BF1D76 /* Localizable.strings */; };
 		341CB053165B744300BF1D76 /* NNURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 341CB052165B744300BF1D76 /* NNURLCache.m */; };
 		34268EF7165B209E00DEEF63 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 34268EF6165B209E00DEEF63 /* icon.png */; };
@@ -250,6 +252,10 @@
 		340E0208165F4B860094DCCE /* NearWorksModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearWorksModel.h; sourceTree = "<group>"; };
 		340E0209165F4B860094DCCE /* NearWorksModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearWorksModel.m; sourceTree = "<group>"; };
 		341565CA16BA13260012B2C7 /* img_topic_sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_topic_sample.png; sourceTree = "<group>"; };
+		341565F716BA18CB0012B2C7 /* GridListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridListController.h; sourceTree = "<group>"; };
+		341565F816BA18CB0012B2C7 /* GridListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridListController.m; sourceTree = "<group>"; };
+		3415660516BA1C7F0012B2C7 /* GridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridCell.h; sourceTree = "<group>"; };
+		3415660616BA1C7F0012B2C7 /* GridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridCell.m; sourceTree = "<group>"; };
 		341CB040165B56FE00BF1D76 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		341CB041165B571000BF1D76 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		341CB04D165B59DA00BF1D76 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -634,6 +640,8 @@
 				349EF62B1675E92E0086A7F1 /* AboutController.m */,
 				34C56BEE1676CEE00013ECE6 /* FeedbackController.h */,
 				34C56BEF1676CEE00013ECE6 /* FeedbackController.m */,
+				341565F716BA18CB0012B2C7 /* GridListController.h */,
+				341565F816BA18CB0012B2C7 /* GridListController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -1236,6 +1244,8 @@
 				340A1371163170BE00E8D594 /* CommentCell.m */,
 				34FB6A0616B7D7E10020C6A2 /* TopicCell.h */,
 				34FB6A0716B7D7E10020C6A2 /* TopicCell.m */,
+				3415660516BA1C7F0012B2C7 /* GridCell.h */,
+				3415660616BA1C7F0012B2C7 /* GridCell.m */,
 				34648C66162833C000115082 /* SlideShowView.h */,
 				34648C67162833C000115082 /* SlideShowView.m */,
 				3446C89D162D680C0049B952 /* CircleHeaderView.h */,
@@ -1532,6 +1542,8 @@
 				34C56C24167702820013ECE6 /* SVPullToRefresh.m in Sources */,
 				34C56C3E16770BCD0013ECE6 /* SSTextView.m in Sources */,
 				34FB6A0816B7D7E10020C6A2 /* TopicCell.m in Sources */,
+				341565F916BA18CB0012B2C7 /* GridListController.m in Sources */,
+				3415660716BA1C7F0012B2C7 /* GridCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

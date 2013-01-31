@@ -11,6 +11,7 @@
 #import "BabyDetailController.h"
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
+#import "GridListController.h"
 #import "SignController.h"
 #import "AboutController.h"
 #import "FeedbackController.h"
@@ -430,6 +431,12 @@ headerView = _headerView;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_channelIndex == kTopicChannelIndex) {
+        GridListController *controller = [[GridListController alloc] init];
+        [self.navigationController pushViewController:controller animated:YES];
+        return;
+    }
+    
     id dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
     [self enterControllerByType:dataItem atOffset:indexPath.row];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
