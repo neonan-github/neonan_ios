@@ -326,6 +326,7 @@ headerView = _headerView;
     [super viewWillAppear:animated];
     
 //    [self updateUserStatus];
+    [self.navigationController performSelector:@selector(setLogoHidden:) withObject:nil];
     
     [_headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
     

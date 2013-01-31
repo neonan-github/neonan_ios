@@ -33,7 +33,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    NNNavigationController *navController = (NNNavigationController *)self.navigationController;
+    navController.logoHidden = YES;
+    self.title = @"TOP 99 女人";
+    
     KKGridView *gridView = self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleContainerHeight)];
+    gridView.backgroundColor = [UIColor clearColor];
     gridView.cellSize = CGSizeMake(100.f, 100.f);
     gridView.cellPadding = CGSizeMake(5.f, 5.f);
     gridView.dataSource = self;
@@ -60,6 +66,8 @@
     if (!cell) {
         cell = [[GridCell alloc] initWithFrame:CGRectMake(0, 0, 100, 100) reuseIdentifier:cellIdentifier];
     }
+    
+    cell.imageView.image = [UIImage imageNamed:@"img_pic_sample.png"];
     
     return cell;
 }
