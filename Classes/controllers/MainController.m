@@ -18,6 +18,7 @@
 #import "SMPageControl.h"
 #import "HotListCell.h"
 #import "BabyCell.h"
+#import "TopicCell.h"
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
 #import "CustomNavigationBar.h"
@@ -36,7 +37,7 @@
 #import "BabyListModel.h"
 #import "CommonListModel.h"
 
-static const NSUInteger kTopChannelIndex = 4;
+static const NSUInteger kTopicChannelIndex = 4;
 static const NSUInteger kBabyChannelIndex = NSIntegerMax;
 static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
@@ -173,7 +174,9 @@ headerView = _headerView;
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
-        [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
+        if (_channelIndex != kTopicChannelIndex) {
+            [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
+        }
         [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:requestTypeRefresh];
     }];
     [tableView addInfiniteScrollingWithActionHandler:^{
@@ -236,7 +239,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", /*@"宝贝",*/ @"视频", @"精选", @"女人", nil];
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", /*@"宝贝",*/ @"视频", @"专题", @"女人", nil];
     }
     
     return  _channelTexts;
@@ -244,7 +247,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"top", @"women", nil];
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"topic", @"women", nil];
     }
     
     return _channelTypes;
@@ -405,6 +408,10 @@ headerView = _headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_channelIndex == kTopicChannelIndex) {
+        return [self createTopicCell:tableView forRowAtIndexPath:indexPath];
+    }
+    
     if (_channelIndex == kBabyChannelIndex) {
         return [self createBabyCell:tableView forRowAtIndexPath:indexPath];
     }
@@ -415,6 +422,10 @@ headerView = _headerView;
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_channelIndex == kTopicChannelIndex) {
+        return [TopicCell getContentHeight:@"dkfjdkfjdkfjdkfjdkfjdklfjkldfjkldjfkldjfkldjfklajfajf;dkjfjdk" width:320];
+    }
+    
     return _channelIndex == kBabyChannelIndex ? 80 : 70;
 }
 
@@ -702,12 +713,27 @@ headerView = _headerView;
     return cell;
 }
 
+- (UITableViewCell *)createTopicCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath  {
+    static NSString *topicCellIdentifier = @"TopicCell";
+    
+    TopicCell *cell = [tableView dequeueReusableCellWithIdentifier:topicCellIdentifier];
+    if (!cell) {
+        cell = [[TopicCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:topicCellIdentifier];
+    }
+    
+    cell.displayView.image = [UIImage imageNamed:@"img_topic_sample.png"];
+    cell.topicLabel.text = @"dkfjdkfjdkfjdkfjdkfjdklfjkldfjkldjfkldjfkldjfklajfajf;dkjfjdk";
+//    BabyItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
+    
+    return cell;
+}
+
 - (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex {
     switch (channelIndex) {
         case kBabyChannelIndex:
             return 110;
         
-        case kTopChannelIndex:
+        case kTopicChannelIndex:
             return 0;
             
         default:
@@ -755,7 +781,6 @@ headerView = _headerView;
     
     self.channelIndex = _headerView.carousel.currentItemIndex;
     
-    [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     [_tableView.pullToRefreshView triggerRefresh];
     
     CGRect frame = _slideShowView.frame;

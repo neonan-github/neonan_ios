@@ -77,3 +77,25 @@ typedef enum {
 + (UIImage *)imageFromView:(UIView *)view;
 
 @end
+
+@interface UIView (FrameUtil)
+
+- (CGPoint)origin;
+- (void)setOrigin:(CGPoint)newOrigin;
+- (CGSize)size;
+- (void)setSize:(CGSize)newSize;
+
+- (CGFloat)x;
+- (void)setX:(CGFloat)newX;
+- (CGFloat)y;
+- (void)setY:(CGFloat)newY;
+
+- (CGFloat)height;
+- (void)setHeight:(CGFloat)newHeight;
+- (CGFloat)width;
+- (void)setWidth:(CGFloat)newWidth;
+
+- (void)setCenterX:(CGFloat)newCenterX;
+- (void)setCenterY:(CGFloat)newCenterY;
+
+@end
