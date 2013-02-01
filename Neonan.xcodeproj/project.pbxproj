@@ -130,6 +130,14 @@
 		348435B81643C6540073468D /* MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 348435B71643C6540073468D /* MD5.m */; };
 		348983CB16BA4C9E001CFFB6 /* img_pic_sample.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983CA16BA4C9E001CFFB6 /* img_pic_sample.png */; };
 		348983D216BA5FCD001CFFB6 /* NNTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 348983D116BA5FCD001CFFB6 /* NNTableView.m */; };
+		348983D716BA691C001CFFB6 /* TopicDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 348983D516BA691C001CFFB6 /* TopicDetailController.m */; };
+		348983D816BA691C001CFFB6 /* TopicDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 348983D616BA691C001CFFB6 /* TopicDetailController.xib */; };
+		348983DA16BA6D4A001CFFB6 /* img_top_detail_sample.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983D916BA6D4A001CFFB6 /* img_top_detail_sample.png */; };
+		348983E016BA7093001CFFB6 /* icon_big_left_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DB16BA7093001CFFB6 /* icon_big_left_arrow.png */; };
+		348983E116BA7093001CFFB6 /* icon_big_right_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DC16BA7093001CFFB6 /* icon_big_right_arrow.png */; };
+		348983E216BA7093001CFFB6 /* icon_criticise.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DD16BA7093001CFFB6 /* icon_criticise.png */; };
+		348983E316BA7093001CFFB6 /* icon_number_symbol.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DE16BA7093001CFFB6 /* icon_number_symbol.png */; };
+		348983E416BA7093001CFFB6 /* icon_praise.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DF16BA7093001CFFB6 /* icon_praise.png */; };
 		348BCEF61678312C00D8FCB5 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */; };
 		348BCEF91678314E00D8FCB5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 348BCEF81678314E00D8FCB5 /* libz.dylib */; };
 		34925B1D164D127C00146B37 /* ArticleDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34925B1C164D127C00146B37 /* ArticleDetailModel.m */; };
@@ -447,6 +455,15 @@
 		348983CA16BA4C9E001CFFB6 /* img_pic_sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_pic_sample.png; sourceTree = "<group>"; };
 		348983D016BA5FCD001CFFB6 /* NNTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNTableView.h; sourceTree = "<group>"; };
 		348983D116BA5FCD001CFFB6 /* NNTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNTableView.m; sourceTree = "<group>"; };
+		348983D416BA691C001CFFB6 /* TopicDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicDetailController.h; sourceTree = "<group>"; };
+		348983D516BA691C001CFFB6 /* TopicDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicDetailController.m; sourceTree = "<group>"; };
+		348983D616BA691C001CFFB6 /* TopicDetailController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TopicDetailController.xib; path = ../Classes/controllers/TopicDetailController.xib; sourceTree = "<group>"; };
+		348983D916BA6D4A001CFFB6 /* img_top_detail_sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_top_detail_sample.png; sourceTree = "<group>"; };
+		348983DB16BA7093001CFFB6 /* icon_big_left_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_big_left_arrow.png; sourceTree = "<group>"; };
+		348983DC16BA7093001CFFB6 /* icon_big_right_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_big_right_arrow.png; sourceTree = "<group>"; };
+		348983DD16BA7093001CFFB6 /* icon_criticise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_criticise.png; sourceTree = "<group>"; };
+		348983DE16BA7093001CFFB6 /* icon_number_symbol.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_number_symbol.png; sourceTree = "<group>"; };
+		348983DF16BA7093001CFFB6 /* icon_praise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_praise.png; sourceTree = "<group>"; };
 		348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		348BCEF51678312C00D8FCB5 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		348BCEF81678314E00D8FCB5 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -644,6 +661,8 @@
 				34C56BEF1676CEE00013ECE6 /* FeedbackController.m */,
 				341565F716BA18CB0012B2C7 /* GridListController.h */,
 				341565F816BA18CB0012B2C7 /* GridListController.m */,
+				348983D416BA691C001CFFB6 /* TopicDetailController.h */,
+				348983D516BA691C001CFFB6 /* TopicDetailController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -701,6 +720,7 @@
 		347AAB60163672FC00D243BA /* layouts */ = {
 			isa = PBXGroup;
 			children = (
+				348983D616BA691C001CFFB6 /* TopicDetailController.xib */,
 				34C56BF01676CEE00013ECE6 /* FeedbackController.xib */,
 				349EF62C1675E92E0086A7F1 /* AboutController.xib */,
 				347AAB5C163672E500D243BA /* SignController.xib */,
@@ -994,6 +1014,11 @@
 				345321FB1638F47D002137E6 /* icon_share.png */,
 				34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */,
 				34CB8FC4163F6FE60001AD87 /* icon_disclosure_highlighted.png */,
+				348983DB16BA7093001CFFB6 /* icon_big_left_arrow.png */,
+				348983DC16BA7093001CFFB6 /* icon_big_right_arrow.png */,
+				348983DD16BA7093001CFFB6 /* icon_criticise.png */,
+				348983DE16BA7093001CFFB6 /* icon_number_symbol.png */,
+				348983DF16BA7093001CFFB6 /* icon_praise.png */,
 				34B2B7811638113200F75977 /* img_logo.png */,
 				340716E11640DC01006E40FE /* img_logo_big.png */,
 				34CB8FE8163FB1B80001AD87 /* img_nav_bottom_line.png */,
@@ -1011,6 +1036,7 @@
 				340716E61640ED7D006E40FE /* img_password_input.png */,
 				341565CA16BA13260012B2C7 /* img_topic_sample.png */,
 				348983CA16BA4C9E001CFFB6 /* img_pic_sample.png */,
+				348983D916BA6D4A001CFFB6 /* img_top_detail_sample.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1398,6 +1424,13 @@
 				34C56C001676EA230013ECE6 /* bg_feedback_edit.png in Resources */,
 				341565CB16BA13260012B2C7 /* img_topic_sample.png in Resources */,
 				348983CB16BA4C9E001CFFB6 /* img_pic_sample.png in Resources */,
+				348983D816BA691C001CFFB6 /* TopicDetailController.xib in Resources */,
+				348983DA16BA6D4A001CFFB6 /* img_top_detail_sample.png in Resources */,
+				348983E016BA7093001CFFB6 /* icon_big_left_arrow.png in Resources */,
+				348983E116BA7093001CFFB6 /* icon_big_right_arrow.png in Resources */,
+				348983E216BA7093001CFFB6 /* icon_criticise.png in Resources */,
+				348983E316BA7093001CFFB6 /* icon_number_symbol.png in Resources */,
+				348983E416BA7093001CFFB6 /* icon_praise.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1540,6 +1573,7 @@
 				341565F916BA18CB0012B2C7 /* GridListController.m in Sources */,
 				3415660716BA1C7F0012B2C7 /* GridCell.m in Sources */,
 				348983D216BA5FCD001CFFB6 /* NNTableView.m in Sources */,
+				348983D716BA691C001CFFB6 /* TopicDetailController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1636,7 +1670,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neonan/Neonan-Prefix.pch";
 				INFOPLIST_FILE = "Neonan/Neonan-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Support/JPush/lib\"",
@@ -1691,7 +1725,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neonan/Neonan-Prefix.pch";
 				INFOPLIST_FILE = "Neonan/Neonan-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Support/JPush/lib\"",

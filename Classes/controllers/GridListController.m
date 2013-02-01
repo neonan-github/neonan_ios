@@ -7,6 +7,7 @@
 //
 
 #import "GridListController.h"
+#import "TopicDetailController.h"
 
 #import "GridCell.h"
 
@@ -37,6 +38,11 @@
     NNNavigationController *navController = (NNNavigationController *)self.navigationController;
     navController.logoHidden = YES;
     self.title = @"TOP 99 女人";
+    
+    CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
+    // Create a custom back button
+    UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     KKGridView *gridView = self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleContainerHeight)];
     gridView.backgroundColor = [UIColor clearColor];
@@ -70,6 +76,13 @@
     cell.imageView.image = [UIImage imageNamed:@"img_pic_sample.png"];
     
     return cell;
+}
+
+#pragma mark - KKGridViewDelegate methods
+
+- (void)gridView:(KKGridView *)gridView didSelectItemAtIndexPath:(KKIndexPath *)indexPath {
+    TopicDetailController *controller = [[TopicDetailController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end
