@@ -8,9 +8,16 @@
 
 #import "TopicDetailController.h"
 
+#import "DBHelper.h"
+
 #import <TTTAttributedLabel.h>
 
 static const CGFloat kFixedPartHeight = 300;
+
+static NSString *const kDBName = @"valuate.db";
+static NSString *const kTableName = @"valuation";
+static NSString *const kIDKey = @"contentId";
+static NSString *const kTypeKey = @"type";
 
 @interface TopicDetailController ()
 
@@ -23,6 +30,8 @@ static const CGFloat kFixedPartHeight = 300;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *numSymbolLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *rankLabel;
 
+@property (nonatomic, strong) DBHelper *dbHelper;
+
 @end
 
 @implementation TopicDetailController
@@ -33,6 +42,14 @@ static const CGFloat kFixedPartHeight = 300;
         // Custom initialization
     }
     return self;
+}
+
+- (DBHelper *)dbHelper {
+    if (!_dbHelper) {
+        _dbHelper = [[DBHelper alloc] initWithDBName:kDBName];
+    }
+    
+    return _dbHelper;
 }
 
 - (void)viewDidLoad {
@@ -123,5 +140,108 @@ static const CGFloat kFixedPartHeight = 300;
     UIScrollView *scrollView = self.scrollView;
     scrollView.contentSize = CGSizeMake(CompatibleScreenWidth, kFixedPartHeight + size.height);
 }
+
+- (void)updateValuationState:(NSString *)contentId {
+    NSDictionary *valuation = [self fetchValuation:contentId];
+    ValuationType valuationType = [valuation[@"type"] integerValue];
+    
+    NSString *normalImageName = valuationType == ValuationTypeUp ? @"icon_praise.png" : @"icon_praise.png";
+    NSString *highlightedImageName = valuationType == ValuationTypeUp ? @"icon_praise.png" : @"icon_praise.png";
+    [_praiseButton setImage:[UIImage imageFromFile:normalImageName] forState:UIControlStateNormal];
+    [_praiseButton setImage:[UIImage imageFromFile:highlightedImageName] forState:UIControlStateHighlighted];
+    
+    normalImageName = valuationType == ValuationTypeDown ? @"icon_criticise.png" : @"icon_criticise.png";
+    highlightedImageName = valuationType == ValuationTypeDown ? @"icon_criticise.png" : @"icon_criticise.png";
+    [_criticiseButton setImage:[UIImage imageFromFile:normalImageName] forState:UIControlStateNormal];
+    [_criticiseButton setImage:[UIImage imageFromFile:highlightedImageName] forState:UIControlStateHighlighted];
+}
+
+#pragma mark - Private Request methods
+
+- (void)requestVoteForContentId:(NSString *)contentId withResult:(NSArray *)voteResult {
+    NSDictionary *parameters = @{@"type" : @"haha", @"content_id" : contentId, @"up" : voteResult[0], @"down" : voteResult[1]};
+    
+    [[NNHttpClient sharedClient] getAtPath:@"vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+    }];
+}
+
+#pragma mark - Private methods
+
+- (NSArray *)computeVoteFromType:(ValuationType)fromType toType:(ValuationType)toType {
+    if (fromType != toType) {
+        NSInteger up = fromType == ValuationTypeUp ? -1 : (toType == ValuationTypeUp ? 1 : 0);
+        NSInteger down = fromType == ValuationTypeDown ? -1 : (toType == ValuationTypeDown ? 1 : 0);
+        
+        return @[@(up), @(down)];
+    }
+    
+    return @[@0, @(0)];
+}
+
+- (void)doValuate:(ValuationType)valuationType {
+    NSString *contentId = @"1";//[self getCurrentId];
+    if (!contentId) {
+        return;
+    }
+    
+    NSDictionary *valuation = [self fetchValuation:contentId];
+    ValuationType fromType = [valuation[kTypeKey] integerValue];
+    ValuationType toType = fromType !=  valuationType ? valuationType : ValuationTypeNone;
+    [self storeValuation:contentId withType:toType];
+    
+    NSArray *voteResult = [self computeVoteFromType:fromType toType:toType];
+//    _dataModel.upCount += [voteResult[0] integerValue];
+//    _dataModel.downCount += [voteResult[1] integerValue];
+//    [self updateData:_dataModel];
+    [self updateValuationState:contentId];
+    
+    [self requestVoteForContentId:contentId withResult:voteResult];
+}
+
+- (NSDictionary *)fetchValuation:(NSString *)contentId {
+    FMDatabase *db = self.dbHelper.db;
+    if (![db open]) {
+        return nil;
+    }
+    
+    FMResultSet *rs = [db executeQueryWithFormat:@"select type from valuation where content_id = '%@'", contentId];
+    NSDictionary *result = nil;
+    if ([rs next]) {
+        result =  @{kIDKey : contentId, kTypeKey : [rs stringForColumn:@"type"]};
+    }
+    [rs close];
+    [db close];
+    
+    return result;
+}
+
+- (void)storeValuation:(NSString *)contentId withType:(ValuationType)type {
+    FMDatabase *db = self.dbHelper.db;
+    if (![db open]) {
+        return;
+    }
+    
+    [db executeUpdateWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (content_id TEXT PRIMARY KEY, type INTEGER)", kTableName];
+    FMResultSet *rs = [db executeQueryWithFormat:@"select * from %@ where content_id = '%@'", kTableName, contentId];
+    if ([rs next]) {
+        [db executeUpdateWithFormat:@"update %@ set type = %d where content_id = '%@'", kTableName, type, contentId];
+    } else {
+        [db executeUpdateWithFormat:@"insert into %@ (content_id, type) values('%@', %d)", contentId, type];
+    }
+    
+    [rs close];
+    [db close];
+}
+
+- (IBAction)praiseUp:(id)sender {
+    [self doValuate:ValuationTypeUp];
+}
+
+- (IBAction)criticiseDown:(id)sender {
+    [self doValuate:ValuationTypeDown];
+}
+
 
 @end

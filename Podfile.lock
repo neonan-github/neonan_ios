@@ -1,43 +1,4 @@
 
-SPEC CHECKSUMS: 
-  UIWebViewRemoveShadow: 552ab017bc84263a56f339f6039c94ddec43cd37
-  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
-  UIAlertView-Blocks: 7689ad7dd941417e7a7da81507482bc6f4f15bcd
-  SDWebImage: c3306b8c68f3569f5c676d585ad77393255887dd
-  DDURLParser: faee54f8d9baeed3e8cc33ef7ca372e284d89bae
-  SDWebImage/Main: c3306b8c68f3569f5c676d585ad77393255887dd
-  SSKeychain: bae692a4354f48691ca3463a121dc8060f781a7d
-  TTTAttributedLabel: d4e6d8abb6c91fbdca6d9eb0154d9169515204c2
-  MBProgressHUD: b23ee11c42253d6d804e8e0bfabdc334e8b2571f
-  KKGridView: ca91fc93e91ddbeab8b46d07af1efda289f324e7
-  iCarousel: 9786dc44e3fe4fb1d143db83443cfa7794687a49
-  PrettyKit: 44b8f06f3719579880d2e11cd6498b7464b3b0fa
-  NYXImagesKit: 2f36d489ec32826b58a41d75833602dd13558769
-  HPGrowingTextView: 42fee2f684a8c98e61bc19579d274d7fc12b48ca
-  ActionSheetPicker: f47931cfb6bc65230b323326964fccb4ad339f37
-  AFNetworking: df1042246c17373b96f12f04bf5c6e1c25992cd4
-  DCRoundSwitch: c08f58330d242f182450b5e4ad32e5238f53d6d4
-
-COCOAPODS: 0.16.0
-
-DEPENDENCIES: 
-- AFNetworking (~> 0.10.1)
-- ActionSheetPicker (~> 0.0.1)
-- DCRoundSwitch (~> 0.0.1)
-- DDURLParser (~> 0.0.1)
-- HPGrowingTextView (~> 0.0.1)
-- KKGridView (~> 0.6.8.2)
-- MBProgressHUD (~> 0.5)
-- NYXImagesKit (~> 2.1.2)
-- PrettyKit (~> 0.2.0)
-- Reachability (~> 3.1.0)
-- SDWebImage (~> 2.7)
-- SSKeychain (~> 0.1.4)
-- TTTAttributedLabel (~> 1.4.0)
-- UIAlertView-Blocks (~> 0.0.1)
-- UIWebViewRemoveShadow (~> 0.0.1)
-- iCarousel (~> 1.7.2)
-
 PODS: 
 - AFNetworking (0.10.1)
 - ActionSheetPicker (0.0.1)
@@ -57,3 +18,42 @@ PODS:
 - UIAlertView-Blocks (0.0.1)
 - UIWebViewRemoveShadow (0.0.1)
 - iCarousel (1.7.2)
+
+COCOAPODS: 0.16.0
+
+SPEC CHECKSUMS: 
+  SDWebImage: c3306b8c68f3569f5c676d585ad77393255887dd
+  HPGrowingTextView: 42fee2f684a8c98e61bc19579d274d7fc12b48ca
+  DDURLParser: faee54f8d9baeed3e8cc33ef7ca372e284d89bae
+  UIAlertView-Blocks: 7689ad7dd941417e7a7da81507482bc6f4f15bcd
+  TTTAttributedLabel: d4e6d8abb6c91fbdca6d9eb0154d9169515204c2
+  KKGridView: ca91fc93e91ddbeab8b46d07af1efda289f324e7
+  DCRoundSwitch: c08f58330d242f182450b5e4ad32e5238f53d6d4
+  PrettyKit: 44b8f06f3719579880d2e11cd6498b7464b3b0fa
+  ActionSheetPicker: f47931cfb6bc65230b323326964fccb4ad339f37
+  iCarousel: 9786dc44e3fe4fb1d143db83443cfa7794687a49
+  UIWebViewRemoveShadow: 552ab017bc84263a56f339f6039c94ddec43cd37
+  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
+  NYXImagesKit: 2f36d489ec32826b58a41d75833602dd13558769
+  SDWebImage/Main: c3306b8c68f3569f5c676d585ad77393255887dd
+  SSKeychain: bae692a4354f48691ca3463a121dc8060f781a7d
+  AFNetworking: df1042246c17373b96f12f04bf5c6e1c25992cd4
+  MBProgressHUD: b23ee11c42253d6d804e8e0bfabdc334e8b2571f
+
+DEPENDENCIES: 
+- AFNetworking (~> 0.10.1)
+- ActionSheetPicker (~> 0.0.1)
+- DCRoundSwitch (~> 0.0.1)
+- DDURLParser (~> 0.0.1)
+- HPGrowingTextView (~> 0.0.1)
+- KKGridView (~> 0.6.8.2)
+- MBProgressHUD (~> 0.5)
+- NYXImagesKit (~> 2.1.2)
+- PrettyKit (~> 0.2.0)
+- Reachability (~> 3.1.0)
+- SDWebImage (~> 2.7)
+- SSKeychain (~> 0.1.4)
+- TTTAttributedLabel (~> 1.4.0)
+- UIAlertView-Blocks (~> 0.0.1)
+- UIWebViewRemoveShadow (~> 0.0.1)
+- iCarousel (~> 1.7.2)

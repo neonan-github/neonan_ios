@@ -15,6 +15,12 @@ typedef enum {
     SortTypeHotest
 } SortType;
 
+typedef enum {
+    ValuationTypeNone = 0,
+    ValuationTypeUp = 1,
+    ValuationTypeDown = 2
+} ValuationType;
+
 //MainController
 #define MainSlideShowCount 6
 
