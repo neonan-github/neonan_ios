@@ -14,6 +14,7 @@ static const CGFloat kFixedPartHeight = 300;
 
 @interface TopicDetailController ()
 
+@property (unsafe_unretained, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (unsafe_unretained, nonatomic) IBOutlet UIImageView *imageView;
 @property (unsafe_unretained, nonatomic) IBOutlet TTTAttributedLabel *nameLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *praiseButton;
@@ -47,8 +48,6 @@ static const CGFloat kFixedPartHeight = 300;
     
     _nameLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
     [self displayChineseName:@"大S" englishName:@"Barbie Hsu"];
-    
-//    [self displayRank:15];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,12 +63,14 @@ static const CGFloat kFixedPartHeight = 300;
     [self setContentLabel:nil];
     [self setRankLabel:nil];
     [self setNumSymbolLabel:nil];
+    [self setScrollView:nil];
     [super viewDidUnload];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self displayContent:@"台湾著名艺人。因出演《流星花园》中杉菜一角红遍全亚洲，并入围金钟奖最佳女主角奖。其后又在多部热门偶像剧和电影中担当女主角。 大S因比较善于美容而取代伊能静而成为台湾美容大王，成功成为多家时尚品的形象代言人，而与汪小菲的感情问题也是大众所观注的焦点话题，从而人气一直居高不下。"];
     [self displayRank:15];
 }
 
@@ -105,12 +106,22 @@ static const CGFloat kFixedPartHeight = 300;
 }
 
 - (void)displayRank:(NSInteger)rank {
-    NSString *text = [NSString stringWithFormat:@"#%d", rank];
-    [_nameLabel setText:text];
-    [_nameLabel sizeToFit];
-    [_nameLabel setCenterX:self.view.center.x];
+    NSString *text = [NSString stringWithFormat:@"%d", rank];
+    [_rankLabel setText:text];
+    [_rankLabel sizeToFit];
+    [_rankLabel setCenterX:self.view.center.x];
     
-    _numSymbolLabel.x = _nameLabel.x - 12;
+    _numSymbolLabel.x = _rankLabel.x - 8;
+}
+
+- (void)displayContent:(NSString *)content {
+    CGSize constraint = CGSizeMake(_contentLabel.width, 20000.0f);
+    CGSize size = [content sizeWithFont:_contentLabel.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    _contentLabel.height = size.height;
+    _contentLabel.text = content;
+    
+    UIScrollView *scrollView = self.scrollView;
+    scrollView.contentSize = CGSizeMake(CompatibleScreenWidth, kFixedPartHeight + size.height);
 }
 
 @end
