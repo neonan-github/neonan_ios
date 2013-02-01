@@ -10,4 +10,7 @@
 
 @interface GridCell : KKGridViewCell
 
+- (void)setTitle:(NSString *)title;
+- (void)setRank:(NSInteger)rank;
+
 @end

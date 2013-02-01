@@ -42,6 +42,9 @@
 		34632AA216BB98E500396AC1 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 34632A9D16BB98E500396AC1 /* FMResultSet.m */; };
 		34632AA516BB994E00396AC1 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 34632AA416BB994E00396AC1 /* libsqlite3.dylib */; };
 		34632AAF16BB9A7900396AC1 /* DBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34632AAE16BB9A7900396AC1 /* DBHelper.m */; };
+		34632AB216BBB41000396AC1 /* TopicGridsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34632AB116BBB41000396AC1 /* TopicGridsModel.m */; };
+		34632AC416BBBC7800396AC1 /* SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 34632AC316BBBC7800396AC1 /* SVPullToRefresh.m */; };
+		34632ACE16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 34632ACD16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m */; };
 		34648C401627E74E00115082 /* HotListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C3F1627E74E00115082 /* HotListCell.m */; };
 		34648C68162833C000115082 /* SlideShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C67162833C000115082 /* SlideShowView.m */; };
 		3466147F1634EE4B00B1FF5A /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3466147E1634EE4B00B1FF5A /* MainController.m */; };
@@ -178,7 +181,6 @@
 		34C56BFC1676E9C10013ECE6 /* bg_share_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BFB1676E9C10013ECE6 /* bg_share_edit.png */; };
 		34C56BFE1676E9F80013ECE6 /* icon_down_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BFD1676E9F80013ECE6 /* icon_down_select.png */; };
 		34C56C001676EA230013ECE6 /* bg_feedback_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BFF1676EA230013ECE6 /* bg_feedback_edit.png */; };
-		34C56C24167702820013ECE6 /* SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C56C23167702820013ECE6 /* SVPullToRefresh.m */; };
 		34C56C3E16770BCD0013ECE6 /* SSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C56C3D16770BCD0013ECE6 /* SSTextView.m */; };
 		34C81B4F162BF78000DA093B /* BabyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C81B4E162BF78000DA093B /* BabyCell.m */; };
 		34CB8FC2163F6D170001AD87 /* icon_disclosure_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */; };
@@ -302,6 +304,12 @@
 		34632AA416BB994E00396AC1 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		34632AAD16BB9A7900396AC1 /* DBHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBHelper.h; sourceTree = "<group>"; };
 		34632AAE16BB9A7900396AC1 /* DBHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHelper.m; sourceTree = "<group>"; };
+		34632AB016BBB41000396AC1 /* TopicGridsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicGridsModel.h; sourceTree = "<group>"; };
+		34632AB116BBB41000396AC1 /* TopicGridsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicGridsModel.m; sourceTree = "<group>"; };
+		34632AC216BBBC7800396AC1 /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
+		34632AC316BBBC7800396AC1 /* SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVPullToRefresh.m; sourceTree = "<group>"; };
+		34632ACC16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVInfiniteScrolling.h"; sourceTree = "<group>"; };
+		34632ACD16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
 		34648C3E1627E74E00115082 /* HotListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotListCell.h; sourceTree = "<group>"; };
 		34648C3F1627E74E00115082 /* HotListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotListCell.m; sourceTree = "<group>"; };
 		34648C66162833C000115082 /* SlideShowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideShowView.h; sourceTree = "<group>"; };
@@ -526,8 +534,6 @@
 		34C56BFB1676E9C10013ECE6 /* bg_share_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_share_edit.png; sourceTree = "<group>"; };
 		34C56BFD1676E9F80013ECE6 /* icon_down_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_down_select.png; sourceTree = "<group>"; };
 		34C56BFF1676EA230013ECE6 /* bg_feedback_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_feedback_edit.png; sourceTree = "<group>"; };
-		34C56C22167702820013ECE6 /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
-		34C56C23167702820013ECE6 /* SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVPullToRefresh.m; sourceTree = "<group>"; };
 		34C56C3C16770BCD0013ECE6 /* SSTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSTextView.h; sourceTree = "<group>"; };
 		34C56C3D16770BCD0013ECE6 /* SSTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSTextView.m; sourceTree = "<group>"; };
 		34C81B4D162BF78000DA093B /* BabyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCell.h; sourceTree = "<group>"; };
@@ -716,6 +722,8 @@
 				3470DBD11653B14000273244 /* CommentListModel.m */,
 				340E0208165F4B860094DCCE /* NearWorksModel.h */,
 				340E0209165F4B860094DCCE /* NearWorksModel.m */,
+				34632AB016BBB41000396AC1 /* TopicGridsModel.h */,
+				34632AB116BBB41000396AC1 /* TopicGridsModel.m */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -735,6 +743,17 @@
 				34632A9D16BB98E500396AC1 /* FMResultSet.m */,
 			);
 			path = FMDB;
+			sourceTree = "<group>";
+		};
+		34632AC116BBBC7800396AC1 /* SVPullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				34632AC216BBBC7800396AC1 /* SVPullToRefresh.h */,
+				34632AC316BBBC7800396AC1 /* SVPullToRefresh.m */,
+				34632ACC16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.h */,
+				34632ACD16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m */,
+			);
+			path = SVPullToRefresh;
 			sourceTree = "<group>";
 		};
 		346C7067167EBAF000EA0057 /* JPush */ = {
@@ -1099,15 +1118,6 @@
 			path = UMeng;
 			sourceTree = "<group>";
 		};
-		34C56C21167702820013ECE6 /* SVPullToRefresh */ = {
-			isa = PBXGroup;
-			children = (
-				34C56C22167702820013ECE6 /* SVPullToRefresh.h */,
-				34C56C23167702820013ECE6 /* SVPullToRefresh.m */,
-			);
-			path = SVPullToRefresh;
-			sourceTree = "<group>";
-		};
 		34C56C3B16770BCD0013ECE6 /* SSTextView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1280,10 +1290,10 @@
 		53816B2116265FB100B0672C /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				34632AC116BBBC7800396AC1 /* SVPullToRefresh */,
 				34632A9316BB98E500396AC1 /* FMDB */,
 				346C7067167EBAF000EA0057 /* JPush */,
 				34C56C3B16770BCD0013ECE6 /* SSTextView */,
-				34C56C21167702820013ECE6 /* SVPullToRefresh */,
 				34C56BE81676CE390013ECE6 /* UMeng */,
 				34F574D31671DE9600D20195 /* KeyValueObjectMapping */,
 				3480045F1648D6C200EED346 /* SFHFKeychainUtils */,
@@ -1609,7 +1619,6 @@
 				349EF6151675A62C0086A7F1 /* NNDropDownMenu.m in Sources */,
 				349EF62D1675E92E0086A7F1 /* AboutController.m in Sources */,
 				34C56BF11676CEE00013ECE6 /* FeedbackController.m in Sources */,
-				34C56C24167702820013ECE6 /* SVPullToRefresh.m in Sources */,
 				34C56C3E16770BCD0013ECE6 /* SSTextView.m in Sources */,
 				34FB6A0816B7D7E10020C6A2 /* TopicCell.m in Sources */,
 				341565F916BA18CB0012B2C7 /* GridListController.m in Sources */,
@@ -1622,6 +1631,9 @@
 				34632AA116BB98E500396AC1 /* FMDatabaseQueue.m in Sources */,
 				34632AA216BB98E500396AC1 /* FMResultSet.m in Sources */,
 				34632AAF16BB9A7900396AC1 /* DBHelper.m in Sources */,
+				34632AB216BBB41000396AC1 /* TopicGridsModel.m in Sources */,
+				34632AC416BBBC7800396AC1 /* SVPullToRefresh.m in Sources */,
+				34632ACE16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

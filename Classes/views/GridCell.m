@@ -50,4 +50,12 @@
     return self;
 }
 
+- (void)setTitle:(NSString *)title {
+    _titleLabel.text = title;
+}
+
+- (void)setRank:(NSInteger)rank {
+    _rankLabel.text = [NSString stringWithFormat:@"#%d", rank];
+}
+
 @end

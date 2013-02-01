@@ -10,4 +10,6 @@
 
 @interface GridListController : UIViewController
 
+@property (nonatomic, copy) NSString *topicId;
+
 @end

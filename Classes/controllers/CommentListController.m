@@ -25,9 +25,9 @@ static const NSUInteger kRequestCount = 20;
 static NSString * const kRequestCountString = @"20";
 
 typedef enum {
-    requestTypeRefresh = 0,
-    requestTypeAppend
-} requestType;
+    RequestTypeRefresh = 0,
+    RequestTypeAppend
+} RequestType;
 
 @interface CommentListController ()
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
@@ -67,12 +67,14 @@ typedef enum {
     [_tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
-        [self requestForComments:_articleInfo.contentId withRequestType:requestTypeRefresh];
+        [self requestForComments:_articleInfo.contentId withRequestType:RequestTypeRefresh];
     }];
+    _tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     [_tableView addInfiniteScrollingWithActionHandler:^{
         // add data to data source, insert new cells into table view
-        [self requestForComments:_articleInfo.contentId withRequestType:requestTypeAppend];
+        [self requestForComments:_articleInfo.contentId withRequestType:RequestTypeAppend];
     }];
+    _tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     _tableView.showsInfiniteScrolling = NO;
     
 //    self.comments = [[NSMutableArray alloc] initWithCapacity:20];
@@ -303,31 +305,34 @@ typedef enum {
     _tableView.frame = frame;
 }
 
-- (void)updateTableView {
+- (void)updateTableView:(RequestType)requestType {
     [_tableView reloadData];
-    [_tableView.pullToRefreshView stopAnimating];
-    [_tableView.infiniteScrollingView stopAnimating];
+    if (requestType == RequestTypeRefresh) {
+        [_tableView.pullToRefreshView stopAnimating];
+    } else {
+        [_tableView.infiniteScrollingView stopAnimating];
+    }
     
     _tableView.showsInfiniteScrolling = [_dataModel totalCount] > [_dataModel items].count;
 }
 
 #pragma mark - Private Request methods
 
-- (void)requestForComments:(NSString *)contentId withRequestType:(requestType)requestType {
-    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
+- (void)requestForComments:(NSString *)contentId withRequestType:(RequestType)requestType {
+    NSUInteger offset = (requestType == RequestTypeRefresh ? 0 : [_dataModel items].count);
     
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:contentId, @"content_id",
                                 [NSString stringWithFormat:@"%u", offset], @"offset",
                                 kRequestCountString, @"count",  nil];
 
     [[NNHttpClient sharedClient] getAtPath:@"comments_show" parameters:parameters responseClass:[CommentListModel class] success:^(id<Jsonable> response) {
-        if (requestType == requestTypeAppend) {
+        if (requestType == RequestTypeAppend) {
             [self.dataModel appendMoreData:response];
         } else {
             self.dataModel = response;
         }
         
-        [self updateTableView];
+        [self updateTableView:requestType];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
