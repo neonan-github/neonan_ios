@@ -245,11 +245,11 @@
 }
 
 - (void)signUpWithEmail:(NSString *)email andPassword:(NSString *)password {
-    [self signWithEmail:email andPassword:password atPath:@"register"];
+    [self signWithEmail:email andPassword:password atPath:@"api/register"];
 }
 
 - (void)signInWithEmail:(NSString *)email andPassword:(NSString *)password {
-    [self signWithEmail:email andPassword:password atPath:@"login"];
+    [self signWithEmail:email andPassword:password atPath:@"api/login"];
 }
 
 @end

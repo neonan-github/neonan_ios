@@ -10,4 +10,9 @@
 
 @interface TopicDetailController : UIViewController
 
+@property (nonatomic, copy) NSString *topicId;
+@property (nonatomic, copy) NSString *detailId;
+@property (nonatomic, copy) NSString *chName;
+@property (nonatomic, assign) NSInteger rank;
+
 @end

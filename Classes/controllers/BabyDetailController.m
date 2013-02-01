@@ -476,7 +476,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
                                 [NSNumber numberWithUnsignedInteger:count], @"count",
                                 next ? @"1" : @"-1", @"direction", nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:@"api/near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
         @synchronized(_idModel) {
             if (!next) {
                 self.idIndex = _idIndex + [[((NearWorksModel *)response) items] count];
@@ -495,7 +495,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 
 - (void)requestForSlideShowWithParams:(NSDictionary *)parameters success:(void (^)())success {
-    [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[SlideShowDetailModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:@"api/work_info" parameters:parameters responseClass:[SlideShowDetailModel class] success:^(id<Jsonable> response) {
         self.dataModel = response;
         [self updateData];
         
@@ -533,7 +533,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:babyId, @"content_id",
                                 token, @"token", nil];
     
-    [[NNHttpClient sharedClient] postAtPath:@"baby_vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] postAtPath:@"api/baby_vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
         if ([self isViewLoaded]) {
             _dataModel.voted = YES;
             [self updateData];

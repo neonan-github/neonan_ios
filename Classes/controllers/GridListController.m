@@ -55,6 +55,8 @@ typedef enum {
     UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
+    self.view.backgroundColor = DarkThemeColor;
+    
     KKGridView *gridView = self.gridView = [[KKGridView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleContainerHeight)];
     gridView.backgroundColor = [UIColor clearColor];
     gridView.cellSize = CGSizeMake(100.f, 100.f);
@@ -102,6 +104,11 @@ typedef enum {
 
 - (void)gridView:(KKGridView *)gridView didSelectItemAtIndexPath:(KKIndexPath *)indexPath {
     TopicDetailController *controller = [[TopicDetailController alloc] init];
+    TopicItem *dataItem = _dataModel.items[indexPath.index];
+    controller.topicId = _topicId;
+    controller.detailId = dataItem.contentId;
+    controller.chName = dataItem.name;
+    controller.rank = dataItem.ranking;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -116,7 +123,7 @@ typedef enum {
     
     NSDictionary *parameters = @{@"content_id" : contentId, @"offset" : @(offset), @"count" : @(30)};
     
-    [[NNHttpClient sharedClient] getAtPath:@"subject/people_list" parameters:parameters responseClass:[TopicGridsModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:@"api/subject/people_list" parameters:parameters responseClass:[TopicGridsModel class] success:^(id<Jsonable> response) {
         if (requestType == RequestTypeAppend) {
             [self.dataModel appendMoreData:response];
         } else {

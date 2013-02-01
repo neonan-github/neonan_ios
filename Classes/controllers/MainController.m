@@ -592,7 +592,7 @@ headerView = _headerView;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
                                 [NSNumber numberWithUnsignedInteger:MainSlideShowCount], @"count", nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"image_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:@"api/image_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
         self.slideShowModel = (MainSlideShowModel *)response;
         [self updateSlideShow];
         NSLog(@"requestForSlideShow response count:%u", _slideShowModel.list.count);
@@ -603,7 +603,7 @@ headerView = _headerView;
 
 - (void)requestForList:(NSDictionary *)parameters withRequestType:(RequestType)requestType {
     BOOL isBabyChannel = [[parameters objectForKey:@"channel"] isEqualToString:@"baby"];
-    NSString *path = @"work_list";
+    NSString *path = @"api/work_list";
     Class responseClass = isBabyChannel ? [BabyListModel class] : [CommonListModel class];
     
     [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
@@ -649,7 +649,7 @@ headerView = _headerView;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:babyId, @"content_id",
                                 token, @"token", nil];
     
-    [[NNHttpClient sharedClient] postAtPath:@"baby_vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] postAtPath:@"api/baby_vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
         NSInteger itemIndex = [self searchBabyById:babyId];
         if (itemIndex < 0) {
             return;

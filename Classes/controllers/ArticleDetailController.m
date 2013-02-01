@@ -245,7 +245,7 @@ static NSString * const kDirectionRight = @"1";
                                 [NSNumber numberWithUnsignedInteger:count], @"count",
                                 next ? @"1" : @"-1", @"direction", @"true", @"filter", nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:@"api/near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
         @synchronized(_idModel) {
             if (!next) {
                 self.idIndex = _idIndex + [[((NearWorksModel *)response) items] count];
@@ -271,7 +271,7 @@ static NSString * const kDirectionRight = @"1";
                                 contentId, @"content_id", [NSNumber numberWithUnsignedInteger:_offset], @"offset",
                                 nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:@"api/work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
             
         self.dataModel = response;
@@ -291,7 +291,7 @@ static NSString * const kDirectionRight = @"1";
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
                                     contentId, @"content_id", comment, @"content", nil];
         
-        [[NNHttpClient sharedClient] postAtPath:@"comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+        [[NNHttpClient sharedClient] postAtPath:@"api/comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             _dataModel.commentNum++;
             [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];

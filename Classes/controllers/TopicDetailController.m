@@ -8,8 +8,12 @@
 
 #import "TopicDetailController.h"
 
+#import "TopicDetailModel.h"
+
 #import "DBHelper.h"
 
+#import <UIImageView+WebCache.h>
+#import <MBProgressHUD.h>
 #import <TTTAttributedLabel.h>
 
 static const CGFloat kFixedPartHeight = 300;
@@ -29,6 +33,8 @@ static NSString *const kTypeKey = @"type";
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *contentLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *numSymbolLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *rankLabel;
+
+@property (nonatomic, strong) TopicDetailModel *dataModel;
 
 @property (nonatomic, strong) DBHelper *dbHelper;
 
@@ -63,13 +69,9 @@ static NSString *const kTypeKey = @"type";
     UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
+    self.view.backgroundColor = DarkThemeColor;
+    
     _nameLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
-    [self displayChineseName:@"大S" englishName:@"Barbie Hsu"];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)viewDidUnload {
@@ -87,13 +89,29 @@ static NSString *const kTypeKey = @"type";
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self displayContent:@"台湾著名艺人。因出演《流星花园》中杉菜一角红遍全亚洲，并入围金钟奖最佳女主角奖。其后又在多部热门偶像剧和电影中担当女主角。 大S因比较善于美容而取代伊能静而成为台湾美容大王，成功成为多家时尚品的形象代言人，而与汪小菲的感情问题也是大众所观注的焦点话题，从而人气一直居高不下。"];
-    [self displayRank:15];
+    [self displayChineseName:_chName englishName:@" "];
+    [self displayRank:_rank];
+    
+    if (!_dataModel) {
+        [self requestData:_detailId];
+    }
 }
 
 #pragma mark - Private UI related
 
+- (void)updateData {
+    [_imageView setImageWithURL:[NSURL URLWithString:_dataModel.imageUrl] placeholderImage:[UIImage imageNamed:@"img_common_list_place_holder.png"]];
+    [self displayChineseName:_chName englishName:_dataModel.enName];
+    [self displayContent:_dataModel.description];
+    [self displayRank:_rank];
+    
+    [_praiseButton setTitle:[NSString stringWithFormat:@"%d", _dataModel.upCount] forState:UIControlStateNormal];
+    [_criticiseButton setTitle:[NSString stringWithFormat:@"%d", _dataModel.downCount] forState:UIControlStateNormal];
+    [self updateValuationState];
+}
+
 - (void)displayChineseName:(NSString *)chName englishName:(NSString *)enName {
+    enName = !enName ? @" " : enName;
     NSString *text = [NSString stringWithFormat:@"%@ %@", chName, enName];
     [_nameLabel setText:text afterInheritingLabelAttributesAndConfiguringWithBlock:^ NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
         NSRange bigRange = [[mutableAttributedString string] rangeOfString:chName options:NSCaseInsensitiveSearch];
@@ -141,33 +159,55 @@ static NSString *const kTypeKey = @"type";
     scrollView.contentSize = CGSizeMake(CompatibleScreenWidth, kFixedPartHeight + size.height);
 }
 
-- (void)updateValuationState:(NSString *)contentId {
-    NSDictionary *valuation = [self fetchValuation:contentId];
+- (void)updateValuationState {
+    NSDictionary *valuation = [self fetchValuation:[self createNewIdWith:_topicId detailId:_detailId]];
     ValuationType valuationType = [valuation[@"type"] integerValue];
     
-    NSString *normalImageName = valuationType == ValuationTypeUp ? @"icon_praise.png" : @"icon_praise.png";
-    NSString *highlightedImageName = valuationType == ValuationTypeUp ? @"icon_praise.png" : @"icon_praise.png";
+    NSString *normalImageName = valuationType == ValuationTypeUp ? @"icon_praise_highlighted.png" : @"icon_praise_normal.png";
+    NSString *highlightedImageName = valuationType == ValuationTypeUp ? @"icon_praise_normal.png" : @"icon_praise_highlighted.png";
     [_praiseButton setImage:[UIImage imageFromFile:normalImageName] forState:UIControlStateNormal];
     [_praiseButton setImage:[UIImage imageFromFile:highlightedImageName] forState:UIControlStateHighlighted];
     
-    normalImageName = valuationType == ValuationTypeDown ? @"icon_criticise.png" : @"icon_criticise.png";
-    highlightedImageName = valuationType == ValuationTypeDown ? @"icon_criticise.png" : @"icon_criticise.png";
+    normalImageName = valuationType == ValuationTypeDown ? @"icon_criticise_highlighted.png" : @"icon_criticise_normal.png";
+    highlightedImageName = valuationType == ValuationTypeDown ? @"icon_criticise_normal.png" : @"icon_criticise_highlighted.png";
     [_criticiseButton setImage:[UIImage imageFromFile:normalImageName] forState:UIControlStateNormal];
     [_criticiseButton setImage:[UIImage imageFromFile:highlightedImageName] forState:UIControlStateHighlighted];
 }
 
 #pragma mark - Private Request methods
 
-- (void)requestVoteForContentId:(NSString *)contentId withResult:(NSArray *)voteResult {
-    NSDictionary *parameters = @{@"type" : @"haha", @"content_id" : contentId, @"up" : voteResult[0], @"down" : voteResult[1]};
+- (void)requestData:(NSString *)contentId {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    [[NNHttpClient sharedClient] getAtPath:@"vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+    NSDictionary *parameters = @{@"content_id" : _detailId};
+    
+    [[NNHttpClient sharedClient] getAtPath:@"api/subject/people" parameters:parameters responseClass:[TopicDetailModel class] success:^(id<Jsonable> response) {
+        self.dataModel = response;
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [self updateData];
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [UIHelper alertWithMessage:error.message];
+    }];
+    
+}
+
+- (void)requestVoteForContentId:(NSString *)contentId withResult:(NSArray *)voteResult {
+    NSDictionary *parameters = @{@"type" : @"subject", @"content_id" : contentId, @"up" : voteResult[0], @"down" : voteResult[1]};
+    
+    [[NNHttpClient sharedClient] getAtPath:@"haha/api/vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
     }];
 }
 
 #pragma mark - Private methods
+
+- (NSString *)createNewIdWith:(NSString *)topicId detailId:(NSString *)detailId {
+    return [NSString stringWithFormat:@"%@_%@", topicId, detailId];
+}
 
 - (NSArray *)computeVoteFromType:(ValuationType)fromType toType:(ValuationType)toType {
     if (fromType != toType) {
@@ -181,7 +221,7 @@ static NSString *const kTypeKey = @"type";
 }
 
 - (void)doValuate:(ValuationType)valuationType {
-    NSString *contentId = @"1";//[self getCurrentId];
+    NSString *contentId = [self createNewIdWith:_topicId detailId:_detailId];
     if (!contentId) {
         return;
     }
@@ -192,10 +232,9 @@ static NSString *const kTypeKey = @"type";
     [self storeValuation:contentId withType:toType];
     
     NSArray *voteResult = [self computeVoteFromType:fromType toType:toType];
-//    _dataModel.upCount += [voteResult[0] integerValue];
-//    _dataModel.downCount += [voteResult[1] integerValue];
-//    [self updateData:_dataModel];
-    [self updateValuationState:contentId];
+    _dataModel.upCount += [voteResult[0] integerValue];
+    _dataModel.downCount += [voteResult[1] integerValue];
+    [self updateData];
     
     [self requestVoteForContentId:contentId withResult:voteResult];
 }
@@ -223,12 +262,12 @@ static NSString *const kTypeKey = @"type";
         return;
     }
     
-    [db executeUpdateWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (content_id TEXT PRIMARY KEY, type INTEGER)", kTableName];
+    [db executeUpdateWithFormat:@"CREATE  TABLE  IF NOT EXISTS %@ (content_id TEXT PRIMARY KEY  NOT NULL , type INTEGER)", kTableName];
     FMResultSet *rs = [db executeQueryWithFormat:@"select * from %@ where content_id = '%@'", kTableName, contentId];
     if ([rs next]) {
         [db executeUpdateWithFormat:@"update %@ set type = %d where content_id = '%@'", kTableName, type, contentId];
     } else {
-        [db executeUpdateWithFormat:@"insert into %@ (content_id, type) values('%@', %d)", contentId, type];
+        [db executeUpdateWithFormat:@"insert into %@ (content_id, type) values('%@', %d)", kTableName, contentId, type];
     }
     
     [rs close];
