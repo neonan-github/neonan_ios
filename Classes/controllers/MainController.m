@@ -249,7 +249,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"topic", @"women", nil];
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"subject", @"women", nil];
     }
     
     return _channelTypes;
@@ -426,7 +426,7 @@ headerView = _headerView;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_channelIndex == kTopicChannelIndex) {
-        return [TopicCell getContentHeight:@"dkfjdkfjdkfjdkfjdkfjdklfjkldfjkldjfkldjfkldjfklajfajf;dkjfjdk" width:320];
+        return [TopicCell getContentHeight:[[_dataModel items][indexPath.row] title] width:CompatibleScreenWidth];
     }
     
     return _channelIndex == kBabyChannelIndex ? 80 : 70;
@@ -732,9 +732,9 @@ headerView = _headerView;
         cell = [[TopicCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:topicCellIdentifier];
     }
     
-    cell.displayView.image = [UIImage imageNamed:@"img_topic_sample.png"];
-    cell.topicLabel.text = @"dkfjdkfjdkfjdkfjdkfjdklfjkldfjkldjfkldjfkldjfklajfajf;dkjfjdk";
-//    BabyItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
+    CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
+    [cell.displayView setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl] placeholderImage:[UIImage imageNamed:@"img_common_list_place_holder.png"]];
+    cell.topicLabel.text = [dataItem title];
     
     return cell;
 }

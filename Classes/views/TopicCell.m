@@ -17,7 +17,7 @@ static const CGFloat kImageRatio = 9 / 16.0; // height : width
 + (UIFont *)getCommentFont {
     static UIFont *font;
     if (!font) {
-        font = [UIFont systemFontOfSize:16];
+        font = [UIFont systemFontOfSize:14];
     }
     
     return font;
@@ -57,6 +57,7 @@ static const CGFloat kImageRatio = 9 / 16.0; // height : width
         topicLabel.backgroundColor = [UIColor clearColor];
         topicLabel.textColor = [UIColor whiteColor];
         topicLabel.numberOfLines = 0;
+        topicLabel.font = [TopicCell getCommentFont];
         topicLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [self addSubview:topicLabel];
     }
