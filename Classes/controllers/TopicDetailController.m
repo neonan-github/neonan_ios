@@ -19,7 +19,8 @@ static const CGFloat kFixedPartHeight = 300;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *praiseButton;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *criticiseButton;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *contentLabel;
-@property (unsafe_unretained, nonatomic) IBOutlet TTTAttributedLabel *rankLabel;
+@property (unsafe_unretained, nonatomic) IBOutlet UILabel *numSymbolLabel;
+@property (unsafe_unretained, nonatomic) IBOutlet UILabel *rankLabel;
 
 @end
 
@@ -46,6 +47,8 @@ static const CGFloat kFixedPartHeight = 300;
     
     _nameLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
     [self displayChineseName:@"大S" englishName:@"Barbie Hsu"];
+    
+//    [self displayRank:15];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,7 +63,14 @@ static const CGFloat kFixedPartHeight = 300;
     [self setCriticiseButton:nil];
     [self setContentLabel:nil];
     [self setRankLabel:nil];
+    [self setNumSymbolLabel:nil];
     [super viewDidUnload];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self displayRank:15];
 }
 
 #pragma mark - Private UI related
@@ -92,6 +102,15 @@ static const CGFloat kFixedPartHeight = 300;
         
         return mutableAttributedString;
     }];
+}
+
+- (void)displayRank:(NSInteger)rank {
+    NSString *text = [NSString stringWithFormat:@"#%d", rank];
+    [_nameLabel setText:text];
+    [_nameLabel sizeToFit];
+    [_nameLabel setCenterX:self.view.center.x];
+    
+    _numSymbolLabel.x = _nameLabel.x - 12;
 }
 
 @end
