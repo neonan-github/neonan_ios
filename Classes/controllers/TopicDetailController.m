@@ -160,7 +160,7 @@ static NSString *const kTypeKey = @"type";
 }
 
 - (void)updateValuationState {
-    NSDictionary *valuation = [self fetchValuation:[self createNewIdWith:_topicId detailId:_detailId]];
+    NSDictionary *valuation = [self fetchValuation:_detailId];
     ValuationType valuationType = [valuation[@"type"] integerValue];
     
     NSString *normalImageName = valuationType == ValuationTypeUp ? @"icon_praise_highlighted.png" : @"icon_praise_normal.png";
@@ -205,10 +205,6 @@ static NSString *const kTypeKey = @"type";
 
 #pragma mark - Private methods
 
-- (NSString *)createNewIdWith:(NSString *)topicId detailId:(NSString *)detailId {
-    return [NSString stringWithFormat:@"%@_%@", topicId, detailId];
-}
-
 - (NSArray *)computeVoteFromType:(ValuationType)fromType toType:(ValuationType)toType {
     if (fromType != toType) {
         NSInteger up = fromType == ValuationTypeUp ? -1 : (toType == ValuationTypeUp ? 1 : 0);
@@ -221,7 +217,7 @@ static NSString *const kTypeKey = @"type";
 }
 
 - (void)doValuate:(ValuationType)valuationType {
-    NSString *contentId = [self createNewIdWith:_topicId detailId:_detailId];
+    NSString *contentId = [_detailId copy];
     if (!contentId) {
         return;
     }
@@ -245,7 +241,8 @@ static NSString *const kTypeKey = @"type";
         return nil;
     }
     
-    FMResultSet *rs = [db executeQueryWithFormat:@"select type from valuation where content_id = '%@'", contentId];
+    FMResultSet *rs = [db executeQuery:[NSString stringWithFormat:@"select type from valuation where content_id = '%@'",
+                                        contentId]];
     NSDictionary *result = nil;
     if ([rs next]) {
         result =  @{kIDKey : contentId, kTypeKey : [rs stringForColumn:@"type"]};
@@ -259,15 +256,18 @@ static NSString *const kTypeKey = @"type";
 - (void)storeValuation:(NSString *)contentId withType:(ValuationType)type {
     FMDatabase *db = self.dbHelper.db;
     if (![db open]) {
+        NSLog(@"db not open");
         return;
     }
     
-    [db executeUpdateWithFormat:@"CREATE  TABLE  IF NOT EXISTS %@ (content_id TEXT PRIMARY KEY  NOT NULL , type INTEGER)", kTableName];
-    FMResultSet *rs = [db executeQueryWithFormat:@"select * from %@ where content_id = '%@'", kTableName, contentId];
+    [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (content_id TEXT PRIMARY KEY NOT NULL, type INTEGER)", kTableName]];
+    FMResultSet *rs = [db executeQuery:[NSString stringWithFormat:@"select * from %@ where content_id = '%@'",
+                                        kTableName,
+                                        contentId]];
     if ([rs next]) {
-        [db executeUpdateWithFormat:@"update %@ set type = %d where content_id = '%@'", kTableName, type, contentId];
+        [db executeUpdate:[NSString stringWithFormat:@"update %@ set type = %d where content_id = '%@'", kTableName, type, contentId]];
     } else {
-        [db executeUpdateWithFormat:@"insert into %@ (content_id, type) values('%@', %d)", kTableName, contentId, type];
+        [db executeUpdate:[NSString stringWithFormat:@"insert into %@ (content_id, type) values('%@', %d)", kTableName, contentId, type]];
     }
     
     [rs close];

@@ -178,7 +178,6 @@
 		34C56BEC1676CE390013ECE6 /* libUMFeedback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C56BE91676CE390013ECE6 /* libUMFeedback.a */; };
 		34C56BF11676CEE00013ECE6 /* FeedbackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C56BEF1676CEE00013ECE6 /* FeedbackController.m */; };
 		34C56BF21676CEE00013ECE6 /* FeedbackController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BF01676CEE00013ECE6 /* FeedbackController.xib */; };
-		34C56BF41676D0C90013ECE6 /* bg_btn_commit.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BF31676D0C90013ECE6 /* bg_btn_commit.png */; };
 		34C56BF61676E1530013ECE6 /* bg_feedback_input.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BF51676E1530013ECE6 /* bg_feedback_input.png */; };
 		34C56BF81676E1680013ECE6 /* bg_age_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BF71676E1680013ECE6 /* bg_age_select.png */; };
 		34C56BFC1676E9C10013ECE6 /* bg_share_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BFB1676E9C10013ECE6 /* bg_share_edit.png */; };
@@ -535,7 +534,6 @@
 		34C56BEE1676CEE00013ECE6 /* FeedbackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackController.h; sourceTree = "<group>"; };
 		34C56BEF1676CEE00013ECE6 /* FeedbackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackController.m; sourceTree = "<group>"; };
 		34C56BF01676CEE00013ECE6 /* FeedbackController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeedbackController.xib; path = ../Classes/controllers/FeedbackController.xib; sourceTree = "<group>"; };
-		34C56BF31676D0C90013ECE6 /* bg_btn_commit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg_btn_commit.png; path = ../../../../../../Volumes/DATA/downloads/bg_btn_commit.png; sourceTree = "<group>"; };
 		34C56BF51676E1530013ECE6 /* bg_feedback_input.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_feedback_input.png; sourceTree = "<group>"; };
 		34C56BF71676E1680013ECE6 /* bg_age_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_age_select.png; sourceTree = "<group>"; };
 		34C56BFB1676E9C10013ECE6 /* bg_share_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_share_edit.png; sourceTree = "<group>"; };
@@ -1059,7 +1057,6 @@
 				340A134C163142F100E8D594 /* bg_comment_input.png */,
 				34B2B77E16380F4500F75977 /* bg_btn_sign.png */,
 				34AC9C6E163E5DB10020DE4B /* bg_bar_button.png */,
-				34C56BF31676D0C90013ECE6 /* bg_btn_commit.png */,
 				34CB8FDE163F7F310001AD87 /* bg_btn_vote.png */,
 				34C56BFB1676E9C10013ECE6 /* bg_share_edit.png */,
 				34C56BFF1676EA230013ECE6 /* bg_feedback_edit.png */,
@@ -1479,7 +1476,6 @@
 				349EF6251675DAC90086A7F1 /* icon_clear_normal.png in Resources */,
 				349EF62E1675E92E0086A7F1 /* AboutController.xib in Resources */,
 				34C56BF21676CEE00013ECE6 /* FeedbackController.xib in Resources */,
-				34C56BF41676D0C90013ECE6 /* bg_btn_commit.png in Resources */,
 				34C56BF61676E1530013ECE6 /* bg_feedback_input.png in Resources */,
 				34C56BF81676E1680013ECE6 /* bg_age_select.png in Resources */,
 				34C56BFC1676E9C10013ECE6 /* bg_share_edit.png in Resources */,
@@ -1744,7 +1740,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neonan/Neonan-Prefix.pch";
 				INFOPLIST_FILE = "Neonan/Neonan-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Support/JPush/lib\"",
@@ -1799,7 +1795,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Neonan/Neonan-Prefix.pch";
 				INFOPLIST_FILE = "Neonan/Neonan-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Support/JPush/lib\"",

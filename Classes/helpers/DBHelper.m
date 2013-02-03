@@ -22,6 +22,7 @@
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentDirectory = [paths objectAtIndex:0];
         NSString *dbPath = [documentDirectory stringByAppendingPathComponent:name];
+        NSLog(@"数据库所在路径：%@", dbPath);
         
         _db = [FMDatabase databaseWithPath:dbPath] ;
     }

@@ -105,7 +105,6 @@ typedef enum {
 - (void)gridView:(KKGridView *)gridView didSelectItemAtIndexPath:(KKIndexPath *)indexPath {
     TopicDetailController *controller = [[TopicDetailController alloc] init];
     TopicItem *dataItem = _dataModel.items[indexPath.index];
-    controller.topicId = _topicId;
     controller.detailId = dataItem.contentId;
     controller.chName = dataItem.name;
     controller.rank = dataItem.ranking;
