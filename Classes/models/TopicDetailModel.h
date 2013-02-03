@@ -10,8 +10,11 @@
 
 @interface TopicDetailModel : NSObject <Jsonable>
 
+@property (nonatomic, strong) NSString *contentId;
 @property (nonatomic, strong) NSString *description;
+@property (nonatomic, strong) NSString *chName;
 @property (nonatomic, strong) NSString *enName;
+@property (nonatomic, assign) NSInteger ranking;
 @property (nonatomic, assign) NSInteger upCount;
 @property (nonatomic, assign) NSInteger downCount;
 @property (nonatomic, strong) NSString *imageUrl;

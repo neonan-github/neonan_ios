@@ -9,6 +9,7 @@
 #import "TopicDetailController.h"
 
 #import "TopicDetailModel.h"
+#import "NearTopicDetailsModel.h"
 
 #import "DBHelper.h"
 
@@ -33,10 +34,15 @@ static NSString *const kTypeKey = @"type";
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *contentLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *numSymbolLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *rankLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *leftArrowView;
+@property (weak, nonatomic) IBOutlet UIImageView *rightArrowView;
 
 @property (nonatomic, strong) TopicDetailModel *dataModel;
 
 @property (nonatomic, strong) DBHelper *dbHelper;
+
+@property (nonatomic, unsafe_unretained) CALayer *cacheLayer;
+@property (nonatomic, assign) BOOL isAnimating;
 
 @end
 
@@ -69,6 +75,13 @@ static NSString *const kTypeKey = @"type";
     UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
+    UISwipeGestureRecognizer *swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    [swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer:swipeLeftRecognizer];
+    UISwipeGestureRecognizer *swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    [swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.view addGestureRecognizer:swipeRightRecognizer];
+    
     self.view.backgroundColor = DarkThemeColor;
     
     _nameLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
@@ -83,6 +96,8 @@ static NSString *const kTypeKey = @"type";
     [self setRankLabel:nil];
     [self setNumSymbolLabel:nil];
     [self setScrollView:nil];
+    [self setLeftArrowView:nil];
+    [self setRightArrowView:nil];
     [super viewDidUnload];
 }
 
@@ -113,6 +128,7 @@ static NSString *const kTypeKey = @"type";
 - (void)displayChineseName:(NSString *)chName englishName:(NSString *)enName {
     enName = !enName ? @" " : enName;
     NSString *text = [NSString stringWithFormat:@"%@ %@", chName, enName];
+    _nameLabel.hidden = NO;
     [_nameLabel setText:text afterInheritingLabelAttributesAndConfiguringWithBlock:^ NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
         NSRange bigRange = [[mutableAttributedString string] rangeOfString:chName options:NSCaseInsensitiveSearch];
         NSRange smallRange = [[mutableAttributedString string] rangeOfString:enName options:NSCaseInsensitiveSearch];
@@ -141,6 +157,10 @@ static NSString *const kTypeKey = @"type";
 }
 
 - (void)displayRank:(NSInteger)rank {
+    _leftArrowView.hidden = rank >= _maxRank;
+    _rightArrowView.hidden = rank <= 1;
+    
+    
     NSString *text = [NSString stringWithFormat:@"%d", rank];
     [_rankLabel setText:text];
     [_rankLabel sizeToFit];
@@ -150,6 +170,8 @@ static NSString *const kTypeKey = @"type";
 }
 
 - (void)displayContent:(NSString *)content {
+    _contentLabel.hidden = NO;
+    
     CGSize constraint = CGSizeMake(_contentLabel.width, 20000.0f);
     CGSize size = [content sizeWithFont:_contentLabel.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     _contentLabel.height = size.height;
@@ -174,12 +196,30 @@ static NSString *const kTypeKey = @"type";
     [_criticiseButton setImage:[UIImage imageFromFile:highlightedImageName] forState:UIControlStateHighlighted];
 }
 
+- (void)clearContents {
+    self.dataModel = nil;
+    
+    _imageView.image = [UIImage imageNamed:@"img_common_list_place_holder.png"];
+    
+    _nameLabel.hidden = YES;
+    [_praiseButton setTitle:@"" forState:UIControlStateNormal];
+    [_criticiseButton setTitle:@"" forState:UIControlStateNormal];
+    _contentLabel.hidden = YES;
+}
+
+- (void)performBounce:(BOOL)left {
+    CAAnimation *animation = [UIHelper createBounceAnimation:left ? NNDirectionLeft : NNDirectionRight];
+    [CATransaction begin];
+    [self.view.layer addAnimation:animation forKey:@"bounceAnimation"];
+    [CATransaction commit];
+}
+
 #pragma mark - Private Request methods
 
 - (void)requestData:(NSString *)contentId {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    NSDictionary *parameters = @{@"content_id" : _detailId};
+    NSDictionary *parameters = @{@"content_id" : contentId};
     
     [[NNHttpClient sharedClient] getAtPath:@"api/subject/people" parameters:parameters responseClass:[TopicDetailModel class] success:^(id<Jsonable> response) {
         self.dataModel = response;
@@ -191,7 +231,26 @@ static NSString *const kTypeKey = @"type";
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [UIHelper alertWithMessage:error.message];
     }];
+}
+
+- (void)requestNearData:(BOOL)next topicId:(NSString *)topicId detailId:(NSString *)detailId {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
+    NSDictionary *parameters = @{@"content_id" : detailId, @"subject_id" : topicId, @"direction" : @(next ? 1 : -1)};
+    
+    [[NNHttpClient sharedClient] getAtPath:@"api/subject/near_people" parameters:parameters responseClass:[NearTopicDetailsModel class] success:^(id<Jsonable> response) {
+        self.dataModel = ((NearTopicDetailsModel *) response).items[0];
+        self.chName = _dataModel.chName;
+        self.rank = _dataModel.ranking;
+        self.detailId = _dataModel.contentId;
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [self updateData];
+    } failure:^(ResponseError *error) {
+        NSLog(@"error:%@", error.message);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [UIHelper alertWithMessage:error.message];
+    }];
 }
 
 - (void)requestVoteForContentId:(NSString *)contentId withResult:(NSArray *)voteResult {
@@ -256,7 +315,6 @@ static NSString *const kTypeKey = @"type";
 - (void)storeValuation:(NSString *)contentId withType:(ValuationType)type {
     FMDatabase *db = self.dbHelper.db;
     if (![db open]) {
-        NSLog(@"db not open");
         return;
     }
     
@@ -282,5 +340,51 @@ static NSString *const kTypeKey = @"type";
     [self doValuate:ValuationTypeDown];
 }
 
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer {
+    if (_isAnimating || !_dataModel) {
+        return;
+    }
+    
+    BOOL next = recognizer.direction == UISwipeGestureRecognizerDirectionLeft;
+    
+    if ((_rank >= _maxRank && !next) || (_rank <=1 && next)) {// 到头或尾
+        [self performBounce:!next];
+        return;
+    }
+
+    self.isAnimating = YES;
+
+    CGFloat viewWidth = self.view.frame.size.width;
+    CGFloat viewHeight = self.view.frame.size.height;
+    
+    CALayer *cacheLayer = self.cacheLayer = [CALayer layer];
+    UIImage *cacheImage = [UIImage imageFromView:self.view];
+    cacheLayer.frame = CGRectMake((next ? -1 : 1) * viewWidth, 0, viewWidth, viewHeight);
+    cacheLayer.contents = (id)cacheImage.CGImage;
+    [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
+    
+    [self clearContents];
+    [self displayRank:_rank + (next ? -1 :1)];
+
+    [self requestNearData:next topicId:_topicId detailId:_detailId];
+
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+    //    animation.duration = 5;
+    animation.delegate = self;
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    animation.fromValue = [NSValue valueWithCGPoint:CGPointMake((next ? 1.5f : -0.5f) * viewWidth, viewHeight / 2)];
+    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(viewWidth / 2, viewHeight / 2)];
+    [self.view.layer addAnimation:animation forKey:@"position"];
+}
+
+#pragma mark - CAAnimationDelegate methods
+
+- (void)animationDidStart:(CAAnimation *)anim {
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
+    self.isAnimating = !flag;
+    [self.cacheLayer removeFromSuperlayer];
+}
 
 @end

@@ -9,9 +9,16 @@
 #import "TopicDetailModel.h"
 
 @implementation TopicDetailModel
+@synthesize contentId, description, chName, enName, imageUrl;
+@synthesize ranking, upCount, downCount;
 
 + (id<Jsonable>)parse:(NSDictionary *)JSON {
-    DCKeyValueObjectMapping *parser = [DCKeyValueObjectMapping mapperForClass:self];
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    
+    DCObjectMapping *nameMapping = [DCObjectMapping mapKeyPath:@"name" toAttribute:@"chName" onClass:self];
+    [config addObjectMapping:nameMapping];
+    
+    DCKeyValueObjectMapping *parser = [DCKeyValueObjectMapping mapperForClass:self andConfiguration:config];
     return [parser parseDictionary:JSON];
 }
 
