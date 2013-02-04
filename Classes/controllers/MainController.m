@@ -420,7 +420,9 @@ headerView = _headerView;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_channelIndex == kTopicChannelIndex) {
         GridListController *controller = [[GridListController alloc] init];
-        controller.topicId = [[_dataModel items][indexPath.row] contentId];
+        CommonItem *dataItem = [_dataModel items][indexPath.row];
+        controller.topicId = [dataItem contentId];
+        controller.title = [dataItem sortName];
         [self.navigationController pushViewController:controller animated:YES];
         return;
     }

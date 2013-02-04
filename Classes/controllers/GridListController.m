@@ -48,7 +48,6 @@ typedef enum {
     
     NNNavigationController *navController = (NNNavigationController *)self.navigationController;
     navController.logoHidden = YES;
-    self.title = @"TOP 99 女人";
     
     CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
     // Create a custom back button
@@ -95,7 +94,7 @@ typedef enum {
     TopicItem *dataItem = _dataModel.items[indexPath.index];
     [cell setTitle:dataItem.name];
     [cell setRank:dataItem.ranking];
-    [cell.imageView setImageWithURL:[NSURL URLWithString:dataItem.imageUrl] placeholderImage:[UIImage imageNamed:@"img_common_list_place_holder.png"]];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:dataItem.imageUrl] placeholderImage:[UIImage imageNamed:@"img_grid_place_holder.png"]];
     
     return cell;
 }
@@ -110,6 +109,7 @@ typedef enum {
     controller.chName = dataItem.name;
     controller.rank = dataItem.ranking;
     controller.maxRank = _dataModel.totalCount;
+    controller.title = self.title;
     [self.navigationController pushViewController:controller animated:YES];
 }
 

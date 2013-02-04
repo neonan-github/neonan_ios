@@ -68,8 +68,6 @@ static NSString *const kTypeKey = @"type";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"TOP 99 女人";
-    
     CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
     // Create a custom back button
     UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
@@ -157,9 +155,8 @@ static NSString *const kTypeKey = @"type";
 }
 
 - (void)displayRank:(NSInteger)rank {
-    _leftArrowView.hidden = rank >= _maxRank;
-    _rightArrowView.hidden = rank <= 1;
-    
+    _leftArrowView.alpha = rank >= _maxRank ? 0.3 : 1;
+    _rightArrowView.alpha = rank <= 1 ? 0.3 : 1;
     
     NSString *text = [NSString stringWithFormat:@"%d", rank];
     [_rankLabel setText:text];

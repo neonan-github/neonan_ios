@@ -30,7 +30,6 @@
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.font = [UIFont systemFontOfSize:13];
-        titleLabel.text = @"阿鄂豫皖";
         [self.contentView addSubview:titleLabel];
         
         UILabel *rankLabel = self.rankLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.width - 30, self.height - titleHeight, 28, titleHeight)];
@@ -39,13 +38,12 @@
         rankLabel.textColor = [UIColor whiteColor];
         rankLabel.textAlignment = NSTextAlignmentRight;
         rankLabel.font = [UIFont systemFontOfSize:10];
-        rankLabel.text = @"#99";
         [self.contentView addSubview:rankLabel];
         
-        UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - 0.5, self.width, 0.5)];
-        bottomLineView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-        bottomLineView.backgroundColor = RGBA(255, 255, 255, 0.5);
-        [self.contentView addSubview:bottomLineView];
+//        UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - 0.5, self.width, 0.5)];
+//        bottomLineView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+//        bottomLineView.backgroundColor = RGBA(255, 255, 255, 0.5);
+//        [self.contentView addSubview:bottomLineView];
     }
     return self;
 }
