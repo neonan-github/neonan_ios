@@ -612,7 +612,9 @@ headerView = _headerView;
         
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
-        [UIHelper alertWithMessage:error.message];
+        if (self.isVisible) {
+            [UIHelper alertWithMessage:error.message];
+        }
         [_tableView.pullToRefreshView stopAnimating];
         [_tableView.infiniteScrollingView stopAnimating];
     }];
@@ -657,7 +659,6 @@ headerView = _headerView;
         }
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
-        [UIHelper alertWithMessage:error.message];
     }];
 }
 

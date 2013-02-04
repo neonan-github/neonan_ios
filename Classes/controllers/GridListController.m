@@ -142,7 +142,10 @@ typedef enum {
         if (requestType == RequestTypeRefresh) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         }
-        [UIHelper alertWithMessage:error.message];
+        
+        if (self.isVisible) {
+            [UIHelper alertWithMessage:error.message];
+        }
         [_gridView.infiniteScrollingView stopAnimating];
     }];
     

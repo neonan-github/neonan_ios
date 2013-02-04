@@ -469,7 +469,9 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         }
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
-        [UIHelper alertWithMessage:error.message];
+        if (self.isVisible) {
+            [UIHelper alertWithMessage:error.message];
+        }
     }];
 }
 
@@ -484,7 +486,9 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         }
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
-        [UIHelper alertWithMessage:error.message];
+        if (self.isVisible) {
+            [UIHelper alertWithMessage:error.message];
+        }
     }];
 }
 
@@ -520,7 +524,9 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         }
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
-        [UIHelper alertWithMessage:error.message];
+        if (self.isVisible) {
+            [UIHelper alertWithMessage:error.message];
+        }
     }];
 }
 
