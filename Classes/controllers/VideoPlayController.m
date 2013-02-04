@@ -105,7 +105,9 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    [UIHelper alertWithMessage:@"网络连接失败"];
+    if (self.isVisible) {
+        [UIHelper alertWithMessage:@"网络连接失败"];
+    }
 }
 
 #pragma mark - Private methods
@@ -125,7 +127,9 @@
                 completion(((UrlModel *)response).url);
             }
         } failure:^(ResponseError *error) {
-            [UIHelper alertWithMessage:error.message];
+            if (self.isVisible) {
+                [UIHelper alertWithMessage:error.message];
+            }
             NSLog(@"error:%@", error.message);
         }];
     }

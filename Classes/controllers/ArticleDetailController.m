@@ -252,7 +252,9 @@ static NSString * const kDirectionRight = @"1";
         }
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
-        [UIHelper alertWithMessage:error.message];
+        if (self.isVisible) {
+            [UIHelper alertWithMessage:error.message];
+        }
     }];
 }
 
@@ -273,7 +275,9 @@ static NSString * const kDirectionRight = @"1";
         [self updateData];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
-        [UIHelper alertWithMessage:error.message];
+        if (self.isVisible) {
+            [UIHelper alertWithMessage:error.message];
+        }
     }];
 }
 
@@ -294,7 +298,9 @@ static NSString * const kDirectionRight = @"1";
         } failure:^(ResponseError *error) {
             NSLog(@"error:%@", error.message);
             [MBProgressHUD hideHUDForView:self.view animated:YES];
-            [UIHelper alertWithMessage:error.message];
+            if (self.isVisible) {
+                [UIHelper alertWithMessage:error.message];
+            }
         }];
 
     }];

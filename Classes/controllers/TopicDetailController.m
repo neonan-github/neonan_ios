@@ -228,7 +228,9 @@ static NSString *const kTypeKey = @"type";
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        [UIHelper alertWithMessage:error.message];
+        if (self.isVisible) {
+            [UIHelper alertWithMessage:error.message];
+        }
     }];
 }
 
@@ -248,7 +250,9 @@ static NSString *const kTypeKey = @"type";
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        [UIHelper alertWithMessage:error.message];
+        if (self.isVisible) {
+            [UIHelper alertWithMessage:error.message];
+        }
     }];
 }
 
