@@ -16,6 +16,7 @@
 @property (strong, nonatomic) NSString *contentId;
 @property (strong, nonatomic) NSString *videoUrl;
 @property (strong, nonatomic) NSNumber *dateMillis;
+@property (strong, nonatomic) NSString *sortName;
 
 @property (readonly, nonatomic) NSString *date;
 @property (readonly, nonatomic) NSString *readableContentType;

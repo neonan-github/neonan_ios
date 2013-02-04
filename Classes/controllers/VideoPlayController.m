@@ -20,8 +20,7 @@
 
 @implementation VideoPlayController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -29,8 +28,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     if (self.navigationController.viewControllers.count > 1) {// pushed
@@ -60,20 +58,9 @@
     }];    
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidUnload {
+- (void)cleanUp {
     self.webView.delegate = nil;
-    [self setWebView:nil];
-    [super viewDidUnload];
-}
-
-- (void)dealloc {
-    self.webView.delegate = nil;
+    self.webView = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -132,7 +119,7 @@
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:_contentId, @"content_id",
                                     @"video", @"content_type", nil];
         
-        [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[UrlModel class] success:^(id<Jsonable> response)
+        [[NNHttpClient sharedClient] getAtPath:@"api/work_info" parameters:parameters responseClass:[UrlModel class] success:^(id<Jsonable> response)
         {
             if (completion) {
                 completion(((UrlModel *)response).url);

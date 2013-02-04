@@ -8,13 +8,15 @@
 
 #import "CommentListController.h"
 #import "NNNavigationController.h"
-#import "CommentBox.h"
-#import "CommentCell.h"
 
 #import "CommentListModel.h"
 #import "ShareHelper.h"
 
+#import "CommentBox.h"
+#import "CommentCell.h"
+
 #import "SVPullToRefresh.h"
+
 #import <MBProgressHUD.h>
 
 #define CELL_CONTENT_WIDTH 320.0f
@@ -25,11 +27,13 @@ static const NSUInteger kRequestCount = 20;
 static NSString * const kRequestCountString = @"20";
 
 typedef enum {
-    requestTypeRefresh = 0,
-    requestTypeAppend
-} requestType;
+    RequestTypeRefresh = 0,
+    RequestTypeAppend
+} RequestType;
 
-@interface CommentListController ()
+@interface CommentListController () <UITableViewDataSource, UITableViewDelegate,
+HPGrowingTextViewDelegate>
+
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
 @property (unsafe_unretained, nonatomic) IBOutlet UIImageView *titleLineView;
@@ -44,8 +48,7 @@ typedef enum {
 
 @implementation CommentListController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = DarkThemeColor;
@@ -67,12 +70,14 @@ typedef enum {
     [_tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
-        [self requestForComments:_articleInfo.contentId withRequestType:requestTypeRefresh];
+        [self requestForComments:_articleInfo.contentId withRequestType:RequestTypeRefresh];
     }];
+    _tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     [_tableView addInfiniteScrollingWithActionHandler:^{
         // add data to data source, insert new cells into table view
-        [self requestForComments:_articleInfo.contentId withRequestType:requestTypeAppend];
+        [self requestForComments:_articleInfo.contentId withRequestType:RequestTypeAppend];
     }];
+    _tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     _tableView.showsInfiniteScrolling = NO;
     
 //    self.comments = [[NSMutableArray alloc] initWithCapacity:20];
@@ -87,14 +92,8 @@ typedef enum {
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside]; 
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)cleanUp
-{
+- (void)cleanUp {
+    self.titleLineView = nil;
     self.titleLabel = nil;
     self.shareButton = nil;
     
@@ -105,22 +104,9 @@ typedef enum {
     self.commentBox = nil;
 }
 
-- (void)viewDidUnload
-{
-    [self cleanUp];
-    [self setTitleLineView:nil];
-    [super viewDidUnload];
-}
-
-- (void)dealloc
-{
-    [self cleanUp];
-}
-
 #pragma mark - UIViewController life cycle
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
 //    CGRect frame = self.commentBox.frame;
@@ -144,8 +130,7 @@ typedef enum {
     [_tableView.pullToRefreshView triggerRefresh];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [super viewWillDisappear:animated];
@@ -222,7 +207,7 @@ typedef enum {
 #pragma mark - Keyboard events handle
 
 //Code from Brett Schumann
--(void) keyboardWillShow:(NSNotification *)note{
+-(void) keyboardWillShow:(NSNotification *)note {
 //    _commentBox.rightView = nil;
     
     // get keyboard size and loctaion
@@ -303,31 +288,34 @@ typedef enum {
     _tableView.frame = frame;
 }
 
-- (void)updateTableView {
+- (void)updateTableView:(RequestType)requestType {
     [_tableView reloadData];
-    [_tableView.pullToRefreshView stopAnimating];
-    [_tableView.infiniteScrollingView stopAnimating];
+    if (requestType == RequestTypeRefresh) {
+        [_tableView.pullToRefreshView stopAnimating];
+    } else {
+        [_tableView.infiniteScrollingView stopAnimating];
+    }
     
     _tableView.showsInfiniteScrolling = [_dataModel totalCount] > [_dataModel items].count;
 }
 
 #pragma mark - Private Request methods
 
-- (void)requestForComments:(NSString *)contentId withRequestType:(requestType)requestType {
-    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
+- (void)requestForComments:(NSString *)contentId withRequestType:(RequestType)requestType {
+    NSUInteger offset = (requestType == RequestTypeRefresh ? 0 : [_dataModel items].count);
     
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:contentId, @"content_id",
                                 [NSString stringWithFormat:@"%u", offset], @"offset",
                                 kRequestCountString, @"count",  nil];
 
-    [[NNHttpClient sharedClient] getAtPath:@"comments_show" parameters:parameters responseClass:[CommentListModel class] success:^(id<Jsonable> response) {
-        if (requestType == requestTypeAppend) {
+    [[NNHttpClient sharedClient] getAtPath:@"api/comments_show" parameters:parameters responseClass:[CommentListModel class] success:^(id<Jsonable> response) {
+        if (requestType == RequestTypeAppend) {
             [self.dataModel appendMoreData:response];
         } else {
             self.dataModel = response;
         }
         
-        [self updateTableView];
+        [self updateTableView:requestType];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
         [UIHelper alertWithMessage:error.message];
@@ -345,7 +333,7 @@ typedef enum {
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
                                     contentId, @"content_id", comment, @"content", nil];
         
-        [[NNHttpClient sharedClient] postAtPath:@"comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+        [[NNHttpClient sharedClient] postAtPath:@"api/comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             _articleInfo.commentNum++;
             [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_articleInfo.commentNum].description forState:UIControlStateNormal];

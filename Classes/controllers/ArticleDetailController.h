@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ArticleDetailController : UIViewController
+@interface ArticleDetailController : NNViewController
 
 @property (assign, nonatomic) SortType sortType;
 @property (assign, nonatomic) NSUInteger offset;

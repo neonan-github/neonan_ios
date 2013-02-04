@@ -29,8 +29,7 @@ const NSUInteger kMaxInputLimit = 140;
 
 @implementation ShareEditController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -38,8 +37,7 @@ const NSUInteger kMaxInputLimit = 140;
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = DarkThemeColor;
@@ -66,20 +64,13 @@ const NSUInteger kMaxInputLimit = 140;
     [self updateLimitHit];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidUnload {
-    [self setBindInfoLabel:nil];
-    [self setInputLimitLabel:nil];
-    [self setTextView:nil];
+- (void)cleanUp {
+    self.bindInfoLabel = nil;
+    self.inputLimitLabel = nil;
+    self.textView = nil;
     self.loadingView = nil;
     self.shareButton = nil;
-    [self setTextBgView:nil];
-    [super viewDidUnload];
+    self.textBgView = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SHSCore.h"
 
-@interface ShareEditController : UIViewController <SHSOAuthDelegate>
+@interface ShareEditController : NNViewController <SHSOAuthDelegate>
 
 @property (strong, nonatomic) id shareItem;
 

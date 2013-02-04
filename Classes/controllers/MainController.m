@@ -11,17 +11,24 @@
 #import "BabyDetailController.h"
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
+#import "GridListController.h"
 #import "SignController.h"
 #import "AboutController.h"
 #import "FeedbackController.h"
 
+#import "MainSlideShowModel.h"
+#import "BabyListModel.h"
+#import "CommonListModel.h"
+
 #import "SMPageControl.h"
 #import "HotListCell.h"
 #import "BabyCell.h"
+#import "TopicCell.h"
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
 #import "CustomNavigationBar.h"
 #import "NNDropDownMenu.h"
+#import "NNTableView.h"
 
 #import <SDImageCache.h>
 #import <SVPullToRefresh.h>
@@ -29,14 +36,7 @@
 #import <NYXImagesKit.h>
 #import <UIAlertView+Blocks.h>
 
-#import "BabyDetailController.h"
-#import "CommentListController.h"
-
-#import "MainSlideShowModel.h"
-#import "BabyListModel.h"
-#import "CommonListModel.h"
-
-static const NSUInteger kTopChannelIndex = 4;
+static const NSUInteger kTopicChannelIndex = 4;
 static const NSUInteger kBabyChannelIndex = NSIntegerMax;
 static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
@@ -44,23 +44,26 @@ static const NSString *kRequestCountString = @"20";
 static const NSString *kFilterFlag = @"true";
 
 typedef enum {
-    requestTypeRefresh = 0,
-    requestTypeAppend
-} requestType;
+    RequestTypeRefresh = 0,
+    RequestTypeAppend
+} RequestType;
 
 typedef enum {
-    contentTypeSlide = 0,
-    contentTypeArticle,
-    contentTypeVideo
-} contentType;
+    ContentTypeSlide = 0,
+    ContentTypeArticle,
+    ContentTypeVideo
+} ContentType;
 
-@interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate, NNDropDownMenuDelegate>
+@interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate, NNDropDownMenuDelegate,
+SlideShowViewDataSource, SlideShowViewDelegate,
+UITableViewDataSource, UITableViewDelegate, CircleHeaderViewDelegate>
+
 @property (nonatomic, unsafe_unretained) UIButton *navLeftButton;
 @property (nonatomic, unsafe_unretained) UIButton *navRightButton;
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) TTTAttributedLabel *slideShowTextLabel;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
-@property (nonatomic, unsafe_unretained) UITableView *tableView;
+@property (nonatomic, unsafe_unretained) NNTableView *tableView;
 @property (nonatomic, unsafe_unretained) CircleHeaderView *headerView;
 @property (nonatomic, strong) NNDropDownMenu *dropDownMenu;
 
@@ -75,30 +78,13 @@ typedef enum {
 @property (nonatomic, assign) SortType type;
 @property (nonatomic, strong) id dataModel;// BabyListModel or CommonListModel;
 
-- (UITableViewCell *)createHotListCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
-- (UITableViewCell *)createBabyCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath;
-
-- (NSString *)stringForType:(SortType)type;
-- (contentType)judgeContentType:(id)item;
-
-- (void)requestForSlideShow:(NSString *)channel;
-- (void)requestForList:(NSString *)channel withListType:(SortType)type andRequestType:(requestType)requestType;
-- (void)requestForVote:(NSString *)babyId withToken:(NSString *)token;
-
-- (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex;
-- (void)updateTableView;
-- (void)updateSlideShow;
-- (void)onChannelChanged;
-- (void)onSlideShowItemClicked:(UIView *)view;
-- (void)enterControllerByType:(id)dataItem atOffset:(NSUInteger)offset;
 @end
 
 @implementation MainController
 @synthesize slideShowView = _slideShowView, pageControl = _pageControl, tableView = _tableView,
 headerView = _headerView;
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view.
@@ -162,32 +148,34 @@ headerView = _headerView;
     [self.view addSubview:headerView];
     
 //    layoutY += slideShowHeight;
-    UITableView *tableView = self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, CompatibleContainerHeight - layoutY) style:UITableViewStylePlain];
+    UITableView *tableView = self.tableView = [[NNTableView alloc] initWithFrame:CGRectMake(0, layoutY, CompatibleScreenWidth, CompatibleContainerHeight - layoutY) style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.backgroundColor = DarkThemeColor;
     tableView.tableHeaderView = slideShowView;
-    tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-    tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    
     [tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
-        [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
-        [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:requestTypeRefresh];
+        if (_channelIndex != kTopicChannelIndex) {
+            [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
+        }
+        [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:RequestTypeRefresh];
     }];
+    tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     [tableView addInfiniteScrollingWithActionHandler:^{
         // add data to data source, insert new cells into table view
-        [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:requestTypeAppend];
+        [self requestForList:[self.channelTypes objectAtIndex:_channelIndex] withListType:_type andRequestType:RequestTypeAppend];
     }];
+    tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     tableView.showsInfiniteScrolling = NO;
     [self.view addSubview:tableView];
     
     [self addObserver:self forKeyPath:@"tableView.contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
-- (void)cleanUp
-{
+- (void)cleanUp {
     self.navLeftButton = nil;
     self.navRightButton = nil;
     
@@ -215,17 +203,6 @@ headerView = _headerView;
     self.dataModel = nil;
 }
 
-- (void)viewDidUnload
-{
-    [self cleanUp];
-    [super viewDidUnload];
-}
-
-- (void)dealloc
-{
-    [self cleanUp];
-}
-
 - (void)setType:(SortType)type {
     if (_type != type) {
         _type = type;
@@ -236,7 +213,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", /*@"宝贝",*/ @"视频", @"精选", @"女人", nil];
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", /*@"宝贝",*/ @"视频", @"专题", @"女人", nil];
     }
     
     return  _channelTexts;
@@ -244,7 +221,7 @@ headerView = _headerView;
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"top", @"women", nil];
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"subject", @"women", nil];
     }
     
     return _channelTypes;
@@ -322,6 +299,7 @@ headerView = _headerView;
     [super viewWillAppear:animated];
     
 //    [self updateUserStatus];
+    [self.navigationController performSelector:@selector(setLogoHidden:) withObject:nil];
     
     [_headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
     
@@ -401,10 +379,18 @@ headerView = _headerView;
 #pragma mark - UITableViewDataSource methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (_channelIndex == kTopicChannelIndex && _dataModel) { //屏蔽“十大争议女星”
+        return 2;
+    }
+    
     return _dataModel ? [_dataModel items].count : 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_channelIndex == kTopicChannelIndex) {
+        return [self createTopicCell:tableView forRowAtIndexPath:indexPath];
+    }
+    
     if (_channelIndex == kBabyChannelIndex) {
         return [self createBabyCell:tableView forRowAtIndexPath:indexPath];
     }
@@ -415,10 +401,23 @@ headerView = _headerView;
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_channelIndex == kTopicChannelIndex) {
+        return [TopicCell getContentHeight:[[_dataModel items][indexPath.row] title] width:CompatibleScreenWidth];
+    }
+    
     return _channelIndex == kBabyChannelIndex ? 80 : 70;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_channelIndex == kTopicChannelIndex) {
+        GridListController *controller = [[GridListController alloc] init];
+        CommonItem *dataItem = [_dataModel items][indexPath.row];
+        controller.topicId = [dataItem contentId];
+        controller.title = [dataItem sortName];
+        [self.navigationController pushViewController:controller animated:YES];
+        return;
+    }
+    
     id dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
     [self enterControllerByType:dataItem atOffset:indexPath.row];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -427,7 +426,6 @@ headerView = _headerView;
 #pragma mark - CircleHeaderViewDelegate methods
 
 - (void)currentItemIndexDidChange:(CircleHeaderView *)headView {
-    _tableView.dataSource = nil;
     [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"image_list"];
     [[NNHttpClient sharedClient] cancelAllHTTPOperationsWithMethod:@"GET" path:@"work_list"];
     [_tableView.pullToRefreshView stopAnimating];
@@ -435,7 +433,10 @@ headerView = _headerView;
     
     [_slideShowView stopAutoScroll];
     
-    [self performSelector:@selector(onChannelChanged) withObject:nil afterDelay:0.3];
+    [_tableView doUntilLoaded:^{
+        _tableView.dataSource = nil;
+        [self performSelector:@selector(onChannelChanged) withObject:nil afterDelay:0.3];
+    }];
 }
 
 #pragma mark - BabyCellDelegate methods
@@ -475,21 +476,21 @@ headerView = _headerView;
     return @"最热";
 }
 
-- (contentType)judgeContentType:(id)item {
+- (ContentType)judgeContentType:(id)item {
     if ([item isKindOfClass:[BabyItem class]]) {
-        return contentTypeSlide;
+        return ContentTypeSlide;
     }
     
     NSString *type = [item contentType];
     if ([type isEqualToString:@"article"]) {
-        return contentTypeArticle;
+        return ContentTypeArticle;
     }
     
     if ([type isEqualToString:@"video"]) {
-        return contentTypeVideo;
+        return ContentTypeVideo;
     }
     
-    return contentTypeSlide;
+    return ContentTypeSlide;
 }
 
 - (NSString *)requestStringForType:(SortType)type {
@@ -584,7 +585,7 @@ headerView = _headerView;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
                                 [NSNumber numberWithUnsignedInteger:MainSlideShowCount], @"count", nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"image_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:@"api/image_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
         self.slideShowModel = (MainSlideShowModel *)response;
         [self updateSlideShow];
         NSLog(@"requestForSlideShow response count:%u", _slideShowModel.list.count);
@@ -593,20 +594,20 @@ headerView = _headerView;
     }];
 }
 
-- (void)requestForList:(NSDictionary *)parameters withRequestType:(requestType)requestType {
+- (void)requestForList:(NSDictionary *)parameters withRequestType:(RequestType)requestType {
     BOOL isBabyChannel = [[parameters objectForKey:@"channel"] isEqualToString:@"baby"];
-    NSString *path = @"work_list";
+    NSString *path = @"api/work_list";
     Class responseClass = isBabyChannel ? [BabyListModel class] : [CommonListModel class];
     
     [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
         if (isBabyChannel == (_channelIndex == kBabyChannelIndex)) {
-            if (requestType == requestTypeAppend) {
+            if (requestType == RequestTypeAppend) {
                 [self.dataModel appendMoreData:response];
             } else {
                 self.dataModel = response;
             }
             
-            [self updateTableView];
+            [self updateTableView:requestType];
         }
         
     } failure:^(ResponseError *error) {
@@ -618,8 +619,8 @@ headerView = _headerView;
  
 }
 
-- (void)requestForList:(NSString *)channel withListType:(SortType)type andRequestType:(requestType)requestType {
-    NSUInteger offset = (requestType == requestTypeRefresh ? 0 : [_dataModel items].count);
+- (void)requestForList:(NSString *)channel withListType:(SortType)type andRequestType:(RequestType)requestType {
+    NSUInteger offset = (requestType == RequestTypeRefresh ? 0 : [_dataModel items].count);
     BOOL isBabyChannel = [channel isEqualToString:@"baby"];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
                                 [self requestStringForType:type], @"sort_type",
@@ -641,7 +642,7 @@ headerView = _headerView;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:babyId, @"content_id",
                                 token, @"token", nil];
     
-    [[NNHttpClient sharedClient] postAtPath:@"baby_vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] postAtPath:@"api/baby_vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
         NSInteger itemIndex = [self searchBabyById:babyId];
         if (itemIndex < 0) {
             return;
@@ -702,12 +703,27 @@ headerView = _headerView;
     return cell;
 }
 
+- (UITableViewCell *)createTopicCell:(UITableView *)tableView forRowAtIndexPath:(NSIndexPath *)indexPath  {
+    static NSString *topicCellIdentifier = @"TopicCell";
+    
+    TopicCell *cell = [tableView dequeueReusableCellWithIdentifier:topicCellIdentifier];
+    if (!cell) {
+        cell = [[TopicCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:topicCellIdentifier];
+    }
+    
+    CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
+    [cell.displayView setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl] placeholderImage:[UIImage imageNamed:@"img_common_list_place_holder.png"]];
+    cell.topicLabel.text = [dataItem title];
+    
+    return cell;
+}
+
 - (CGFloat)slideShowHeightForChannel:(NSUInteger)channelIndex {
     switch (channelIndex) {
         case kBabyChannelIndex:
             return 110;
         
-        case kTopChannelIndex:
+        case kTopicChannelIndex:
             return 0;
             
         default:
@@ -731,10 +747,13 @@ headerView = _headerView;
 //                 forControlEvents:UIControlEventTouchUpInside];
 //}
 
-- (void)updateTableView {
+- (void)updateTableView:(RequestType)requestType {
     [_tableView reloadData];
-    [_tableView.pullToRefreshView stopAnimating];
-    [_tableView.infiniteScrollingView stopAnimating];
+    if (requestType == RequestTypeRefresh) {
+        [_tableView.pullToRefreshView stopAnimating];
+    } else {
+        [_tableView.infiniteScrollingView stopAnimating];
+    }
     
     _tableView.showsInfiniteScrolling = [_dataModel totalCount] > [_dataModel items].count;
 }
@@ -755,7 +774,6 @@ headerView = _headerView;
     
     self.channelIndex = _headerView.carousel.currentItemIndex;
     
-    [self requestForSlideShow:[self.channelTypes objectAtIndex:_channelIndex]];
     [_tableView.pullToRefreshView triggerRefresh];
     
     CGRect frame = _slideShowView.frame;
@@ -770,7 +788,7 @@ headerView = _headerView;
     id controller;
     
     switch ([self judgeContentType:dataItem]) {
-        case contentTypeArticle:
+        case ContentTypeArticle:
             controller = [[ArticleDetailController alloc] init];
             [controller setContentId:[dataItem contentId]];
             [controller setContentTitle:[dataItem title]];
@@ -779,7 +797,7 @@ headerView = _headerView;
             [controller setChannel:[self.channelTypes objectAtIndex:_channelIndex]];
             break;
             
-        case contentTypeSlide:
+        case ContentTypeSlide:
             controller = [[BabyDetailController alloc] init];
             [controller setContentType:[dataItem contentType]];
             [controller setContentId:[dataItem contentId]];
@@ -795,7 +813,7 @@ headerView = _headerView;
             }
             break;
             
-        case contentTypeVideo:
+        case ContentTypeVideo:
             controller = [[VideoPlayController alloc] init];
             [controller setVideoUrl:[dataItem videoUrl]];
     }

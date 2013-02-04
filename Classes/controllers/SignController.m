@@ -8,15 +8,17 @@
 
 #import "SignController.h"
 #import "NNNavigationController.h"
-#import <DCRoundSwitch.h>
-#import <MBProgressHUD.h>
-#import <SSKeychain.h>
 
 #import "SignResult.h"
 #import "SessionManager.h"
 #import "MD5.h"
 
-@interface SignController ()
+#import <DCRoundSwitch.h>
+#import <MBProgressHUD.h>
+#import <SSKeychain.h>
+#import <TTTAttributedLabel.h>
+
+@interface SignController () <TTTAttributedLabelDelegate>
 @property (unsafe_unretained, nonatomic) TTTAttributedLabel *switchTypeLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *userTextField;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *passwordTextField;
@@ -32,8 +34,7 @@
 
 @implementation SignController
 
-- (id)initWithType:(signType)type
-{
+- (id)initWithType:(signType)type {
     self = [super init];
     if (self) {
         // Custom initialization
@@ -42,8 +43,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭"
@@ -88,20 +88,13 @@
 //    [self.view addGestureRecognizer:tap];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidUnload {
+- (void)cleanUp {
     self.switchTypeLabel = nil;
-    [self setUserTextField:nil];
-    [self setPasswordTextField:nil];
-    [self setActionButton:nil];
-    [self setRememberPWLabel:nil];
-    [self setRememberSwitch:nil];
-    [super viewDidUnload];
+    self.userTextField = nil;
+    self.passwordTextField = nil;
+    self.actionButton = nil;
+    self.rememberPWLabel = nil;
+    self.rememberSwitch = nil;
 }
 
 #pragma mark - UIViewController life cycle
@@ -245,11 +238,11 @@
 }
 
 - (void)signUpWithEmail:(NSString *)email andPassword:(NSString *)password {
-    [self signWithEmail:email andPassword:password atPath:@"register"];
+    [self signWithEmail:email andPassword:password atPath:@"api/register"];
 }
 
 - (void)signInWithEmail:(NSString *)email andPassword:(NSString *)password {
-    [self signWithEmail:email andPassword:password atPath:@"login"];
+    [self signWithEmail:email andPassword:password atPath:@"api/login"];
 }
 
 @end

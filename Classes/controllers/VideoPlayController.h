@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VideoPlayController : UIViewController
+@interface VideoPlayController : NNViewController
 
 @property (copy, nonatomic) NSString *videoUrl;
 @property (copy, nonatomic) NSString *contentId;

@@ -10,7 +10,7 @@
 #import "SlideShowView.h"
 #import "FoldableTextBox.h"
 
-@interface BabyDetailController : UIViewController
+@interface BabyDetailController : NNViewController
 
 @property (assign, nonatomic) SortType sortType;
 @property (assign, nonatomic) NSUInteger offset;

@@ -37,33 +37,24 @@
     return [NSURLRequest requestWithURL:[NSURL URLWithString:[self createKeyUrl:request.URL.absoluteString]]];
 }
 
-- (id)initWithMemoryCapacity:(NSUInteger)memoryCapacity diskCapacity:(NSUInteger)diskCapacity diskPath:(NSString *)path
-{
-    if (!path && [self superclass] == [SDURLCache class]) {
-        path = [SDURLCache defaultCachePath];
-    }
-    
-    if ((self = [super initWithMemoryCapacity:memoryCapacity diskCapacity:diskCapacity diskPath:path]))
-    {
+- (id)initWithMemoryCapacity:(NSUInteger)memoryCapacity diskCapacity:(NSUInteger)diskCapacity diskPath:(NSString *)path {
+    if ((self = [super initWithMemoryCapacity:memoryCapacity diskCapacity:diskCapacity diskPath:path])) {
 
     }
     
     return self;
 }
 
-- (void)storeCachedResponse:(NSCachedURLResponse *)cachedResponse forRequest:(NSURLRequest *)request
-{
+- (void)storeCachedResponse:(NSCachedURLResponse *)cachedResponse forRequest:(NSURLRequest *)request {
     NSURLRequest *keyRequest = [NNURLCache createKeyRequest:request];
     [super storeCachedResponse:cachedResponse forRequest:keyRequest];
 }
 
-- (NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request
-{
+- (NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request {
     return [super cachedResponseForRequest:[NNURLCache createKeyRequest:request]];
 }
 
-- (void)removeCachedResponseForRequest:(NSURLRequest *)request
-{
+- (void)removeCachedResponseForRequest:(NSURLRequest *)request {
     NSURLRequest *keyRequest = [NNURLCache createKeyRequest:request];
     [super removeCachedResponseForRequest:keyRequest];
 }

@@ -60,7 +60,7 @@ static NSString *const kPasswordKey = @"password";
     } else {
         NSString *email = [account objectForKey:kAccountKey];
         NSString *password = [account objectForKey:kPasswordKey];
-        [self signWithEmail:email andPassword:password atPath:@"login" success:success failure:^(ResponseError *error) {
+        [self signWithEmail:email andPassword:password atPath:@"api/login" success:success failure:^(ResponseError *error) {
             if (error.errorCode < -3) {
                 [UIHelper alertWithMessage:error.message];
             }

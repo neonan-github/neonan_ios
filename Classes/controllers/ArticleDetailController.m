@@ -104,33 +104,28 @@ static NSString * const kDirectionRight = @"1";
     [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     self.dataModel = nil;
 }
 
-- (void)viewDidUnload {
-    [self setTitleLabel:nil];
-    [self setExtraInfoLabel:nil];
-    [self setTextView:nil];
-    [self setCommentBox:nil];
-    [self setShareButton:nil];
-    [self setTitleLineView:nil];
-    
+- (void)cleanUp {
+    self.titleLineView = nil;
+    self.titleLabel = nil;
+    self.extraInfoLabel = nil;
+    self.textView = nil;
+    self.commentBox = nil;
+    self.shareButton = nil;
     self.shareHelper = nil;
     self.cacheLayer = nil;
     
     self.idModel = nil;
-    
-    [super viewDidUnload];
 }
 
 #pragma mark - UIViewController life cycle
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -150,8 +145,7 @@ static NSString * const kDirectionRight = @"1";
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [super viewWillDisappear:animated];
@@ -173,7 +167,7 @@ static NSString * const kDirectionRight = @"1";
 #pragma mark - Keyboard events handle
 
 //Code from Brett Schumann
--(void) keyboardWillShow:(NSNotification *)note{
+-(void) keyboardWillShow:(NSNotification *)note {
 //    _commentBox.rightView = nil;
     
     // get keyboard size and loctaion
@@ -206,7 +200,7 @@ static NSString * const kDirectionRight = @"1";
 	[UIView commitAnimations];
 }
 
--(void) keyboardWillHide:(NSNotification *)note{
+-(void) keyboardWillHide:(NSNotification *)note {
 //    _commentBox.rightView = _commentButton;
     
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
@@ -245,7 +239,7 @@ static NSString * const kDirectionRight = @"1";
                                 [NSNumber numberWithUnsignedInteger:count], @"count",
                                 next ? @"1" : @"-1", @"direction", @"true", @"filter", nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:@"api/near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
         @synchronized(_idModel) {
             if (!next) {
                 self.idIndex = _idIndex + [[((NearWorksModel *)response) items] count];
@@ -271,7 +265,7 @@ static NSString * const kDirectionRight = @"1";
                                 contentId, @"content_id", [NSNumber numberWithUnsignedInteger:_offset], @"offset",
                                 nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:@"api/work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
             
         self.dataModel = response;
@@ -291,7 +285,7 @@ static NSString * const kDirectionRight = @"1";
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
                                     contentId, @"content_id", comment, @"content", nil];
         
-        [[NNHttpClient sharedClient] postAtPath:@"comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+        [[NNHttpClient sharedClient] postAtPath:@"api/comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             _dataModel.commentNum++;
             [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];
@@ -358,7 +352,8 @@ static NSString * const kDirectionRight = @"1";
     _commentBox.countButton.enabled = _dataModel.commentNum > 0;
     
     [self renderHtml:_dataModel.content];
-    _textView.hidden = NO;
+    [_textView performSelector:@selector(setHidden:) withObject:nil afterDelay:0.5];
+//    _textView.hidden = NO;
 }
 
 - (void)clearContents {
@@ -371,7 +366,7 @@ static NSString * const kDirectionRight = @"1";
     [_commentBox.countButton setTitle:@"" forState:UIControlStateNormal];
     _commentBox.countButton.enabled = NO;
     
-    [self renderHtml:@""];
+    [_textView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];
     _textView.hidden = YES;
 }
 
