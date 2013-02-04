@@ -379,6 +379,10 @@ headerView = _headerView;
 #pragma mark - UITableViewDataSource methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (_channelIndex == kTopicChannelIndex && _dataModel) { //屏蔽“十大争议女星”
+        return 2;
+    }
+    
     return _dataModel ? [_dataModel items].count : 0;
 }
 
