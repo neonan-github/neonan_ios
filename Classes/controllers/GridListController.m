@@ -69,6 +69,11 @@ typedef enum {
     [self.view addSubview:gridView];
 }
 
+- (void)cleanUp {
+    self.gridView = nil;
+    self.dataModel = nil;
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     

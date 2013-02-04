@@ -11,6 +11,7 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import "NNViewController.h"
     #import "AppHelper.h"
     #import "UIHelper.h"
     #import "NeonanAppDelegate.h"

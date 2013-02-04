@@ -104,33 +104,28 @@ static NSString * const kDirectionRight = @"1";
     [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     self.dataModel = nil;
 }
 
-- (void)viewDidUnload {
-    [self setTitleLabel:nil];
-    [self setExtraInfoLabel:nil];
-    [self setTextView:nil];
-    [self setCommentBox:nil];
-    [self setShareButton:nil];
-    [self setTitleLineView:nil];
-    
+- (void)cleanUp {
+    self.titleLineView = nil;
+    self.titleLabel = nil;
+    self.extraInfoLabel = nil;
+    self.textView = nil;
+    self.commentBox = nil;
+    self.shareButton = nil;
     self.shareHelper = nil;
     self.cacheLayer = nil;
     
     self.idModel = nil;
-    
-    [super viewDidUnload];
 }
 
 #pragma mark - UIViewController life cycle
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -150,8 +145,7 @@ static NSString * const kDirectionRight = @"1";
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [super viewWillDisappear:animated];
@@ -173,7 +167,7 @@ static NSString * const kDirectionRight = @"1";
 #pragma mark - Keyboard events handle
 
 //Code from Brett Schumann
--(void) keyboardWillShow:(NSNotification *)note{
+-(void) keyboardWillShow:(NSNotification *)note {
 //    _commentBox.rightView = nil;
     
     // get keyboard size and loctaion
@@ -206,7 +200,7 @@ static NSString * const kDirectionRight = @"1";
 	[UIView commitAnimations];
 }
 
--(void) keyboardWillHide:(NSNotification *)note{
+-(void) keyboardWillHide:(NSNotification *)note {
 //    _commentBox.rightView = _commentButton;
     
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];

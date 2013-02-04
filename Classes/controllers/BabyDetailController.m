@@ -60,8 +60,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 @implementation BabyDetailController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
@@ -133,14 +132,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     [self.view addSubview:pageControl];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)cleanUp
-{
+- (void)cleanUp {
     self.cacheLayer = nil;
     
     self.titleLabel = nil;
@@ -162,19 +154,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     self.idModel = nil;
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    [self cleanUp];
-}
-
-- (void)dealloc
-{
-    [self cleanUp];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     if (!_idModel) {

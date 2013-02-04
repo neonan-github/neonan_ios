@@ -33,6 +33,7 @@
 		34268EF9165B20A500DEEF63 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34268EF8165B20A500DEEF63 /* icon@2x.png */; };
 		3432926F1647B2230070B66A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3432926E1647B2230070B66A /* MessageUI.framework */; };
 		343658EC16BF5C4700576DE0 /* img_grid_place_holder.png in Resources */ = {isa = PBXBuildFile; fileRef = 343658EB16BF5C4700576DE0 /* img_grid_place_holder.png */; };
+		343658EF16BF5D8600576DE0 /* NNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 343658EE16BF5D8600576DE0 /* NNViewController.m */; };
 		3446C89F162D680C0049B952 /* CircleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3446C89E162D680C0049B952 /* CircleHeaderView.m */; };
 		345321FC1638F47D002137E6 /* icon_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 345321FB1638F47D002137E6 /* icon_share.png */; };
 		3453220116390EC2002137E6 /* img_comment_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 3453220016390EC2002137E6 /* img_comment_placeholder.png */; };
@@ -292,6 +293,8 @@
 		3432926C1647B2140070B66A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3432926E1647B2230070B66A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		343658EB16BF5C4700576DE0 /* img_grid_place_holder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_grid_place_holder.png; sourceTree = "<group>"; };
+		343658ED16BF5D8600576DE0 /* NNViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNViewController.h; sourceTree = "<group>"; };
+		343658EE16BF5D8600576DE0 /* NNViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNViewController.m; sourceTree = "<group>"; };
 		3446C89D162D680C0049B952 /* CircleHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleHeaderView.h; sourceTree = "<group>"; };
 		3446C89E162D680C0049B952 /* CircleHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleHeaderView.m; sourceTree = "<group>"; };
 		345321FB1638F47D002137E6 /* icon_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_share.png; sourceTree = "<group>"; };
@@ -686,6 +689,8 @@
 				347AAB5B163672E500D243BA /* SignController.m */,
 				3401FDF91636A1D700FAF971 /* ArticleDetailController.h */,
 				3401FDFA1636A1D700FAF971 /* ArticleDetailController.m */,
+				343658ED16BF5D8600576DE0 /* NNViewController.h */,
+				343658EE16BF5D8600576DE0 /* NNViewController.m */,
 				34584642163A3582008AAD38 /* NNNavigationController.h */,
 				34584643163A3582008AAD38 /* NNNavigationController.m */,
 				340716F5164128E7006E40FE /* VideoPlayController.h */,
@@ -1654,6 +1659,7 @@
 				34632ACE16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				34632AD116BBC5CB00396AC1 /* TopicDetailModel.m in Sources */,
 				3403029E16BEA67200FEC584 /* NearTopicDetailsModel.m in Sources */,
+				343658EF16BF5D8600576DE0 /* NNViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

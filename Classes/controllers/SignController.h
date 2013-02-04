@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <TTTAttributedLabel.h>
 
 typedef enum {
     signIn = 0,
@@ -16,7 +15,7 @@ typedef enum {
 
 typedef void(^SignSuccessBlock)(NSString *token);
 
-@interface SignController : UIViewController <TTTAttributedLabelDelegate>
+@interface SignController : NNViewController
 
 @property (assign, nonatomic) signType type;
 @property (copy, nonatomic) SignSuccessBlock success;

@@ -8,13 +8,15 @@
 
 #import "CommentListController.h"
 #import "NNNavigationController.h"
-#import "CommentBox.h"
-#import "CommentCell.h"
 
 #import "CommentListModel.h"
 #import "ShareHelper.h"
 
+#import "CommentBox.h"
+#import "CommentCell.h"
+
 #import "SVPullToRefresh.h"
+
 #import <MBProgressHUD.h>
 
 #define CELL_CONTENT_WIDTH 320.0f
@@ -29,7 +31,9 @@ typedef enum {
     RequestTypeAppend
 } RequestType;
 
-@interface CommentListController ()
+@interface CommentListController () <UITableViewDataSource, UITableViewDelegate,
+HPGrowingTextViewDelegate>
+
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
 @property (unsafe_unretained, nonatomic) IBOutlet UIImageView *titleLineView;
@@ -44,8 +48,7 @@ typedef enum {
 
 @implementation CommentListController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = DarkThemeColor;
@@ -89,14 +92,8 @@ typedef enum {
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside]; 
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)cleanUp
-{
+- (void)cleanUp {
+    self.titleLineView = nil;
     self.titleLabel = nil;
     self.shareButton = nil;
     
@@ -107,22 +104,9 @@ typedef enum {
     self.commentBox = nil;
 }
 
-- (void)viewDidUnload
-{
-    [self cleanUp];
-    [self setTitleLineView:nil];
-    [super viewDidUnload];
-}
-
-- (void)dealloc
-{
-    [self cleanUp];
-}
-
 #pragma mark - UIViewController life cycle
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
 //    CGRect frame = self.commentBox.frame;
@@ -146,8 +130,7 @@ typedef enum {
     [_tableView.pullToRefreshView triggerRefresh];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [super viewWillDisappear:animated];
@@ -224,7 +207,7 @@ typedef enum {
 #pragma mark - Keyboard events handle
 
 //Code from Brett Schumann
--(void) keyboardWillShow:(NSNotification *)note{
+-(void) keyboardWillShow:(NSNotification *)note {
 //    _commentBox.rightView = nil;
     
     // get keyboard size and loctaion

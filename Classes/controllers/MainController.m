@@ -16,6 +16,10 @@
 #import "AboutController.h"
 #import "FeedbackController.h"
 
+#import "MainSlideShowModel.h"
+#import "BabyListModel.h"
+#import "CommonListModel.h"
+
 #import "SMPageControl.h"
 #import "HotListCell.h"
 #import "BabyCell.h"
@@ -31,13 +35,6 @@
 #import <TTTAttributedLabel.h>
 #import <NYXImagesKit.h>
 #import <UIAlertView+Blocks.h>
-
-#import "BabyDetailController.h"
-#import "CommentListController.h"
-
-#import "MainSlideShowModel.h"
-#import "BabyListModel.h"
-#import "CommonListModel.h"
 
 static const NSUInteger kTopicChannelIndex = 4;
 static const NSUInteger kBabyChannelIndex = NSIntegerMax;
@@ -57,7 +54,10 @@ typedef enum {
     ContentTypeVideo
 } ContentType;
 
-@interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate, NNDropDownMenuDelegate>
+@interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate, NNDropDownMenuDelegate,
+SlideShowViewDataSource, SlideShowViewDelegate,
+UITableViewDataSource, UITableViewDelegate, CircleHeaderViewDelegate>
+
 @property (nonatomic, unsafe_unretained) UIButton *navLeftButton;
 @property (nonatomic, unsafe_unretained) UIButton *navRightButton;
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
@@ -84,8 +84,7 @@ typedef enum {
 @synthesize slideShowView = _slideShowView, pageControl = _pageControl, tableView = _tableView,
 headerView = _headerView;
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view.
@@ -176,8 +175,7 @@ headerView = _headerView;
     [self addObserver:self forKeyPath:@"tableView.contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
-- (void)cleanUp
-{
+- (void)cleanUp {
     self.navLeftButton = nil;
     self.navRightButton = nil;
     
@@ -203,17 +201,6 @@ headerView = _headerView;
     
     self.slideShowModel = nil;
     self.dataModel = nil;
-}
-
-- (void)viewDidUnload
-{
-    [self cleanUp];
-    [super viewDidUnload];
-}
-
-- (void)dealloc
-{
-    [self cleanUp];
 }
 
 - (void)setType:(SortType)type {

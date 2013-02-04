@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GridListController : UIViewController
+@interface GridListController : NNViewController
 
 @property (nonatomic, copy) NSString *topicId;
 

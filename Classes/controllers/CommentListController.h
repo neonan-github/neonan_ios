@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <HPGrowingTextView.h>
 #import "ArticleDetailModel.h"
 
-@interface CommentListController: UIViewController<UITableViewDataSource, UITableViewDelegate,
-HPGrowingTextViewDelegate>
+@interface CommentListController: NNViewController 
 
 @property (strong, nonatomic) ArticleDetailModel *articleInfo;
 

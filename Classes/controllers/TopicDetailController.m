@@ -85,18 +85,20 @@ static NSString *const kTypeKey = @"type";
     _nameLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
 }
 
-- (void)viewDidUnload {
-    [self setImageView:nil];
-    [self setNameLabel:nil];
-    [self setPraiseButton:nil];
-    [self setCriticiseButton:nil];
-    [self setContentLabel:nil];
-    [self setRankLabel:nil];
-    [self setNumSymbolLabel:nil];
-    [self setScrollView:nil];
-    [self setLeftArrowView:nil];
-    [self setRightArrowView:nil];
-    [super viewDidUnload];
+- (void)cleanUp {
+    self.scrollView = nil;
+    self.imageView = nil;
+    self.praiseButton = nil;
+    self.criticiseButton = nil;
+    self.contentLabel = nil;
+    self.rankLabel = nil;
+    self.numSymbolLabel = nil;
+    self.leftArrowView = nil;
+    self.rightArrowView = nil;
+    
+    self.dataModel = nil;
+    self.cacheLayer = nil;
+    self.dbHelper = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
