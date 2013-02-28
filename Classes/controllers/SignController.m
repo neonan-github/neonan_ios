@@ -13,13 +13,14 @@
 #import "SessionManager.h"
 #import "MD5.h"
 
+#import "NNUnderlinedButton.h"
+
 #import <DCRoundSwitch.h>
 #import <MBProgressHUD.h>
 #import <SSKeychain.h>
-#import <TTTAttributedLabel.h>
 
-@interface SignController () <TTTAttributedLabelDelegate>
-@property (unsafe_unretained, nonatomic) TTTAttributedLabel *switchTypeLabel;
+@interface SignController ()
+@property (unsafe_unretained, nonatomic) NNUnderlinedButton *switchTypeButton;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *userTextField;
 @property (unsafe_unretained, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *actionButton;
@@ -46,10 +47,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭"
-//                                                                             style:UIBarButtonItemStyleDone
-//                                                                            target:self
-//                                                                            action:@selector(close)];
     
     UIButton *cancelButton = [UIHelper createBarButton:10];
     cancelButton.frame = CGRectMake(14, 8, 42, 24);
@@ -61,35 +58,23 @@
     
     [_actionButton addTarget:self action:@selector(sign:) forControlEvents:UIControlEventTouchUpInside];
     
-    TTTAttributedLabel *switchTypeLabel = self.switchTypeLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(275, 8, 42, 24)];
-    switchTypeLabel.delegate = self;
-    switchTypeLabel.font = [UIFont systemFontOfSize:12];
-    switchTypeLabel.backgroundColor = [UIColor clearColor];
-    switchTypeLabel.textColor = [UIColor whiteColor];
-    switchTypeLabel.lineBreakMode = UILineBreakModeWordWrap;
-    switchTypeLabel.numberOfLines = 0;
-    switchTypeLabel.linkAttributes = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:(NSString *)kCTUnderlineStyleAttributeName];
-    NSMutableDictionary *mutableActiveLinkAttributes = [NSMutableDictionary dictionary];
-    [mutableActiveLinkAttributes setValue:(id)[HEXCOLOR(0x16a1e8) CGColor] forKey:(NSString *)kCTForegroundColorAttributeName];
-    [mutableActiveLinkAttributes setValue:[NSNumber numberWithBool:YES] forKey:(NSString *)kCTUnderlineStyleAttributeName];
-    switchTypeLabel.activeLinkAttributes = mutableActiveLinkAttributes;
-    
-    [self.view addSubview:switchTypeLabel];
+    NNUnderlinedButton *switchTypeButton = self.switchTypeButton = [[NNUnderlinedButton alloc] initWithFrame:CGRectMake(250, -2, 67, 44)];
+    switchTypeButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    switchTypeButton.backgroundColor = [UIColor clearColor];
+    [switchTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [switchTypeButton setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateHighlighted];
+    [switchTypeButton addTarget:self action:@selector(switchType) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:switchTypeButton];
     
     self.type = _type;
     
     _rememberSwitch.on = YES;
     _rememberSwitch.onText = @"";
     _rememberSwitch.offText = @"";
-    
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-//                                   initWithTarget:self
-//                                   action:@selector(dismissKeyboard)];
-//    [self.view addGestureRecognizer:tap];
 }
 
 - (void)cleanUp {
-    self.switchTypeLabel = nil;
+    self.switchTypeButton = nil;
     self.userTextField = nil;
     self.passwordTextField = nil;
     self.actionButton = nil;
@@ -106,10 +91,7 @@
 - (void)setType:(signType)type {
     _type = type;
     
-    self.switchTypeLabel.text = (_type == signUp ? @"登录" : @"注册");
-    NSRange r = NSMakeRange(0, 2);
-    [self.switchTypeLabel addLinkToURL:[NSURL URLWithString:@"action://switch-type"] withRange:r];
-    
+    [_switchTypeButton setTitle:(_type == signUp ? @"登录" : @"注册") forState:UIControlStateNormal];
     [_actionButton setTitle:(_type == signIn ? @"登录" : @"注册") forState:UIControlStateNormal];
     
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(_type == signIn ? @"注册" : @"登录")
@@ -117,12 +99,6 @@
 //                                                                             target:self
 //                                                                             action:@selector(switchType:)];
     
-}
-
-#pragma mark -TTTAttributedLabelDelegate methods
-
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
-    [self switchType];
 }
 
 #pragma mark - Override
