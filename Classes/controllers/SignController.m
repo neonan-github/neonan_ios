@@ -9,15 +9,15 @@
 #import "SignController.h"
 #import "NNNavigationController.h"
 
-#import "SignResult.h"
+#import "LoginResult.h"
 #import "SessionManager.h"
 #import "MD5.h"
 
 #import "NNUnderlinedButton.h"
 
 #import <DCRoundSwitch.h>
-#import <MBProgressHUD.h>
 #import <SSKeychain.h>
+#import <SVProgressHUD.h>
 
 @interface SignController ()
 @property (unsafe_unretained, nonatomic) NNUnderlinedButton *switchTypeButton;
@@ -138,6 +138,14 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+- (void)close:(BOOL)delay {
+    [self performSelector:@selector(dismissModalViewControllerAnimated:) withObject:@"" afterDelay:delay ? 1 : 0];
+    
+    if (!self.isBeingDismissed) {
+        [self performSelector:@selector(dismissModalViewControllerAnimated:) withObject:@"" afterDelay:delay ? 1.5 : 1];
+    }
+}
+
 - (void)switchType {
     if (_type == signIn) {
         self.type = signUp;
@@ -192,26 +200,28 @@
 }
 
 - (void)signWithEmail:(NSString *)email andPassword:(NSString *)password atPath:(NSString *)path {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [SVProgressHUD showWithStatus:([path rangeOfString:@"login"].location == NSNotFound) ? @"注册中" : @"登录中"];
+    
     password = [password md5];
-    [[SessionManager sharedManager] signWithEmail:email andPassword:password atPath:path success:^(NSString *token) {
-        if (self.rememberSwitch.isOn) {
-            [SSKeychain setPassword:password forService:kServiceName account:email];
-        }
+    
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    sessionManager.allowAutoLogin = _rememberSwitch.isOn;
+    [sessionManager signWithEmail:email andPassword:password atPath:path success:^(NSString *token) {
+        //        if (self.rememberSwitch.isOn) {
+        //            [SSKeychain setPassword:password forService:kServiceName account:email];
+        //        }
         
         if (_success) {
             _success(token);
         }
         
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [SVProgressHUD showSuccessWithStatus:@"登录成功"];
         
         [self close];
     } failure:^(ResponseError *error) {
         NSLog(@"error:%@", error.message);
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        if (self.isVisible) {
-            [UIHelper alertWithMessage:error.message];
-        }
+        [SVProgressHUD dismiss];
+        [UIHelper alertWithMessage:error.message];
     }];
 }
 
@@ -221,6 +231,33 @@
 
 - (void)signInWithEmail:(NSString *)email andPassword:(NSString *)password {
     [self signWithEmail:email andPassword:password atPath:@"api/login"];
+}
+
+#pragma mark - 3rd Party Login
+
+- (void)login:(ThirdPlatformType)platform {
+    [[SessionManager sharedManager] signWithThirdPlatform:platform
+                                       rootViewController:self success:^(NSString *token) {
+                                           if (_success) {
+                                               _success(token);
+                                           }
+                                           
+                                           [SVProgressHUD showSuccessWithStatus:@"登录成功"];
+                                           
+                                           [self close:YES];
+                                       } failure:^(ResponseError *error) {
+                                           NSLog(@"error:%@", error.message);
+                                           //                                           [UIHelper alertWithMessage:error.message];
+                                           [SVProgressHUD showErrorWithStatus:@"登录失败"];
+                                       }];
+}
+
+- (IBAction)loginBySina:(id)sender {
+    [self login:ThirdPlatformSina];
+}
+
+- (IBAction)loginByTencent:(id)sender {
+    [self login:ThirdPlatformTencent];
 }
 
 @end

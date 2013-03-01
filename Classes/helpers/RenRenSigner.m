@@ -43,7 +43,7 @@
     if (![_renren isSessionValid]) {
         [self logout];
         _renren.rootViewController = self.rootViewController;
-        _renren.showType = ShowTypePush;
+        _renren.showType = self.showType;
 		[_renren authorizationInNavigationWithPermisson:@[@"publish_share", @"photo_upload"] andDelegate:self];
 	} else {
         _renren.renrenDelegate = self;

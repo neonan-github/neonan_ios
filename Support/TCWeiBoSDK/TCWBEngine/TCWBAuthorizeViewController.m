@@ -52,15 +52,15 @@
         UIButton *cancelButton = [UIHelper createBarButton:10];
         cancelButton.frame = CGRectMake(14, 8, 42, 24);
         [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
-        [cancelButton addTarget:self.navigationController action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+        [cancelButton addTarget:self action:@selector(onButtonCancel) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     }
     
-    NSBundle *main = [NSBundle mainBundle];
+//    NSBundle *main = [NSBundle mainBundle];
 
     // 授权  
-    NSString *strAuth = [main localizedStringForKey:KLanguageAuth value:nil table:kTCWBTable];
-    [self.navigationItem setTitle:strAuth];
+//    NSString *strAuth = [main localizedStringForKey:KLanguageAuth value:nil table:kTCWBTable];
+//    [self.navigationItem setTitle:strAuth];
     
     
 

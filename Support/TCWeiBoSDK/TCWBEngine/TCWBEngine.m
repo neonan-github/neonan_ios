@@ -1166,7 +1166,8 @@ static BOOL G_LOGOUT = NO;
     if (type == ShowTypePush) {
         [rootViewController.navigationController pushViewController:authViewController animated:YES];
     } else {
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:authViewController];
+        NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:authViewController];
+        navController.logoHidden = NO;
         [rootViewController presentModalViewController:navController animated:YES];
     }
     

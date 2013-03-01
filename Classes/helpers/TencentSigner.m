@@ -50,7 +50,7 @@
     } else {
         [self logout];
         [self.tcwbEngine logInWithDelegate:self
-                               andShowType:ShowTypePush
+                               andShowType:self.showType
                                  onSuccess:@selector(onTCWBSuccessLogin)
                                  onFailure:@selector(onTCWBFailureLogin:)];
     }

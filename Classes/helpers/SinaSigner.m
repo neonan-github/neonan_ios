@@ -60,7 +60,7 @@
         [self getSinaUserInfo:_snwbEngine.userID];
     } else {
         [self logout];
-        [_snwbEngine logInWithShowType:ShowTypePush];
+        [_snwbEngine logInWithShowType:self.showType];
     }
 }
 

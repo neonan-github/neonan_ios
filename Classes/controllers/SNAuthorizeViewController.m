@@ -54,7 +54,7 @@
         UIButton *cancelButton = [UIHelper createBarButton:10];
         cancelButton.frame = CGRectMake(14, 8, 42, 24);
         [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
-        [cancelButton addTarget:self.navigationController action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+        [cancelButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     }
     
@@ -82,9 +82,9 @@
     [_indicatorView startAnimating];
 }
 
-//- (void)close {
-//    [self dismissModalViewControllerAnimated:YES];
-//}
+- (void)close {
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 #pragma mark - UIWebView Delegate
 

@@ -8,19 +8,30 @@
 
 #import "SessionManager.h"
 #import "SignController.h"
+#import "SignHelper.h"
+
+#import "LoginResult.h"
+
+#import "SinaSigner.h"
+#import "TencentSigner.h"
+#import "RenRenSigner.h"
+
 #import <SSKeychain.h>
 #import <Reachability.h>
-#import "SignResult.h"
 
-NSString *const kServiceName = @"neonan.com";
+static NSString *const kServiceName = @"neonan.com";
 static NSString *const kAccountKey = @"account";
 static NSString *const kPasswordKey = @"password";
+static NSString *const kLoginOptionKey = @"login_option";
 
 @interface SessionManager ()
 
-@property (copy, nonatomic) NSString *token;
+@property (nonatomic, copy) NSString *token;
+@property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *avatarUrl;
 
-- (NSDictionary *)checkAccountInKeyChain;
+@property (nonatomic, strong) NNSigner *signer;
+
 @end
 
 @implementation SessionManager
@@ -35,12 +46,31 @@ static NSString *const kPasswordKey = @"password";
     return _sharedManager;
 }
 
-- (void)storeToken:(NSString *)token {
-    self.token = token;
+- (void)setAllowAutoLogin:(BOOL)allowAutoLogin {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:@(allowAutoLogin) forKey:kLoginOptionKey];
+    [defaults synchronize];
 }
 
-- (NSString *)getToken {
-    return self.token;
+- (BOOL)allowAutoLogin {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *value = [defaults objectForKey:kLoginOptionKey];
+    return value ? [value boolValue] : YES;
+}
+
+- (BOOL)isLoggedIn {
+    return _token != nil;
+}
+
+- (BOOL)canAutoLogin {
+    //牛男帐号
+    NSDictionary *account = [self checkAccountInKeyChain];
+    if (!account) {
+        //第三方帐号
+        account = [SignHelper getAccountInfo:ThirdPlatformNoSpecified];
+    }
+    
+    return _token || (account && [Reachability reachabilityForInternetConnection].isReachable);
 }
 
 - (void)requsetToken:(UIViewController *)controller success:(void (^)(NSString *token))success {
@@ -52,19 +82,40 @@ static NSString *const kPasswordKey = @"password";
         return;
     }
     
+    //牛男帐号
     NSDictionary *account = [self checkAccountInKeyChain];
-    if (!account) {
-        SignController *signController = [[SignController alloc] init];
-        signController.success = success;
-        [controller.navigationController presentModalViewController:signController animated:YES];
-    } else {
-        NSString *email = [account objectForKey:kAccountKey];
-        NSString *password = [account objectForKey:kPasswordKey];
-        [self signWithEmail:email andPassword:password atPath:@"api/login" success:success failure:^(ResponseError *error) {
+    if (account) {
+        if ([self allowAutoLogin]) {
+            NSString *email = [account objectForKey:kAccountKey];
+            NSString *password = [account objectForKey:kPasswordKey];
+            [self signWithEmail:email andPassword:password atPath:@"api/login" success:success failure:^(ResponseError *error) {
+                if (error.errorCode < -3) {
+                    [UIHelper alertWithMessage:error.message];
+                }
+            }];
+        } else {
+            SignController *signController = [[SignController alloc] init];
+            signController.success = success;
+            [controller presentModalViewController:signController animated:YES];
+        }
+        
+        return;
+    }
+    
+    //第三方帐号
+    account = [SignHelper getAccountInfo:ThirdPlatformNoSpecified];
+    if (account) {
+        NSString *source = account[kSourceKey];
+        NSString *uid = account[kUIDKey];
+        [self signWithUID:uid andSource:source andUserName:nil andAvatarUrl:nil success:success failure:^(ResponseError *error) {
             if (error.errorCode < -3) {
                 [UIHelper alertWithMessage:error.message];
             }
         }];
+    } else {
+        SignController *signController = [[SignController alloc] init];
+        signController.success = success;
+        [controller presentModalViewController:signController animated:YES];
     }
 }
 
@@ -83,8 +134,19 @@ static NSString *const kPasswordKey = @"password";
     return nil;
 }
 
-- (BOOL)canAutoLogin {
-    return [self checkAccountInKeyChain] != nil && [Reachability reachabilityForInternetConnection].isReachable;;
+- (void)clear {
+    self.token = nil;
+}
+
+- (void)logout {
+    self.token = nil;
+    
+    NSArray *accounts = [SSKeychain accountsForService:kServiceName];
+    [accounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [SSKeychain deletePasswordForService:kServiceName account:[obj objectForKey:kSSKeychainAccountKey]];
+    }];
+    
+    [SignHelper deleteAccounts];
 }
 
 - (void)signWithEmail:(NSString *)email
@@ -93,11 +155,18 @@ static NSString *const kPasswordKey = @"password";
               success:(void (^)(NSString *))success
               failure:(void (^)(ResponseError *error))failure {
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:email, @"email", password, @"password", nil];
-    [[NNHttpClient sharedClient] postAtPath:path parameters:parameters responseClass:[SignResult class] success:^(id<Jsonable> response) {
-        NSString *token = ((SignResult *)response).token;
-        [[SessionManager sharedManager] storeToken:token];
+    [[NNHttpClient sharedClient] postAtPath:path parameters:parameters responseClass:[LoginResult class] success:^(id<Jsonable> response) {
+        LoginResult *result = (LoginResult *)response;
+        self.token = result.token;
+        self.userName = result.userName;
+        self.avatarUrl = result.avatar;
+        
+        if (self.allowAutoLogin) {
+            [SSKeychain setPassword:password forService:kServiceName account:email];
+        }
+        
         if (success) {
-            success(token);
+            success(_token);
         }
     } failure:^(ResponseError *error) {
         if (failure) {
@@ -106,17 +175,65 @@ static NSString *const kPasswordKey = @"password";
     }];
 }
 
-- (void)clear {
-    self.token = nil;
+#pragma mark - 3rd Party login
+
+- (void)signWithUID:(NSString *)uid
+          andSource:(NSString *)source
+        andUserName:(NSString *)userName
+       andAvatarUrl:(NSString *)avatar
+            success:(void (^)(NSString *token))success
+            failure:(void (^)(ResponseError *error))failure {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{@"uid" : uid, @"source" : source}];
+    if (userName) {
+        [parameters setObject:userName forKey:@"user_name"];
+    }
+    if (avatar) {
+        [parameters setObject:avatar forKey:@"avatar"];
+    }
+    
+    [[NNHttpClient sharedClient] postAtPath:@"haha/api/login3rd" parameters:parameters responseClass:[LoginResult class] success:^(id<Jsonable> response) {
+        LoginResult *result = (LoginResult *)response;
+        self.token = result.token;
+        self.userName = result.userName ?: userName;
+        self.avatarUrl = result.avatar ?: avatar;
+        
+        [SignHelper saveAccountWithSource:source andUID:uid andUserName:_userName andAvatar:_avatarUrl];
+        
+        if (success) {
+            success(_token);
+        }
+    } failure:^(ResponseError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
-- (void)signOut {
-    self.token = nil;
+- (void)signWithThirdPlatform:(ThirdPlatformType)platform
+           rootViewController:(UIViewController *)controller
+                      success:(void (^)(NSString *))success
+                      failure:(void (^)(ResponseError *error))failure {
+    NNSigner *signer = self.signer = [SignHelper signerWithThirdPlatform:platform];
+    signer.showType = ShowTypeModal;
+    signer.rootViewController = controller;
+    signer.successBlock = ^(NSString *uid, NSString *userName, NSString *avatarUrl) {
+        NSLog(@"login success:uid:%@ name:%@ avatar:%@", uid, userName, avatarUrl);
+        [self signWithUID:uid
+                andSource:[SignHelper sourceString:platform]
+              andUserName:userName
+             andAvatarUrl:avatarUrl
+                  success:success
+                  failure:failure];
+    };
+    signer.failureBlock = ^(NSError *error) {
+        NSLog(@"login fail:%@", [error localizedDescription]);
+        if (failure) {
+            NSString *errorMessage = [error localizedDescription];
+            failure([[ResponseError alloc] initWithCode:-4 andMessage:errorMessage]);
+        }
+    };
     
-    NSArray *accounts = [SSKeychain accountsForService:kServiceName];
-    [accounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [SSKeychain deletePasswordForService:kServiceName account:[obj objectForKey:kSSKeychainAccountKey]];
-    }];
+    [signer login];
 }
 
 @end

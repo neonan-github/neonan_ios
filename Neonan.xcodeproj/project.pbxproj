@@ -204,6 +204,8 @@
 		3442AADC16E0B711000C8F72 /* SinaSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAD416E0B711000C8F72 /* SinaSharer.m */; };
 		3442AADD16E0B711000C8F72 /* SmsSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAD616E0B711000C8F72 /* SmsSharer.m */; };
 		3442AADE16E0B711000C8F72 /* TencentSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAD816E0B711000C8F72 /* TencentSharer.m */; };
+		3442AAE116E0C10D000C8F72 /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAE016E0C10D000C8F72 /* SessionManager.m */; };
+		3442AAE416E0C16D000C8F72 /* LoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAE316E0C16D000C8F72 /* LoginResult.m */; };
 		3446C89F162D680C0049B952 /* CircleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3446C89E162D680C0049B952 /* CircleHeaderView.m */; };
 		345321FC1638F47D002137E6 /* icon_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 345321FB1638F47D002137E6 /* icon_share.png */; };
 		3453220116390EC2002137E6 /* img_comment_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 3453220016390EC2002137E6 /* img_comment_placeholder.png */; };
@@ -229,11 +231,9 @@
 		346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614ED1635489B00B1FF5A /* FoldableTextBox.m */; };
 		346C706D167EBAF000EA0057 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 346C706B167EBAF000EA0057 /* libPushSDK.a */; };
 		3470DBD21653B14000273244 /* CommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3470DBD11653B14000273244 /* CommentListModel.m */; };
-		3473023B165339B200E3C763 /* SessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3473023A165339B200E3C763 /* SessionManager.m */; };
 		347AAB5D163672E500D243BA /* SignController.m in Sources */ = {isa = PBXBuildFile; fileRef = 347AAB5B163672E500D243BA /* SignController.m */; };
 		347AAB5E163672E500D243BA /* SignController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 347AAB5C163672E500D243BA /* SignController.xib */; };
 		34843563164360F30073468D /* ResponseError.m in Sources */ = {isa = PBXBuildFile; fileRef = 34843562164360F30073468D /* ResponseError.m */; };
-		3484357616437A4B0073468D /* SignResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 3484357516437A4B0073468D /* SignResult.m */; };
 		348435A81643C1C00073468D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 348435A71643C1C00073468D /* Security.framework */; };
 		348435B81643C6540073468D /* MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 348435B71643C6540073468D /* MD5.m */; };
 		348983CB16BA4C9E001CFFB6 /* img_pic_sample.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983CA16BA4C9E001CFFB6 /* img_pic_sample.png */; };
@@ -633,6 +633,10 @@
 		3442AAD616E0B711000C8F72 /* SmsSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmsSharer.m; sourceTree = "<group>"; };
 		3442AAD716E0B711000C8F72 /* TencentSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TencentSharer.h; sourceTree = "<group>"; };
 		3442AAD816E0B711000C8F72 /* TencentSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TencentSharer.m; sourceTree = "<group>"; };
+		3442AADF16E0C10C000C8F72 /* SessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionManager.h; sourceTree = "<group>"; };
+		3442AAE016E0C10D000C8F72 /* SessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionManager.m; sourceTree = "<group>"; };
+		3442AAE216E0C16D000C8F72 /* LoginResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginResult.h; sourceTree = "<group>"; };
+		3442AAE316E0C16D000C8F72 /* LoginResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginResult.m; sourceTree = "<group>"; };
 		3446C89D162D680C0049B952 /* CircleHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleHeaderView.h; sourceTree = "<group>"; };
 		3446C89E162D680C0049B952 /* CircleHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleHeaderView.m; sourceTree = "<group>"; };
 		345321FB1638F47D002137E6 /* icon_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_share.png; sourceTree = "<group>"; };
@@ -679,16 +683,12 @@
 		346C706B167EBAF000EA0057 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		3470DBD01653B14000273244 /* CommentListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListModel.h; sourceTree = "<group>"; };
 		3470DBD11653B14000273244 /* CommentListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListModel.m; sourceTree = "<group>"; };
-		34730239165339B200E3C763 /* SessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionManager.h; sourceTree = "<group>"; };
-		3473023A165339B200E3C763 /* SessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SessionManager.m; sourceTree = "<group>"; };
 		347AAB5A163672E500D243BA /* SignController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignController.h; sourceTree = "<group>"; };
 		347AAB5B163672E500D243BA /* SignController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignController.m; sourceTree = "<group>"; };
 		347AAB5C163672E500D243BA /* SignController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SignController.xib; path = ../Classes/controllers/SignController.xib; sourceTree = "<group>"; };
 		34843561164360F30073468D /* ResponseError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseError.h; sourceTree = "<group>"; };
 		34843562164360F30073468D /* ResponseError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResponseError.m; sourceTree = "<group>"; };
 		34843572164367EC0073468D /* Jsonable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Jsonable.h; sourceTree = "<group>"; };
-		3484357416437A4B0073468D /* SignResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignResult.h; sourceTree = "<group>"; };
-		3484357516437A4B0073468D /* SignResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignResult.m; sourceTree = "<group>"; };
 		348435771643A32A0073468D /* AppHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppHelper.h; sourceTree = "<group>"; };
 		348435A71643C1C00073468D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		348435B61643C6540073468D /* MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MD5.h; sourceTree = "<group>"; };
@@ -883,8 +883,8 @@
 				34843572164367EC0073468D /* Jsonable.h */,
 				34843561164360F30073468D /* ResponseError.h */,
 				34843562164360F30073468D /* ResponseError.m */,
-				3484357416437A4B0073468D /* SignResult.h */,
-				3484357516437A4B0073468D /* SignResult.m */,
+				3442AAE216E0C16D000C8F72 /* LoginResult.h */,
+				3442AAE316E0C16D000C8F72 /* LoginResult.m */,
 				34E17E14164B5E9C00810CD4 /* MainSlideShowModel.h */,
 				34E17E15164B5E9C00810CD4 /* MainSlideShowModel.m */,
 				34E17E42164BBD3400810CD4 /* BabyListModel.h */,
@@ -1532,13 +1532,13 @@
 				348435B71643C6540073468D /* MD5.m */,
 				34E4BC121647571000C07DFA /* MathHelper.h */,
 				34E4BC131647571000C07DFA /* MathHelper.m */,
+				3442AADF16E0C10C000C8F72 /* SessionManager.h */,
+				3442AAE016E0C10D000C8F72 /* SessionManager.m */,
 				343EBA5516E0A4EA00501101 /* SignHelper.h */,
 				343EBA5616E0A4EA00501101 /* SignHelper.m */,
 				3442AAC416E0B63C000C8F72 /* ShareHelper.h */,
 				3442AAC516E0B63C000C8F72 /* ShareHelper.m */,
 				34E17E12164B5CB100810CD4 /* Constants.h */,
-				34730239165339B200E3C763 /* SessionManager.h */,
-				3473023A165339B200E3C763 /* SessionManager.m */,
 				341CB051165B744300BF1D76 /* NNURLCache.h */,
 				341CB052165B744300BF1D76 /* NNURLCache.m */,
 				34632AAD16BB9A7900396AC1 /* DBHelper.h */,
@@ -1941,7 +1941,6 @@
 				340716F8164128E7006E40FE /* VideoPlayController.m in Sources */,
 				34E3E3A8164276C50058F5CF /* NNHttpClient.m in Sources */,
 				34843563164360F30073468D /* ResponseError.m in Sources */,
-				3484357616437A4B0073468D /* SignResult.m in Sources */,
 				348435B81643C6540073468D /* MD5.m in Sources */,
 				34E4BC141647571000C07DFA /* MathHelper.m in Sources */,
 				34E17E16164B5E9C00810CD4 /* MainSlideShowModel.m in Sources */,
@@ -1951,7 +1950,6 @@
 				34AB4A3F164CD3050011B8F9 /* SlideShowDetailModel.m in Sources */,
 				34925B1D164D127C00146B37 /* ArticleDetailModel.m in Sources */,
 				34BE36AA1651F76B0018B3A8 /* UrlModel.m in Sources */,
-				3473023B165339B200E3C763 /* SessionManager.m in Sources */,
 				3470DBD21653B14000273244 /* CommentListModel.m in Sources */,
 				34011A56165A1BCA007A8FD6 /* NNJSONRequestOperation.m in Sources */,
 				341CB053165B744300BF1D76 /* NNURLCache.m in Sources */,
@@ -2065,6 +2063,8 @@
 				3442AADC16E0B711000C8F72 /* SinaSharer.m in Sources */,
 				3442AADD16E0B711000C8F72 /* SmsSharer.m in Sources */,
 				3442AADE16E0B711000C8F72 /* TencentSharer.m in Sources */,
+				3442AAE116E0C10D000C8F72 /* SessionManager.m in Sources */,
+				3442AAE416E0C16D000C8F72 /* LoginResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

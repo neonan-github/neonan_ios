@@ -18,6 +18,8 @@ typedef void(^FailureBlock)(NSError *error);
 @property (nonatomic, copy) SuccessBlock successBlock;
 @property (nonatomic, copy) FailureBlock failureBlock;
 
+@property (nonatomic, assign) ShowType showType;
+
 + (NNSigner *)signer;
 - (void)login;
 - (void)logout;

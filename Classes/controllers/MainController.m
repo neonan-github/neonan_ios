@@ -20,6 +20,8 @@
 #import "BabyListModel.h"
 #import "CommonListModel.h"
 
+#import "SessionManager.h"
+
 #import "SMPageControl.h"
 #import "HotListCell.h"
 #import "BabyCell.h"
@@ -286,7 +288,7 @@ headerView = _headerView;
     }
     
     SessionManager *sessionManager = [SessionManager sharedManager];
-    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    BOOL tokenAvailable = [sessionManager canAutoLogin];
     NNMenuItem *signItem = _dropDownMenu.items[3];
     [signItem setText:tokenAvailable ? @"注销" : @"登录"];
     
@@ -521,7 +523,7 @@ headerView = _headerView;
 
 - (void)sign {
     SessionManager *sessionManager = [SessionManager sharedManager];
-    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    BOOL tokenAvailable = [sessionManager canAutoLogin];
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
@@ -541,7 +543,7 @@ headerView = _headerView;
     okItem.label = @"确定";
     okItem.action = ^
     {
-        [[SessionManager sharedManager] signOut];
+        [[SessionManager sharedManager] logout];
 //        [self updateUserStatus];
     };
     
@@ -630,7 +632,7 @@ headerView = _headerView;
                                 kRequestCountString, @"count", kFilterFlag, @"filter", nil];
     
     SessionManager *sessionManager = [SessionManager sharedManager];
-    if (isBabyChannel && ([sessionManager getToken] || [sessionManager canAutoLogin])) {
+    if (isBabyChannel && ([sessionManager canAutoLogin])) {
         [sessionManager requsetToken:self success:^(NSString *token) {
             [parameters setValue:token forKey:@"token"];
             [self requestForList:parameters withRequestType:requestType];

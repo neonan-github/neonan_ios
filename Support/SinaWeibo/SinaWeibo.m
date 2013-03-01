@@ -339,7 +339,8 @@
             if (type == ShowTypePush) {
                 [_rootViewController.navigationController pushViewController:controller animated:YES];
             } else {
-                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+                navController.logoHidden = NO;
                 [_rootViewController presentModalViewController:navController animated:YES];
             }
             

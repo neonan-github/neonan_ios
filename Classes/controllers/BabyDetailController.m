@@ -15,6 +15,7 @@
 #import "SlideShowDetailModel.h"
 #import "NearWorksModel.h"
 #import "ShareHelper.h"
+#import "SessionManager.h"
 
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
@@ -501,7 +502,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
                                 _contentId, @"content_id", nil];
     
     SessionManager *sessionManager = [SessionManager sharedManager];
-    if ([sessionManager getToken] || [sessionManager canAutoLogin]) {
+    if ([sessionManager canAutoLogin]) {
         [sessionManager requsetToken:self success:^(NSString *token) {
             [parameters setValue:token forKey:@"token"];
             [self requestForSlideShowWithParams:parameters success:^{
