@@ -28,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.title = @"授权";
+//    self.title = @"授权";
     
     if (_showType == ShowTypePush) {
         CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
@@ -42,25 +42,19 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     }
     
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 460, 453)];
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleContainerHeight)];
     self.webView = webView;
     webView.delegate = self;
     [self.view addSubview:webView];
     
     UIActivityIndicatorView * indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.indicatorView = indicatorView;
-    [indicatorView setCenter:CGPointMake(460 / 2, 453 / 2)];
+    [indicatorView setCenter:CGPointMake(CompatibleScreenWidth / 2, CompatibleContainerHeight / 2)];
     [self.view addSubview:indicatorView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    self.navigationController.view.superview.backgroundColor = [UIColor clearColor];
-    self.navigationController.view.superview.layer.cornerRadius = 0;
-    self.navigationController.view.superview.layer.borderColor = HEXCOLOR(0x3a82e5).CGColor;
-    self.navigationController.view.superview.layer.borderWidth = 1;
-    self.navigationController.view.superview.clipsToBounds = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {

@@ -195,6 +195,15 @@
 		3442AAC116E0B2DC000C8F72 /* TCWBAuthorizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AA6D16E0B2DC000C8F72 /* TCWBAuthorizeViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3442AAC216E0B2DC000C8F72 /* TCWBEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AA6F16E0B2DC000C8F72 /* TCWBEngine.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3442AAC316E0B2DC000C8F72 /* TCWBRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AA7216E0B2DC000C8F72 /* TCWBRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		3442AAC616E0B63D000C8F72 /* ShareHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAC516E0B63C000C8F72 /* ShareHelper.m */; };
+		3442AACA16E0B6AC000C8F72 /* ShareEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAC816E0B6AC000C8F72 /* ShareEditController.m */; };
+		3442AACB16E0B6AC000C8F72 /* ShareEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3442AAC916E0B6AC000C8F72 /* ShareEditController.xib */; };
+		3442AAD916E0B711000C8F72 /* EmailSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AACE16E0B711000C8F72 /* EmailSharer.m */; };
+		3442AADA16E0B711000C8F72 /* NNSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAD016E0B711000C8F72 /* NNSharer.m */; };
+		3442AADB16E0B711000C8F72 /* RenRenSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAD216E0B711000C8F72 /* RenRenSharer.m */; };
+		3442AADC16E0B711000C8F72 /* SinaSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAD416E0B711000C8F72 /* SinaSharer.m */; };
+		3442AADD16E0B711000C8F72 /* SmsSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAD616E0B711000C8F72 /* SmsSharer.m */; };
+		3442AADE16E0B711000C8F72 /* TencentSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAD816E0B711000C8F72 /* TencentSharer.m */; };
 		3446C89F162D680C0049B952 /* CircleHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3446C89E162D680C0049B952 /* CircleHeaderView.m */; };
 		345321FC1638F47D002137E6 /* icon_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 345321FB1638F47D002137E6 /* icon_share.png */; };
 		3453220116390EC2002137E6 /* img_comment_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 3453220016390EC2002137E6 /* img_comment_placeholder.png */; };
@@ -607,6 +616,23 @@
 		3442AA7216E0B2DC000C8F72 /* TCWBRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCWBRequest.m; sourceTree = "<group>"; };
 		3442AA7316E0B2DC000C8F72 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Language.strings"; sourceTree = "<group>"; };
 		3442AA7416E0B2DC000C8F72 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Language.strings"; sourceTree = "<group>"; };
+		3442AAC416E0B63C000C8F72 /* ShareHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareHelper.h; sourceTree = "<group>"; };
+		3442AAC516E0B63C000C8F72 /* ShareHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareHelper.m; sourceTree = "<group>"; };
+		3442AAC716E0B6AC000C8F72 /* ShareEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareEditController.h; sourceTree = "<group>"; };
+		3442AAC816E0B6AC000C8F72 /* ShareEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareEditController.m; sourceTree = "<group>"; };
+		3442AAC916E0B6AC000C8F72 /* ShareEditController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ShareEditController.xib; path = ../Classes/controllers/ShareEditController.xib; sourceTree = "<group>"; };
+		3442AACD16E0B711000C8F72 /* EmailSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailSharer.h; sourceTree = "<group>"; };
+		3442AACE16E0B711000C8F72 /* EmailSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailSharer.m; sourceTree = "<group>"; };
+		3442AACF16E0B711000C8F72 /* NNSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNSharer.h; sourceTree = "<group>"; };
+		3442AAD016E0B711000C8F72 /* NNSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNSharer.m; sourceTree = "<group>"; };
+		3442AAD116E0B711000C8F72 /* RenRenSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenRenSharer.h; sourceTree = "<group>"; };
+		3442AAD216E0B711000C8F72 /* RenRenSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenRenSharer.m; sourceTree = "<group>"; };
+		3442AAD316E0B711000C8F72 /* SinaSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinaSharer.h; sourceTree = "<group>"; };
+		3442AAD416E0B711000C8F72 /* SinaSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinaSharer.m; sourceTree = "<group>"; };
+		3442AAD516E0B711000C8F72 /* SmsSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmsSharer.h; sourceTree = "<group>"; };
+		3442AAD616E0B711000C8F72 /* SmsSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmsSharer.m; sourceTree = "<group>"; };
+		3442AAD716E0B711000C8F72 /* TencentSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TencentSharer.h; sourceTree = "<group>"; };
+		3442AAD816E0B711000C8F72 /* TencentSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TencentSharer.m; sourceTree = "<group>"; };
 		3446C89D162D680C0049B952 /* CircleHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleHeaderView.h; sourceTree = "<group>"; };
 		3446C89E162D680C0049B952 /* CircleHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleHeaderView.m; sourceTree = "<group>"; };
 		345321FB1638F47D002137E6 /* icon_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_share.png; sourceTree = "<group>"; };
@@ -843,6 +869,8 @@
 				341565F816BA18CB0012B2C7 /* GridListController.m */,
 				348983D416BA691C001CFFB6 /* TopicDetailController.h */,
 				348983D516BA691C001CFFB6 /* TopicDetailController.m */,
+				3442AAC716E0B6AC000C8F72 /* ShareEditController.h */,
+				3442AAC816E0B6AC000C8F72 /* ShareEditController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -1316,6 +1344,25 @@
 			path = TCWBEngine;
 			sourceTree = "<group>";
 		};
+		3442AACC16E0B6D9000C8F72 /* sharer */ = {
+			isa = PBXGroup;
+			children = (
+				3442AACF16E0B711000C8F72 /* NNSharer.h */,
+				3442AAD016E0B711000C8F72 /* NNSharer.m */,
+				3442AACD16E0B711000C8F72 /* EmailSharer.h */,
+				3442AACE16E0B711000C8F72 /* EmailSharer.m */,
+				3442AAD116E0B711000C8F72 /* RenRenSharer.h */,
+				3442AAD216E0B711000C8F72 /* RenRenSharer.m */,
+				3442AAD316E0B711000C8F72 /* SinaSharer.h */,
+				3442AAD416E0B711000C8F72 /* SinaSharer.m */,
+				3442AAD516E0B711000C8F72 /* SmsSharer.h */,
+				3442AAD616E0B711000C8F72 /* SmsSharer.m */,
+				3442AAD716E0B711000C8F72 /* TencentSharer.h */,
+				3442AAD816E0B711000C8F72 /* TencentSharer.m */,
+			);
+			name = sharer;
+			sourceTree = "<group>";
+		};
 		34632A9316BB98E500396AC1 /* FMDB */ = {
 			isa = PBXGroup;
 			children = (
@@ -1365,6 +1412,7 @@
 		347AAB60163672FC00D243BA /* layouts */ = {
 			isa = PBXGroup;
 			children = (
+				3442AAC916E0B6AC000C8F72 /* ShareEditController.xib */,
 				348983D616BA691C001CFFB6 /* TopicDetailController.xib */,
 				34C56BF01676CEE00013ECE6 /* FeedbackController.xib */,
 				349EF62C1675E92E0086A7F1 /* AboutController.xib */,
@@ -1472,6 +1520,7 @@
 			isa = PBXGroup;
 			children = (
 				343EBA4816E0A21F00501101 /* signer */,
+				3442AACC16E0B6D9000C8F72 /* sharer */,
 				348435771643A32A0073468D /* AppHelper.h */,
 				34D464D01630065C00D8EE28 /* UIHelper.h */,
 				34D464D11630065C00D8EE28 /* UIHelper.m */,
@@ -1485,6 +1534,8 @@
 				34E4BC131647571000C07DFA /* MathHelper.m */,
 				343EBA5516E0A4EA00501101 /* SignHelper.h */,
 				343EBA5616E0A4EA00501101 /* SignHelper.m */,
+				3442AAC416E0B63C000C8F72 /* ShareHelper.h */,
+				3442AAC516E0B63C000C8F72 /* ShareHelper.m */,
 				34E17E12164B5CB100810CD4 /* Constants.h */,
 				34730239165339B200E3C763 /* SessionManager.h */,
 				3473023A165339B200E3C763 /* SessionManager.m */,
@@ -1840,6 +1891,7 @@
 				3442AAAB16E0B2DC000C8F72 /* separatorLine@2x.png in Resources */,
 				3442AAAC16E0B2DC000C8F72 /* test.png in Resources */,
 				3442AAAD16E0B2DC000C8F72 /* test@2x.png in Resources */,
+				3442AACB16E0B6AC000C8F72 /* ShareEditController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2005,6 +2057,14 @@
 				3442AAC116E0B2DC000C8F72 /* TCWBAuthorizeViewController.m in Sources */,
 				3442AAC216E0B2DC000C8F72 /* TCWBEngine.m in Sources */,
 				3442AAC316E0B2DC000C8F72 /* TCWBRequest.m in Sources */,
+				3442AAC616E0B63D000C8F72 /* ShareHelper.m in Sources */,
+				3442AACA16E0B6AC000C8F72 /* ShareEditController.m in Sources */,
+				3442AAD916E0B711000C8F72 /* EmailSharer.m in Sources */,
+				3442AADA16E0B711000C8F72 /* NNSharer.m in Sources */,
+				3442AADB16E0B711000C8F72 /* RenRenSharer.m in Sources */,
+				3442AADC16E0B711000C8F72 /* SinaSharer.m in Sources */,
+				3442AADD16E0B711000C8F72 /* SmsSharer.m in Sources */,
+				3442AADE16E0B711000C8F72 /* TencentSharer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

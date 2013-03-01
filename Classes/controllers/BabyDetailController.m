@@ -14,7 +14,7 @@
 
 #import "SlideShowDetailModel.h"
 #import "NearWorksModel.h"
-//#import "ShareHelper.h"
+#import "ShareHelper.h"
 
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
@@ -38,7 +38,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *progressView;
 
-//@property (nonatomic, strong) ShareHelper *shareHelper;
+@property (nonatomic, strong) ShareHelper *shareHelper;
 
 @property (nonatomic, strong) SlideShowDetailModel *dataModel;
 @property (nonatomic, strong) NearWorksModel *idModel;
@@ -152,6 +152,8 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     self.progressView = nil;
     
     self.idModel = nil;
+    
+    self.shareHelper = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -425,13 +427,13 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         return;
     }
     
-//    if (!self.shareHelper) {
-//        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
-//    }
-//    
-//    _shareHelper.title = [_contentType isEqualToString:@"baby"] ? [NSString stringWithFormat:@"牛男宝贝 %@", _dataModel.title]: _dataModel.title;
-//    _shareHelper.shareUrl = _dataModel.shareUrl;
-//    [_shareHelper showShareView];
+    if (!self.shareHelper) {
+        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
+    }
+    
+    _shareHelper.shareText = [_contentType isEqualToString:@"baby"] ? [NSString stringWithFormat:@"牛男宝贝 %@", _dataModel.title]: _dataModel.title;
+    _shareHelper.shareUrl = _dataModel.shareUrl;
+    [_shareHelper showShareView];
 }
 
 - (void)vote {

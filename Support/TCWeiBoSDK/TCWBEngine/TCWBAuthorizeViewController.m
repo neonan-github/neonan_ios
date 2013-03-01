@@ -45,13 +45,15 @@
     [super viewDidLoad];
     
     if (_showType == ShowTypePush) {
-        UIButton *backButton = [UIHelper createBackButton];
-        [backButton addTarget:self.navigationController action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
+        UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     } else {
-        UIButton *closeButton = [UIHelper createLeftBarButton:@"关闭"];
-        [closeButton addTarget:self.navigationController action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:closeButton];
+        UIButton *cancelButton = [UIHelper createBarButton:10];
+        cancelButton.frame = CGRectMake(14, 8, 42, 24);
+        [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+        [cancelButton addTarget:self.navigationController action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     }
     
     NSBundle *main = [NSBundle mainBundle];
@@ -67,7 +69,7 @@
 //    [self.navigationItem setLeftBarButtonItem:baritemCancel];
 //    [baritemCancel release];
 
-    webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 460, 453)];
+    webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleContainerHeight)];
     [webView setDelegate:self];
     NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:requestURLString]
                                             cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
@@ -77,7 +79,7 @@
     [self.view addSubview:webView];
     
     indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [indicatorView setCenter:CGPointMake(460 / 2, 453 / 2)];
+    [indicatorView setCenter:CGPointMake(CompatibleScreenWidth / 2, CompatibleContainerHeight / 2)];
     [self.view addSubview:indicatorView];
 }
 
