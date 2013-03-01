@@ -10,7 +10,7 @@
 #import "NNNavigationController.h"
 
 #import "CommentListModel.h"
-#import "ShareHelper.h"
+//#import "ShareHelper.h"
 
 #import "CommentBox.h"
 #import "CommentCell.h"
@@ -42,7 +42,7 @@ HPGrowingTextViewDelegate>
 //@property (nonatomic, strong) UIButton *commentButton;
 
 //@property (nonatomic, strong) NSMutableArray *comments;
-@property (strong, nonatomic) ShareHelper *shareHelper;
+//@property (strong, nonatomic) ShareHelper *shareHelper;
 @property (nonatomic, strong) CommentListModel *dataModel;
 @end
 
@@ -360,13 +360,13 @@ HPGrowingTextViewDelegate>
         return;
     }
     
-    if (!self.shareHelper) {
-        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
-    }
-    
-    _shareHelper.title = _articleInfo.title;
-    _shareHelper.shareUrl = _articleInfo.shareUrl;
-    [_shareHelper showShareView];
+//    if (!self.shareHelper) {
+//        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
+//    }
+//    
+//    _shareHelper.title = _articleInfo.title;
+//    _shareHelper.shareUrl = _articleInfo.shareUrl;
+//    [_shareHelper showShareView];
 }
 
 - (void)publish:(UIButton *)button {

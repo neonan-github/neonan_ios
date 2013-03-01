@@ -10,7 +10,7 @@
 #import "SignController.h"
 #import "CommentListController.h"
 #import "NNNavigationController.h"
-#import "ShareHelper.h"
+//#import "ShareHelper.h"
 
 #import "CommentBox.h"
 #import <UIWebView+RemoveShadow.h>
@@ -45,7 +45,7 @@ static NSString * const kDirectionRight = @"1";
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
 //@property (strong, nonatomic) IBOutlet UIButton *commentButton;
-@property (strong, nonatomic) ShareHelper *shareHelper;
+//@property (strong, nonatomic) ShareHelper *shareHelper;
 
 @property (strong, nonatomic) ArticleDetailModel *dataModel;
 @property (strong, nonatomic) NearWorksModel *idModel;
@@ -117,7 +117,7 @@ static NSString * const kDirectionRight = @"1";
     self.textView = nil;
     self.commentBox = nil;
     self.shareButton = nil;
-    self.shareHelper = nil;
+//    self.shareHelper = nil;
     self.cacheLayer = nil;
     
     self.idModel = nil;
@@ -407,17 +407,17 @@ static NSString * const kDirectionRight = @"1";
 }
 
 - (void)share {
-    if (!_dataModel) {
-        return;
-    }
-    
-    if (!self.shareHelper) {
-        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
-    }
-    
-    _shareHelper.title = _dataModel.title;
-    _shareHelper.shareUrl = _dataModel.shareUrl;
-    [_shareHelper showShareView];
+//    if (!_dataModel) {
+//        return;
+//    }
+//    
+//    if (!self.shareHelper) {
+//        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
+//    }
+//    
+//    _shareHelper.title = _dataModel.title;
+//    _shareHelper.shareUrl = _dataModel.shareUrl;
+//    [_shareHelper showShareView];
 }
 
 - (void)publish:(UIButton *)button {

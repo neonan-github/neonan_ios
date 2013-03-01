@@ -18,4 +18,6 @@
     #import "NNHttpClient.h"
     #import "SessionManager.h"
     #import "Constants.h"
+
+    #import "ROConnect.h"
 #endif

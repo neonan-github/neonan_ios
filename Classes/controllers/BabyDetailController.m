@@ -14,7 +14,7 @@
 
 #import "SlideShowDetailModel.h"
 #import "NearWorksModel.h"
-#import "ShareHelper.h"
+//#import "ShareHelper.h"
 
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
@@ -38,7 +38,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIActivityIndicatorView *progressView;
 
-@property (nonatomic, strong) ShareHelper *shareHelper;
+//@property (nonatomic, strong) ShareHelper *shareHelper;
 
 @property (nonatomic, strong) SlideShowDetailModel *dataModel;
 @property (nonatomic, strong) NearWorksModel *idModel;
@@ -276,7 +276,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         [view addSubview:progressView];
     }
     
-    UIImageView *imageView = (UIImageView *)[view viewWithTag:kTagSSImageView];
+    __weak UIImageView *imageView = (UIImageView *)[view viewWithTag:kTagSSImageView];
     UIActivityIndicatorView *progressView = (UIActivityIndicatorView *)[view viewWithTag:kTagSSprogressView];
     NSURL *imgUrl = [NSURL URLWithString:[_dataModel.imgUrls objectAtIndex:index]];
     [imageView setImageWithURL:imgUrl success:^(UIImage *image, BOOL cached) {
@@ -425,13 +425,13 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         return;
     }
     
-    if (!self.shareHelper) {
-        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
-    }
-    
-    _shareHelper.title = [_contentType isEqualToString:@"baby"] ? [NSString stringWithFormat:@"牛男宝贝 %@", _dataModel.title]: _dataModel.title;
-    _shareHelper.shareUrl = _dataModel.shareUrl;
-    [_shareHelper showShareView];
+//    if (!self.shareHelper) {
+//        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
+//    }
+//    
+//    _shareHelper.title = [_contentType isEqualToString:@"baby"] ? [NSString stringWithFormat:@"牛男宝贝 %@", _dataModel.title]: _dataModel.title;
+//    _shareHelper.shareUrl = _dataModel.shareUrl;
+//    [_shareHelper showShareView];
 }
 
 - (void)vote {
