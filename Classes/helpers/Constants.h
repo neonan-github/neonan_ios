@@ -21,6 +21,11 @@ typedef enum {
     ValuationTypeDown = 2
 } ValuationType;
 
+typedef enum {
+    ShowTypePush = 0,
+    ShowTypeModal
+} ShowType;
+
 //MainController
 #define MainSlideShowCount 6
 
