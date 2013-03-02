@@ -17,7 +17,7 @@
 
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
-#import "BabyDetailController.h"
+#import "GalleryDetailController.h"
 
 @implementation NeonanAppDelegate
 
@@ -115,7 +115,7 @@
     } else if ([contentType isEqualToString:@"video"]) {
         controllerClass = [VideoPlayController class];
     } else {
-        controllerClass = [BabyDetailController class];
+        controllerClass = [GalleryDetailController class];
     }
     
     id controller = [[controllerClass alloc] init];

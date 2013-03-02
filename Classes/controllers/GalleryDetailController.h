@@ -1,5 +1,5 @@
 //
-//  BabyDetailController.h
+//  GalleryDetailController.h
 //  Neonan
 //
 //  Created by capricorn on 12-10-22.
@@ -10,7 +10,7 @@
 #import "SlideShowView.h"
 #import "FoldableTextBox.h"
 
-@interface BabyDetailController : NNViewController
+@interface GalleryDetailController : NNViewController
 
 @property (assign, nonatomic) SortType sortType;
 @property (assign, nonatomic) NSUInteger offset;

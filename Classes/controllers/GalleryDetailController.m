@@ -1,12 +1,12 @@
 //
-//  BabyDetailController.m
+//  GalleryDetailController.m
 //  Neonan
 //
 //  Created by capricorn on 12-10-22.
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import "BabyDetailController.h"
+#import "GalleryDetailController.h"
 #import "NNNavigationController.h"
 #import "SMPageControl.h"
 #import <UIImageView+WebCache.h>
@@ -25,7 +25,7 @@ static const CGFloat kTitleLabelOriginalHeight = 30;
 static const NSUInteger kTagSSImageView = 1000;
 static const NSUInteger kTagSSprogressView = 1001;
 
-@interface BabyDetailController () <SlideShowViewDataSource, SlideShowViewDelegate,
+@interface GalleryDetailController () <SlideShowViewDataSource, SlideShowViewDelegate,
 FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, unsafe_unretained) UIView *titleBox;
@@ -59,7 +59,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 - (void)updateData;
 @end
 
-@implementation BabyDetailController
+@implementation GalleryDetailController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
