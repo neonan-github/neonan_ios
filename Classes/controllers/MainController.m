@@ -315,12 +315,9 @@ headerView = _headerView;
     
     [self.slideShowView startAutoScroll:2];
     
-    if (!_dataModel || !_slideShowModel) {
+    if (!_dataModel) {
         [_tableView.pullToRefreshView triggerRefresh];
     }
-//    else {
-//        [_tableView reloadData];
-//    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
