@@ -10,14 +10,16 @@
 #import "SignController.h"
 #import "CommentListController.h"
 #import "NNNavigationController.h"
-#import "ShareHelper.h"
-
-#import "CommentBox.h"
-#import <UIWebView+RemoveShadow.h>
-#import <MBProgressHUD.h>
-
 #import "NearWorksModel.h"
 #import "ArticleDetailModel.h"
+
+#import "CommentBox.h"
+
+#import "ShareHelper.h"
+#import "SessionManager.h"
+
+#import <UIWebView+RemoveShadow.h>
+#import <MBProgressHUD.h>
 
 static NSString *kHtmlTemplate = @"<html> \n"
 "<head> \n"
@@ -61,8 +63,7 @@ static NSString * const kDirectionRight = @"1";
 
 @implementation ArticleDetailController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -70,8 +71,7 @@ static NSString * const kDirectionRight = @"1";
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = DarkThemeColor;
@@ -268,6 +268,11 @@ static NSString * const kDirectionRight = @"1";
                                 nil];
     
     [[NNHttpClient sharedClient] getAtPath:@"api/work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
+        Record *record = [[Record alloc] init];
+        record.contentType = @"article";
+        record.contentId = _contentId;
+        [[HistoryRecorder sharedRecorder] saveRecord:record];
+        
         [MBProgressHUD hideHUDForView:self.view animated:YES];
             
         self.dataModel = response;

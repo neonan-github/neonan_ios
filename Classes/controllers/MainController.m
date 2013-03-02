@@ -308,25 +308,25 @@ headerView = _headerView;
     if (_slideShowView.carousel.currentItemIndex < 1) {
         [self.slideShowView reloadData];
     }
+    
+    if (!_dataModel) {
+        [_tableView.pullToRefreshView performSelector:@selector(triggerRefresh) withObject:nil afterDelay:0.5];
+    } else {
+        [_tableView reloadData];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [self.slideShowView startAutoScroll:2];
-    
-    if (!_dataModel) {
-        [_tableView.pullToRefreshView triggerRefresh];
-    }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     [self.slideShowView stopAutoScroll];
 }
-
 
 #pragma mark - SlideShowViewDataSource methods
 
@@ -672,6 +672,12 @@ headerView = _headerView;
     }
     
     CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
+    
+    Record *record = [[Record alloc] init];
+    record.contentId = dataItem.contentId;
+    record.contentType = dataItem.contentType;
+    
+    cell.viewed = [[HistoryRecorder sharedRecorder] isRecorded:record];
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl] placeholderImage:[UIImage imageNamed:@"img_common_list_place_holder.png"]];
     cell.titleLabel.text = dataItem.title;
     cell.descriptionLabel.text = dataItem.readableContentType;
@@ -815,6 +821,7 @@ headerView = _headerView;
             
         case ContentTypeVideo:
             controller = [[VideoPlayController alloc] init];
+            [controller setContentId:[dataItem contentId]];
             [controller setVideoUrl:[dataItem videoUrl]];
     }
     

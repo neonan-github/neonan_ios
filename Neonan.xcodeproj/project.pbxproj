@@ -248,6 +248,7 @@
 		348983E416BA7093001CFFB6 /* icon_praise_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DF16BA7093001CFFB6 /* icon_praise_normal.png */; };
 		348BCEF61678312C00D8FCB5 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */; };
 		348BCEF91678314E00D8FCB5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 348BCEF81678314E00D8FCB5 /* libz.dylib */; };
+		348E51A916E1AB5700E364F3 /* HistoryRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 348E51A816E1AB5700E364F3 /* HistoryRecorder.m */; };
 		34925B1D164D127C00146B37 /* ArticleDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34925B1C164D127C00146B37 /* ArticleDetailModel.m */; };
 		3499BF131627D3F70084B838 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3499BF121627D3F70084B838 /* MediaPlayer.framework */; };
 		349EF606167590CA0086A7F1 /* icon_config_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 349EF604167590CA0086A7F1 /* icon_config_highlighted.png */; };
@@ -708,6 +709,8 @@
 		348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		348BCEF51678312C00D8FCB5 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		348BCEF81678314E00D8FCB5 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		348E51A716E1AB5700E364F3 /* HistoryRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryRecorder.h; sourceTree = "<group>"; };
+		348E51A816E1AB5700E364F3 /* HistoryRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryRecorder.m; sourceTree = "<group>"; };
 		34925B1B164D127C00146B37 /* ArticleDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArticleDetailModel.h; sourceTree = "<group>"; };
 		34925B1C164D127C00146B37 /* ArticleDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleDetailModel.m; sourceTree = "<group>"; };
 		3499BF121627D3F70084B838 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -1543,6 +1546,8 @@
 				341CB052165B744300BF1D76 /* NNURLCache.m */,
 				34632AAD16BB9A7900396AC1 /* DBHelper.h */,
 				34632AAE16BB9A7900396AC1 /* DBHelper.m */,
+				348E51A716E1AB5700E364F3 /* HistoryRecorder.h */,
+				348E51A816E1AB5700E364F3 /* HistoryRecorder.m */,
 			);
 			path = helpers;
 			sourceTree = "<group>";
@@ -1716,7 +1721,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = Neonan;
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = neonan;
 			};
 			buildConfigurationList = 53816AF016265E9400B0672C /* Build configuration list for PBXProject "Neonan" */;
@@ -2065,6 +2070,7 @@
 				3442AADE16E0B711000C8F72 /* TencentSharer.m in Sources */,
 				3442AAE116E0C10D000C8F72 /* SessionManager.m in Sources */,
 				3442AAE416E0C16D000C8F72 /* LoginResult.m in Sources */,
+				348E51A916E1AB5700E364F3 /* HistoryRecorder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2157,7 +2163,6 @@
 			baseConfigurationReference = 5A6E3D3949124D88A6E9595A /* Pods.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Mike Yang (FQZ2M9E74Q)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2212,7 +2217,6 @@
 			baseConfigurationReference = 5A6E3D3949124D88A6E9595A /* Pods.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_OBJCPP_ARC_ABI = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Michael Yang";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

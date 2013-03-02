@@ -12,8 +12,12 @@
 #import <UIImageView+WebCache.h>
 
 @interface HotListCell : PrettyTableViewCell
+
 @property (nonatomic, unsafe_unretained) UIImageView *thumbnail;
 @property (nonatomic, unsafe_unretained) TTTAttributedLabel *titleLabel;
 @property (nonatomic, unsafe_unretained) TTTAttributedLabel *descriptionLabel;
 @property (nonatomic, unsafe_unretained) TTTAttributedLabel *dateLabel;
+
+- (void)setViewed:(BOOL)viewed;
+
 @end

@@ -64,11 +64,9 @@ descriptionLabel = _descriptionLabel, dateLabel = _dateLabel;
     return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state
+- (void)setViewed:(BOOL)viewed {
+    _titleLabel.textColor = viewed ? HEXCOLOR(0x777777) : [UIColor whiteColor];
+    _descriptionLabel.textColor = _dateLabel.textColor = viewed ? HEXCOLOR(0x555555) : HEXCOLOR(0x777777);
 }
 
 - (void)layoutSubviews {

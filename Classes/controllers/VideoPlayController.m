@@ -52,6 +52,11 @@
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [self requestUrl:^(NSString * url) {
+        Record *record = [[Record alloc] init];
+        record.contentType = @"video";
+        record.contentId = _contentId;
+        [[HistoryRecorder sharedRecorder] saveRecord:record];
+        
         self.videoUrl = url;
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self parseVideoUrl:url]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20];
         [_webView loadRequest:request];

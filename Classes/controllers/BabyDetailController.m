@@ -484,6 +484,11 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         self.dataModel = response;
         [self updateData];
         
+        Record *record = [[Record alloc] init];
+        record.contentType = _contentType;
+        record.contentId = _contentId;
+        [[HistoryRecorder sharedRecorder] saveRecord:record];
+        
         if (success) {
             success();
         }
