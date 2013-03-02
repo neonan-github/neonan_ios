@@ -9,13 +9,18 @@
 #import "GalleryDetailController.h"
 #import "NNNavigationController.h"
 #import "SMPageControl.h"
-#import <UIImageView+WebCache.h>
-#import <SDImageCache.h>
 
 #import "SlideShowDetailModel.h"
 #import "NearWorksModel.h"
+
+#import "EncourageHelper.h"
 #import "ShareHelper.h"
 #import "SessionManager.h"
+
+#import "EncourageView.h"
+
+#import <UIImageView+WebCache.h>
+#import <SDImageCache.h>
 
 static const float kDescriptionShrinkedLines = 4;
 static const float kDescriptionStretchedLines = 7;
@@ -488,6 +493,16 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         record.contentType = _contentType;
         record.contentId = _contentId;
         [[HistoryRecorder sharedRecorder] saveRecord:record];
+        
+        __weak GalleryDetailController *weakSelf = self;
+        [EncourageHelper check:_contentId contentType:_contentType afterDelay:5
+                        should:^BOOL{
+                            return [[parameters[@"content_id"] description] isEqualToString:[_contentId description]] &&
+                            [[SessionManager sharedManager] canAutoLogin] && [weakSelf isVisible];
+                        }
+                       success:^{
+                           [EncourageView displayAt:CGPointMake(CompatibleScreenWidth / 2, 100)];
+                       }];
         
         if (success) {
             success();

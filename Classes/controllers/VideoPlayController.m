@@ -10,6 +10,8 @@
 #import "MathHelper.h"
 #import "UrlModel.h"
 
+#import "EncourageHelper.h"
+
 #import <MBProgressHUD.h>
 
 @interface VideoPlayController () <UIWebViewDelegate>
@@ -56,6 +58,14 @@
         record.contentType = @"video";
         record.contentId = _contentId;
         [[HistoryRecorder sharedRecorder] saveRecord:record];
+        
+        __weak VideoPlayController *weakSelf = self;
+        [EncourageHelper check:_contentId contentType:@"video" afterDelay:5
+                        should:^BOOL{
+                            return [[SessionManager sharedManager] canAutoLogin] && weakSelf;
+                        }
+                       success:^{
+                       }];
         
         self.videoUrl = url;
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self parseVideoUrl:url]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20];

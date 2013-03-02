@@ -14,7 +14,9 @@
 #import "ArticleDetailModel.h"
 
 #import "CommentBox.h"
+#import "EncourageView.h"
 
+#import "EncourageHelper.h"
 #import "ShareHelper.h"
 #import "SessionManager.h"
 
@@ -272,6 +274,16 @@ static NSString * const kDirectionRight = @"1";
         record.contentType = @"article";
         record.contentId = _contentId;
         [[HistoryRecorder sharedRecorder] saveRecord:record];
+        
+        __weak ArticleDetailController *weakSelf = self;
+        [EncourageHelper check:contentId contentType:@"article" afterDelay:5
+                        should:^BOOL{
+                            return [[contentId description] isEqualToString:[_contentId description]] &&
+                            [[SessionManager sharedManager] canAutoLogin] && [weakSelf isVisible];
+                        }
+                       success:^{
+                           [EncourageView displayAt:CGPointMake(CompatibleScreenWidth / 2, 100)];
+                       }];
         
         [MBProgressHUD hideHUDForView:self.view animated:YES];
             
