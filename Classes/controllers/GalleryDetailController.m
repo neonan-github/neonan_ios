@@ -36,7 +36,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 @property (nonatomic, unsafe_unretained) UIView *titleBox;
 @property (nonatomic, unsafe_unretained) UILabel *titleLabel;
 @property (nonatomic, unsafe_unretained) UIButton *likeButton;
-@property (nonatomic, unsafe_unretained) UIButton *shareButton;
+@property (nonatomic, unsafe_unretained) UIButton *actionButton;
 
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
@@ -107,11 +107,12 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     likeButton.enabled = !_voted;
     likeButton.hidden = ![_contentType isEqualToString:@"baby"];
     
-    UIButton *shareButton = self.shareButton = [[UIButton alloc] initWithFrame:CGRectMake(285, 5, 35, 25)];
-    shareButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 10);
+    UIButton *actionButton = self.actionButton = [[UIButton alloc] initWithFrame:CGRectMake(280, 2, 40, 38)];
+    actionButton.contentEdgeInsets = UIEdgeInsetsMake(10, 12, 10, 0);
 //    shareButton.backgroundColor = RGBA(0, 255, 0, 0.3);
-    [shareButton setImage:[UIImage imageFromFile:@"icon_share.png"] forState:UIControlStateNormal];
-    [shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+    [actionButton setImage:[UIImage imageFromFile:@"icon_over_flow_normal.png"] forState:UIControlStateNormal];
+    [actionButton setImage:[UIImage imageFromFile:@"icon_over_flow_highlighted.png"] forState:UIControlStateHighlighted];
+//    [actionButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     
     UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35)];
     titleBox.backgroundColor = DarkThemeColor;
@@ -119,7 +120,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     [titleBox addSubview:navBottomLine];
     [titleBox addSubview:titleLabel];
     [titleBox addSubview:likeButton];
-    [titleBox addSubview:shareButton];
+    [titleBox addSubview:actionButton];
     [self.view addSubview:titleBox];
     
     frame = CGRectMake(0, CompatibleContainerHeight - 32, CompatibleScreenWidth, 0);
@@ -143,7 +144,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     
     self.titleLabel = nil;
     self.likeButton = nil;
-    self.shareButton = nil;
+    self.actionButton = nil;
     self.titleBox = nil;
     
     self.slideShowView.dataSource = nil;

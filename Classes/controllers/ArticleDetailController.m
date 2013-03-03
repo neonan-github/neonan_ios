@@ -15,6 +15,7 @@
 
 #import "CommentBox.h"
 #import "EncourageView.h"
+#import "FunctionFlowView.h"
 
 #import "EncourageHelper.h"
 #import "ShareHelper.h"
@@ -47,8 +48,10 @@ static NSString * const kDirectionRight = @"1";
 @property (unsafe_unretained, nonatomic) IBOutlet UIImageView *titleLineView;
 @property (unsafe_unretained, nonatomic) IBOutlet UIWebView *textView;
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
-@property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
+@property (unsafe_unretained, nonatomic) IBOutlet UIButton *actioenButton;
 //@property (strong, nonatomic) IBOutlet UIButton *commentButton;
+@property (nonatomic, readonly) FunctionFlowView *moreActionView;
+
 @property (strong, nonatomic) ShareHelper *shareHelper;
 
 @property (strong, nonatomic) ArticleDetailModel *dataModel;
@@ -64,6 +67,7 @@ static NSString * const kDirectionRight = @"1";
 @end
 
 @implementation ArticleDetailController
+@synthesize moreActionView = _moreActionView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -103,7 +107,6 @@ static NSString * const kDirectionRight = @"1";
     [_commentBox.countButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
     
-    [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -113,12 +116,14 @@ static NSString * const kDirectionRight = @"1";
 }
 
 - (void)cleanUp {
+    _moreActionView = nil;
+    
     self.titleLineView = nil;
     self.titleLabel = nil;
     self.extraInfoLabel = nil;
     self.textView = nil;
     self.commentBox = nil;
-    self.shareButton = nil;
+    self.actioenButton = nil;
     self.shareHelper = nil;
     self.cacheLayer = nil;
     
@@ -423,6 +428,20 @@ static NSString * const kDirectionRight = @"1";
             }];
         }];
     }
+}
+
+- (FunctionFlowView *)moreActionView {
+    if (!_moreActionView) {
+        _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(245, 40, 68, 53)];
+        [_moreActionView.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    return _moreActionView;
+}
+
+- (IBAction)showMoreAction:(id)sender {
+    DLog(@"show more action");
+    [self.view addSubview:self.moreActionView];
 }
 
 - (void)share {
