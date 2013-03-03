@@ -231,7 +231,7 @@ headerView = _headerView;
 
 - (NSArray *)menuTexts {
     if (!_menuTexts) {
-        _menuTexts = @[@"清除缓存", @"意见反馈", @"关于我们", @"登录"];
+        _menuTexts = @[@"个人中心", @"我的收藏", @"清除缓存", @"意见反馈", @"关于我们", @"登录"];
     }
     
     return _menuTexts;
@@ -239,7 +239,8 @@ headerView = _headerView;
 
 - (NSArray *)menuIcons {
     if (!_menuIcons) {
-        _menuIcons = @[@"icon_clear_normal.png", @"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png"];
+        _menuIcons = @[@"icon_clear_normal.png", @"icon_feedback_normal.png", @"icon_clear_normal.png",
+                       @"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png"];
     }
     
     return _menuIcons;
@@ -255,8 +256,8 @@ headerView = _headerView;
         [self.menuTexts enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
             NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 40)];
             [item setText:text withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
-            UIImage *iconImage = [UIImage imageFromFile:self.menuIcons[idx]];
-            [item setIconImage:iconImage andHighlightedImage:[iconImage opacity:0.5]];
+//            UIImage *iconImage = [UIImage imageFromFile:self.menuIcons[idx]];
+//            [item setIconImage:iconImage andHighlightedImage:[iconImage opacity:0.5]];
             [_dropDownMenu addItem:item];
         }];
         
@@ -264,19 +265,25 @@ headerView = _headerView;
         __unsafe_unretained NNDropDownMenu *weakMenu = _dropDownMenu;
         _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
             switch (index) {
-                case 0: //清除缓存
+                case 0: //个人中心
+                    break;
+                    
+                case 1: //我的收藏
+                    break;
+                    
+                case 2: //清除缓存
                     [weakSelf clearCache];
                     break;
                     
-                case 1: //意见反馈
+                case 3: //意见反馈
                     [weakSelf showFeedbackController];
                     break;
                     
-                case 2: //关于我们
+                case 4: //关于我们
                     [weakSelf showAboutController];
                     break;
 
-                case 3: //登陆注销
+                case 5: //登陆注销
                     [weakSelf sign];
                     break;
             }
@@ -289,7 +296,7 @@ headerView = _headerView;
     
     SessionManager *sessionManager = [SessionManager sharedManager];
     BOOL tokenAvailable = [sessionManager canAutoLogin];
-    NNMenuItem *signItem = _dropDownMenu.items[3];
+    NNMenuItem *signItem = _dropDownMenu.items[self.menuTexts.count - 1];
     [signItem setText:tokenAvailable ? @"注销" : @"登录"];
     
     return _dropDownMenu;
@@ -568,14 +575,27 @@ headerView = _headerView;
 }
 
 - (void)clearCache {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        SDImageCache *imageCache = [SDImageCache sharedImageCache];
-        [imageCache clearMemory];
-        [imageCache clearDisk];
-        [imageCache cleanDisk];
-        
-        [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    });
+    RIButtonItem *cancelItem = [RIButtonItem item];
+    cancelItem.label = @"取消";
+    
+    RIButtonItem *okItem = [RIButtonItem item];
+    okItem.label = @"确定";
+    okItem.action = ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            SDImageCache *imageCache = [SDImageCache sharedImageCache];
+            [imageCache clearMemory];
+            [imageCache clearDisk];
+            [imageCache cleanDisk];
+            
+            [[NSURLCache sharedURLCache] removeAllCachedResponses];
+        });
+    };
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"清除缓存？"
+                                               cancelButtonItem:cancelItem
+                                               otherButtonItems:okItem, nil];
+    [alertView show];
 }
 
 #pragma mark - Private Request methods
