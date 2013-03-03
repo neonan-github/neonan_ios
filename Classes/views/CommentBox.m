@@ -182,17 +182,23 @@
 //   UIImage *sendBtnBackground = [[UIImage imageFromFile:@"bg_comment_commit_normal.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
 //   UIImage *selectedSendBtnBackground = [[UIImage imageFromFile:@"bg_comment_commit_highlighted.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
     
-   UIButton *doneBtn = [UIHelper createBarButton:10];
-   doneBtn.frame = CGRectMake(self.frame.size.width - 54, 7, 44, 24);
-   doneBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-   [doneBtn setTitle:@"发表" forState:UIControlStateNormal];
+    UIImage* buttonImage = [[UIImage imageFromFile:@"bg_bar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0.0];
+    
+    // Create a custom button
+    UIButton* doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [doneBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [doneBtn setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateHighlighted];
+    [doneBtn setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateSelected];
+    [doneBtn setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    doneBtn.frame = CGRectMake(self.frame.size.width - 54, 7, 44, 24);
+    doneBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    [doneBtn setTitle:@"发表" forState:UIControlStateNormal];
         
 //   [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
 //   doneBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
-   doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+    doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
     
-   [doneBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-   [doneBtn addTarget:self action:@selector(resignTextView) forControlEvents:UIControlEventTouchUpInside];
+    [doneBtn addTarget:self action:@selector(resignTextView) forControlEvents:UIControlEventTouchUpInside];
 //   [doneBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
 //   [doneBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
     

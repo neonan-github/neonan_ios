@@ -50,9 +50,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIButton *cancelButton = [UIHelper createBarButton:10];
-    cancelButton.frame = CGRectMake(14, 8, 42, 24);
-    [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+    UIButton *cancelButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
+    cancelButton.frame = CGRectMake(14, 8, 30, 30);
+    cancelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     [cancelButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelButton];
     
@@ -60,8 +60,8 @@
     
     [_actionButton addTarget:self action:@selector(sign:) forControlEvents:UIControlEventTouchUpInside];
     
-    NNUnderlinedButton *switchTypeButton = self.switchTypeButton = [[NNUnderlinedButton alloc] initWithFrame:CGRectMake(250, -2, 67, 44)];
-    switchTypeButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    NNUnderlinedButton *switchTypeButton = self.switchTypeButton = [[NNUnderlinedButton alloc] initWithFrame:CGRectMake(250, -2, 67, 50)];
+    switchTypeButton.titleLabel.font = [UIFont systemFontOfSize:18];
     switchTypeButton.backgroundColor = [UIColor clearColor];
     [switchTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [switchTypeButton setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateHighlighted];

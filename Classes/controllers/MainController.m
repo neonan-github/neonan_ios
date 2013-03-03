@@ -92,11 +92,7 @@ headerView = _headerView;
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = DarkThemeColor;
     
-    UIButton *navLeftButton = self.navLeftButton = [UIHelper createBarButton:0];
-    [navLeftButton setImage:[UIImage imageFromFile:@"icon_config_normal.png"] forState:UIControlStateNormal];
-    UIImage *highlightedImage = [UIImage imageFromFile:@"icon_config_highlighted.png"];
-    [navLeftButton setImage:highlightedImage forState:UIControlStateHighlighted];
-    [navLeftButton setImage:highlightedImage forState:UIControlStateSelected];
+    UIButton *navLeftButton = self.navLeftButton = [UIHelper createLeftBarButton:@"icon_menu_normal.png"];
     [navLeftButton addTarget:self action:@selector(toggleDropDownMenu) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     

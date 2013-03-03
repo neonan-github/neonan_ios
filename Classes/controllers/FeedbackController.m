@@ -50,13 +50,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    UIButton *navLeftButton = [UIHelper createBarButton:5];
-    [navLeftButton setTitle:@"关闭" forState:UIControlStateNormal];
+    UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
     [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
-    UIButton *navRightButton = [UIHelper createBarButton:5];
-    [navRightButton setTitle:@"提交" forState:UIControlStateNormal];
+    UIButton *navRightButton = [UIHelper createLeftBarButton:@"icon_done_normal.png"];
     [navRightButton addTarget:self action:@selector(commit) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
     
