@@ -100,10 +100,10 @@ headerView = _headerView;
     [navLeftButton addTarget:self action:@selector(toggleDropDownMenu) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
-    UIButton *navRightButton = self.navRightButton = [UIHelper createBarButton:5];
-    [navRightButton setTitle:[self stringForType:_type] forState:UIControlStateNormal];
-    [navRightButton addTarget:self action:@selector(switchListType) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
+//    UIButton *navRightButton = self.navRightButton = [UIHelper createBarButton:5];
+//    [navRightButton setTitle:[self stringForType:_type] forState:UIControlStateNormal];
+//    [navRightButton addTarget:self action:@selector(switchListType) forControlEvents:UIControlEventTouchUpInside];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
     
     float layoutY = 0;
     
