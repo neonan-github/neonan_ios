@@ -15,6 +15,7 @@
 #import "SignController.h"
 #import "AboutController.h"
 #import "FeedbackController.h"
+#import "PersonalInfoController.h"
 
 #import "MainSlideShowModel.h"
 #import "BabyListModel.h"
@@ -262,6 +263,7 @@ headerView = _headerView;
         _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
             switch (index) {
                 case 0: //个人中心
+                    [weakSelf showPersonalInfoController];
                     break;
                     
                 case 1: //我的收藏
@@ -564,6 +566,14 @@ headerView = _headerView;
 
 - (void)showFeedbackController {
     FeedbackController *controller = [[FeedbackController alloc] init];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
+    
+    [self.navigationController presentModalViewController:navController animated:YES];
+}
+
+- (void)showPersonalInfoController {
+    PersonalInfoController *controller = [[PersonalInfoController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     navController.logoHidden = NO;
     
