@@ -58,7 +58,7 @@
     return _overlayWindow;
 }
 
-+ (void)displayAt:(CGPoint)center {
++ (void)displayScore:(NSInteger)score at:(CGPoint)center {
     EncourageView *sharedView = [EncourageView sharedView];
     if(!sharedView.superview) {
         [sharedView.overlayWindow addSubview:sharedView];
@@ -68,6 +68,8 @@
     sharedView.y = center.y - sharedView.height / 2;
     
     sharedView.overlayWindow.hidden = NO;
+    
+    sharedView.textLabel.text = [NSString stringWithFormat:@"+%d", score];
     
     CAAnimation *animation = [self createAnimation];
     animation.delegate = sharedView;

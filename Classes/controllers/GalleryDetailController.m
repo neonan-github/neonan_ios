@@ -501,7 +501,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
                             [[SessionManager sharedManager] canAutoLogin] && [weakSelf isVisible];
                         }
                        success:^{
-                           [EncourageView displayAt:CGPointMake(CompatibleScreenWidth / 2, 100)];
+                           [EncourageView displayScore:EncourageScoreCommon at:CGPointMake(CompatibleScreenWidth / 2, 100)];
                        }];
         
         if (success) {

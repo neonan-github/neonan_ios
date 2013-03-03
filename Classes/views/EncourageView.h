@@ -10,6 +10,6 @@
 
 @interface EncourageView : UIView
 
-+ (void)displayAt:(CGPoint)center;
++ (void)displayScore:(NSInteger)score at:(CGPoint)center;
 
 @end

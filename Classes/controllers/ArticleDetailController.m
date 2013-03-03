@@ -282,7 +282,7 @@ static NSString * const kDirectionRight = @"1";
                             [[SessionManager sharedManager] canAutoLogin] && [weakSelf isVisible];
                         }
                        success:^{
-                           [EncourageView displayAt:CGPointMake(CompatibleScreenWidth / 2, 100)];
+                           [EncourageView displayScore:EncourageScoreCommon at:CGPointMake(CompatibleScreenWidth / 2, 100)];
                        }];
         
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -312,6 +312,8 @@ static NSString * const kDirectionRight = @"1";
             [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];
             _commentBox.countButton.enabled = _dataModel.commentNum > 0;
             _commentBox.text = @"";
+            
+            [EncourageView displayScore:EncourageScoreComment at:CGPointMake(CompatibleScreenWidth / 2, 100)];
         } failure:^(ResponseError *error) {
             NSLog(@"error:%@", error.message);
             [MBProgressHUD hideHUDForView:self.view animated:YES];

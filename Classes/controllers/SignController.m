@@ -10,9 +10,11 @@
 #import "NNNavigationController.h"
 
 #import "LoginResult.h"
+
 #import "SessionManager.h"
 #import "MD5.h"
 
+#import "EncourageView.h"
 #import "NNUnderlinedButton.h"
 
 #import <DCRoundSwitch.h>
@@ -200,7 +202,8 @@
 }
 
 - (void)signWithEmail:(NSString *)email andPassword:(NSString *)password atPath:(NSString *)path {
-    [SVProgressHUD showWithStatus:([path rangeOfString:@"login"].location == NSNotFound) ? @"注册中" : @"登录中"];
+    BOOL signUp = [path rangeOfString:@"login"].location == NSNotFound;
+    [SVProgressHUD showWithStatus:signUp ? @"注册中" : @"登录中"];
     
     password = [password md5];
     
@@ -216,6 +219,9 @@
         }
         
         [SVProgressHUD showSuccessWithStatus:@"登录成功"];
+        
+        [EncourageView displayScore:(signUp ? EncourageScoreSignUp : EncourageScoreLogin)
+                                 at:CGPointMake(CompatibleScreenWidth / 2, 100)];
         
         [self close];
     } failure:^(ResponseError *error) {
@@ -243,6 +249,9 @@
                                            }
                                            
                                            [SVProgressHUD showSuccessWithStatus:@"登录成功"];
+                                           
+                                           [EncourageView displayScore:EncourageScoreLogin
+                                                                    at:CGPointMake(CompatibleScreenWidth / 2, 100)];
                                            
                                            [self close:YES];
                                        } failure:^(ResponseError *error) {

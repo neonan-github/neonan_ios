@@ -47,6 +47,14 @@ typedef enum {
     ThirdPlatformRenRen
 } ThirdPlatformType;
 
+typedef enum {
+    EncourageScoreCommon = 3,
+    EncourageScoreComment = 2,
+    EncourageScoreLogin = 1,
+    EncourageScoreSignUp = 8,
+    EncourageScoreShare = 2
+} EncourageScore;
+
 //MainController
 #define MainSlideShowCount 6
 
