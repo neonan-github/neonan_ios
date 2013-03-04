@@ -26,11 +26,6 @@
 static const NSUInteger kRequestCount = 20;
 static NSString * const kRequestCountString = @"20";
 
-typedef enum {
-    RequestTypeRefresh = 0,
-    RequestTypeAppend
-} RequestType;
-
 @interface CommentListController () <UITableViewDataSource, UITableViewDelegate,
 HPGrowingTextViewDelegate>
 

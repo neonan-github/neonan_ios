@@ -19,11 +19,6 @@
 
 #import "UIScrollView+SVInfiniteScrolling.h"
 
-typedef enum {
-    RequestTypeRefresh = 0,
-    RequestTypeAppend
-} RequestType;
-
 @interface GridListController () <KKGridViewDataSource, KKGridViewDelegate>
 
 @property (nonatomic, strong) TopicGridsModel *dataModel;

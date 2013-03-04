@@ -38,6 +38,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
+    [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
+    
     [self displayVip:NO level:2];
     [self displayScore:1234];
     [self displayExperience:123456];
@@ -56,6 +60,10 @@
 }
 
 #pragma mark - Private methods 
+
+- (void)close {
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 - (void)displayVip:(BOOL)vip level:(NSInteger)level {
     if (vip) {

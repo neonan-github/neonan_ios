@@ -16,6 +16,7 @@
 #import "AboutController.h"
 #import "FeedbackController.h"
 #import "PersonalInfoController.h"
+#import "FavoritesController.h"
 
 #import "MainSlideShowModel.h"
 #import "BabyListModel.h"
@@ -46,16 +47,7 @@ static const NSString *kRequestCountString = @"20";
 
 static const NSString *kFilterFlag = @"true";
 
-typedef enum {
-    RequestTypeRefresh = 0,
-    RequestTypeAppend
-} RequestType;
 
-typedef enum {
-    ContentTypeSlide = 0,
-    ContentTypeArticle,
-    ContentTypeVideo
-} ContentType;
 
 @interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate, NNDropDownMenuDelegate,
 SlideShowViewDataSource, SlideShowViewDelegate,
@@ -202,111 +194,13 @@ headerView = _headerView;
     self.dataModel = nil;
 }
 
-- (void)setType:(SortType)type {
-    if (_type != type) {
-        _type = type;
-        [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
-        [_tableView.pullToRefreshView triggerRefresh];
-    }
-}
-
-- (NSArray *)channelTexts {
-    if (!_channelTexts) {
-        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", /*@"宝贝",*/ @"视频", @"专题", @"女人", nil];
-    }
-    
-    return  _channelTexts;
-}
-
-- (NSArray *)channelTypes {
-    if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"subject", @"women", nil];
-    }
-    
-    return _channelTypes;
-}
-
-- (NSArray *)menuTexts {
-    if (!_menuTexts) {
-        _menuTexts = @[@"个人中心", @"我的收藏", @"清除缓存", @"意见反馈", @"关于我们", @"登录"];
-    }
-    
-    return _menuTexts;
-}
-
-- (NSArray *)menuIcons {
-    if (!_menuIcons) {
-        _menuIcons = @[@"icon_clear_normal.png", @"icon_feedback_normal.png", @"icon_clear_normal.png",
-                       @"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png"];
-    }
-    
-    return _menuIcons;
-}
-
-- (NNDropDownMenu *)dropDownMenu {
-    if (!_dropDownMenu) {
-        _dropDownMenu = [[NNDropDownMenu alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleScreenHeight)];
-        _dropDownMenu.topPadding = NavBarHeight + StatusBarHeight;
-        _dropDownMenu.itemHeight = 40;
-        _dropDownMenu.menuDelegate = self;
-        
-        [self.menuTexts enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
-            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 40)];
-            [item setText:text withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
-//            UIImage *iconImage = [UIImage imageFromFile:self.menuIcons[idx]];
-//            [item setIconImage:iconImage andHighlightedImage:[iconImage opacity:0.5]];
-            [_dropDownMenu addItem:item];
-        }];
-        
-        __unsafe_unretained MainController *weakSelf = self;
-        __unsafe_unretained NNDropDownMenu *weakMenu = _dropDownMenu;
-        _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
-            switch (index) {
-                case 0: //个人中心
-                    if ([[SessionManager sharedManager] canAutoLogin]) {
-                        [weakSelf showPersonalInfoController];
-                    } else {
-                        [weakSelf signIn];
-                    }
-                    break;
-                    
-                case 1: //我的收藏
-                    break;
-                    
-                case 2: //清除缓存
-                    [weakSelf clearCache];
-                    break;
-                    
-                case 3: //意见反馈
-                    [weakSelf showFeedbackController];
-                    break;
-                    
-                case 4: //关于我们
-                    [weakSelf showAboutController];
-                    break;
-
-                case 5: //登陆注销
-                    [weakSelf sign];
-                    break;
-            }
-            
-            if ([weakMenu isKindOfClass:[NNDropDownMenu class]]) {
-                [weakMenu dismissMenu];
-            }
-        };
-    }
-    
-    SessionManager *sessionManager = [SessionManager sharedManager];
-    BOOL tokenAvailable = [sessionManager canAutoLogin];
-    NNMenuItem *signItem = _dropDownMenu.items[self.menuTexts.count - 1];
-    [signItem setText:tokenAvailable ? @"注销" : @"登录"];
-    
-    return _dropDownMenu;
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@"tableView.contentOffset"];
 }
 
 #pragma mark - UIViewController life cycle
-- (void)viewWillAppear:(BOOL)animated
-{
+
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
 //    [self updateUserStatus];
@@ -465,7 +359,7 @@ headerView = _headerView;
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     navController.logoHidden = NO;
     controller.videoUrl = videoUrl;
-    [self.navigationController presentModalViewController:navController animated:YES];
+    [self presentModalViewController:navController animated:YES];
 }
 
 #pragma mark - NNDropDownMenuDelegate methods
@@ -565,7 +459,7 @@ headerView = _headerView;
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     navController.logoHidden = NO;
     
-    [self.navigationController presentModalViewController:navController animated:YES];
+    [self presentModalViewController:navController animated:YES];
 }
 
 - (void)showFeedbackController {
@@ -573,7 +467,7 @@ headerView = _headerView;
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     navController.logoHidden = NO;
     
-    [self.navigationController presentModalViewController:navController animated:YES];
+    [self presentModalViewController:navController animated:YES];
 }
 
 - (void)showPersonalInfoController {
@@ -581,7 +475,15 @@ headerView = _headerView;
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     navController.logoHidden = NO;
     
-    [self.navigationController presentModalViewController:navController animated:YES];
+    [self presentModalViewController:navController animated:YES];
+}
+
+- (void)showFavoritesController {
+    FavoritesController *controller = [[FavoritesController alloc] init];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    navController.logoHidden = NO;
+    
+    [self presentModalViewController:navController animated:YES];
 }
 
 - (void)clearCache {
@@ -867,6 +769,119 @@ headerView = _headerView;
 - (void)toggleDropDownMenu {
     self.navLeftButton.selected = YES;
     [self.dropDownMenu showMenu];
+}
+
+#pragma mark - Setters & getters
+
+- (void)setType:(SortType)type {
+    if (_type != type) {
+        _type = type;
+        [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
+        [_tableView.pullToRefreshView triggerRefresh];
+    }
+}
+
+- (NSArray *)channelTexts {
+    if (!_channelTexts) {
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", /*@"宝贝",*/ @"视频", @"专题", @"女人", nil];
+    }
+    
+    return  _channelTexts;
+}
+
+- (NSArray *)channelTypes {
+    if (!_channelTypes) {
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"subject", @"women", nil];
+    }
+    
+    return _channelTypes;
+}
+
+- (NSArray *)menuTexts {
+    if (!_menuTexts) {
+        _menuTexts = @[@"个人中心", @"我的收藏", @"清除缓存", @"意见反馈", @"关于我们", @"登录"];
+    }
+    
+    return _menuTexts;
+}
+
+- (NSArray *)menuIcons {
+    if (!_menuIcons) {
+        _menuIcons = @[@"icon_clear_normal.png", @"icon_feedback_normal.png", @"icon_clear_normal.png",
+                       @"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png"];
+    }
+    
+    return _menuIcons;
+}
+
+- (NNDropDownMenu *)dropDownMenu {
+    if (!_dropDownMenu) {
+        _dropDownMenu = [[NNDropDownMenu alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleScreenHeight)];
+        _dropDownMenu.topPadding = NavBarHeight + StatusBarHeight;
+        _dropDownMenu.itemHeight = 40;
+        _dropDownMenu.menuDelegate = self;
+        
+        [self.menuTexts enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
+            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 40)];
+            [item setText:text withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
+            //            UIImage *iconImage = [UIImage imageFromFile:self.menuIcons[idx]];
+            //            [item setIconImage:iconImage andHighlightedImage:[iconImage opacity:0.5]];
+            [_dropDownMenu addItem:item];
+        }];
+        
+        __unsafe_unretained MainController *weakSelf = self;
+        __unsafe_unretained NNDropDownMenu *weakMenu = _dropDownMenu;
+        _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
+            switch (index) {
+                case 0: //个人中心
+                    if ([[SessionManager sharedManager] canAutoLogin]) {
+                        [weakSelf showPersonalInfoController];
+                    } else {
+                        [[SessionManager sharedManager] requsetToken:weakSelf success:^(NSString *token) {
+                            [weakSelf performSelector:@selector(showPersonalInfoController) withObject:nil afterDelay:0.5];
+                        }];
+                    }
+                    break;
+                    
+                case 1: //我的收藏
+                    if ([[SessionManager sharedManager] canAutoLogin]) {
+                        [weakSelf showFavoritesController];
+                    } else {
+                        [[SessionManager sharedManager] requsetToken:weakSelf success:^(NSString *token) {
+                            [weakSelf performSelector:@selector(showFavoritesController) withObject:nil afterDelay:0.5];
+                        }];
+                    }
+                    break;
+                    
+                case 2: //清除缓存
+                    [weakSelf clearCache];
+                    break;
+                    
+                case 3: //意见反馈
+                    [weakSelf showFeedbackController];
+                    break;
+                    
+                case 4: //关于我们
+                    [weakSelf showAboutController];
+                    break;
+                    
+                case 5: //登陆注销
+                    [weakSelf sign];
+                    break;
+            }
+            
+            if ([weakMenu isKindOfClass:[NNDropDownMenu class]]) {
+                [weakMenu dismissMenu];
+            }
+        };
+    }
+    
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    BOOL tokenAvailable = [sessionManager canAutoLogin];
+    NNMenuItem *signItem = _dropDownMenu.items[self.menuTexts.count - 1];
+    [signItem setText:tokenAvailable ? @"注销" : @"登录"];
+    
+    return _dropDownMenu;
 }
 
 #pragma mark - KVO

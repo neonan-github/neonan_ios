@@ -25,6 +25,17 @@
 #define kRenRenSecret             @"331e7f3a593f4c4abd9bc24e6a28f041"
 
 typedef enum {
+    RequestTypeRefresh = 0,
+    RequestTypeAppend
+} RequestType;
+
+typedef enum {
+    ContentTypeSlide = 0,
+    ContentTypeArticle,
+    ContentTypeVideo
+} ContentType;
+
+typedef enum {
     SortTypeLatest = 0,
     SortTypeHotest
 } SortType;
