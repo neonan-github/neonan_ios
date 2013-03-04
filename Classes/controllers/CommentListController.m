@@ -162,6 +162,8 @@ HPGrowingTextViewDelegate>
     
     cell.timeLabel.text = comment.date;
     
+    [cell setVip:(indexPath.row % 2 == 0) andLevel:12];
+    
     cell.expanded = comment.expanded;
     comment.expandable = [UIHelper computeContentLines:cell.commentLabel.text withWidth:[CommentCell getContentWidth:320] andFont:cell.commentLabel.font] > 2;
     cell.arrowView.hidden = !comment.expandable;
