@@ -263,7 +263,11 @@ headerView = _headerView;
         _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
             switch (index) {
                 case 0: //个人中心
-                    [weakSelf showPersonalInfoController];
+                    if ([[SessionManager sharedManager] canAutoLogin]) {
+                        [weakSelf showPersonalInfoController];
+                    } else {
+                        [weakSelf signIn];
+                    }
                     break;
                     
                 case 1: //我的收藏
