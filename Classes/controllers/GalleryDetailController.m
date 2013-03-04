@@ -8,7 +8,6 @@
 
 #import "GalleryDetailController.h"
 #import "NNNavigationController.h"
-#import "SMPageControl.h"
 
 #import "SlideShowDetailModel.h"
 #import "NearWorksModel.h"
@@ -17,7 +16,9 @@
 #import "ShareHelper.h"
 #import "SessionManager.h"
 
+#import "SMPageControl.h"
 #import "EncourageView.h"
+#import "FunctionFlowView.h"
 
 #import <UIImageView+WebCache.h>
 #import <SDImageCache.h>
@@ -41,6 +42,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) FoldableTextBox *textBox;
+@property (nonatomic, readonly) FunctionFlowView *moreActionView;
 
 @property (nonatomic, strong) UIActivityIndicatorView *progressView;
 
@@ -65,6 +67,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 @end
 
 @implementation GalleryDetailController
+@synthesize moreActionView = _moreActionView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -112,7 +115,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 //    shareButton.backgroundColor = RGBA(0, 255, 0, 0.3);
     [actionButton setImage:[UIImage imageFromFile:@"icon_over_flow_normal.png"] forState:UIControlStateNormal];
     [actionButton setImage:[UIImage imageFromFile:@"icon_over_flow_highlighted.png"] forState:UIControlStateHighlighted];
-//    [actionButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+    [actionButton addTarget:self action:@selector(showMoreAction:) forControlEvents:UIControlEventTouchUpInside];
     
     UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35)];
     titleBox.backgroundColor = DarkThemeColor;
@@ -429,6 +432,19 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     [UIView commitAnimations];
 }
 
+- (FunctionFlowView *)moreActionView {
+    if (!_moreActionView) {
+        _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(245, 40, 68, 53)];
+        [_moreActionView.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    return _moreActionView;
+}
+
+- (IBAction)showMoreAction:(id)sender {
+    [self.view addSubview:self.moreActionView];
+}
+
 - (void)share {
     if (!_dataModel) {
         return;
@@ -440,6 +456,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     
     _shareHelper.shareText = [_contentType isEqualToString:@"baby"] ? [NSString stringWithFormat:@"牛男宝贝 %@", _dataModel.title]: _dataModel.title;
     _shareHelper.shareUrl = _dataModel.shareUrl;
+    _shareHelper.shareImage = [[SDImageCache sharedImageCache] imageFromKey:_dataModel.imgUrls[_slideShowView.carousel.currentItemIndex]];
     [_shareHelper showShareView];
 }
 

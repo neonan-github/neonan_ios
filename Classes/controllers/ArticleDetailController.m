@@ -440,8 +440,23 @@ static NSString * const kDirectionRight = @"1";
 }
 
 - (IBAction)showMoreAction:(id)sender {
-    DLog(@"show more action");
     [self.view addSubview:self.moreActionView];
+}
+
+- (NSString *)parseImageUrl:(NSString *)html {
+    NSRange imgTagRange = [html rangeOfString:@"<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>" options:NSRegularExpressionSearch];
+    if (imgTagRange.location == NSNotFound) {
+        return nil;
+    }
+    
+    NSString *imageTag = [html substringWithRange:imgTagRange];
+    DLog(@"image tag:%@", imageTag);
+    
+    NSString *src = [imageTag stringByReplacingOccurrencesOfString:@"<img[^>]+src\\s*=\\s*['\"]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, imageTag.length)];
+    src = [src stringByReplacingOccurrencesOfString:@"['\"][^>]*>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, src.length)];
+    DLog(@"src:%@", src);
+    
+    return src;
 }
 
 - (void)share {
@@ -455,6 +470,7 @@ static NSString * const kDirectionRight = @"1";
     
     _shareHelper.shareText = _dataModel.title;
     _shareHelper.shareUrl = _dataModel.shareUrl;
+    _shareHelper.shareImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[self parseImageUrl:_dataModel.content]]]];
     [_shareHelper showShareView];
 }
 
