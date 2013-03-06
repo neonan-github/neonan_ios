@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, AlertType)
 #define kHarpyCancelButtonTitle             @"稍后提醒"
 #define kHarpySkipButtonTitle               @"忽略此版本"
 #define kHarpyUpdateButtonTitle             @"更新"
-#define kUpdateHintTemplate                 @"发现%@新版本：%@，前往App Store更新"
+#define kUpdateHintTemplate                 @"发现 %@ 新版本：%@，前往App Store更新"
 
 /************************/
 /** END CUSTOMIZATION ***/
