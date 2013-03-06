@@ -164,7 +164,7 @@ static NSDate *lastVersionCheckPerformedOnDate;
 {
     
     // Reference App's name
-    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
     
     switch ( kHarpyAlertType ) {
             
