@@ -9,20 +9,22 @@
 #import "NeonanAppDelegate.h"
 #import "MainController.h"
 
-#import <AFNetworkActivityIndicatorManager.h>
 #import "NNURLCache.h"
-#import "APService.h"
-//#import "Flurry.h"
-#import "MobClick.h"
 
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
 #import "GalleryDetailController.h"
 
+#import "APService.h"
+//#import "Flurry.h"
+#import "MobClick.h"
+#import "Harpy.h"
+
+#import <AFNetworkActivityIndicatorManager.h>
+
 @implementation NeonanAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 //    [Flurry startSession:@"VKBQM8MR7GP8V94YR43B"];
     [MobClick startWithAppkey:UMengAppKey];
     
@@ -59,27 +61,23 @@
     return YES;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
-{
+- (void)applicationWillResignActive:(UIApplication *)application {
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
+- (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
+- (void)applicationWillEnterForeground:(UIApplication *)application {
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
+- (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [Harpy checkVersionDaily];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application
-{
+- (void)applicationWillTerminate:(UIApplication *)application {
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {

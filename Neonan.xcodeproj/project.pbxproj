@@ -303,6 +303,7 @@
 		34C56C001676EA230013ECE6 /* bg_feedback_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BFF1676EA230013ECE6 /* bg_feedback_edit.png */; };
 		34C56C3E16770BCD0013ECE6 /* SSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C56C3D16770BCD0013ECE6 /* SSTextView.m */; };
 		34C81B4F162BF78000DA093B /* BabyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C81B4E162BF78000DA093B /* BabyCell.m */; };
+		34C8A66D16E7126700DF79A0 /* Harpy.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C8A66B16E7126700DF79A0 /* Harpy.m */; };
 		34CB8FC2163F6D170001AD87 /* icon_disclosure_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */; };
 		34CB8FC5163F6FE60001AD87 /* icon_disclosure_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FC4163F6FE60001AD87 /* icon_disclosure_highlighted.png */; };
 		34CB8FDC163F7CD90001AD87 /* img_header_view_bottom_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FDB163F7CD90001AD87 /* img_header_view_bottom_line.png */; };
@@ -803,6 +804,9 @@
 		34C56C3D16770BCD0013ECE6 /* SSTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSTextView.m; sourceTree = "<group>"; };
 		34C81B4D162BF78000DA093B /* BabyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BabyCell.h; sourceTree = "<group>"; };
 		34C81B4E162BF78000DA093B /* BabyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BabyCell.m; sourceTree = "<group>"; };
+		34C8A66A16E7126700DF79A0 /* Harpy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Harpy.h; sourceTree = "<group>"; };
+		34C8A66B16E7126700DF79A0 /* Harpy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Harpy.m; sourceTree = "<group>"; };
+		34C8A66C16E7126700DF79A0 /* HarpyConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarpyConstants.h; sourceTree = "<group>"; };
 		34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_disclosure_normal.png; sourceTree = "<group>"; };
 		34CB8FC4163F6FE60001AD87 /* icon_disclosure_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_disclosure_highlighted.png; sourceTree = "<group>"; };
 		34CB8FDB163F7CD90001AD87 /* img_header_view_bottom_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_header_view_bottom_line.png; sourceTree = "<group>"; };
@@ -1603,6 +1607,16 @@
 			name = images;
 			sourceTree = "<group>";
 		};
+		34C8A66916E7126700DF79A0 /* Harpy */ = {
+			isa = PBXGroup;
+			children = (
+				34C8A66A16E7126700DF79A0 /* Harpy.h */,
+				34C8A66B16E7126700DF79A0 /* Harpy.m */,
+				34C8A66C16E7126700DF79A0 /* HarpyConstants.h */,
+			);
+			path = Harpy;
+			sourceTree = "<group>";
+		};
 		34D46496162FCA7500D8EE28 /* helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1733,6 +1747,7 @@
 		53816B2116265FB100B0672C /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				34C8A66916E7126700DF79A0 /* Harpy */,
 				3442AA0316E0B2DC000C8F72 /* TCWeiBoSDK */,
 				3442A8F616E0B082000C8F72 /* SBJSON */,
 				343EBA6116E0ACDB00501101 /* RenRenSDK */,
@@ -2185,6 +2200,7 @@
 				342DA8A616E3308300404730 /* PersonalInfoController.m in Sources */,
 				342DA8B816E3531700404730 /* FunctionFlowView.m in Sources */,
 				34D0481116E48DCC006BFDB5 /* FavoritesController.m in Sources */,
+				34C8A66D16E7126700DF79A0 /* Harpy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
