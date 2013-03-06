@@ -1490,6 +1490,43 @@
 			isa = PBXGroup;
 			children = (
 				347AAB60163672FC00D243BA /* layouts */,
+				34C8A66816E70B3200DF79A0 /* images */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		34AC9C68163E41640020DE4B /* CustomNavigationBar */ = {
+			isa = PBXGroup;
+			children = (
+				34AC9C69163E41640020DE4B /* CustomNavigationBar.h */,
+				34AC9C6A163E41640020DE4B /* CustomNavigationBar.m */,
+			);
+			path = CustomNavigationBar;
+			sourceTree = "<group>";
+		};
+		34C56BE81676CE390013ECE6 /* UMeng */ = {
+			isa = PBXGroup;
+			children = (
+				348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */,
+				348BCEF51678312C00D8FCB5 /* MobClick.h */,
+				34C56BE91676CE390013ECE6 /* libUMFeedback.a */,
+				34C56BEB1676CE390013ECE6 /* UMFeedback.h */,
+			);
+			path = UMeng;
+			sourceTree = "<group>";
+		};
+		34C56C3B16770BCD0013ECE6 /* SSTextView */ = {
+			isa = PBXGroup;
+			children = (
+				34C56C3C16770BCD0013ECE6 /* SSTextView.h */,
+				34C56C3D16770BCD0013ECE6 /* SSTextView.m */,
+			);
+			path = SSTextView;
+			sourceTree = "<group>";
+		};
+		34C8A66816E70B3200DF79A0 /* images */ = {
+			isa = PBXGroup;
+			children = (
 				34CB8FEE163FD2F20001AD87 /* bg_back_button.png */,
 				34AC9C74163E75870020DE4B /* bg_header_view.png */,
 				34CB8FEC163FBB4E0001AD87 /* bg_comment_count.png */,
@@ -1563,36 +1600,7 @@
 				34D0480D16E478EA006BFDB5 /* img_default_avatar.jpg */,
 				34D0481216E4A146006BFDB5 /* img_paper_clip.png */,
 			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		34AC9C68163E41640020DE4B /* CustomNavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				34AC9C69163E41640020DE4B /* CustomNavigationBar.h */,
-				34AC9C6A163E41640020DE4B /* CustomNavigationBar.m */,
-			);
-			path = CustomNavigationBar;
-			sourceTree = "<group>";
-		};
-		34C56BE81676CE390013ECE6 /* UMeng */ = {
-			isa = PBXGroup;
-			children = (
-				348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */,
-				348BCEF51678312C00D8FCB5 /* MobClick.h */,
-				34C56BE91676CE390013ECE6 /* libUMFeedback.a */,
-				34C56BEB1676CE390013ECE6 /* UMFeedback.h */,
-			);
-			path = UMeng;
-			sourceTree = "<group>";
-		};
-		34C56C3B16770BCD0013ECE6 /* SSTextView */ = {
-			isa = PBXGroup;
-			children = (
-				34C56C3C16770BCD0013ECE6 /* SSTextView.h */,
-				34C56C3D16770BCD0013ECE6 /* SSTextView.m */,
-			);
-			path = SSTextView;
+			name = images;
 			sourceTree = "<group>";
 		};
 		34D46496162FCA7500D8EE28 /* helpers */ = {
