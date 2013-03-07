@@ -232,11 +232,11 @@
 }
 
 - (void)signUpWithEmail:(NSString *)email andPassword:(NSString *)password {
-    [self signWithEmail:email andPassword:password atPath:@"api/register"];
+    [self signWithEmail:email andPassword:password atPath:kPathNeoNanSignUp];
 }
 
 - (void)signInWithEmail:(NSString *)email andPassword:(NSString *)password {
-    [self signWithEmail:email andPassword:password atPath:@"api/login"];
+    [self signWithEmail:email andPassword:password atPath:kPathNeoNanLogin];
 }
 
 #pragma mark - 3rd Party Login

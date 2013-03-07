@@ -15,7 +15,7 @@
 @end
 
 @implementation SlideShowDetailModel
-@synthesize title, descriptions, shareUrl, imgUrls, brief, voted;
+//@synthesize title, descriptions, shareUrl, imgUrls, brief, voted;
 
 + (id<Jsonable>)parse:(NSDictionary *)JSON {
     DCParserConfiguration *config = [DCParserConfiguration configuration];
@@ -29,6 +29,9 @@
     DCObjectMapping *briefsMapping = [DCObjectMapping mapKeyPath:@"briefs" toAttribute:@"descriptions" onClass:self];
     [config addArrayMapper:[DCArrayMapping mapperForClass:[NSString class] onMapping:briefsMapping]];
     
+    DCObjectMapping *briefMapping = [DCObjectMapping mapKeyPath:@"breif" toAttribute:@"brief" onClass:self];
+    [config addArrayMapper:[DCArrayMapping mapperForClass:[NSString class] onMapping:briefMapping]];
+    
     DCObjectMapping *votedMapping = [DCObjectMapping mapKeyPath:@"has_vote" toAttribute:@"voted" onClass:self];
     [config addObjectMapping:votedMapping];
     
@@ -37,15 +40,15 @@
 }
 
 - (NSArray *)descriptions {
-    if (descriptions) {
-        return descriptions;
+    if (_descriptions) {
+        return _descriptions;
     }
     
-    return [NSArray arrayWithObject:brief];
+    return [NSArray arrayWithObject:_brief];
 }
 
 - (BOOL)voted {
-    return voted && [[SessionManager sharedManager] canAutoLogin];
+    return _voted && [[SessionManager sharedManager] canAutoLogin];
 }
 
 @end

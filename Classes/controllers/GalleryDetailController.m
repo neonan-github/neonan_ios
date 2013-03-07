@@ -49,8 +49,6 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 @property (nonatomic, strong) ShareHelper *shareHelper;
 
 @property (nonatomic, strong) SlideShowDetailModel *dataModel;
-@property (nonatomic, strong) NearWorksModel *idModel;
-@property (nonatomic, assign) NSInteger idIndex;
 
 @property (nonatomic, unsafe_unretained) CALayer *cacheLayer;
 @property (nonatomic, assign) BOOL isAnimating;
@@ -161,7 +159,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     
     self.progressView = nil;
     
-    self.idModel = nil;
+    self.dataModel = nil;
     
     self.shareHelper = nil;
 }
@@ -169,9 +167,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (!_idModel) {
-        [self initIdList];
-    } else if (!_dataModel) {
+    if (!_dataModel) {
         [self requestForSlideShow];
     }
     
@@ -323,7 +319,11 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         [UIView commitAnimations];
     }
     [self.pageControl setCurrentPage:currentIndex];
-    _textBox.text = [_dataModel.descriptions objectAtIndex:(_dataModel.descriptions.count > 1 ? currentIndex : 0)];
+    
+    NSArray *descriptions = _dataModel.descriptions;
+    if (descriptions) {
+        _textBox.text = descriptions[descriptions.count > 1 ? currentIndex : 0];
+    }
 }
 
 - (void)slideShowView:(SlideShowView *)slideShowView overSwipWithDirection:(UISwipeGestureRecognizerDirection)direction {
@@ -333,47 +333,39 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     
     BOOL next = direction == UISwipeGestureRecognizerDirectionLeft;
     
-    NSInteger idIndex = _idIndex;
-    idIndex += (next ? 1 : -1);
-    if (idIndex < 0 || idIndex >= _idModel.items.count) {// 到头或尾
-        [self performBounce:!next];
-        return;
-    }
+//    if ((_currentIndex >= _maxIndex && next) || (_currentIndex < 1 && !next)) {// 到头或尾
+//        [self performBounce:!next];
+//        return;
+//    }
     
-    self.idIndex = idIndex;
+//    self.currentIndex += next ? 1 : -1;
     
-    self.isAnimating = YES;
-    
-    CGFloat viewWidth = self.view.frame.size.width;
-    CGFloat viewHeight = self.view.frame.size.height;
-    
-    CALayer *cacheLayer = self.cacheLayer = [CALayer layer];
-    UIImage *cacheImage = [UIImage imageFromView:self.view];
-    cacheLayer.frame = CGRectMake((next ? -1 : 1) * viewWidth, 0, viewWidth, viewHeight);
-    cacheLayer.contents = (id)cacheImage.CGImage;
-    [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
-    
-    [self clearContents];
-    
-    NearItem *currentItem = [_idModel.items objectAtIndex:_idIndex];
-    self.offset = [currentItem offset];
-    self.contentId = [currentItem contentId];
-    self.contentType = [currentItem contentType];
-    if ((idIndex == 0 && !next) || (idIndex == _idModel.items.count - 1 && next)) {
-        [self requestForNearWorks:next success:^{ // 获取上或下id
-            [self requestForSlideShow];
+    [self fetchDetailInfo:^(NSString *token) {
+        [self requestNearSlideShow:next contentId:_contentId token:token success:^{
+            self.isAnimating = YES;
+            
+            CGFloat viewWidth = self.view.frame.size.width;
+            CGFloat viewHeight = self.view.frame.size.height;
+            
+            CALayer *cacheLayer = self.cacheLayer = [CALayer layer];
+            UIImage *cacheImage = [UIImage imageFromView:self.view];
+            cacheLayer.frame = CGRectMake((next ? -1 : 1) * viewWidth, 0, viewWidth, viewHeight);
+            cacheLayer.contents = (id)cacheImage.CGImage;
+            [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
+
+            [self clearContents];
+            
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+            //    animation.duration = 5;
+            animation.delegate = self;
+            animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+            animation.fromValue = [NSValue valueWithCGPoint:CGPointMake((next ? 1.5f : -0.5f) * viewWidth, viewHeight / 2)];
+            animation.toValue = [NSValue valueWithCGPoint:CGPointMake(viewWidth / 2, viewHeight / 2)];
+            [self.view.layer addAnimation:animation forKey:@"position"];
         }];
-    } else {
-        [self requestForSlideShow];
-    }
+    }];
     
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
-//    animation.duration = 5;
-    animation.delegate = self;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    animation.fromValue = [NSValue valueWithCGPoint:CGPointMake((next ? 1.5f : -0.5f) * viewWidth, viewHeight / 2)];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(viewWidth / 2, viewHeight / 2)];
-    [self.view.layer addAnimation:animation forKey:@"position"];
+ 
 }
 
 #pragma mark - FoldableTextBoxDelegate methods
@@ -384,27 +376,6 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 }
 
 #pragma mark - Private methods
-
-- (void)initIdList {
-    if (!_idModel) {
-        self.idModel = [[NearWorksModel alloc] init];
-        NearItem *item = [[NearItem alloc] init];
-        item.contentId = _contentId;
-        item.contentType = _contentType;
-        item.offset = _offset;
-        _idModel.items = [NSMutableArray arrayWithObjects:item, nil];
-        
-        [self requestForNearWorks:NO success:^{
-            [self requestForNearWorks:YES success:^{
-                NearItem *currentItem = [_idModel.items objectAtIndex:_idIndex];
-                self.offset = [currentItem offset];
-                self.contentId = [currentItem contentId];
-                self.contentType = [currentItem contentType];
-                [self requestForSlideShow];
-            }];
-        }];
-    }
-}
 
 - (void)tap:(UITapGestureRecognizer *)recognizer {
     BOOL hidden = !self.navigationController.navigationBarHidden;
@@ -468,59 +439,81 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     }];
 }
 
-#pragma mark - Private Request methods
-
-- (void)requestForNearWorks:(BOOL)next success:(void (^)())success {
-    [self showProgressView];
+- (void)onDetailFetched:(id<Jsonable>)response {
+    self.dataModel = response;
+    NSString *contentId = _dataModel.contentId;
+    _contentId = _dataModel.contentId;
     
-    static NSUInteger count = 1;
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:_contentType, @"content_type",
-                                _contentId, @"content_id",
-                                _sortType == SortTypeHotest ? @"hot" : @"new", @"sort_type",
-                                _channel, @"channel",
-                                [NSNumber numberWithUnsignedInteger:_offset], @"offset",
-                                [NSNumber numberWithUnsignedInteger:count], @"count",
-                                next ? @"1" : @"-1", @"direction", nil];
+    Record *record = [[Record alloc] init];
+    record.contentType = _contentType;
+    record.contentId = _contentId;
+    [[HistoryRecorder sharedRecorder] saveRecord:record];
     
-    [[NNHttpClient sharedClient] getAtPath:@"api/near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
-        @synchronized(_idModel) {
-            if (!next) {
-                self.idIndex = _idIndex + [[((NearWorksModel *)response) items] count];
-            }
-            [_idModel insertMoreData:response withMode:next];
-        }
-        
-        if (success) {
-            success();
-        }
-    } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
-        if (self.isVisible) {
-            [UIHelper alertWithMessage:error.message];
-        }
-    }];
+    __weak GalleryDetailController *weakSelf = self;
+    [EncourageHelper check:_contentId contentType:_contentType afterDelay:5
+                    should:^BOOL{
+                        return [[contentId description] isEqualToString:[_contentId description]] &&
+                        [[SessionManager sharedManager] canAutoLogin] && [weakSelf isVisible];
+                    }
+                   success:^{
+                       [EncourageView displayScore:EncourageScoreCommon at:CGPointMake(CompatibleScreenWidth / 2, 100)];
+                   }];
+    
+    [self updateData];
 }
 
+#pragma mark - Private Request methods
+
+- (void)fetchDetailInfo:(void (^)(NSString *token))requestBlock {
+    [self showProgressView];
+    
+    if ([[SessionManager sharedManager] canAutoLogin]) {
+        [[SessionManager sharedManager] requsetToken:self success:^(NSString *token) {
+            requestBlock(token);
+        }];
+        
+        return;
+    }
+    
+    requestBlock(nil);
+}
+
+- (void)requestNearSlideShow:(BOOL)next contentId:(NSString *)contentId token:(NSString *)token success:(void (^)())success {
+    NSMutableDictionary *parameters = [@{@"sort_type": _sortType == SortTypeHotest ? @"hot" : @"new",
+                                       @"channel": _channel, @"content_type": _contentType,
+                                       @"content_id": _contentId, @"direction": @(next ? 1 : -1)} mutableCopy];
+    if (token) {
+        [parameters setObject:token forKey:@"token"];
+    }
+    
+    [[NNHttpClient sharedClient] getAtPath:kPathNearWork
+                                parameters:parameters
+                             responseClass:[SlideShowDetailModel class]
+                                   success:^(id<Jsonable> response) {
+                                       if (response) {
+                                           [_progressView removeFromSuperview];
+                                           
+                                           if (success) {
+                                               success();
+                                           }
+                                           
+                                           [self onDetailFetched:response];
+                                       } else {
+                                           [_progressView removeFromSuperview];
+                                           [self performBounce:!next];
+                                       }
+                                   }
+                                   failure:^(ResponseError *error) {
+                                       NSLog(@"error:%@", error.message);
+                                       if (self.isVisible) {
+                                           [UIHelper alertWithMessage:error.message];
+                                       }
+                                   }];
+}
 
 - (void)requestForSlideShowWithParams:(NSDictionary *)parameters success:(void (^)())success {
-    [[NNHttpClient sharedClient] getAtPath:@"api/work_info" parameters:parameters responseClass:[SlideShowDetailModel class] success:^(id<Jsonable> response) {
-        self.dataModel = response;
-        [self updateData];
-        
-        Record *record = [[Record alloc] init];
-        record.contentType = _contentType;
-        record.contentId = _contentId;
-        [[HistoryRecorder sharedRecorder] saveRecord:record];
-        
-        __weak GalleryDetailController *weakSelf = self;
-        [EncourageHelper check:_contentId contentType:_contentType afterDelay:5
-                        should:^BOOL{
-                            return [[parameters[@"content_id"] description] isEqualToString:[_contentId description]] &&
-                            [[SessionManager sharedManager] canAutoLogin] && [weakSelf isVisible];
-                        }
-                       success:^{
-                           [EncourageView displayScore:EncourageScoreCommon at:CGPointMake(CompatibleScreenWidth / 2, 100)];
-                       }];
+    [[NNHttpClient sharedClient] getAtPath:kPathWorkInfo parameters:parameters responseClass:[SlideShowDetailModel class] success:^(id<Jsonable> response) {
+        [self onDetailFetched:response];
         
         if (success) {
             success();

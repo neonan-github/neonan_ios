@@ -88,7 +88,7 @@ static NSString *const kLoginOptionKey = @"login_option";
         if ([self allowAutoLogin]) {
             NSString *email = [account objectForKey:kAccountKey];
             NSString *password = [account objectForKey:kPasswordKey];
-            [self signWithEmail:email andPassword:password atPath:@"api/login" success:success failure:^(ResponseError *error) {
+            [self signWithEmail:email andPassword:password atPath:kPathNeoNanLogin success:success failure:^(ResponseError *error) {
                 if (error.errorCode < -3) {
                     [UIHelper alertWithMessage:error.message];
                 }
@@ -191,7 +191,7 @@ static NSString *const kLoginOptionKey = @"login_option";
         [parameters setObject:avatar forKey:@"avatar"];
     }
     
-    [[NNHttpClient sharedClient] postAtPath:@"haha/api/login3rd" parameters:parameters responseClass:[LoginResult class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] postAtPath:kPath3rdLogin parameters:parameters responseClass:[LoginResult class] success:^(id<Jsonable> response) {
         LoginResult *result = (LoginResult *)response;
         self.token = result.token;
         self.userName = result.userName ?: userName;

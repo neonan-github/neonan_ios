@@ -20,8 +20,6 @@
 #import "MobClick.h"
 #import "Harpy.h"
 
-#import "InAppPurchaseManager.h"
-
 #import <AFNetworkActivityIndicatorManager.h>
 
 @implementation NeonanAppDelegate
@@ -45,8 +43,6 @@
                                                    UIRemoteNotificationTypeAlert)];
     [APService setupWithOption:launchOptions];
 #endif
-    
-    [[InAppPurchaseManager sharedManager] requestProUpgradeProductData];
     
     self.navController = [[NNNavigationController alloc] init];
     self.navController.logoHidden = NO;

@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface SlideShowDetailModel : NSObject <Jsonable>
-@property (strong, nonatomic) NSString *title;
-@property (strong, nonatomic) NSArray *descriptions;
-@property (strong, nonatomic) NSString *shareUrl;
-@property (strong, nonatomic) NSArray *imgUrls;
-@property (assign, nonatomic) BOOL voted;
+@property (nonatomic, copy) NSString *contentId;
+@property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSArray *descriptions;
+@property (nonatomic, strong) NSString *shareUrl;
+@property (nonatomic, strong) NSArray *imgUrls;
+@property (nonatomic, assign) BOOL voted;
 @end

@@ -135,7 +135,6 @@ static NSString *const kChannel = @"favs";
             controller = [[ArticleDetailController alloc] init];
             [controller setContentId:[dataItem contentId]];
             [controller setContentTitle:[dataItem title]];
-            [controller setOffset:offset];
             [controller setChannel:kChannel];
             break;
             
@@ -143,7 +142,6 @@ static NSString *const kChannel = @"favs";
             controller = [[GalleryDetailController alloc] init];
             [controller setContentType:[dataItem contentType]];
             [controller setContentId:[dataItem contentId]];
-            [controller setOffset:offset];
             [controller setChannel:kChannel];
             [controller setContentTitle:[dataItem title]];
             break;

@@ -516,7 +516,7 @@ headerView = _headerView;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
                                 [NSNumber numberWithUnsignedInteger:MainSlideShowCount], @"count", nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"api/image_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:kPathSlideShow parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
         self.slideShowModel = (MainSlideShowModel *)response;
         [self updateSlideShow];
         NSLog(@"requestForSlideShow response count:%u", _slideShowModel.list.count);
@@ -527,10 +527,9 @@ headerView = _headerView;
 
 - (void)requestForList:(NSDictionary *)parameters withRequestType:(RequestType)requestType {
     BOOL isBabyChannel = [[parameters objectForKey:@"channel"] isEqualToString:@"baby"];
-    NSString *path = @"api/work_list";
     Class responseClass = isBabyChannel ? [BabyListModel class] : [CommonListModel class];
     
-    [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:kPathWorkList parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
         if (isBabyChannel == (_channelIndex == kBabyChannelIndex)) {
             if (requestType == RequestTypeAppend) {
                 [self.dataModel appendMoreData:response];
@@ -731,7 +730,6 @@ headerView = _headerView;
             [controller setContentId:[dataItem contentId]];
             [controller setContentTitle:[dataItem title]];
             [controller setSortType:_type];
-            [controller setOffset:offset];
             [controller setChannel:[self.channelTypes objectAtIndex:_channelIndex]];
             break;
             
@@ -740,7 +738,6 @@ headerView = _headerView;
             [controller setContentType:[dataItem contentType]];
             [controller setContentId:[dataItem contentId]];
             [controller setSortType:_type];
-            [controller setOffset:offset];
             [controller setChannel:[self.channelTypes objectAtIndex:_channelIndex]];
             
             if ([dataItem isKindOfClass:[BabyItem class]]) {

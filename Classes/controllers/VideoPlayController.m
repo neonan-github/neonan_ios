@@ -135,7 +135,7 @@
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:_contentId, @"content_id",
                                     @"video", @"content_type", nil];
         
-        [[NNHttpClient sharedClient] getAtPath:@"api/work_info" parameters:parameters responseClass:[UrlModel class] success:^(id<Jsonable> response)
+        [[NNHttpClient sharedClient] getAtPath:kPathWorkInfo parameters:parameters responseClass:[UrlModel class] success:^(id<Jsonable> response)
         {
             if (completion) {
                 completion(((UrlModel *)response).url);

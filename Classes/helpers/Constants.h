@@ -69,3 +69,18 @@ typedef enum {
 //MainController
 #define MainSlideShowCount 6
 
+FOUNDATION_EXPORT NSString *const kPathSlideShow;
+FOUNDATION_EXPORT NSString *const kPathWorkList;
+FOUNDATION_EXPORT NSString *const kPathWorkInfo;
+FOUNDATION_EXPORT NSString *const kPathNearWork;
+FOUNDATION_EXPORT NSString *const kPathCommentList;
+FOUNDATION_EXPORT NSString *const kPathPublishComment;
+FOUNDATION_EXPORT NSString *const kPathPeopleList;
+FOUNDATION_EXPORT NSString *const kPathPeopleInfo;
+FOUNDATION_EXPORT NSString *const kPathNearPeople;
+FOUNDATION_EXPORT NSString *const kPathPeopleVote;
+
+FOUNDATION_EXPORT NSString *const kPathNeoNanSignUp;
+FOUNDATION_EXPORT NSString *const kPathNeoNanLogin;
+FOUNDATION_EXPORT NSString *const kPath3rdLogin;
+

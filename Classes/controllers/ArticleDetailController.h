@@ -11,9 +11,11 @@
 @interface ArticleDetailController : NNViewController
 
 @property (assign, nonatomic) SortType sortType;
-@property (assign, nonatomic) NSUInteger offset;
 @property (copy, nonatomic) NSString *channel;
 @property (copy, nonatomic) NSString *contentId;
 @property (copy, nonatomic) NSString *contentTitle;
+
+//@property (nonatomic, assign) NSInteger currentIndex;
+//@property (nonatomic, assign) NSInteger maxIndex;
 
 @end

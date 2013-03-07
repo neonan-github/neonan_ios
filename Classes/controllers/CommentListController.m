@@ -305,7 +305,7 @@ HPGrowingTextViewDelegate>
                                 [NSString stringWithFormat:@"%u", offset], @"offset",
                                 kRequestCountString, @"count",  nil];
 
-    [[NNHttpClient sharedClient] getAtPath:@"api/comments_show" parameters:parameters responseClass:[CommentListModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:kPathCommentList parameters:parameters responseClass:[CommentListModel class] success:^(id<Jsonable> response) {
         if (requestType == RequestTypeAppend) {
             [self.dataModel appendMoreData:response];
         } else {
@@ -332,7 +332,7 @@ HPGrowingTextViewDelegate>
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
                                     contentId, @"content_id", comment, @"content", nil];
         
-        [[NNHttpClient sharedClient] postAtPath:@"api/comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+        [[NNHttpClient sharedClient] postAtPath:kPathPublishComment parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             _articleInfo.commentNum++;
             [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_articleInfo.commentNum].description forState:UIControlStateNormal];

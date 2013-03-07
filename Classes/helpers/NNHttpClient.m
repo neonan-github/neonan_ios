@@ -11,7 +11,7 @@
 #import "ResponseError.h"
 #import "NNJSONRequestOperation.h"
 
-static NSString * const kAPIBaseURLString = @"http://www.neonan.com:5211/";
+static NSString * const kAPIBaseURLString = @"http://api.neonan.com/";
 
 @implementation NNHttpClient
 
@@ -68,7 +68,7 @@ static NSString * const kAPIBaseURLString = @"http://www.neonan.com:5211/";
         }
         
         if (success) {
-            id<Jsonable> response = responseClass ? [responseClass parse:JSON] : nil;
+            id<Jsonable> response = ([JSON allKeys].count < 1) ? nil : (responseClass ? [responseClass parse:JSON] : nil);
             dispatch_sync(dispatch_get_main_queue(), ^{
                 success(response);
             });
