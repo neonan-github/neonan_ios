@@ -37,6 +37,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.title = @"个人中心";
     
     UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
     [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];

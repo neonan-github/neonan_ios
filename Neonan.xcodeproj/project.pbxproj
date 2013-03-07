@@ -1670,7 +1670,6 @@
 		53816AEB16265E9400B0672C = {
 			isa = PBXGroup;
 			children = (
-				34C8A67D16E74DB900DF79A0 /* StoreKit.framework */,
 				53816B1F16265FB100B0672C /* Classes */,
 				53816B2116265FB100B0672C /* Support */,
 				3499BEC01626DAAF0084B838 /* Resources */,
@@ -1692,6 +1691,7 @@
 		53816AF916265E9400B0672C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				34C8A67D16E74DB900DF79A0 /* StoreKit.framework */,
 				343EBA4616E09E8100501101 /* CoreLocation.framework */,
 				343EBA4416E09E6000501101 /* libicucore.dylib */,
 				34632AA416BB994E00396AC1 /* libsqlite3.dylib */,

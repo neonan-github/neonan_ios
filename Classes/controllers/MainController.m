@@ -457,7 +457,6 @@ headerView = _headerView;
 - (void)showAboutController {
     AboutController *controller = [[AboutController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
-    navController.logoHidden = NO;
     
     [self presentModalViewController:navController animated:YES];
 }
@@ -465,7 +464,6 @@ headerView = _headerView;
 - (void)showFeedbackController {
     FeedbackController *controller = [[FeedbackController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
-    navController.logoHidden = NO;
     
     [self presentModalViewController:navController animated:YES];
 }
@@ -473,7 +471,6 @@ headerView = _headerView;
 - (void)showPersonalInfoController {
     PersonalInfoController *controller = [[PersonalInfoController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
-    navController.logoHidden = NO;
     
     [self presentModalViewController:navController animated:YES];
 }
@@ -481,7 +478,6 @@ headerView = _headerView;
 - (void)showFavoritesController {
     FavoritesController *controller = [[FavoritesController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
-    navController.logoHidden = NO;
     
     [self presentModalViewController:navController animated:YES];
 }
@@ -796,7 +792,7 @@ headerView = _headerView;
 
 - (NSArray *)menuTexts {
     if (!_menuTexts) {
-        _menuTexts = @[@"个人中心", @"我的收藏", @"清除缓存", @"意见反馈", @"关于我们", @"登录"];
+        _menuTexts = @[@"个人中心", @"我的收藏", @"意见反馈", @"关于我们", @"清除缓存", @"登录"];
     }
     
     return _menuTexts;
@@ -849,17 +845,17 @@ headerView = _headerView;
                         }];
                     }
                     break;
-                    
-                case 2: //清除缓存
-                    [weakSelf clearCache];
-                    break;
-                    
-                case 3: //意见反馈
+                
+                case 2: //意见反馈
                     [weakSelf showFeedbackController];
                     break;
                     
-                case 4: //关于我们
+                case 3: //关于我们
                     [weakSelf showAboutController];
+                    break;
+                    
+                case 4: //清除缓存
+                    [weakSelf clearCache];
                     break;
                     
                 case 5: //登陆注销
