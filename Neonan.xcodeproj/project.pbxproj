@@ -304,6 +304,8 @@
 		34C56C3E16770BCD0013ECE6 /* SSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C56C3D16770BCD0013ECE6 /* SSTextView.m */; };
 		34C81B4F162BF78000DA093B /* BabyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C81B4E162BF78000DA093B /* BabyCell.m */; };
 		34C8A66D16E7126700DF79A0 /* Harpy.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C8A66B16E7126700DF79A0 /* Harpy.m */; };
+		34C8A67E16E74DB900DF79A0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8A67D16E74DB900DF79A0 /* StoreKit.framework */; };
+		34C8A68116E74DF200DF79A0 /* InAppPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C8A68016E74DF200DF79A0 /* InAppPurchaseManager.m */; };
 		34CB8FC2163F6D170001AD87 /* icon_disclosure_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */; };
 		34CB8FC5163F6FE60001AD87 /* icon_disclosure_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FC4163F6FE60001AD87 /* icon_disclosure_highlighted.png */; };
 		34CB8FDC163F7CD90001AD87 /* img_header_view_bottom_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FDB163F7CD90001AD87 /* img_header_view_bottom_line.png */; };
@@ -807,6 +809,9 @@
 		34C8A66A16E7126700DF79A0 /* Harpy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Harpy.h; sourceTree = "<group>"; };
 		34C8A66B16E7126700DF79A0 /* Harpy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Harpy.m; sourceTree = "<group>"; };
 		34C8A66C16E7126700DF79A0 /* HarpyConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarpyConstants.h; sourceTree = "<group>"; };
+		34C8A67D16E74DB900DF79A0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		34C8A67F16E74DF200DF79A0 /* InAppPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppPurchaseManager.h; sourceTree = "<group>"; };
+		34C8A68016E74DF200DF79A0 /* InAppPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaseManager.m; sourceTree = "<group>"; };
 		34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_disclosure_normal.png; sourceTree = "<group>"; };
 		34CB8FC4163F6FE60001AD87 /* icon_disclosure_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_disclosure_highlighted.png; sourceTree = "<group>"; };
 		34CB8FDB163F7CD90001AD87 /* img_header_view_bottom_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_header_view_bottom_line.png; sourceTree = "<group>"; };
@@ -873,6 +878,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34C8A67E16E74DB900DF79A0 /* StoreKit.framework in Frameworks */,
 				343EBA4716E09E8100501101 /* CoreLocation.framework in Frameworks */,
 				348435A81643C1C00073468D /* Security.framework in Frameworks */,
 				343EBA4516E09E6000501101 /* libicucore.dylib in Frameworks */,
@@ -1635,6 +1641,8 @@
 				34E4BC131647571000C07DFA /* MathHelper.m */,
 				3442AADF16E0C10C000C8F72 /* SessionManager.h */,
 				3442AAE016E0C10D000C8F72 /* SessionManager.m */,
+				34C8A67F16E74DF200DF79A0 /* InAppPurchaseManager.h */,
+				34C8A68016E74DF200DF79A0 /* InAppPurchaseManager.m */,
 				343EBA5516E0A4EA00501101 /* SignHelper.h */,
 				343EBA5616E0A4EA00501101 /* SignHelper.m */,
 				3442AAC416E0B63C000C8F72 /* ShareHelper.h */,
@@ -1664,6 +1672,7 @@
 		53816AEB16265E9400B0672C = {
 			isa = PBXGroup;
 			children = (
+				34C8A67D16E74DB900DF79A0 /* StoreKit.framework */,
 				53816B1F16265FB100B0672C /* Classes */,
 				53816B2116265FB100B0672C /* Support */,
 				3499BEC01626DAAF0084B838 /* Resources */,
@@ -2201,6 +2210,7 @@
 				342DA8B816E3531700404730 /* FunctionFlowView.m in Sources */,
 				34D0481116E48DCC006BFDB5 /* FavoritesController.m in Sources */,
 				34C8A66D16E7126700DF79A0 /* Harpy.m in Sources */,
+				34C8A68116E74DF200DF79A0 /* InAppPurchaseManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
