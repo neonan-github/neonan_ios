@@ -335,6 +335,9 @@
 		34E8CF5E16E9BC1A000079E6 /* bg_btn_buy_vip.png in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF5D16E9BC1A000079E6 /* bg_btn_buy_vip.png */; };
 		34E8CF6216E9BDCC000079E6 /* InfoEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6016E9BDCC000079E6 /* InfoEditController.m */; };
 		34E8CF6316E9BDCC000079E6 /* InfoEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF6116E9BDCC000079E6 /* InfoEditController.xib */; };
+		34E8CF6716E9C669000079E6 /* PurchaseVIPController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */; };
+		34E8CF6816E9C669000079E6 /* PurchaseVIPController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */; };
+		34E8CF6B16E9C860000079E6 /* PurchaseVIPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6A16E9C860000079E6 /* PurchaseVIPCell.m */; };
 		34E9FDD716646E8E00F90A88 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD616646E8E00F90A88 /* CFNetwork.framework */; };
 		34E9FDD916646EA500F90A88 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD816646EA500F90A88 /* CoreTelephony.framework */; };
 		34E9FDDB16646F4700F90A88 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E9FDDA16646F4700F90A88 /* PushConfig.plist */; };
@@ -851,7 +854,12 @@
 		34E8CF5D16E9BC1A000079E6 /* bg_btn_buy_vip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_btn_buy_vip.png; sourceTree = "<group>"; };
 		34E8CF5F16E9BDCC000079E6 /* InfoEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoEditController.h; sourceTree = "<group>"; };
 		34E8CF6016E9BDCC000079E6 /* InfoEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoEditController.m; sourceTree = "<group>"; };
-		34E8CF6116E9BDCC000079E6 /* InfoEditController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoEditController.xib; sourceTree = "<group>"; };
+		34E8CF6116E9BDCC000079E6 /* InfoEditController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InfoEditController.xib; path = ../Classes/controllers/InfoEditController.xib; sourceTree = "<group>"; };
+		34E8CF6416E9C669000079E6 /* PurchaseVIPController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseVIPController.h; sourceTree = "<group>"; };
+		34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseVIPController.m; sourceTree = "<group>"; };
+		34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PurchaseVIPController.xib; path = ../Classes/controllers/PurchaseVIPController.xib; sourceTree = "<group>"; };
+		34E8CF6916E9C860000079E6 /* PurchaseVIPCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseVIPCell.h; sourceTree = "<group>"; };
+		34E8CF6A16E9C860000079E6 /* PurchaseVIPCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseVIPCell.m; sourceTree = "<group>"; };
 		34E9FDD616646E8E00F90A88 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		34E9FDD816646EA500F90A88 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		34E9FDDA16646F4700F90A88 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
@@ -947,7 +955,8 @@
 				34D0481016E48DCC006BFDB5 /* FavoritesController.m */,
 				34E8CF5F16E9BDCC000079E6 /* InfoEditController.h */,
 				34E8CF6016E9BDCC000079E6 /* InfoEditController.m */,
-				34E8CF6116E9BDCC000079E6 /* InfoEditController.xib */,
+				34E8CF6416E9C669000079E6 /* PurchaseVIPController.h */,
+				34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -1499,6 +1508,8 @@
 				34071702164133C3006E40FE /* VideoPlayController.xib */,
 				342DA8A516E3308300404730 /* PersonalInfoController.xib */,
 				342DA8B416E3505000404730 /* FunctionFlowView.xib */,
+				34E8CF6116E9BDCC000079E6 /* InfoEditController.xib */,
+				34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */,
 			);
 			name = layouts;
 			sourceTree = "<group>";
@@ -1809,6 +1820,8 @@
 				348E51B016E1ED9800E364F3 /* EncourageView.m */,
 				342DA8B616E3531700404730 /* FunctionFlowView.h */,
 				342DA8B716E3531700404730 /* FunctionFlowView.m */,
+				34E8CF6916E9C860000079E6 /* PurchaseVIPCell.h */,
+				34E8CF6A16E9C860000079E6 /* PurchaseVIPCell.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -2037,6 +2050,7 @@
 				34E8CF5C16E9BC11000079E6 /* img_vip_rights.png in Resources */,
 				34E8CF5E16E9BC1A000079E6 /* bg_btn_buy_vip.png in Resources */,
 				34E8CF6316E9BDCC000079E6 /* InfoEditController.xib in Resources */,
+				34E8CF6816E9C669000079E6 /* PurchaseVIPController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2219,6 +2233,8 @@
 				34C8A66D16E7126700DF79A0 /* Harpy.m in Sources */,
 				345403E016E86EB7006B76DC /* Constants.m in Sources */,
 				34E8CF6216E9BDCC000079E6 /* InfoEditController.m in Sources */,
+				34E8CF6716E9C669000079E6 /* PurchaseVIPController.m in Sources */,
+				34E8CF6B16E9C860000079E6 /* PurchaseVIPCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

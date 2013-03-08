@@ -43,6 +43,8 @@
     [navRightButton addTarget:self action:@selector(commit) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
     
+    self.view.backgroundColor = DarkThemeColor;
+    
     _avatarBlockView.layer.cornerRadius = 8;
     _nameBlockView.layer.cornerRadius = 8;
     

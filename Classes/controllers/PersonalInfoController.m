@@ -8,6 +8,7 @@
 
 #import "PersonalInfoController.h"
 #import "InfoEditController.h"
+#import "PurchaseVIPController.h"
 
 #import <TTTAttributedLabel.h>
 
@@ -43,6 +44,8 @@
     UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
     [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
+    
+    self.view.backgroundColor = DarkThemeColor;
     
     [self displayVip:NO level:2];
     [self displayScore:1234];
@@ -113,6 +116,8 @@
 }
 
 - (IBAction)buyVIP:(id)sender {
+    PurchaseVIPController *controller = [[PurchaseVIPController alloc] init];
+    [self presentModalViewController:[[NNNavigationController alloc] initWithRootViewController:controller] animated:YES];
 }
 
 @end

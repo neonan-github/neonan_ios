@@ -44,6 +44,8 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     }
     
+    self.view.backgroundColor = DarkThemeColor;
+    
     _webView.delegate = self;
     _webView.hidden = YES;
     

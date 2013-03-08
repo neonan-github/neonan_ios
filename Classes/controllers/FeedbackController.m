@@ -51,7 +51,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"意见反馈";
-
+    
     UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
     [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
@@ -59,6 +59,8 @@
     UIButton *navRightButton = [UIHelper createLeftBarButton:@"icon_done_normal.png"];
     [navRightButton addTarget:self action:@selector(commit) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
+    
+    self.view.backgroundColor = DarkThemeColor;
     
     UIImage *editBgImage = [[UIImage imageFromFile:@"bg_feedback_edit.png"] stretchableImageWithLeftCapWidth:27 topCapHeight:15];
     [_editBackgroundView setImage:editBgImage];
