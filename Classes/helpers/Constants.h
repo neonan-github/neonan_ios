@@ -66,6 +66,13 @@ typedef enum {
     EncourageScoreShare = 2
 } EncourageScore;
 
+typedef enum {
+    VIPLevel1 = 1,
+    VIPLevel3 = 3,
+    VIPLevel6 = 6,
+    VIPLevel12 = 12
+} VIPLevel;
+
 //MainController
 #define MainSlideShowCount 6
 

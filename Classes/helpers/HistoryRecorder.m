@@ -11,7 +11,6 @@
 
 @implementation Record
 
-
 @end
 
 static NSString *const kDBName = @"history.db";

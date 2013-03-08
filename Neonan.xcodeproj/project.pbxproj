@@ -343,6 +343,7 @@
 		34E8CF7A16E9D666000079E6 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF7316E9D666000079E6 /* MKStoreManager.m */; };
 		34E8CF7B16E9D666000079E6 /* NSData+MKBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF7516E9D666000079E6 /* NSData+MKBase64.m */; };
 		34E8CF7E16E9D6AD000079E6 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF7D16E9D6AD000079E6 /* MKStoreKitConfigs.plist */; };
+		34E8CF8116E9EC0D000079E6 /* VIPManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF8016E9EC0D000079E6 /* VIPManager.m */; };
 		34E9FDD716646E8E00F90A88 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD616646E8E00F90A88 /* CFNetwork.framework */; };
 		34E9FDD916646EA500F90A88 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD816646EA500F90A88 /* CoreTelephony.framework */; };
 		34E9FDDB16646F4700F90A88 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E9FDDA16646F4700F90A88 /* PushConfig.plist */; };
@@ -875,6 +876,8 @@
 		34E8CF7416E9D666000079E6 /* NSData+MKBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MKBase64.h"; sourceTree = "<group>"; };
 		34E8CF7516E9D666000079E6 /* NSData+MKBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MKBase64.m"; sourceTree = "<group>"; };
 		34E8CF7D16E9D6AD000079E6 /* MKStoreKitConfigs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MKStoreKitConfigs.plist; sourceTree = "<group>"; };
+		34E8CF7F16E9EC0D000079E6 /* VIPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VIPManager.h; sourceTree = "<group>"; };
+		34E8CF8016E9EC0D000079E6 /* VIPManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIPManager.m; sourceTree = "<group>"; };
 		34E9FDD616646E8E00F90A88 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		34E9FDD816646EA500F90A88 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		34E9FDDA16646F4700F90A88 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
@@ -1674,6 +1677,8 @@
 				34E4BC131647571000C07DFA /* MathHelper.m */,
 				3442AADF16E0C10C000C8F72 /* SessionManager.h */,
 				3442AAE016E0C10D000C8F72 /* SessionManager.m */,
+				34E8CF7F16E9EC0D000079E6 /* VIPManager.h */,
+				34E8CF8016E9EC0D000079E6 /* VIPManager.m */,
 				343EBA5516E0A4EA00501101 /* SignHelper.h */,
 				343EBA5616E0A4EA00501101 /* SignHelper.m */,
 				3442AAC416E0B63C000C8F72 /* ShareHelper.h */,
@@ -2273,6 +2278,7 @@
 				34E8CF7916E9D666000079E6 /* MKSKSubscriptionProduct.m in Sources */,
 				34E8CF7A16E9D666000079E6 /* MKStoreManager.m in Sources */,
 				34E8CF7B16E9D666000079E6 /* NSData+MKBase64.m in Sources */,
+				34E8CF8116E9EC0D000079E6 /* VIPManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
