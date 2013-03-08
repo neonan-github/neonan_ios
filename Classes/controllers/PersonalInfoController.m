@@ -7,6 +7,7 @@
 //
 
 #import "PersonalInfoController.h"
+#import "InfoEditController.h"
 
 #import <TTTAttributedLabel.h>
 
@@ -100,6 +101,18 @@
         
         return mutableAttributedString;
     }];
+}
+
+- (IBAction)editInfo:(id)sender {
+    InfoEditController *controller = [[InfoEditController alloc] init];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.8f];
+    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.view.window cache:NO];
+    [self presentModalViewController:[[NNNavigationController alloc] initWithRootViewController:controller] animated:NO];
+    [UIView commitAnimations];
+}
+
+- (IBAction)buyVIP:(id)sender {
 }
 
 @end
