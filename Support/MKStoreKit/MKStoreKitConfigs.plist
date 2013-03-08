@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Consumables</key>
+	<dict>
+		<key>com.neonan.Neonan.vip1</key>
+		<dict>
+			<key>Count</key>
+			<integer>1</integer>
+			<key>Name</key>
+			<string>month</string>
+		</dict>
+		<key>com.neonan.Neonan.vip3</key>
+		<dict>
+			<key>Count</key>
+			<integer>3</integer>
+			<key>Name</key>
+			<string>month</string>
+		</dict>
+		<key>com.neonan.Neonan.vip6</key>
+		<dict>
+			<key>Count</key>
+			<integer>6</integer>
+			<key>Name</key>
+			<string>month</string>
+		</dict>
+		<key>com.neonan.Neonan.vip12</key>
+		<dict>
+			<key>Count</key>
+			<integer>12</integer>
+			<key>Name</key>
+			<string>month</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

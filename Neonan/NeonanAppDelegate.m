@@ -19,6 +19,7 @@
 //#import "Flurry.h"
 #import "MobClick.h"
 #import "Harpy.h"
+#import "MKStoreManager.h"
 
 #import <AFNetworkActivityIndicatorManager.h>
 
@@ -43,6 +44,12 @@
                                                    UIRemoteNotificationTypeAlert)];
     [APService setupWithOption:launchOptions];
 #endif
+    
+    // http://www.iwangke.me/2012/06/14/tips_for_mkstorekit/
+#ifdef DEBUG
+    [[MKStoreManager sharedManager] removeAllKeychainData];
+#endif
+    [MKStoreManager sharedManager];
     
     self.navController = [[NNNavigationController alloc] init];
     self.navController.logoHidden = NO;

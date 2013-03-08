@@ -338,6 +338,11 @@
 		34E8CF6716E9C669000079E6 /* PurchaseVIPController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */; };
 		34E8CF6816E9C669000079E6 /* PurchaseVIPController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */; };
 		34E8CF6B16E9C860000079E6 /* PurchaseVIPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6A16E9C860000079E6 /* PurchaseVIPCell.m */; };
+		34E8CF7816E9D666000079E6 /* MKSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6E16E9D666000079E6 /* MKSKProduct.m */; };
+		34E8CF7916E9D666000079E6 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF7016E9D666000079E6 /* MKSKSubscriptionProduct.m */; };
+		34E8CF7A16E9D666000079E6 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF7316E9D666000079E6 /* MKStoreManager.m */; };
+		34E8CF7B16E9D666000079E6 /* NSData+MKBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF7516E9D666000079E6 /* NSData+MKBase64.m */; };
+		34E8CF7E16E9D6AD000079E6 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF7D16E9D6AD000079E6 /* MKStoreKitConfigs.plist */; };
 		34E9FDD716646E8E00F90A88 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD616646E8E00F90A88 /* CFNetwork.framework */; };
 		34E9FDD916646EA500F90A88 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD816646EA500F90A88 /* CoreTelephony.framework */; };
 		34E9FDDB16646F4700F90A88 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E9FDDA16646F4700F90A88 /* PushConfig.plist */; };
@@ -860,6 +865,16 @@
 		34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PurchaseVIPController.xib; path = ../Classes/controllers/PurchaseVIPController.xib; sourceTree = "<group>"; };
 		34E8CF6916E9C860000079E6 /* PurchaseVIPCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseVIPCell.h; sourceTree = "<group>"; };
 		34E8CF6A16E9C860000079E6 /* PurchaseVIPCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseVIPCell.m; sourceTree = "<group>"; };
+		34E8CF6D16E9D666000079E6 /* MKSKProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKProduct.h; sourceTree = "<group>"; };
+		34E8CF6E16E9D666000079E6 /* MKSKProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKProduct.m; sourceTree = "<group>"; };
+		34E8CF6F16E9D666000079E6 /* MKSKSubscriptionProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKSubscriptionProduct.h; sourceTree = "<group>"; };
+		34E8CF7016E9D666000079E6 /* MKSKSubscriptionProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKSubscriptionProduct.m; sourceTree = "<group>"; };
+		34E8CF7116E9D666000079E6 /* MKStoreKitConfigs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreKitConfigs.h; sourceTree = "<group>"; };
+		34E8CF7216E9D666000079E6 /* MKStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreManager.h; sourceTree = "<group>"; };
+		34E8CF7316E9D666000079E6 /* MKStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreManager.m; sourceTree = "<group>"; };
+		34E8CF7416E9D666000079E6 /* NSData+MKBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MKBase64.h"; sourceTree = "<group>"; };
+		34E8CF7516E9D666000079E6 /* NSData+MKBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MKBase64.m"; sourceTree = "<group>"; };
+		34E8CF7D16E9D6AD000079E6 /* MKStoreKitConfigs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MKStoreKitConfigs.plist; sourceTree = "<group>"; };
 		34E9FDD616646E8E00F90A88 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		34E9FDD816646EA500F90A88 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		34E9FDDA16646F4700F90A88 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
@@ -1686,6 +1701,23 @@
 			path = SMPageControl;
 			sourceTree = "<group>";
 		};
+		34E8CF6C16E9D666000079E6 /* MKStoreKit */ = {
+			isa = PBXGroup;
+			children = (
+				34E8CF6D16E9D666000079E6 /* MKSKProduct.h */,
+				34E8CF6E16E9D666000079E6 /* MKSKProduct.m */,
+				34E8CF6F16E9D666000079E6 /* MKSKSubscriptionProduct.h */,
+				34E8CF7016E9D666000079E6 /* MKSKSubscriptionProduct.m */,
+				34E8CF7116E9D666000079E6 /* MKStoreKitConfigs.h */,
+				34E8CF7216E9D666000079E6 /* MKStoreManager.h */,
+				34E8CF7316E9D666000079E6 /* MKStoreManager.m */,
+				34E8CF7416E9D666000079E6 /* NSData+MKBase64.h */,
+				34E8CF7516E9D666000079E6 /* NSData+MKBase64.m */,
+				34E8CF7D16E9D6AD000079E6 /* MKStoreKitConfigs.plist */,
+			);
+			path = MKStoreKit;
+			sourceTree = "<group>";
+		};
 		53816AEB16265E9400B0672C = {
 			isa = PBXGroup;
 			children = (
@@ -1773,6 +1805,7 @@
 		53816B2116265FB100B0672C /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				34E8CF6C16E9D666000079E6 /* MKStoreKit */,
 				34C8A66916E7126700DF79A0 /* Harpy */,
 				3442AA0316E0B2DC000C8F72 /* TCWeiBoSDK */,
 				3442A8F616E0B082000C8F72 /* SBJSON */,
@@ -2051,6 +2084,7 @@
 				34E8CF5E16E9BC1A000079E6 /* bg_btn_buy_vip.png in Resources */,
 				34E8CF6316E9BDCC000079E6 /* InfoEditController.xib in Resources */,
 				34E8CF6816E9C669000079E6 /* PurchaseVIPController.xib in Resources */,
+				34E8CF7E16E9D6AD000079E6 /* MKStoreKitConfigs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2235,6 +2269,10 @@
 				34E8CF6216E9BDCC000079E6 /* InfoEditController.m in Sources */,
 				34E8CF6716E9C669000079E6 /* PurchaseVIPController.m in Sources */,
 				34E8CF6B16E9C860000079E6 /* PurchaseVIPCell.m in Sources */,
+				34E8CF7816E9D666000079E6 /* MKSKProduct.m in Sources */,
+				34E8CF7916E9D666000079E6 /* MKSKSubscriptionProduct.m in Sources */,
+				34E8CF7A16E9D666000079E6 /* MKStoreManager.m in Sources */,
+				34E8CF7B16E9D666000079E6 /* NSData+MKBase64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
