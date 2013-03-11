@@ -10,6 +10,8 @@
 #import "FMDatabase.h"
 #import "FMDatabaseQueue.h"
 
+#import "OrderModel.h"
+
 static NSString *const kDBName = @"purchase.db";
 static NSString *const kTableName = @"purchase";
 static NSString *const kIdKey = @"order_id";
@@ -52,15 +54,19 @@ static NSString *const kNotifiedKey = @"notified";
 - (void)requestOrderId:(NSString *)productId
                success:(void (^)(NSString *orderId))success
                failure:(void (^)())failure {
-    [[NNHttpClient sharedClient] getAtPath:nil parameters:nil responseClass:nil success:^(id<Jsonable> response) {
-        if (success) {
-            success(nil);
-        }
-    } failure:^(ResponseError *error) {
-        if (failure) {
-            failure();
-        }
+    [[SessionManager sharedManager] requsetToken:nil success:^(NSString *token) {
+        NSDictionary *params = @{@"product_id": productId, @"token": token};
+        [[NNHttpClient sharedClient] postAtPath:kPathCreateOrder parameters:params responseClass:[OrderModel class] success:^(id<Jsonable> response) {
+            if (success) {
+                success([(OrderModel *)response orderId]);
+            }
+        } failure:^(ResponseError *error) {
+            if (failure) {
+                failure();
+            }
+        }];
     }];
+    
 }
 
 - (void)syncPurchaseInfo:(NSString *)orderId receipt:(NSString *)purchasedReceipt success:(void (^)())success failure:(void (^)())failure {
