@@ -14,6 +14,7 @@ static NSString *const kDBName = @"purchase.db";
 static NSString *const kTableName = @"purchase";
 static NSString *const kIdKey = @"order_id";
 static NSString *const kTokenKey = @"token";
+static NSString *const kReceiptKey = @"receipt";
 static NSString *const kTimeKey = @"time_stamp";
 static NSString *const kNotifiedKey = @"notified";
 
@@ -62,42 +63,43 @@ static NSString *const kNotifiedKey = @"notified";
     }];
 }
 
-- (void)syncPurchaseInfo:(NSString *)orderId success:(void (^)())success failure:(void (^)())failure {
+- (void)syncPurchaseInfo:(NSString *)orderId receipt:(NSString *)purchasedReceipt success:(void (^)())success failure:(void (^)())failure {
     [[SessionManager sharedManager] requsetToken:nil success:^(NSString *token) {
         NSString *const timeStamp = @([[NSDate date] timeIntervalSince1970]).stringValue;
-        [self savePurchaseInfoToServer:orderId token:token timeStamp:timeStamp success:success failure:failure];
+        [self savePurchaseInfoToServer:orderId token:token receipt:purchasedReceipt timeStamp:timeStamp success:success failure:failure];
     }];
 }
 
 - (void)savePurchaseInfoToLocal:(NSString *)orderId
                           token:(NSString *)token
+                        receipt:(NSString *)purchasedReceipt 
                       timeStamp:(NSString *)timeStamp
                        notified:(BOOL)notified {
     FMDatabaseQueue *queue = self.dbQueue;
     
     [queue inDatabase:^(FMDatabase *db) {
-        [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ TEXT PRIMARY KEY, %@ TEXT NOT NULL, %@ TEXT NOT NULL, %@ INTEGER NOT NULL)",
-                           kTableName, kIdKey, kTokenKey, kTimeKey, kNotifiedKey]];
+        [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ TEXT PRIMARY KEY, %@ TEXT NOT NULL, %@ TEXT NOT NULL, %@ TEXT NOT NULL, %@ INTEGER NOT NULL)",
+                           kTableName, kIdKey, kTokenKey, kReceiptKey, kTimeKey, kNotifiedKey]];
         
         FMResultSet *rs = [db executeQuery:[NSString stringWithFormat:@"select * from %@ where %@ = '%@'",
                                             kTableName, kIdKey, orderId]];
         if ([rs next]) {
             if (!notified) {
-                [db executeUpdate:[NSString stringWithFormat:@"update %@ set %@ = '%@', %@ = '%@', %@ = %d  where %@ = '%@'", kTableName, kTokenKey, token, kTimeKey, timeStamp,
-                                   kNotifiedKey, 0, kIdKey, orderId]];
+                [db executeUpdate:[NSString stringWithFormat:@"update %@ set %@ = %d  where %@ = '%@'", kTableName, kNotifiedKey, 0, kIdKey, orderId]];
             } else {
                 [db executeUpdate:[NSString stringWithFormat:@"delete from %@ where %@ = '%@'", kTableName, kIdKey, orderId]];
             }
             
         } else {
-            [db executeUpdate:[NSString stringWithFormat:@"insert into %@ (%@, %@, %@, %@) values('%@', '%@', '%@', %d)",
-                               kTableName, kIdKey, kTokenKey, kTimeKey, kNotifiedKey, orderId, token, timeStamp, notified ? 1 : 0]];
+            [db executeUpdate:[NSString stringWithFormat:@"insert into %@ (%@, %@, %@, %@, %@) values('%@', '%@', '%@', '%@', %d)",
+                               kTableName, kIdKey, kTokenKey, kReceiptKey, kTimeKey, kNotifiedKey, orderId, token, purchasedReceipt, timeStamp, notified ? 1 : 0]];
         }
     }];
 }
 
 - (void)savePurchaseInfoToServer:(NSString *)orderId
                            token:(NSString *)token
+                         receipt:(NSString *)purchasedReceipt
                        timeStamp:(NSString *)timeStamp
                          success:(void (^)())success
                          failure:(void (^)())failure {
@@ -105,13 +107,13 @@ static NSString *const kNotifiedKey = @"notified";
                                 parameters:nil
                              responseClass:nil
                                    success:^(id<Jsonable> response) {
-                                       [self savePurchaseInfoToLocal:orderId token:token timeStamp:timeStamp notified:YES];
+                                       [self savePurchaseInfoToLocal:orderId token:token receipt:purchasedReceipt timeStamp:timeStamp notified:YES];
                                        if (success) {
                                            success();
                                        }
                                    }
                                    failure:^(ResponseError *error) {
-                                       [self savePurchaseInfoToLocal:orderId token:token timeStamp:timeStamp notified:NO];
+                                       [self savePurchaseInfoToLocal:orderId token:token receipt:purchasedReceipt timeStamp:timeStamp notified:NO];
                                        if (failure) {
                                            failure();
                                        }
@@ -138,6 +140,7 @@ static NSString *const kNotifiedKey = @"notified";
             
             [self savePurchaseInfoToServer:[rs stringForColumn:kIdKey]
                                      token:[rs stringForColumn:kTokenKey]
+                                   receipt:[rs stringForColumn:kReceiptKey]
                                  timeStamp:[rs stringForColumn:kTimeKey]
                                    success:success
                                    failure:done];

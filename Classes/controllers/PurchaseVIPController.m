@@ -13,6 +13,7 @@
 #import "PurchaseManager.h"
 
 #import "MKStoreManager.h"
+#import "NSData+MKBase64.h"
 
 #import <UIAlertView+Blocks.h>
 #import <SVProgressHUD.h>
@@ -96,7 +97,7 @@
     [[PurchaseManager sharedManager] requestOrderId:[self productIdsMapping][productId] success:^(NSString *orderId) {
         [[MKStoreManager sharedManager] buyFeature:productId
                                         onComplete:^(NSString *purchasedFeature, NSData *purchasedReceipt, NSArray *availableDownloads) {
-                                            [self onPurchaseSuccess:orderId];
+                                            [self onPurchaseSuccess:orderId receipt:purchasedReceipt];
                                         }
                                           onFailed:^(NSError *error) {
                                               [self onPurchaseFail:productId];
@@ -107,8 +108,8 @@
     }];
 }
 
-- (void)onPurchaseSuccess:(NSString *)orderId {
-    [self syncPurchaseInfo:orderId];
+- (void)onPurchaseSuccess:(NSString *)orderId receipt:(NSData *)purchasedReceipt {
+    [self syncPurchaseInfo:orderId receipt:[purchasedReceipt base64EncodedString]];
     
 //    RIButtonItem *okItem = [RIButtonItem item];
 //    okItem.label = @"确定";
@@ -142,40 +143,43 @@
     [alertView show];
 }
 
-- (void)syncPurchaseInfo:(NSString *)orderId {
+- (void)syncPurchaseInfo:(NSString *)orderId receipt:(NSString *)purchasedReceipt{
     [SVProgressHUD showWithStatus:@"正在同步购买信息到服务器" maskType:SVProgressHUDMaskTypeClear];
     
-    [[PurchaseManager sharedManager] syncPurchaseInfo:orderId success:^{
-        RIButtonItem *okItem = [RIButtonItem item];
-        okItem.label = @"确定";
-        okItem.action = ^{
-            [self close];
-        };
+    [[PurchaseManager sharedManager] syncPurchaseInfo:orderId
+                                              receipt:(NSString *)purchasedReceipt
+                                              success:^{
+                                                  RIButtonItem *okItem = [RIButtonItem item];
+                                                  okItem.label = @"确定";
+                                                  okItem.action = ^{
+                                                      [self close];
+                                                  };
         
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                            message:@"同步成功"
-                                                   cancelButtonItem:nil
-                                                   otherButtonItems:okItem, nil];
-        [alertView show];
-    } failure:^{
-        RIButtonItem *cancelItem = [RIButtonItem item];
-        cancelItem.label = @"取消";
-        cancelItem.action = ^{
-            [self close];
-        };
+                                                  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                      message:@"同步成功"
+                                                                                             cancelButtonItem:nil
+                                                                                             otherButtonItems:okItem, nil];
+                                                  [alertView show];
+                                              }
+                                              failure:^{
+                                                  RIButtonItem *cancelItem = [RIButtonItem item];
+                                                  cancelItem.label = @"取消";
+                                                  cancelItem.action = ^{
+                                                      [self close];
+                                                  };
         
-        RIButtonItem *retryItem = [RIButtonItem item];
-        retryItem.label = @"重试";
-        retryItem.action = ^{
-            [self syncPurchaseInfo:orderId];
-        };
+                                                  RIButtonItem *retryItem = [RIButtonItem item];
+                                                  retryItem.label = @"重试";
+                                                  retryItem.action = ^{
+                                                      [self syncPurchaseInfo:orderId receipt:purchasedReceipt];
+                                                  };
         
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"同步失败"
-                                                            message:@"如选择“取消”，将之后自动同步。"
-                                                   cancelButtonItem:cancelItem
-                                                   otherButtonItems:retryItem, nil];
-        [alertView show];
-    }];
+                                                  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"同步失败"
+                                                                                                      message:@"如选择“取消”，将之后自动同步。"
+                                                                                             cancelButtonItem:cancelItem
+                                                                                             otherButtonItems:retryItem, nil];
+                                                  [alertView show];
+                                              }];
 }
 
 @end
