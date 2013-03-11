@@ -91,4 +91,5 @@ FOUNDATION_EXPORT NSString *const kPathNeoNanSignUp;
 FOUNDATION_EXPORT NSString *const kPathNeoNanLogin;
 FOUNDATION_EXPORT NSString *const kPath3rdLogin;
 FOUNDATION_EXPORT NSString *const kPathCreateOrder;
+FOUNDATION_EXPORT NSString *const kPathAddPoint;
 

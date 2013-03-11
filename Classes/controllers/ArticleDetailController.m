@@ -480,8 +480,8 @@ static NSString * const kDirectionRight = @"1";
                         return [[contentId description] isEqualToString:[_contentId description]] &&
                         [[SessionManager sharedManager] canAutoLogin] && [weakSelf isVisible];
                     }
-                   success:^{
-                       [EncourageView displayScore:EncourageScoreCommon at:CGPointMake(CompatibleScreenWidth / 2, 100)];
+                   success:^(NSInteger point) {
+                       [EncourageView displayScore:point at:CGPointMake(CompatibleScreenWidth / 2, 100)];
                    }];
     
     

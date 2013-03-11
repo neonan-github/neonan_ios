@@ -65,8 +65,7 @@
                         should:^BOOL{
                             return [[SessionManager sharedManager] canAutoLogin] && weakSelf;
                         }
-                       success:^{
-                       }];
+                       success:nil];
         
         self.videoUrl = url;
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self parseVideoUrl:url]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20];

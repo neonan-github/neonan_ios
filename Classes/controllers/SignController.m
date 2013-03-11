@@ -12,6 +12,7 @@
 #import "LoginResult.h"
 
 #import "SessionManager.h"
+#import "EncourageHelper.h"
 #import "MD5.h"
 
 #import "EncourageView.h"
@@ -220,8 +221,10 @@
         
         [SVProgressHUD showSuccessWithStatus:@"登录成功"];
         
-        [EncourageView displayScore:(signUp ? EncourageScoreSignUp : EncourageScoreLogin)
-                                 at:CGPointMake(CompatibleScreenWidth / 2, 100)];
+        [EncourageHelper doEncourage:@{@"token": token, @"type_id": @(signUp ? 1 : 2)} success:^(NSInteger point) {
+            [EncourageView displayScore:point
+                                     at:CGPointMake(CompatibleScreenWidth / 2, 100)];
+        }];
         
         [self close];
     } failure:^(ResponseError *error) {
@@ -250,8 +253,10 @@
                                            
                                            [SVProgressHUD showSuccessWithStatus:@"登录成功"];
                                            
-                                           [EncourageView displayScore:EncourageScoreLogin
-                                                                    at:CGPointMake(CompatibleScreenWidth / 2, 100)];
+                                           [EncourageHelper doEncourage:@{@"token": token, @"type_id": @(2)} success:^(NSInteger point) {
+                                               [EncourageView displayScore:point
+                                                                        at:CGPointMake(CompatibleScreenWidth / 2, 100)];
+                                           }];
                                            
                                            [self close:YES];
                                        } failure:^(ResponseError *error) {

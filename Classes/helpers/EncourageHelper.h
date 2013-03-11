@@ -11,6 +11,8 @@
 @interface EncourageHelper : NSObject
 
 + (void)check:(NSString *)contentId contentType:(NSString *)contentType
-   afterDelay:(double)delay should:(BOOL (^)())should success:(void (^)())success;
+   afterDelay:(double)delay should:(BOOL (^)())should success:(void (^)(NSInteger point))success;
+
++ (void)doEncourage:(NSDictionary *)params success:(void (^)(NSInteger))success;
 
 @end
