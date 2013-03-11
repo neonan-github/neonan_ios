@@ -17,6 +17,7 @@
 #import "FeedbackController.h"
 #import "PersonalInfoController.h"
 #import "FavoritesController.h"
+#import "SplashViewController.h"
 
 #import "MainSlideShowModel.h"
 #import "BabyListModel.h"
@@ -46,8 +47,6 @@ static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
 
 static const NSString *kFilterFlag = @"true";
-
-
 
 @interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate, NNDropDownMenuDelegate,
 SlideShowViewDataSource, SlideShowViewDelegate,
@@ -164,6 +163,12 @@ headerView = _headerView;
     [self.view addSubview:tableView];
     
     [self addObserver:self forKeyPath:@"tableView.contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    if (_showSplash) {
+        self.showSplash = NO;
+        SplashViewController *splashViewController = [[SplashViewController alloc] init];
+        [self presentModalViewController:splashViewController animated:NO];
+    }
 }
 
 - (void)cleanUp {

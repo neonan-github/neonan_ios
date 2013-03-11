@@ -304,6 +304,8 @@
 		34C81B4F162BF78000DA093B /* BabyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C81B4E162BF78000DA093B /* BabyCell.m */; };
 		34C8A66D16E7126700DF79A0 /* Harpy.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C8A66B16E7126700DF79A0 /* Harpy.m */; };
 		34C8A67E16E74DB900DF79A0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C8A67D16E74DB900DF79A0 /* StoreKit.framework */; };
+		34CA181416EDC679000654AC /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CA181216EDC679000654AC /* SplashViewController.m */; };
+		34CA181516EDC679000654AC /* SplashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CA181316EDC679000654AC /* SplashViewController.xib */; };
 		34CB8FC2163F6D170001AD87 /* icon_disclosure_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */; };
 		34CB8FC5163F6FE60001AD87 /* icon_disclosure_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FC4163F6FE60001AD87 /* icon_disclosure_highlighted.png */; };
 		34CB8FDC163F7CD90001AD87 /* img_header_view_bottom_line.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FDB163F7CD90001AD87 /* img_header_view_bottom_line.png */; };
@@ -820,6 +822,9 @@
 		34C8A66B16E7126700DF79A0 /* Harpy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Harpy.m; sourceTree = "<group>"; };
 		34C8A66C16E7126700DF79A0 /* HarpyConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarpyConstants.h; sourceTree = "<group>"; };
 		34C8A67D16E74DB900DF79A0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		34CA181116EDC679000654AC /* SplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashViewController.h; sourceTree = "<group>"; };
+		34CA181216EDC679000654AC /* SplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashViewController.m; sourceTree = "<group>"; };
+		34CA181316EDC679000654AC /* SplashViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SplashViewController.xib; path = ../Classes/controllers/SplashViewController.xib; sourceTree = "<group>"; };
 		34CB8FC1163F6D170001AD87 /* icon_disclosure_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_disclosure_normal.png; sourceTree = "<group>"; };
 		34CB8FC4163F6FE60001AD87 /* icon_disclosure_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_disclosure_highlighted.png; sourceTree = "<group>"; };
 		34CB8FDB163F7CD90001AD87 /* img_header_view_bottom_line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_header_view_bottom_line.png; sourceTree = "<group>"; };
@@ -975,6 +980,8 @@
 				34E8CF6016E9BDCC000079E6 /* InfoEditController.m */,
 				34E8CF6416E9C669000079E6 /* PurchaseVIPController.h */,
 				34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */,
+				34CA181116EDC679000654AC /* SplashViewController.h */,
+				34CA181216EDC679000654AC /* SplashViewController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -1516,6 +1523,7 @@
 		347AAB60163672FC00D243BA /* layouts */ = {
 			isa = PBXGroup;
 			children = (
+				34CA181316EDC679000654AC /* SplashViewController.xib */,
 				3442AAC916E0B6AC000C8F72 /* ShareEditController.xib */,
 				348983D616BA691C001CFFB6 /* TopicDetailController.xib */,
 				34C56BF01676CEE00013ECE6 /* FeedbackController.xib */,
@@ -2090,6 +2098,7 @@
 				34E8CF6316E9BDCC000079E6 /* InfoEditController.xib in Resources */,
 				34E8CF6816E9C669000079E6 /* PurchaseVIPController.xib in Resources */,
 				34E8CF7E16E9D6AD000079E6 /* MKStoreKitConfigs.plist in Resources */,
+				34CA181516EDC679000654AC /* SplashViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2279,6 +2288,7 @@
 				34E8CF7A16E9D666000079E6 /* MKStoreManager.m in Sources */,
 				34E8CF7B16E9D666000079E6 /* NSData+MKBase64.m in Sources */,
 				34E8CF8116E9EC0D000079E6 /* PurchaseManager.m in Sources */,
+				34CA181416EDC679000654AC /* SplashViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

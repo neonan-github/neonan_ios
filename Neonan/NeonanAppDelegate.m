@@ -55,7 +55,8 @@
     self.navController.logoHidden = NO;
     self.window.rootViewController = self.navController;
        
-    UIViewController *controller = [[MainController alloc] init];
+    MainController *controller = [[MainController alloc] init];
+    controller.showSplash = YES;
     [self.navController pushViewController:controller animated:NO];
     
 //    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
