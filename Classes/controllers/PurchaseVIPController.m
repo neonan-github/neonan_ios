@@ -144,7 +144,7 @@
 }
 
 - (void)syncPurchaseInfo:(NSString *)orderId receipt:(NSString *)purchasedReceipt{
-    [SVProgressHUD showWithStatus:@"正在同步购买信息到服务器" maskType:SVProgressHUDMaskTypeClear];
+    [SVProgressHUD showWithStatus:@"正在验证购买信息" maskType:SVProgressHUDMaskTypeClear];
     
     [[PurchaseManager sharedManager] syncPurchaseInfo:orderId
                                               receipt:(NSString *)purchasedReceipt
@@ -156,29 +156,33 @@
                                                   };
         
                                                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                                      message:@"同步成功"
+                                                                                                      message:@"验证成功"
                                                                                              cancelButtonItem:nil
                                                                                              otherButtonItems:okItem, nil];
                                                   [alertView show];
                                               }
-                                              failure:^{
-                                                  RIButtonItem *cancelItem = [RIButtonItem item];
-                                                  cancelItem.label = @"取消";
-                                                  cancelItem.action = ^{
-                                                      [self close];
-                                                  };
-        
-                                                  RIButtonItem *retryItem = [RIButtonItem item];
-                                                  retryItem.label = @"重试";
-                                                  retryItem.action = ^{
-                                                      [self syncPurchaseInfo:orderId receipt:purchasedReceipt];
-                                                  };
-        
-                                                  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"同步失败"
-                                                                                                      message:@"如选择“取消”，将之后自动同步。"
-                                                                                             cancelButtonItem:cancelItem
-                                                                                             otherButtonItems:retryItem, nil];
-                                                  [alertView show];
+                                              failure:^(ResponseError *error){
+                                                  if (error.errorCode > ERROR_UNPREDEFINED) {
+                                                      [UIHelper alertWithMessage:@"无效的购买信息"];
+                                                  } else {
+                                                      RIButtonItem *cancelItem = [RIButtonItem item];
+                                                      cancelItem.label = @"取消";
+                                                      cancelItem.action = ^{
+                                                          [self close];
+                                                      };
+                                                      
+                                                      RIButtonItem *retryItem = [RIButtonItem item];
+                                                      retryItem.label = @"重试";
+                                                      retryItem.action = ^{
+                                                          [self syncPurchaseInfo:orderId receipt:purchasedReceipt];
+                                                      };
+                                                      
+                                                      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"验证失败"
+                                                                                                          message:@"可能是网络问题，无需重新购买。选择“重试”，立即重新验证；选择“取消”，将之后自动验证。"
+                                                                                                 cancelButtonItem:cancelItem
+                                                                                                 otherButtonItems:retryItem, nil];
+                                                      [alertView show];
+                                                  }
                                               }];
 }
 

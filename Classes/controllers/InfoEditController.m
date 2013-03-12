@@ -117,7 +117,7 @@ UIActionSheetDelegate>
                                         }
                                         failure:^(ResponseError *error) {
                                             NSLog(@"error:%@", error.message);
-                                            if (error.errorCode == -4) {
+                                            if (error.errorCode == ERROR_UNPREDEFINED) {
                                                 [UIHelper alertWithMessage:error.message];
                                             } else {
                                                 [SVProgressHUD showErrorWithStatus:@"更新失败"];

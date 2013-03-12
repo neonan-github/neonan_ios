@@ -13,7 +13,7 @@
 + (PurchaseManager *)sharedManager;
 
 - (void)requestOrderId:(NSString *)productId success:(void (^)(NSString *orderId))success failure:(void (^)())failure;
-- (void)syncPurchaseInfo:(NSString *)orderId receipt:(NSString *)purchasedReceipt success:(void (^)())success failure:(void (^)())failure;
+- (void)syncPurchaseInfo:(NSString *)orderId receipt:(NSString *)purchasedReceipt success:(void (^)())success failure:(void (^)(ResponseError *error))failure;
 - (void)commitUnnotifiedInfo:(void (^)())done;
 
 @end

@@ -79,7 +79,7 @@ static NSString * const kAPIBaseURLString = @"http://api.neonan.com/";
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (failure) {
             NSString *errorMessage = ([self success:response.statusCode] || response.statusCode == 0) ? [error localizedDescription] : @"网络连接失败";
-            failure([[ResponseError alloc] initWithCode:-4 andMessage:errorMessage]);
+            failure([[ResponseError alloc] initWithCode:ERROR_UNPREDEFINED andMessage:errorMessage]);
         }
         DLog(@"%@", [error localizedDescription]);
     }];

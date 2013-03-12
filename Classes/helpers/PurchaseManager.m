@@ -66,12 +66,12 @@ static NSString *const kNotifiedKey = @"notified";
             }
         }];
     }];
-    
 }
 
-- (void)syncPurchaseInfo:(NSString *)orderId receipt:(NSString *)purchasedReceipt success:(void (^)())success failure:(void (^)())failure {
+- (void)syncPurchaseInfo:(NSString *)orderId receipt:(NSString *)purchasedReceipt success:(void (^)())success failure:(void (^)(ResponseError *error))failure {
     [[SessionManager sharedManager] requsetToken:nil success:^(NSString *token) {
         NSString *const timeStamp = @([[NSDate date] timeIntervalSince1970]).stringValue;
+        [self savePurchaseInfoToLocal:orderId token:token receipt:purchasedReceipt timeStamp:timeStamp notified:NO];
         [self savePurchaseInfoToServer:orderId token:token receipt:purchasedReceipt timeStamp:timeStamp success:success failure:failure];
     }];
 }
@@ -100,6 +100,8 @@ static NSString *const kNotifiedKey = @"notified";
             [db executeUpdate:[NSString stringWithFormat:@"insert into %@ (%@, %@, %@, %@, %@) values('%@', '%@', '%@', '%@', %d)",
                                kTableName, kIdKey, kTokenKey, kReceiptKey, kTimeKey, kNotifiedKey, orderId, token, purchasedReceipt, timeStamp, notified ? 1 : 0]];
         }
+        
+        [rs close];
     }];
 }
 
@@ -108,9 +110,11 @@ static NSString *const kNotifiedKey = @"notified";
                          receipt:(NSString *)purchasedReceipt
                        timeStamp:(NSString *)timeStamp
                          success:(void (^)())success
-                         failure:(void (^)())failure {
-    [[NNHttpClient sharedClient] postAtPath:nil
-                                parameters:nil
+                         failure:(void (^)(ResponseError *error))failure {
+    DLog(@"savePurchaseInfoToServer");
+    
+    [[NNHttpClient sharedClient] postAtPath:kPathFinishOrder
+                                 parameters:@{@"order_id": orderId, @"token": token, @"receipt-data": purchasedReceipt}
                              responseClass:nil
                                    success:^(id<Jsonable> response) {
                                        [self savePurchaseInfoToLocal:orderId token:token receipt:purchasedReceipt timeStamp:timeStamp notified:YES];
@@ -119,9 +123,9 @@ static NSString *const kNotifiedKey = @"notified";
                                        }
                                    }
                                    failure:^(ResponseError *error) {
-                                       [self savePurchaseInfoToLocal:orderId token:token receipt:purchasedReceipt timeStamp:timeStamp notified:NO];
+                                       [self savePurchaseInfoToLocal:orderId token:token receipt:purchasedReceipt timeStamp:timeStamp notified:error.errorCode > ERROR_UNPREDEFINED];
                                        if (failure) {
-                                           failure();
+                                           failure(error);
                                        }
                                    }];
 
@@ -134,10 +138,13 @@ static NSString *const kNotifiedKey = @"notified";
                                             kTableName, kNotifiedKey]];
         if ([rs next]) {
             BOOL hasNext = [rs hasAnotherRow];
+            DLog(@"hasNext:%d", hasNext);
+            
             void (^success)() = ^{
                 if (hasNext) {
                     [self commitUnnotifiedInfo:done];
                 } else {
+                    [rs close];
                     if (done) {
                         done();
                     }
@@ -150,7 +157,10 @@ static NSString *const kNotifiedKey = @"notified";
                                  timeStamp:[rs stringForColumn:kTimeKey]
                                    success:success
                                    failure:done];
+            [rs close];
         } else {
+            [rs close];
+            
             if (done) {
                 done();
             }

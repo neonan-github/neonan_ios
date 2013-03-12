@@ -18,6 +18,7 @@
 //(-1, "Invliad parameters!", HttpResponseStatus.BAD_REQUEST),
 //(-2, "Method not implemented!", HttpResponseStatus.NOT_IMPLEMENTED),
 //(-3, "Server error!", HttpResponseStatus.INTERNAL_SERVER_ERROR);
+#define ERROR_UNPREDEFINED -4 
 
 @interface ResponseError : NSObject <Jsonable>
 

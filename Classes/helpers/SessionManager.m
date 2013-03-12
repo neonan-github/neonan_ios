@@ -229,7 +229,7 @@ static NSString *const kLoginOptionKey = @"login_option";
         NSLog(@"login fail:%@", [error localizedDescription]);
         if (failure) {
             NSString *errorMessage = [error localizedDescription];
-            failure([[ResponseError alloc] initWithCode:-4 andMessage:errorMessage]);
+            failure([[ResponseError alloc] initWithCode:ERROR_UNPREDEFINED andMessage:errorMessage]);
         }
     };
     
