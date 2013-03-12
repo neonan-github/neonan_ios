@@ -52,6 +52,8 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
     self.view.backgroundColor = DarkThemeColor;
+    
+    _buyButton.hidden = !_userInfoModel;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -111,12 +113,15 @@
     }
     
     _nameLabel.text = _userInfoModel.username;
-    DLog(@"name:%@", _userInfoModel.username);
     
     [self displayVip:_userInfoModel.isVip level:_userInfoModel.level];
     [self displayScore:_userInfoModel.point];
     [self displayExperience:_userInfoModel.exp];
     [self displayRank:_userInfoModel.rank];
+    
+    [_buyButton setBackgroundImage:[UIImage imageFromFile:_userInfoModel.isVip ? @"bg_btn_renew_vip.png" : @"bg_btn_buy_vip.png"]
+                          forState:UIControlStateNormal];
+    _buyButton.hidden = NO;
 }
 
 - (void)displayVip:(BOOL)vip level:(NSInteger)level {
