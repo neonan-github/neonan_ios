@@ -36,6 +36,16 @@
     return inside;
 }
 
+- (void)setFavorited:(BOOL)favorited {
+    [_favButton setTitle:favorited ? @"取消" : @"收藏" forState:UIControlStateNormal];
+    
+    [_favButton setTitleColor:favorited ? HEXCOLOR(0x0095ff) : [UIColor whiteColor] forState:UIControlStateNormal];
+    [_favButton setTitleColor:!favorited ? HEXCOLOR(0x0095ff) : [UIColor whiteColor] forState:UIControlStateHighlighted];
+    
+    [_favButton setImage:[UIImage imageNamed:favorited ? @"icon_fav_highlighted.png" : @"icon_fav_normal.png"] forState:UIControlStateNormal];
+    [_favButton setImage:[UIImage imageNamed:!favorited ? @"icon_fav_highlighted.png" : @"icon_fav_normal.png"] forState:UIControlStateHighlighted];
+}
+
 #pragma mark - Private methods
 
 - (void)setUp {

@@ -298,6 +298,23 @@ static NSString * const kDirectionRight = @"1";
     }];
 }
 
+- (void)requestFavorites:(NSString *)contentId up:(BOOL)up {
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    [sessionManager requsetToken:self success:^(NSString *token) {
+        NSDictionary *parameters = up ? @{@"token": token, @"content_id": contentId} : @{@"token": token, @"content_id": contentId, @"cancel": @"true"};
+        
+        [[NNHttpClient sharedClient] postAtPath:kPathDoFav parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+            if ([contentId isEqualToString:[_contentId description]]) {
+                _dataModel.favorited = up;
+                _moreActionView.favorited = up;
+            }
+            
+        } failure:^(ResponseError *error) {
+            NSLog(@"error:%@", error.message);
+        }];
+    }];
+}
+
 - (void)publishComment:(NSString *)comment withContentId:(NSString *)contentId {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
@@ -370,6 +387,8 @@ static NSString * const kDirectionRight = @"1";
     _titleLabel.text = _contentTitle;
     _titleLabel.hidden = NO;
     
+    _moreActionView.favorited = _dataModel.favorited;
+    
     _extraInfoLabel.text = [NSString stringWithFormat:@"%@ 编辑：%@", _dataModel.date, _dataModel.author];
     _extraInfoLabel.hidden = NO;
     
@@ -408,6 +427,7 @@ static NSString * const kDirectionRight = @"1";
     if (!_moreActionView) {
         _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(245, 40, 68, 53)];
         [_moreActionView.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+        [_moreActionView.favButton addTarget:self action:@selector(doFav) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return _moreActionView;
@@ -446,6 +466,16 @@ static NSString * const kDirectionRight = @"1";
     _shareHelper.shareUrl = _dataModel.shareUrl;
     _shareHelper.shareImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[self parseImageUrl:_dataModel.content]]]];
     [_shareHelper showShareView];
+}
+
+- (void)doFav {
+    if (!_dataModel) {
+        return;
+    }
+    
+    BOOL up = !_dataModel.favorited;
+    
+    [self requestFavorites:[_contentId description] up:up];
 }
 
 - (void)publish:(UIButton *)button {

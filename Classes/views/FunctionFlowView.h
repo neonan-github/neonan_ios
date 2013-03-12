@@ -13,4 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
 @property (weak, nonatomic) IBOutlet UIButton *favButton;
 
+@property (nonatomic, assign) BOOL favorited;
+
 @end

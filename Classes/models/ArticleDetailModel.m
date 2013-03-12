@@ -19,8 +19,15 @@
     DCObjectMapping *urlMapping = [DCObjectMapping mapKeyPath:@"url" toAttribute:@"shareUrl" onClass:self];
     [config addObjectMapping:urlMapping];
     
+    DCObjectMapping *favMapping = [DCObjectMapping mapKeyPath:@"fav_status" toAttribute:@"favorited" onClass:self];
+    [config addObjectMapping:favMapping];
+    
     DCKeyValueObjectMapping *parser = [DCKeyValueObjectMapping mapperForClass:self andConfiguration:config];
     return [parser parseDictionary:JSON];
+}
+
+- (BOOL)favorited {
+    return _favorited && [[SessionManager sharedManager] isLoggedIn];
 }
 
 - (NSString *)date {

@@ -89,6 +89,7 @@ FOUNDATION_EXPORT NSString *const kPathPeopleVote;
 FOUNDATION_EXPORT NSString *const kPathAddPoint;
 FOUNDATION_EXPORT NSString *const kPathCreateOrder;
 FOUNDATION_EXPORT NSString *const kPathGetUserInfo;
+FOUNDATION_EXPORT NSString *const kPathDoFav;
 
 FOUNDATION_EXPORT NSString *const kPathNeoNanSignUp;
 FOUNDATION_EXPORT NSString *const kPathNeoNanLogin;
