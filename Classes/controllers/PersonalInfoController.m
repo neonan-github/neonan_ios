@@ -10,7 +10,11 @@
 #import "InfoEditController.h"
 #import "PurchaseVIPController.h"
 
+#import "UserInfoModel.h"
+
 #import <TTTAttributedLabel.h>
+#import <SVProgressHUD.h>
+#import <UIImageView+WebCache.h>
 
 @interface PersonalInfoController ()
 
@@ -21,8 +25,10 @@
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *experienceLabel;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *rankLabel;
-
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
+
+@property (nonatomic, strong) UserInfoModel *userInfoModel;
+@property (nonatomic, strong) UIImage *avatarImage;
 
 @end
 
@@ -46,11 +52,16 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
     self.view.backgroundColor = DarkThemeColor;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
-    [self displayVip:NO level:2];
-    [self displayScore:1234];
-    [self displayExperience:123456];
-    [self displayRank:11];
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self requestUserInfo];
+    });
 }
 
 - (void)cleanUp {
@@ -64,10 +75,48 @@
     self.buyButton = nil;
 }
 
+#pragma mark - Private Request related
+
+- (void)requestUserInfo {
+    [SVProgressHUD showWithStatus:@"正在获取信息"];
+    [[SessionManager sharedManager] requsetToken:self success:^(NSString *token) {
+        [[NNHttpClient sharedClient] getAtPath:kPathGetUserInfo
+                                     parameters:@{@"token" : token}
+                                  responseClass:[UserInfoModel class]
+                                        success:^(id<Jsonable> response) {
+                                            [SVProgressHUD dismiss];
+                                            self.userInfoModel = response;
+                                            [self updateData];
+                                        }
+                                        failure:^(ResponseError *error) {
+                                            NSLog(@"error:%@", error.message);
+                                            [SVProgressHUD dismiss];
+                                            [UIHelper alertWithMessage:error.message];
+                                        }];
+    }];
+}
+
 #pragma mark - Private methods 
 
 - (void)close {
     [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)updateData {
+    if (_avatarImage) {
+        _avatarView.image = _avatarImage;
+    } else {
+        [_avatarView setImageWithURL:[NSURL URLWithString:_userInfoModel.avatar]
+                    placeholderImage:[UIImage imageNamed:@"img_default_avatar.jpg"]];
+    }
+    
+    _nameLabel.text = _userInfoModel.username;
+    DLog(@"name:%@", _userInfoModel.username);
+    
+    [self displayVip:_userInfoModel.isVip level:_userInfoModel.level];
+    [self displayScore:_userInfoModel.point];
+    [self displayExperience:_userInfoModel.exp];
+    [self displayRank:_userInfoModel.rank];
 }
 
 - (void)displayVip:(BOOL)vip level:(NSInteger)level {
@@ -107,7 +156,18 @@
 }
 
 - (IBAction)editInfo:(id)sender {
+    if (!_userInfoModel) {
+        return;
+    }
+    
     InfoEditController *controller = [[InfoEditController alloc] init];
+    controller.avatarImage = _avatarView.image;
+    controller.nickName = _userInfoModel.username;
+    controller.infoChangedBlock = ^(UIImage *avatarImage, NSString *name) {
+        _avatarView.image = avatarImage;
+        _nameLabel.text = name;
+    };
+    
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.8f];
     [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.view.window cache:NO];

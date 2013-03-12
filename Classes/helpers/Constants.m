@@ -11,8 +11,10 @@ NSString *const kPathPeopleInfo = @"neonan/subject/people";
 NSString *const kPathNearPeople = @"neonan/subject/near_people";
 NSString *const kPathCreateOrder = @"neonan/create_order";
 NSString *const kPathAddPoint = @"neonan/add_point";
+NSString *const kPathGetUserInfo = @"neonan/userinfo";
 
 NSString *const kPathNeoNanSignUp = @"api/register";
 NSString *const kPathNeoNanLogin = @"api/login";
 NSString *const kPath3rdLogin = @"api/login3rd";
 NSString *const kPathPeopleVote = @"api/vote";
+NSString *const kPathUpdateUserInfo = @"api/update_userinfo";

@@ -10,4 +10,8 @@
 
 @interface InfoEditController : NNViewController
 
+@property (nonatomic, strong) UIImage *avatarImage;
+@property (nonatomic, copy) NSString *nickName;
+@property (nonatomic, copy) void (^infoChangedBlock)(UIImage *avatarImage, NSString *name);
+
 @end
