@@ -217,7 +217,7 @@ static NSString *const kLoginOptionKey = @"login_option";
     signer.showType = ShowTypeModal;
     signer.rootViewController = controller;
     signer.successBlock = ^(NSString *uid, NSString *userName, NSString *avatarUrl) {
-        NSLog(@"login success:uid:%@ name:%@ avatar:%@", uid, userName, avatarUrl);
+        DLog(@"login success:uid:%@ name:%@ avatar:%@", uid, userName, avatarUrl);
         [self signWithUID:uid
                 andSource:[SignHelper sourceString:platform]
               andUserName:userName
@@ -226,7 +226,7 @@ static NSString *const kLoginOptionKey = @"login_option";
                   failure:failure];
     };
     signer.failureBlock = ^(NSError *error) {
-        NSLog(@"login fail:%@", [error localizedDescription]);
+        DLog(@"login fail:%@", [error localizedDescription]);
         if (failure) {
             NSString *errorMessage = [error localizedDescription];
             failure([[ResponseError alloc] initWithCode:ERROR_UNPREDEFINED andMessage:errorMessage]);

@@ -100,7 +100,7 @@
 #pragma mark - UIWebViewDelegate methods
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"webViewDidFinishLoad");
+    DLog(@"webViewDidFinishLoad");
 //    CGFloat contentWidth = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.clientWidth;"] floatValue];
 //    CGFloat contentHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.clientHeight;"] floatValue];
 //    NSLog(@"width:%f height:%f", contentWidth, contentHeight);
@@ -145,7 +145,7 @@
             if (self.isVisible) {
                 [UIHelper alertWithMessage:error.message];
             }
-            NSLog(@"error:%@", error.message);
+            DLog(@"error:%@", error.message);
         }];
     }
 }

@@ -100,7 +100,7 @@
 
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSString *url = request.URL.absoluteString;
-    NSLog(@"url = %@", url);
+    DLog(@"url = %@", url);
     
     NSString *appRedirectURI = _params[@"redirect_uri"];
     NSString *siteRedirectURI = [NSString stringWithFormat:@"%@%@", kSinaWeiboSDKOAuth2APIDomain, appRedirectURI];

@@ -116,7 +116,7 @@ UIActionSheetDelegate>
                                             [self close];
                                         }
                                         failure:^(ResponseError *error) {
-                                            NSLog(@"error:%@", error.message);
+                                            DLog(@"error:%@", error.message);
                                             if (error.errorCode == ERROR_UNPREDEFINED) {
                                                 [UIHelper alertWithMessage:error.message];
                                             } else {

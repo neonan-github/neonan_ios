@@ -228,7 +228,7 @@
         
         [self close];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         [SVProgressHUD dismiss];
         [UIHelper alertWithMessage:error.message];
     }];
@@ -260,7 +260,7 @@
                                            
                                            [self close:YES];
                                        } failure:^(ResponseError *error) {
-                                           NSLog(@"error:%@", error.message);
+                                           DLog(@"error:%@", error.message);
                                            //                                           [UIHelper alertWithMessage:error.message];
                                            [SVProgressHUD showErrorWithStatus:@"登录失败"];
                                        }];

@@ -117,7 +117,7 @@
             CGRect frame = view.frame;
             frame.origin.x = self.frame.size.width - view.frame.size.width;
             view.frame = frame;
-            NSLog(@"rightView frame:%f %f %f %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+            DLog(@"rightView frame:%f %f %f %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
             
             _rightView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
             [self addSubview:_rightView];
@@ -155,7 +155,7 @@
         [self resignTextView];
     }
     
-    NSLog(@"isActive:%@", self.isActive ? @"YES" : @"NO");
+    DLog(@"isActive:%@", self.isActive ? @"YES" : @"NO");
     return self.isActive ? YES : inside;
 }
 
@@ -244,7 +244,7 @@
             _doneButton.enabled = NO;
         }
         
-        NSLog(@"positon changed:%f %f", oldY, newY);
+        DLog(@"positon changed:%f %f", oldY, newY);
     }
 }
 

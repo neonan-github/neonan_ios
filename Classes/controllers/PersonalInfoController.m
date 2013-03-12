@@ -91,7 +91,7 @@
                                             [self updateData];
                                         }
                                         failure:^(ResponseError *error) {
-                                            NSLog(@"error:%@", error.message);
+                                            DLog(@"error:%@", error.message);
                                             [SVProgressHUD dismiss];
                                             [UIHelper alertWithMessage:error.message];
                                         }];

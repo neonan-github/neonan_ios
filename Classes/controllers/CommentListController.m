@@ -138,7 +138,7 @@ HPGrowingTextViewDelegate>
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"cellForRowAtIndexPath");
+    DLog(@"cellForRowAtIndexPath");
     
     static NSString *cellIdentifier = @"Cell";
     
@@ -170,7 +170,7 @@ HPGrowingTextViewDelegate>
 #pragma mark - UITableViewDelegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"didSelectRowAtIndexPath:%@", indexPath);
+    DLog(@"didSelectRowAtIndexPath:%@", indexPath);
     
     CommentItem *comment = [_dataModel.items objectAtIndex:indexPath.row];
     comment.expanded = !comment.expanded;
@@ -314,7 +314,7 @@ HPGrowingTextViewDelegate>
         
         [self updateTableView:requestType];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
         }
@@ -340,7 +340,7 @@ HPGrowingTextViewDelegate>
             
             [_tableView.pullToRefreshView triggerRefresh];
         } failure:^(ResponseError *error) {
-            NSLog(@"error:%@", error.message);
+            DLog(@"error:%@", error.message);
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if (self.isVisible) {
                 [UIHelper alertWithMessage:error.message];

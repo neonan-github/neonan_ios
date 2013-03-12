@@ -226,7 +226,7 @@ static NSString *const kTypeKey = @"type";
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self updateData];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
@@ -248,7 +248,7 @@ static NSString *const kTypeKey = @"type";
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self updateData];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
@@ -261,7 +261,7 @@ static NSString *const kTypeKey = @"type";
     
     [[NNHttpClient sharedClient] getAtPath:kPathPeopleVote parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
     }];
 }
 

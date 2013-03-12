@@ -520,9 +520,9 @@ headerView = _headerView;
     [[NNHttpClient sharedClient] getAtPath:kPathSlideShow parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
         self.slideShowModel = (MainSlideShowModel *)response;
         [self updateSlideShow];
-        NSLog(@"requestForSlideShow response count:%u", _slideShowModel.list.count);
+        DLog(@"requestForSlideShow response count:%u", _slideShowModel.list.count);
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
     }];
 }
 
@@ -542,7 +542,7 @@ headerView = _headerView;
         }
         
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
         }
@@ -589,7 +589,7 @@ headerView = _headerView;
             [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:itemIndex inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
     }];
 }
 

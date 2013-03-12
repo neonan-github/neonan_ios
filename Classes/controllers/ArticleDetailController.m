@@ -273,7 +273,7 @@ static NSString * const kDirectionRight = @"1";
                                        }
                                    }
                                    failure:^(ResponseError *error) {
-                                       NSLog(@"error:%@", error.message);
+                                       DLog(@"error:%@", error.message);
                                        if (self.isVisible) {
                                            [UIHelper alertWithMessage:error.message];
                                        }
@@ -293,7 +293,7 @@ static NSString * const kDirectionRight = @"1";
         
         [self onDetailFetched:response];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
         }
@@ -312,7 +312,7 @@ static NSString * const kDirectionRight = @"1";
             }
             
         } failure:^(ResponseError *error) {
-            NSLog(@"error:%@", error.message);
+            DLog(@"error:%@", error.message);
         }];
     }];
 }
@@ -334,7 +334,7 @@ static NSString * const kDirectionRight = @"1";
             
             [EncourageView displayScore:EncourageScoreComment at:CGPointMake(CompatibleScreenWidth / 2, 100)];
         } failure:^(ResponseError *error) {
-            NSLog(@"error:%@", error.message);
+            DLog(@"error:%@", error.message);
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if (self.isVisible) {
                 [UIHelper alertWithMessage:error.message];

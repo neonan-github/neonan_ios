@@ -133,7 +133,7 @@
         
         [self performSelector:@selector(updateTableView:) withObject:@(requestType) afterDelay:0.3];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         if (requestType == RequestTypeRefresh) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         }

@@ -515,7 +515,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
                                        }
                                    }
                                    failure:^(ResponseError *error) {
-                                       NSLog(@"error:%@", error.message);
+                                       DLog(@"error:%@", error.message);
                                        if (self.isVisible) {
                                            [UIHelper alertWithMessage:error.message];
                                        }
@@ -530,7 +530,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
             success();
         }
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
         }
@@ -568,7 +568,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
             [self updateData];
         }
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
         }
@@ -587,7 +587,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
             }
             
         } failure:^(ResponseError *error) {
-            NSLog(@"error:%@", error.message);
+            DLog(@"error:%@", error.message);
         }];
     }];
 }
