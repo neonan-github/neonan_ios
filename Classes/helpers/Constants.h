@@ -24,6 +24,10 @@
 #define kRenRenKey                @"8e9fe88002b34076b52ce0ce9c8bead4"
 #define kRenRenSecret             @"331e7f3a593f4c4abd9bc24e6a28f041"
 
+#define kMinuteSeconds            60
+#define kHourSeconds              3600
+#define kDaySeconds               86400
+
 typedef enum {
     RequestTypeRefresh = 0,
     RequestTypeAppend
