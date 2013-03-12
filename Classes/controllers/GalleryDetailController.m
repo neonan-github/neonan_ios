@@ -407,6 +407,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     if (!_moreActionView) {
         _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(245, 40, 68, 53)];
         [_moreActionView.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+        [_moreActionView.favButton addTarget:self action:@selector(doFav) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return _moreActionView;
@@ -414,6 +415,16 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 - (IBAction)showMoreAction:(id)sender {
     [self.view addSubview:self.moreActionView];
+}
+
+- (void)doFav {
+    if (!_dataModel) {
+        return;
+    }
+    
+    BOOL up = !_dataModel.favorited;
+    
+    [self requestFavorites:[_contentId description] up:up];
 }
 
 - (void)share {
@@ -564,6 +575,23 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     }];
 }
 
+- (void)requestFavorites:(NSString *)contentId up:(BOOL)up {
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    [sessionManager requsetToken:self success:^(NSString *token) {
+        NSDictionary *parameters = up ? @{@"token": token, @"content_id": contentId} : @{@"token": token, @"content_id": contentId, @"cancel": @"true"};
+        
+        [[NNHttpClient sharedClient] postAtPath:kPathDoFav parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+            if ([contentId isEqualToString:[_contentId description]]) {
+                _dataModel.favorited = up;
+                self.moreActionView.favorited = up;
+            }
+            
+        } failure:^(ResponseError *error) {
+            NSLog(@"error:%@", error.message);
+        }];
+    }];
+}
+
 #pragma mark - Private UI related
 
 - (void)showProgressView {
@@ -606,6 +634,8 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     [self adjustLayout:_dataModel.title];
     _titleLabel.text = self.contentTitle = _dataModel.title;
     _titleLabel.hidden = NO;
+    
+    self.moreActionView.favorited = _dataModel.favorited;
 }
 
 - (void)clearContents {

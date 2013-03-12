@@ -47,6 +47,14 @@
     return [NSArray arrayWithObject:_brief];
 }
 
+- (void)setFavorited:(BOOL)favorited {
+    _favStatus = favorited ? 1 : 0;
+}
+
+- (BOOL)favorited {
+    return _favStatus && [[SessionManager sharedManager] isLoggedIn];
+}
+
 - (BOOL)voted {
     return _voted && [[SessionManager sharedManager] canAutoLogin];
 }

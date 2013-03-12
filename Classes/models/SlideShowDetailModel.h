@@ -15,4 +15,7 @@
 @property (nonatomic, strong) NSString *shareUrl;
 @property (nonatomic, strong) NSArray *imgUrls;
 @property (nonatomic, assign) BOOL voted;
+@property (assign, nonatomic) NSInteger favStatus;
+
+@property (assign, nonatomic) BOOL favorited;
 @end

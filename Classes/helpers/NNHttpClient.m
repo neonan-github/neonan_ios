@@ -50,11 +50,14 @@ static NSString * const kAPIBaseURLString = @"http://api.neonan.com/";
         responseClass:(Class<Jsonable>)responseClass
               success:(void (^)(id<Jsonable> response))success
               failure:(void (^)(ResponseError *error))failure {
+    
+    DLog(@"request params:%@", parameters);
+    
     NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:parameters];
     request.timeoutInterval = 20;
     NNJSONRequestOperation *operation = [NNJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         
-        NSLog(@"response json:%@", JSON);
+        DLog(@"response json:%@", JSON);
         
         if ([JSON objectForKey:@"error"]) {
             ResponseError *error = [ResponseError parse:[JSON objectForKey:@"error"]];
@@ -78,7 +81,7 @@ static NSString * const kAPIBaseURLString = @"http://api.neonan.com/";
             NSString *errorMessage = ([self success:response.statusCode] || response.statusCode == 0) ? [error localizedDescription] : @"网络连接失败";
             failure([[ResponseError alloc] initWithCode:-4 andMessage:errorMessage]);
         }
-        NSLog(@"%@", [error localizedDescription]);
+        DLog(@"%@", [error localizedDescription]);
     }];
     
     operation.successCallbackQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);

@@ -144,7 +144,9 @@ static NSString * const kDirectionRight = @"1";
                                                object:nil];
     
     if (!_dataModel) {
-        [self requestForContent:_contentId showHUD:YES];
+        [self fetchDetailInfo:^(NSString *token) {
+            [self requestForContent:_contentId token:token];
+        }];
     }
 }
 
@@ -278,13 +280,13 @@ static NSString * const kDirectionRight = @"1";
                                    }];
 }
 
-- (void)requestForContent:(NSString *)contentId showHUD:(BOOL)showHUD {
-    if (showHUD) {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    }
+- (void)requestForContent:(NSString *)contentId token:(NSString *)token {
+    NSMutableDictionary *parameters = [[NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
+                                contentId, @"content_id", nil] mutableCopy];
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
-                                contentId, @"content_id", nil];
+    if (token) {
+        [parameters setObject:token forKey:@"token"];
+    }
     
     [[NNHttpClient sharedClient] getAtPath:kPathWorkInfo parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -306,7 +308,7 @@ static NSString * const kDirectionRight = @"1";
         [[NNHttpClient sharedClient] postAtPath:kPathDoFav parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
             if ([contentId isEqualToString:[_contentId description]]) {
                 _dataModel.favorited = up;
-                _moreActionView.favorited = up;
+                self.moreActionView.favorited = up;
             }
             
         } failure:^(ResponseError *error) {
@@ -387,7 +389,7 @@ static NSString * const kDirectionRight = @"1";
     _titleLabel.text = _contentTitle;
     _titleLabel.hidden = NO;
     
-    _moreActionView.favorited = _dataModel.favorited;
+    [self.moreActionView setFavorited:_dataModel.favorited];
     
     _extraInfoLabel.text = [NSString stringWithFormat:@"%@ 编辑：%@", _dataModel.date, _dataModel.author];
     _extraInfoLabel.hidden = NO;
