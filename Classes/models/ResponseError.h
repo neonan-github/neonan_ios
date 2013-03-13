@@ -15,10 +15,12 @@
 //(4, "Data not found!", HttpResponseStatus.OK),
 //(5, "Not auth!", HttpResponseStatus.OK),
 //(6, "User has already voted the baby!", HttpResponseStatus.OK),
+//(7, "订单验证失败"） 
 //(-1, "Invliad parameters!", HttpResponseStatus.BAD_REQUEST),
 //(-2, "Method not implemented!", HttpResponseStatus.NOT_IMPLEMENTED),
 //(-3, "Server error!", HttpResponseStatus.INTERNAL_SERVER_ERROR);
 #define ERROR_UNPREDEFINED -4 
+#define ERROR_BAD_ORDER    7
 
 @interface ResponseError : NSObject <Jsonable>
 

@@ -11,6 +11,7 @@
 #import "FMDatabaseQueue.h"
 
 #import "OrderModel.h"
+#import "OrderError.h"
 
 static NSString *const kDBName = @"purchase.db";
 static NSString *const kTableName = @"purchase";
@@ -115,8 +116,17 @@ static NSString *const kNotifiedKey = @"notified";
     
     [[NNHttpClient sharedClient] postAtPath:kPathFinishOrder
                                  parameters:@{@"order_id": orderId, @"token": token, @"receipt-data": purchasedReceipt}
-                             responseClass:nil
+                             responseClass:[OrderError class]
                                    success:^(id<Jsonable> response) {
+                                       OrderError *error = response;
+                                       if (error && error.error) {
+                                           if (failure) {
+                                               failure([[ResponseError alloc] initWithCode:ERROR_BAD_ORDER andMessage:@"验证失败"]);
+                                           }
+                                           
+                                           return;
+                                       }
+                                       
                                        [self savePurchaseInfoToLocal:orderId token:token receipt:purchasedReceipt timeStamp:timeStamp notified:YES];
                                        if (success) {
                                            success();

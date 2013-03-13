@@ -162,7 +162,7 @@
                                                   [alertView show];
                                               }
                                               failure:^(ResponseError *error){
-                                                  if (error.errorCode > ERROR_UNPREDEFINED) {
+                                                  if (error.errorCode == ERROR_BAD_ORDER) {
                                                       [UIHelper alertWithMessage:@"无效的购买信息"];
                                                   } else {
                                                       RIButtonItem *cancelItem = [RIButtonItem item];
