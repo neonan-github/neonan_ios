@@ -13,6 +13,11 @@
 #import "OrderModel.h"
 #import "OrderError.h"
 
+#import <RNEncryptor.h>
+#import <RNDecryptor.h>
+
+#import <NSData+MKBase64.h>
+
 static NSString *const kDBName = @"purchase.db";
 static NSString *const kTableName = @"purchase";
 static NSString *const kIdKey = @"order_id";
@@ -20,6 +25,8 @@ static NSString *const kTokenKey = @"token";
 static NSString *const kReceiptKey = @"receipt";
 static NSString *const kTimeKey = @"time_stamp";
 static NSString *const kNotifiedKey = @"notified";
+
+static NSString *const kEncryptKey = @"d89jf78Mfesu";
 
 @interface PurchaseManager ()
 
@@ -84,6 +91,10 @@ static NSString *const kNotifiedKey = @"notified";
                        notified:(BOOL)notified {
     FMDatabaseQueue *queue = self.dbQueue;
     
+    orderId = [self encryptString:[orderId description] withKey:kEncryptKey];
+    token = [self encryptString:token withKey:kEncryptKey];
+    purchasedReceipt = [self encryptString:purchasedReceipt withKey:kEncryptKey];
+    
     [queue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ TEXT PRIMARY KEY, %@ TEXT NOT NULL, %@ TEXT NOT NULL, %@ TEXT NOT NULL, %@ INTEGER NOT NULL)",
                            kTableName, kIdKey, kTokenKey, kReceiptKey, kTimeKey, kNotifiedKey]];
@@ -112,8 +123,6 @@ static NSString *const kNotifiedKey = @"notified";
                        timeStamp:(NSString *)timeStamp
                          success:(void (^)())success
                          failure:(void (^)(ResponseError *error))failure {
-    DLog(@"savePurchaseInfoToServer");
-    
     [[NNHttpClient sharedClient] postAtPath:kPathFinishOrder
                                  parameters:@{@"order_id": orderId, @"token": token, @"receipt-data": purchasedReceipt}
                              responseClass:[OrderError class]
@@ -161,9 +170,9 @@ static NSString *const kNotifiedKey = @"notified";
                 }
             };
             
-            [self savePurchaseInfoToServer:[rs stringForColumn:kIdKey]
-                                     token:[rs stringForColumn:kTokenKey]
-                                   receipt:[rs stringForColumn:kReceiptKey]
+            [self savePurchaseInfoToServer:[self decryptString:[rs stringForColumn:kIdKey] withKey:kEncryptKey]
+                                     token:[self decryptString:[rs stringForColumn:kTokenKey] withKey:kEncryptKey]
+                                   receipt:[self decryptString:[rs stringForColumn:kReceiptKey] withKey:kEncryptKey]
                                  timeStamp:[rs stringForColumn:kTimeKey]
                                    success:success
                                    failure:done];
@@ -176,6 +185,20 @@ static NSString *const kNotifiedKey = @"notified";
             }
         }
     }];
+}
+
+- (NSString *)encryptString:(NSString *)plaintext withKey:(NSString *)key {
+    NSData *encryptedData = [RNEncryptor encryptData:[plaintext dataUsingEncoding:NSUTF8StringEncoding]
+                                        withSettings:kRNCryptorAES256Settings
+                                            password:key
+                                               error:nil];
+    return [encryptedData base64EncodedString];
+}
+
+- (NSString *)decryptString:(NSString *)encryptedtext withKey:(NSString *)key {
+    NSData* encryptedData = [NSData dataFromBase64String:encryptedtext];
+    NSData *decryptedData = [RNDecryptor decryptData:encryptedData withPassword:key error:nil];
+    return [NSString stringWithUTF8String:[decryptedData bytes]];
 }
 
 @end
