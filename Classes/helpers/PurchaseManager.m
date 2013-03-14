@@ -13,6 +13,8 @@
 #import "OrderModel.h"
 #import "OrderError.h"
 
+#import "MD5.h"
+
 #import <RNEncryptor.h>
 #import <RNDecryptor.h>
 
@@ -89,12 +91,14 @@ static NSString *const kEncryptKey = @"d89jf78Mfesu";
                         receipt:(NSString *)purchasedReceipt 
                       timeStamp:(NSString *)timeStamp
                        notified:(BOOL)notified {
+    // base64加密orderId 以原始orderId的MD5为密钥AES加密token、receipt
+    NSString *orderIdMD5 = [orderId md5];
+    orderId = [[orderId dataUsingEncoding:NSUTF8StringEncoding] base64EncodedString];
+    
+    token = [self encryptString:token withKey:orderIdMD5];
+    purchasedReceipt = [self encryptString:purchasedReceipt withKey:orderIdMD5];
+    
     FMDatabaseQueue *queue = self.dbQueue;
-    
-    orderId = [self encryptString:[orderId description] withKey:kEncryptKey];
-    token = [self encryptString:token withKey:kEncryptKey];
-    purchasedReceipt = [self encryptString:purchasedReceipt withKey:kEncryptKey];
-    
     [queue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ TEXT PRIMARY KEY, %@ TEXT NOT NULL, %@ TEXT NOT NULL, %@ TEXT NOT NULL, %@ INTEGER NOT NULL)",
                            kTableName, kIdKey, kTokenKey, kReceiptKey, kTimeKey, kNotifiedKey]];
@@ -170,9 +174,13 @@ static NSString *const kEncryptKey = @"d89jf78Mfesu";
                 }
             };
             
-            [self savePurchaseInfoToServer:[self decryptString:[rs stringForColumn:kIdKey] withKey:kEncryptKey]
-                                     token:[self decryptString:[rs stringForColumn:kTokenKey] withKey:kEncryptKey]
-                                   receipt:[self decryptString:[rs stringForColumn:kReceiptKey] withKey:kEncryptKey]
+            // base64解密orderId 以orderId的MD5为密钥AES解密token、receipt
+            NSString *orderId = [NSString stringWithUTF8String:[[NSData dataFromBase64String:[rs stringForColumn:kIdKey]] bytes]];
+            NSString *orderIdMD5 = [orderId md5];
+            
+            [self savePurchaseInfoToServer:orderId
+                                     token:[self decryptString:[rs stringForColumn:kTokenKey] withKey:orderIdMD5]
+                                   receipt:[self decryptString:[rs stringForColumn:kReceiptKey] withKey:orderIdMD5]
                                  timeStamp:[rs stringForColumn:kTimeKey]
                                    success:success
                                    failure:done];

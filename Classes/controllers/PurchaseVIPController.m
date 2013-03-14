@@ -109,7 +109,7 @@
 }
 
 - (void)onPurchaseSuccess:(NSString *)orderId receipt:(NSData *)purchasedReceipt {
-    [self syncPurchaseInfo:orderId receipt:[purchasedReceipt base64EncodedString]];
+    [self syncPurchaseInfo:[orderId description] receipt:[purchasedReceipt base64EncodedString]];
     
 //    RIButtonItem *okItem = [RIButtonItem item];
 //    okItem.label = @"确定";
