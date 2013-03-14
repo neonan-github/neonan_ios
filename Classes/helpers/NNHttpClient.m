@@ -12,7 +12,7 @@
 #import "NNJSONRequestOperation.h"
 
 //#ifdef DEBUG
-//static NSString * const kAPIBaseURLString = @"http://192.168.1.174:3000/";
+//static NSString * const kAPIBaseURLString = @"http://192.168.1.244:3000/";
 //#else
 static NSString * const kAPIBaseURLString = @"http://api.neonan.com/";
 //#endif

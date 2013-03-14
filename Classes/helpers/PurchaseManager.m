@@ -178,34 +178,53 @@ static NSString *const kEncryptKey = @"d89jf78Mfesu";
             NSString *orderId = [NSString stringWithUTF8String:[[NSData dataFromBase64String:[rs stringForColumn:kIdKey]] bytes]];
             NSString *orderIdMD5 = [orderId md5];
             
-            [self savePurchaseInfoToServer:orderId
-                                     token:[self decryptString:[rs stringForColumn:kTokenKey] withKey:orderIdMD5]
-                                   receipt:[self decryptString:[rs stringForColumn:kReceiptKey] withKey:orderIdMD5]
-                                 timeStamp:[rs stringForColumn:kTimeKey]
-                                   success:success
-                                   failure:done];
-            [rs close];
-        } else {
-            [rs close];
+            NSString *token = [self decryptString:[rs stringForColumn:kTokenKey] withKey:orderIdMD5];
+            NSString *receipt = [self decryptString:[rs stringForColumn:kReceiptKey] withKey:orderIdMD5];
             
-            if (done) {
-                done();
-            }
+            if (orderId && token && receipt) {
+                [self savePurchaseInfoToServer:orderId
+                                         token:token
+                                       receipt:receipt
+                                     timeStamp:[rs stringForColumn:kTimeKey]
+                                       success:success
+                                       failure:done];
+                [rs close];
+                
+                return;
+            } 
+        }
+     
+        [rs close];
+            
+        if (done) {
+            done();
         }
     }];
 }
 
 - (NSString *)encryptString:(NSString *)plaintext withKey:(NSString *)key {
+    NSError *error = nil;
     NSData *encryptedData = [RNEncryptor encryptData:[plaintext dataUsingEncoding:NSUTF8StringEncoding]
                                         withSettings:kRNCryptorAES256Settings
                                             password:key
-                                               error:nil];
+                                               error:&error];
+    
+    if (error) {
+        return nil;
+    }
+    
     return [encryptedData base64EncodedString];
 }
 
 - (NSString *)decryptString:(NSString *)encryptedtext withKey:(NSString *)key {
+    NSError *error = nil;
     NSData* encryptedData = [NSData dataFromBase64String:encryptedtext];
-    NSData *decryptedData = [RNDecryptor decryptData:encryptedData withPassword:key error:nil];
+    NSData *decryptedData = [RNDecryptor decryptData:encryptedData withPassword:key error:&error];
+    
+    if (error) {
+        return nil;
+    }
+    
     return [NSString stringWithUTF8String:[decryptedData bytes]];
 }
 
