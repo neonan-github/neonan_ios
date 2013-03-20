@@ -10,6 +10,7 @@
 #import "MainController.h"
 
 #import "NNURLCache.h"
+#import "EncourageHelper.h"
 
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
@@ -51,6 +52,8 @@
 #endif
     [MKStoreManager sharedManager];
     
+    [self notifyServerOnActive];
+    
     self.navController = [[NNNavigationController alloc] init];
     self.navController.logoHidden = NO;
     self.window.rootViewController = self.navController;
@@ -78,6 +81,7 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    [self notifyServerOnActive];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -149,6 +153,14 @@
                                                          diskCapacity:1024 * 1024 * 5
                                                              diskPath:nil];
     return URLCache;
+}
+
+- (void)notifyServerOnActive {
+    if ([[SessionManager sharedManager] canAutoLogin]) {
+        [[SessionManager sharedManager] requsetToken:nil success:^(NSString *token) {
+            [EncourageHelper doEncourage:@{@"token": token, @"type_id": @(2)} success:nil];
+        }];
+    }
 }
 
 @end
