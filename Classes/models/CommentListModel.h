@@ -10,8 +10,11 @@
 
 @interface CommentItem : NSObject
 @property (strong, nonatomic) NSString *visitor;
+@property (strong, nonatomic) NSString *avatar;
 @property (strong, nonatomic) NSString *content;
 @property (strong, nonatomic) NSNumber *dateMillis;
+@property (assign, nonatomic) NSInteger level;
+@property (nonatomic, assign, getter = isVip) BOOL vip;
 
 @property (readonly, nonatomic) NSString *date;
 

@@ -15,7 +15,9 @@
 @property (assign, nonatomic) NSInteger commentNum;
 @property (strong, nonatomic) NSString *content;
 @property (strong, nonatomic) NSString *shareUrl;
+@property (assign, nonatomic) NSInteger favStatus;
 
+@property (assign, nonatomic) BOOL favorited;
 @property (readonly, nonatomic) NSString *date;
 @property (copy, nonatomic) NSString *contentId;
 @end

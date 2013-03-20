@@ -10,13 +10,17 @@
 #import <PrettyKit.h>
 
 @interface CommentCell : PrettyTableViewCell
-@property (nonatomic, unsafe_unretained) UILabel *userNameLabel;
-@property (nonatomic, unsafe_unretained) UILabel *timeLabel;
-@property (nonatomic, unsafe_unretained) UILabel *commentLabel;
-@property (nonatomic, unsafe_unretained) UIImageView *arrowView;
+
+@property (nonatomic, weak) UIImageView *avatarView;
+@property (nonatomic, weak) UILabel *userNameLabel;
+@property (nonatomic, weak) UILabel *timeLabel;
+@property (nonatomic, weak) UILabel *commentLabel;
+@property (nonatomic, weak) UIImageView *arrowView;
 @property (nonatomic, assign) BOOL expanded;
 
 + (CGFloat)getContentWidth:(CGFloat)width;
 + (CGFloat)getFixedPartHeight;
 + (UIFont *)getCommentFont;
+
+- (void)setVip:(BOOL)vip andLevel:(NSInteger)level;
 @end

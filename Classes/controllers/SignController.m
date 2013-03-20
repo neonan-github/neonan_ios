@@ -9,15 +9,18 @@
 #import "SignController.h"
 #import "NNNavigationController.h"
 
-#import "SignResult.h"
+#import "LoginResult.h"
+
 #import "SessionManager.h"
+#import "EncourageHelper.h"
 #import "MD5.h"
 
+#import "EncourageView.h"
 #import "NNUnderlinedButton.h"
 
 #import <DCRoundSwitch.h>
-#import <MBProgressHUD.h>
 #import <SSKeychain.h>
+#import <SVProgressHUD.h>
 
 @interface SignController ()
 @property (unsafe_unretained, nonatomic) NNUnderlinedButton *switchTypeButton;
@@ -48,9 +51,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIButton *cancelButton = [UIHelper createBarButton:10];
-    cancelButton.frame = CGRectMake(14, 8, 42, 24);
-    [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+    UIButton *cancelButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
+    cancelButton.frame = CGRectMake(14, 8, 30, 30);
+    cancelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     [cancelButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelButton];
     
@@ -58,8 +61,8 @@
     
     [_actionButton addTarget:self action:@selector(sign:) forControlEvents:UIControlEventTouchUpInside];
     
-    NNUnderlinedButton *switchTypeButton = self.switchTypeButton = [[NNUnderlinedButton alloc] initWithFrame:CGRectMake(250, -2, 67, 44)];
-    switchTypeButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    NNUnderlinedButton *switchTypeButton = self.switchTypeButton = [[NNUnderlinedButton alloc] initWithFrame:CGRectMake(250, -2, 67, 50)];
+    switchTypeButton.titleLabel.font = [UIFont systemFontOfSize:18];
     switchTypeButton.backgroundColor = [UIColor clearColor];
     [switchTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [switchTypeButton setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateHighlighted];
@@ -138,6 +141,14 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
+- (void)close:(BOOL)delay {
+    [self performSelector:@selector(dismissModalViewControllerAnimated:) withObject:@"" afterDelay:delay ? 1 : 0];
+    
+    if (!self.isBeingDismissed) {
+        [self performSelector:@selector(dismissModalViewControllerAnimated:) withObject:@"" afterDelay:delay ? 1.5 : 1];
+    }
+}
+
 - (void)switchType {
     if (_type == signIn) {
         self.type = signUp;
@@ -192,35 +203,75 @@
 }
 
 - (void)signWithEmail:(NSString *)email andPassword:(NSString *)password atPath:(NSString *)path {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    BOOL signUp = [path rangeOfString:@"login"].location == NSNotFound;
+    [SVProgressHUD showWithStatus:signUp ? @"注册中" : @"登录中"];
+    
     password = [password md5];
-    [[SessionManager sharedManager] signWithEmail:email andPassword:password atPath:path success:^(NSString *token) {
-        if (self.rememberSwitch.isOn) {
-            [SSKeychain setPassword:password forService:kServiceName account:email];
-        }
+    
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    sessionManager.allowAutoLogin = _rememberSwitch.isOn;
+    [sessionManager signWithEmail:email andPassword:password atPath:path success:^(NSString *token) {
+        //        if (self.rememberSwitch.isOn) {
+        //            [SSKeychain setPassword:password forService:kServiceName account:email];
+        //        }
         
         if (_success) {
             _success(token);
         }
         
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [SVProgressHUD showSuccessWithStatus:@"登录成功"];
+        
+        [EncourageHelper doEncourage:@{@"token": token, @"type_id": @(signUp ? 1 : 2)} success:^(NSInteger point) {
+            [EncourageView displayScore:point
+                                     at:CGPointMake(CompatibleScreenWidth / 2, 100)];
+        }];
         
         [self close];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        if (self.isVisible) {
-            [UIHelper alertWithMessage:error.message];
-        }
+        DLog(@"error:%@", error.message);
+        [SVProgressHUD dismiss];
+        [UIHelper alertWithMessage:error.message];
     }];
 }
 
 - (void)signUpWithEmail:(NSString *)email andPassword:(NSString *)password {
-    [self signWithEmail:email andPassword:password atPath:@"api/register"];
+    [self signWithEmail:email andPassword:password atPath:kPathNeoNanSignUp];
 }
 
 - (void)signInWithEmail:(NSString *)email andPassword:(NSString *)password {
-    [self signWithEmail:email andPassword:password atPath:@"api/login"];
+    [self signWithEmail:email andPassword:password atPath:kPathNeoNanLogin];
+}
+
+#pragma mark - 3rd Party Login
+
+- (void)login:(ThirdPlatformType)platform {
+    [[SessionManager sharedManager] signWithThirdPlatform:platform
+                                       rootViewController:self success:^(NSString *token) {
+                                           if (_success) {
+                                               _success(token);
+                                           }
+                                           
+                                           [SVProgressHUD showSuccessWithStatus:@"登录成功"];
+                                           
+                                           [EncourageHelper doEncourage:@{@"token": token, @"type_id": @(2)} success:^(NSInteger point) {
+                                               [EncourageView displayScore:point
+                                                                        at:CGPointMake(CompatibleScreenWidth / 2, 100)];
+                                           }];
+                                           
+                                           [self close:YES];
+                                       } failure:^(ResponseError *error) {
+                                           DLog(@"error:%@", error.message);
+                                           //                                           [UIHelper alertWithMessage:error.message];
+                                           [SVProgressHUD showErrorWithStatus:@"登录失败"];
+                                       }];
+}
+
+- (IBAction)loginBySina:(id)sender {
+    [self login:ThirdPlatformSina];
+}
+
+- (IBAction)loginByTencent:(id)sender {
+    [self login:ThirdPlatformTencent];
 }
 
 @end

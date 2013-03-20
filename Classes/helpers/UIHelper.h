@@ -61,10 +61,9 @@ typedef enum {
 + (NSUInteger)computeContentLines:(NSString *)content withWidth:(CGFloat)width andFont:(UIFont *)font;
 + (CGFloat)computeHeightForLabel:(UILabel *)label withText:(NSString *)text;
 
-+ (void)setBackAction:(SEL)action forController:(UIViewController *)controller withImage:(UIImage *)image;
-
-+ (UIButton *)createBarButton:(CGFloat)margin;
-+ (UIButton *)createBackButton:(CustomNavigationBar *)navigationBar;
++ (UIButton *)createBackButton:(UINavigationBar *)navigationBar;
++ (UIButton *)createLeftBarButton:(NSString *)imageName;
++ (UIButton *)createRightBarButton:(NSString *)imageName;
 
 + (void)alertWithMessage:(NSString *)message;
 

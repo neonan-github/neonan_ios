@@ -9,14 +9,39 @@
 #import "CommentListModel.h"
 
 @implementation CommentItem
-@synthesize visitor, dateMillis, content;
+@synthesize visitor, dateMillis, content, avatar, level, vip;
+
+- (NSString *)formateDate:(NSDate *)adjustedDate withDifference:(NSInteger)timeDifference {
+    if (timeDifference < kMinuteSeconds) {
+        return @"刚才";
+    }
+    
+    if (timeDifference < kHourSeconds) {
+        return [NSString stringWithFormat:@"%d分钟前", timeDifference / kMinuteSeconds];
+    }
+    
+    if (timeDifference < kDaySeconds) {
+        return [NSString stringWithFormat:@"%d小时前", timeDifference / kHourSeconds];
+    }
+    
+    if (timeDifference < 10 * kDaySeconds) {
+        return [NSString stringWithFormat:@"%d天前", timeDifference / kDaySeconds];
+    }
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    return [formatter stringFromDate:adjustedDate];
+}
 
 - (NSString *)date {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSTimeZone *tz = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    NSInteger seconds = -[tz secondsFromGMT];
+    NSDate *adjustedDate = [NSDate dateWithTimeIntervalSince1970:([self.dateMillis longLongValue] / 1000 + seconds)];
+    NSInteger timeDifference = [[NSDate date] timeIntervalSinceDate:adjustedDate];
     
-    return [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:([self.dateMillis longLongValue] / 1000)]];
+    return [self formateDate:adjustedDate withDifference:timeDifference];
 }
+
 
 @end
 
@@ -34,6 +59,9 @@
     
     DCObjectMapping *dateMapping = [DCObjectMapping mapKeyPath:@"date" toAttribute:@"dateMillis" onClass:[CommentItem class]];
     [config addObjectMapping:dateMapping];
+    
+    DCObjectMapping *vipMapping = [DCObjectMapping mapKeyPath:@"is_vip" toAttribute:@"vip" onClass:[CommentItem class]];
+    [config addObjectMapping:vipMapping];
     
     DCKeyValueObjectMapping *parser = [DCKeyValueObjectMapping mapperForClass:self andConfiguration:config];
     return [parser parseDictionary:JSON];

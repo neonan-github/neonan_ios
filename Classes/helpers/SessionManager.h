@@ -8,16 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const kServiceName;
-
 @interface SessionManager : NSObject
 
 + (SessionManager *)sharedManager;
 
-- (void)storeToken:(NSString *)token;
-- (NSString *)getToken;// 直接返回token，可能为nil
-- (void)requsetToken:(UIViewController *)controller success:(void (^)(NSString *token))success;// 若token存在，直接返回；否则，请求；
+@property (nonatomic, assign) BOOL allowAutoLogin;
+
+- (BOOL)isLoggedIn;
 - (BOOL)canAutoLogin;
+
+- (void)requsetToken:(UIViewController *)controller success:(void (^)(NSString *token))success;// 若token存在，直接返回；否则，请求；
+
+- (void)signWithThirdPlatform:(ThirdPlatformType)platform
+           rootViewController:(UIViewController *)controller
+                      success:(void (^)(NSString *))success
+                      failure:(void (^)(ResponseError *error))failure;
+
 - (void)signWithEmail:(NSString *)email
           andPassword:(NSString *)password
                atPath:(NSString *)path
@@ -25,6 +31,6 @@ extern NSString *const kServiceName;
               failure:(void (^)(ResponseError *error))failure;
 
 - (void)clear;// 只清除token
-- (void)signOut;// 注销 清除token和保存的帐号
+- (void)logout;// 注销 清除token和保存的帐号
 
 @end

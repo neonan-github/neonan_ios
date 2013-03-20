@@ -11,7 +11,11 @@
 #import "ResponseError.h"
 #import "NNJSONRequestOperation.h"
 
-static NSString * const kAPIBaseURLString = @"http://www.neonan.com:5211/";
+//#ifdef DEBUG
+//static NSString * const kAPIBaseURLString = @"http://192.168.1.244:3000/";
+//#else
+static NSString * const kAPIBaseURLString = @"http://api.neonan.com/";
+//#endif
 
 @implementation NNHttpClient
 
@@ -50,11 +54,14 @@ static NSString * const kAPIBaseURLString = @"http://www.neonan.com:5211/";
         responseClass:(Class<Jsonable>)responseClass
               success:(void (^)(id<Jsonable> response))success
               failure:(void (^)(ResponseError *error))failure {
+    
+    DLog(@"request params:%@", parameters);
+    
     NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:parameters];
     request.timeoutInterval = 20;
     NNJSONRequestOperation *operation = [NNJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         
-        NSLog(@"response json:%@", JSON);
+        DLog(@"response json:%@", JSON);
         
         if ([JSON objectForKey:@"error"]) {
             ResponseError *error = [ResponseError parse:[JSON objectForKey:@"error"]];
@@ -68,7 +75,7 @@ static NSString * const kAPIBaseURLString = @"http://www.neonan.com:5211/";
         }
         
         if (success) {
-            id<Jsonable> response = responseClass ? [responseClass parse:JSON] : nil;
+            id<Jsonable> response = ([JSON allKeys].count < 1) ? nil : (responseClass ? [responseClass parse:JSON] : nil);
             dispatch_sync(dispatch_get_main_queue(), ^{
                 success(response);
             });
@@ -76,9 +83,9 @@ static NSString * const kAPIBaseURLString = @"http://www.neonan.com:5211/";
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (failure) {
             NSString *errorMessage = ([self success:response.statusCode] || response.statusCode == 0) ? [error localizedDescription] : @"网络连接失败";
-            failure([[ResponseError alloc] initWithCode:-4 andMessage:errorMessage]);
+            failure([[ResponseError alloc] initWithCode:ERROR_UNPREDEFINED andMessage:errorMessage]);
         }
-        NSLog(@"%@", [error localizedDescription]);
+        DLog(@"%@", [error localizedDescription]);
     }];
     
     operation.successCallbackQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);

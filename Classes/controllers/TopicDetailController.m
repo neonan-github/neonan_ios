@@ -220,13 +220,13 @@ static NSString *const kTypeKey = @"type";
     
     NSDictionary *parameters = @{@"content_id" : contentId};
     
-    [[NNHttpClient sharedClient] getAtPath:@"api/subject/people" parameters:parameters responseClass:[TopicDetailModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:kPathPeopleInfo parameters:parameters responseClass:[TopicDetailModel class] success:^(id<Jsonable> response) {
         self.dataModel = response;
         
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self updateData];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
@@ -239,7 +239,7 @@ static NSString *const kTypeKey = @"type";
     
     NSDictionary *parameters = @{@"content_id" : detailId, @"subject_id" : topicId, @"direction" : @(next ? 1 : -1)};
     
-    [[NNHttpClient sharedClient] getAtPath:@"api/subject/near_people" parameters:parameters responseClass:[NearTopicDetailsModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:kPathNearPeople parameters:parameters responseClass:[NearTopicDetailsModel class] success:^(id<Jsonable> response) {
         self.dataModel = ((NearTopicDetailsModel *) response).items[0];
         self.chName = _dataModel.chName;
         self.rank = _dataModel.ranking;
@@ -248,7 +248,7 @@ static NSString *const kTypeKey = @"type";
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [self updateData];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
@@ -259,9 +259,9 @@ static NSString *const kTypeKey = @"type";
 - (void)requestVoteForContentId:(NSString *)contentId withResult:(NSArray *)voteResult {
     NSDictionary *parameters = @{@"type" : @"subject", @"content_id" : contentId, @"up" : voteResult[0], @"down" : voteResult[1]};
     
-    [[NNHttpClient sharedClient] getAtPath:@"haha/api/vote" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:kPathPeopleVote parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
     }];
 }
 

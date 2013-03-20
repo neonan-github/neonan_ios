@@ -19,11 +19,6 @@
 
 #import "UIScrollView+SVInfiniteScrolling.h"
 
-typedef enum {
-    RequestTypeRefresh = 0,
-    RequestTypeAppend
-} RequestType;
-
 @interface GridListController () <KKGridViewDataSource, KKGridViewDelegate>
 
 @property (nonatomic, strong) TopicGridsModel *dataModel;
@@ -129,7 +124,7 @@ typedef enum {
     
     NSDictionary *parameters = @{@"content_id" : contentId, @"offset" : @(offset), @"count" : @(30)};
     
-    [[NNHttpClient sharedClient] getAtPath:@"api/subject/people_list" parameters:parameters responseClass:[TopicGridsModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:kPathPeopleList parameters:parameters responseClass:[TopicGridsModel class] success:^(id<Jsonable> response) {
         if (requestType == RequestTypeAppend) {
             [self.dataModel appendMoreData:response];
         } else {
@@ -138,7 +133,7 @@ typedef enum {
         
         [self performSelector:@selector(updateTableView:) withObject:@(requestType) afterDelay:0.3];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         if (requestType == RequestTypeRefresh) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         }

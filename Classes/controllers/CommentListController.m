@@ -26,11 +26,6 @@
 static const NSUInteger kRequestCount = 20;
 static NSString * const kRequestCountString = @"20";
 
-typedef enum {
-    RequestTypeRefresh = 0,
-    RequestTypeAppend
-} RequestType;
-
 @interface CommentListController () <UITableViewDataSource, UITableViewDelegate,
 HPGrowingTextViewDelegate>
 
@@ -143,7 +138,7 @@ HPGrowingTextViewDelegate>
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"cellForRowAtIndexPath");
+    DLog(@"cellForRowAtIndexPath");
     
     static NSString *cellIdentifier = @"Cell";
     
@@ -162,6 +157,8 @@ HPGrowingTextViewDelegate>
     
     cell.timeLabel.text = comment.date;
     
+    [cell setVip:comment.isVip andLevel:comment.level];
+    
     cell.expanded = comment.expanded;
     comment.expandable = [UIHelper computeContentLines:cell.commentLabel.text withWidth:[CommentCell getContentWidth:320] andFont:cell.commentLabel.font] > 2;
     cell.arrowView.hidden = !comment.expandable;
@@ -173,7 +170,7 @@ HPGrowingTextViewDelegate>
 #pragma mark - UITableViewDelegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"didSelectRowAtIndexPath:%@", indexPath);
+    DLog(@"didSelectRowAtIndexPath:%@", indexPath);
     
     CommentItem *comment = [_dataModel.items objectAtIndex:indexPath.row];
     comment.expanded = !comment.expanded;
@@ -308,7 +305,7 @@ HPGrowingTextViewDelegate>
                                 [NSString stringWithFormat:@"%u", offset], @"offset",
                                 kRequestCountString, @"count",  nil];
 
-    [[NNHttpClient sharedClient] getAtPath:@"api/comments_show" parameters:parameters responseClass:[CommentListModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:kPathCommentList parameters:parameters responseClass:[CommentListModel class] success:^(id<Jsonable> response) {
         if (requestType == RequestTypeAppend) {
             [self.dataModel appendMoreData:response];
         } else {
@@ -317,7 +314,7 @@ HPGrowingTextViewDelegate>
         
         [self updateTableView:requestType];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
         }
@@ -335,7 +332,7 @@ HPGrowingTextViewDelegate>
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
                                     contentId, @"content_id", comment, @"content", nil];
         
-        [[NNHttpClient sharedClient] postAtPath:@"api/comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+        [[NNHttpClient sharedClient] postAtPath:kPathPublishComment parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             _articleInfo.commentNum++;
             [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_articleInfo.commentNum].description forState:UIControlStateNormal];
@@ -343,7 +340,7 @@ HPGrowingTextViewDelegate>
             
             [_tableView.pullToRefreshView triggerRefresh];
         } failure:^(ResponseError *error) {
-            NSLog(@"error:%@", error.message);
+            DLog(@"error:%@", error.message);
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if (self.isVisible) {
                 [UIHelper alertWithMessage:error.message];
@@ -364,7 +361,7 @@ HPGrowingTextViewDelegate>
         self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
     }
     
-    _shareHelper.title = _articleInfo.title;
+    _shareHelper.shareText = _articleInfo.title;
     _shareHelper.shareUrl = _articleInfo.shareUrl;
     [_shareHelper showShareView];
 }

@@ -10,4 +10,6 @@
 
 @interface MainController : NNViewController
 
+@property (nonatomic, assign) BOOL showSplash;
+
 @end

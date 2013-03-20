@@ -23,6 +23,14 @@
     return [parser parseDictionary:JSON];
 }
 
+- (void)setFavorited:(BOOL)favorited {
+    _favStatus = favorited ? 1 : 0;
+}
+
+- (BOOL)favorited {
+    return _favStatus && [[SessionManager sharedManager] isLoggedIn];
+}
+
 - (NSString *)date {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];

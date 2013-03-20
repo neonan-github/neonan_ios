@@ -8,17 +8,22 @@
 
 #import "MainController.h"
 #import "NNNavigationController.h"
-#import "BabyDetailController.h"
+#import "GalleryDetailController.h"
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
 #import "GridListController.h"
 #import "SignController.h"
 #import "AboutController.h"
 #import "FeedbackController.h"
+#import "PersonalInfoController.h"
+#import "FavoritesController.h"
+#import "SplashViewController.h"
 
 #import "MainSlideShowModel.h"
 #import "BabyListModel.h"
 #import "CommonListModel.h"
+
+#import "SessionManager.h"
 
 #import "SMPageControl.h"
 #import "HotListCell.h"
@@ -42,17 +47,6 @@ static const NSUInteger kRequestCount = 20;
 static const NSString *kRequestCountString = @"20";
 
 static const NSString *kFilterFlag = @"true";
-
-typedef enum {
-    RequestTypeRefresh = 0,
-    RequestTypeAppend
-} RequestType;
-
-typedef enum {
-    ContentTypeSlide = 0,
-    ContentTypeArticle,
-    ContentTypeVideo
-} ContentType;
 
 @interface MainController () <BabyCellDelegate, SDWebImageManagerDelegate, NNDropDownMenuDelegate,
 SlideShowViewDataSource, SlideShowViewDelegate,
@@ -90,18 +84,14 @@ headerView = _headerView;
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = DarkThemeColor;
     
-    UIButton *navLeftButton = self.navLeftButton = [UIHelper createBarButton:0];
-    [navLeftButton setImage:[UIImage imageFromFile:@"icon_config_normal.png"] forState:UIControlStateNormal];
-    UIImage *highlightedImage = [UIImage imageFromFile:@"icon_config_highlighted.png"];
-    [navLeftButton setImage:highlightedImage forState:UIControlStateHighlighted];
-    [navLeftButton setImage:highlightedImage forState:UIControlStateSelected];
+    UIButton *navLeftButton = self.navLeftButton = [UIHelper createLeftBarButton:@"icon_menu_normal.png"];
     [navLeftButton addTarget:self action:@selector(toggleDropDownMenu) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
-    UIButton *navRightButton = self.navRightButton = [UIHelper createBarButton:5];
-    [navRightButton setTitle:[self stringForType:_type] forState:UIControlStateNormal];
-    [navRightButton addTarget:self action:@selector(switchListType) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
+//    UIButton *navRightButton = self.navRightButton = [UIHelper createBarButton:5];
+//    [navRightButton setTitle:[self stringForType:_type] forState:UIControlStateNormal];
+//    [navRightButton addTarget:self action:@selector(switchListType) forControlEvents:UIControlEventTouchUpInside];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
     
     float layoutY = 0;
     
@@ -173,6 +163,12 @@ headerView = _headerView;
     [self.view addSubview:tableView];
     
     [self addObserver:self forKeyPath:@"tableView.contentOffset" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    if (_showSplash) {
+        self.showSplash = NO;
+        SplashViewController *splashViewController = [[SplashViewController alloc] init];
+        [self presentModalViewController:splashViewController animated:NO];
+    }
 }
 
 - (void)cleanUp {
@@ -203,99 +199,13 @@ headerView = _headerView;
     self.dataModel = nil;
 }
 
-- (void)setType:(SortType)type {
-    if (_type != type) {
-        _type = type;
-        [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
-        [_tableView.pullToRefreshView triggerRefresh];
-    }
-}
-
-- (NSArray *)channelTexts {
-    if (!_channelTexts) {
-        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", /*@"宝贝",*/ @"视频", @"专题", @"女人", nil];
-    }
-    
-    return  _channelTexts;
-}
-
-- (NSArray *)channelTypes {
-    if (!_channelTypes) {
-        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"subject", @"women", nil];
-    }
-    
-    return _channelTypes;
-}
-
-- (NSArray *)menuTexts {
-    if (!_menuTexts) {
-        _menuTexts = @[@"清除缓存", @"意见反馈", @"关于我们", @"登录"];
-    }
-    
-    return _menuTexts;
-}
-
-- (NSArray *)menuIcons {
-    if (!_menuIcons) {
-        _menuIcons = @[@"icon_clear_normal.png", @"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png"];
-    }
-    
-    return _menuIcons;
-}
-
-- (NNDropDownMenu *)dropDownMenu {
-    if (!_dropDownMenu) {
-        _dropDownMenu = [[NNDropDownMenu alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleScreenHeight)];
-        _dropDownMenu.topPadding = NavBarHeight + StatusBarHeight;
-        _dropDownMenu.itemHeight = 40;
-        _dropDownMenu.menuDelegate = self;
-        
-        [self.menuTexts enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
-            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 40)];
-            [item setText:text withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
-            UIImage *iconImage = [UIImage imageFromFile:self.menuIcons[idx]];
-            [item setIconImage:iconImage andHighlightedImage:[iconImage opacity:0.5]];
-            [_dropDownMenu addItem:item];
-        }];
-        
-        __unsafe_unretained MainController *weakSelf = self;
-        __unsafe_unretained NNDropDownMenu *weakMenu = _dropDownMenu;
-        _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
-            switch (index) {
-                case 0: //清除缓存
-                    [weakSelf clearCache];
-                    break;
-                    
-                case 1: //意见反馈
-                    [weakSelf showFeedbackController];
-                    break;
-                    
-                case 2: //关于我们
-                    [weakSelf showAboutController];
-                    break;
-
-                case 3: //登陆注销
-                    [weakSelf sign];
-                    break;
-            }
-            
-            if ([weakMenu isKindOfClass:[NNDropDownMenu class]]) {
-                [weakMenu dismissMenu];
-            }
-        };
-    }
-    
-    SessionManager *sessionManager = [SessionManager sharedManager];
-    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
-    NNMenuItem *signItem = _dropDownMenu.items[3];
-    [signItem setText:tokenAvailable ? @"注销" : @"登录"];
-    
-    return _dropDownMenu;
+- (void)dealloc {
+    [self removeObserver:self forKeyPath:@"tableView.contentOffset"];
 }
 
 #pragma mark - UIViewController life cycle
-- (void)viewWillAppear:(BOOL)animated
-{
+
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
 //    [self updateUserStatus];
@@ -306,28 +216,25 @@ headerView = _headerView;
     if (_slideShowView.carousel.currentItemIndex < 1) {
         [self.slideShowView reloadData];
     }
+    
+    if (!_dataModel) {
+        [_tableView.pullToRefreshView performSelector:@selector(triggerRefresh) withObject:nil afterDelay:0.5];
+    } else {
+        [_tableView reloadData];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [self.slideShowView startAutoScroll:2];
-    
-    if (!_dataModel || !_slideShowModel) {
-        [_tableView.pullToRefreshView triggerRefresh];
-    }
-//    else {
-//        [_tableView reloadData];
-//    }
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     [self.slideShowView stopAutoScroll];
 }
-
 
 #pragma mark - SlideShowViewDataSource methods
 
@@ -457,7 +364,7 @@ headerView = _headerView;
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     navController.logoHidden = NO;
     controller.videoUrl = videoUrl;
-    [self.navigationController presentModalViewController:navController animated:YES];
+    [self presentModalViewController:navController animated:YES];
 }
 
 #pragma mark - NNDropDownMenuDelegate methods
@@ -521,7 +428,7 @@ headerView = _headerView;
 
 - (void)sign {
     SessionManager *sessionManager = [SessionManager sharedManager];
-    BOOL tokenAvailable = [sessionManager getToken] || [sessionManager canAutoLogin];
+    BOOL tokenAvailable = [sessionManager canAutoLogin];
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
@@ -541,7 +448,7 @@ headerView = _headerView;
     okItem.label = @"确定";
     okItem.action = ^
     {
-        [[SessionManager sharedManager] signOut];
+        [[SessionManager sharedManager] logout];
 //        [self updateUserStatus];
     };
     
@@ -555,28 +462,53 @@ headerView = _headerView;
 - (void)showAboutController {
     AboutController *controller = [[AboutController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
-    navController.logoHidden = NO;
     
-    [self.navigationController presentModalViewController:navController animated:YES];
+    [self presentModalViewController:navController animated:YES];
 }
 
 - (void)showFeedbackController {
     FeedbackController *controller = [[FeedbackController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
-    navController.logoHidden = NO;
     
-    [self.navigationController presentModalViewController:navController animated:YES];
+    [self presentModalViewController:navController animated:YES];
+}
+
+- (void)showPersonalInfoController {
+    PersonalInfoController *controller = [[PersonalInfoController alloc] init];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    
+    [self presentModalViewController:navController animated:YES];
+}
+
+- (void)showFavoritesController {
+    FavoritesController *controller = [[FavoritesController alloc] init];
+    NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
+    
+    [self presentModalViewController:navController animated:YES];
 }
 
 - (void)clearCache {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        SDImageCache *imageCache = [SDImageCache sharedImageCache];
-        [imageCache clearMemory];
-        [imageCache clearDisk];
-        [imageCache cleanDisk];
-        
-        [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    });
+    RIButtonItem *cancelItem = [RIButtonItem item];
+    cancelItem.label = @"取消";
+    
+    RIButtonItem *okItem = [RIButtonItem item];
+    okItem.label = @"确定";
+    okItem.action = ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            SDImageCache *imageCache = [SDImageCache sharedImageCache];
+            [imageCache clearMemory];
+            [imageCache clearDisk];
+            [imageCache cleanDisk];
+            
+            [[NSURLCache sharedURLCache] removeAllCachedResponses];
+        });
+    };
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:@"清除缓存？"
+                                               cancelButtonItem:cancelItem
+                                               otherButtonItems:okItem, nil];
+    [alertView show];
 }
 
 #pragma mark - Private Request methods
@@ -585,21 +517,20 @@ headerView = _headerView;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:channel, @"channel",
                                 [NSNumber numberWithUnsignedInteger:MainSlideShowCount], @"count", nil];
     
-    [[NNHttpClient sharedClient] getAtPath:@"api/image_list" parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:kPathSlideShow parameters:parameters responseClass:[MainSlideShowModel class] success:^(id<Jsonable> response) {
         self.slideShowModel = (MainSlideShowModel *)response;
         [self updateSlideShow];
-        NSLog(@"requestForSlideShow response count:%u", _slideShowModel.list.count);
+        DLog(@"requestForSlideShow response count:%u", _slideShowModel.list.count);
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
     }];
 }
 
 - (void)requestForList:(NSDictionary *)parameters withRequestType:(RequestType)requestType {
     BOOL isBabyChannel = [[parameters objectForKey:@"channel"] isEqualToString:@"baby"];
-    NSString *path = @"api/work_list";
     Class responseClass = isBabyChannel ? [BabyListModel class] : [CommonListModel class];
     
-    [[NNHttpClient sharedClient] getAtPath:path parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
+    [[NNHttpClient sharedClient] getAtPath:kPathWorkList parameters:parameters responseClass:responseClass success:^(id<Jsonable> response) {
         if (isBabyChannel == (_channelIndex == kBabyChannelIndex)) {
             if (requestType == RequestTypeAppend) {
                 [self.dataModel appendMoreData:response];
@@ -611,7 +542,7 @@ headerView = _headerView;
         }
         
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
         }
@@ -630,7 +561,7 @@ headerView = _headerView;
                                 kRequestCountString, @"count", kFilterFlag, @"filter", nil];
     
     SessionManager *sessionManager = [SessionManager sharedManager];
-    if (isBabyChannel && ([sessionManager getToken] || [sessionManager canAutoLogin])) {
+    if (isBabyChannel && ([sessionManager canAutoLogin])) {
         [sessionManager requsetToken:self success:^(NSString *token) {
             [parameters setValue:token forKey:@"token"];
             [self requestForList:parameters withRequestType:requestType];
@@ -658,7 +589,7 @@ headerView = _headerView;
             [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:itemIndex inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
     }];
 }
 
@@ -673,6 +604,12 @@ headerView = _headerView;
     }
     
     CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
+    
+    Record *record = [[Record alloc] init];
+    record.contentId = dataItem.contentId;
+    record.contentType = dataItem.contentType;
+    
+    cell.viewed = [[HistoryRecorder sharedRecorder] isRecorded:record];
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl] placeholderImage:[UIImage imageNamed:@"img_common_list_place_holder.png"]];
     cell.titleLabel.text = dataItem.title;
     cell.descriptionLabel.text = dataItem.readableContentType;
@@ -794,16 +731,14 @@ headerView = _headerView;
             [controller setContentId:[dataItem contentId]];
             [controller setContentTitle:[dataItem title]];
             [controller setSortType:_type];
-            [controller setOffset:offset];
             [controller setChannel:[self.channelTypes objectAtIndex:_channelIndex]];
             break;
             
         case ContentTypeSlide:
-            controller = [[BabyDetailController alloc] init];
+            controller = [[GalleryDetailController alloc] init];
             [controller setContentType:[dataItem contentType]];
             [controller setContentId:[dataItem contentId]];
             [controller setSortType:_type];
-            [controller setOffset:offset];
             [controller setChannel:[self.channelTypes objectAtIndex:_channelIndex]];
             
             if ([dataItem isKindOfClass:[BabyItem class]]) {
@@ -816,6 +751,7 @@ headerView = _headerView;
             
         case ContentTypeVideo:
             controller = [[VideoPlayController alloc] init];
+            [controller setContentId:[dataItem contentId]];
             [controller setVideoUrl:[dataItem videoUrl]];
     }
     
@@ -831,6 +767,119 @@ headerView = _headerView;
 - (void)toggleDropDownMenu {
     self.navLeftButton.selected = YES;
     [self.dropDownMenu showMenu];
+}
+
+#pragma mark - Setters & getters
+
+- (void)setType:(SortType)type {
+    if (_type != type) {
+        _type = type;
+        [self.navRightButton setTitle:[self stringForType:type] forState:UIControlStateNormal];
+        [_tableView.pullToRefreshView triggerRefresh];
+    }
+}
+
+- (NSArray *)channelTexts {
+    if (!_channelTexts) {
+        _channelTexts = [NSArray arrayWithObjects:@"首页", @"知道", @"爱玩", /*@"宝贝",*/ @"视频", @"专题", @"女人", nil];
+    }
+    
+    return  _channelTexts;
+}
+
+- (NSArray *)channelTypes {
+    if (!_channelTypes) {
+        _channelTypes = [NSArray arrayWithObjects:@"home", @"know", @"play", /*@"baby",*/ @"video", @"subject", @"women", nil];
+    }
+    
+    return _channelTypes;
+}
+
+- (NSArray *)menuTexts {
+    if (!_menuTexts) {
+        _menuTexts = @[@"个人中心", @"我的收藏", @"意见反馈", @"关于我们", @"清除缓存", @"登录"];
+    }
+    
+    return _menuTexts;
+}
+
+- (NSArray *)menuIcons {
+    if (!_menuIcons) {
+        _menuIcons = @[@"icon_clear_normal.png", @"icon_feedback_normal.png", @"icon_clear_normal.png",
+                       @"icon_feedback_normal.png", @"icon_about_normal.png", @"icon_sign_normal.png"];
+    }
+    
+    return _menuIcons;
+}
+
+- (NNDropDownMenu *)dropDownMenu {
+    if (!_dropDownMenu) {
+        _dropDownMenu = [[NNDropDownMenu alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleScreenHeight)];
+        _dropDownMenu.topPadding = NavBarHeight + StatusBarHeight;
+        _dropDownMenu.itemHeight = 40;
+        _dropDownMenu.menuDelegate = self;
+        
+        [self.menuTexts enumerateObjectsUsingBlock:^(NSString *text, NSUInteger idx, BOOL *stop) {
+            NNMenuItem *item = [[NNMenuItem alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 40)];
+            [item setText:text withColor:[UIColor whiteColor] andHighlightedColor:[UIColor darkGrayColor]];
+            //            UIImage *iconImage = [UIImage imageFromFile:self.menuIcons[idx]];
+            //            [item setIconImage:iconImage andHighlightedImage:[iconImage opacity:0.5]];
+            [_dropDownMenu addItem:item];
+        }];
+        
+        __unsafe_unretained MainController *weakSelf = self;
+        __unsafe_unretained NNDropDownMenu *weakMenu = _dropDownMenu;
+        _dropDownMenu.onItemClicked = ^(NNMenuItem *item, NSUInteger index) {
+            switch (index) {
+                case 0: //个人中心
+                    if ([[SessionManager sharedManager] canAutoLogin]) {
+                        [weakSelf showPersonalInfoController];
+                    } else {
+                        [[SessionManager sharedManager] requsetToken:weakSelf success:^(NSString *token) {
+                            [weakSelf performSelector:@selector(showPersonalInfoController) withObject:nil afterDelay:0.5];
+                        }];
+                    }
+                    break;
+                    
+                case 1: //我的收藏
+                    if ([[SessionManager sharedManager] canAutoLogin]) {
+                        [weakSelf showFavoritesController];
+                    } else {
+                        [[SessionManager sharedManager] requsetToken:weakSelf success:^(NSString *token) {
+                            [weakSelf performSelector:@selector(showFavoritesController) withObject:nil afterDelay:0.5];
+                        }];
+                    }
+                    break;
+                
+                case 2: //意见反馈
+                    [weakSelf showFeedbackController];
+                    break;
+                    
+                case 3: //关于我们
+                    [weakSelf showAboutController];
+                    break;
+                    
+                case 4: //清除缓存
+                    [weakSelf clearCache];
+                    break;
+                    
+                case 5: //登陆注销
+                    [weakSelf sign];
+                    break;
+            }
+            
+            if ([weakMenu isKindOfClass:[NNDropDownMenu class]]) {
+                [weakMenu dismissMenu];
+            }
+        };
+    }
+    
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    BOOL tokenAvailable = [sessionManager canAutoLogin];
+    NNMenuItem *signItem = _dropDownMenu.items[self.menuTexts.count - 1];
+    [signItem setText:tokenAvailable ? @"注销" : @"登录"];
+    
+    return _dropDownMenu;
 }
 
 #pragma mark - KVO

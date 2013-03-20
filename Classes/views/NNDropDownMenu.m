@@ -169,8 +169,7 @@ static const CGFloat kIconPadding = 12;
 
 @implementation NNMenuItem
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
@@ -200,6 +199,13 @@ static const CGFloat kIconPadding = 12;
 - (void)dealloc {
     self.iconView = nil;
     self.textLabel = nil;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    _iconView.hidden = !_iconView.image;
+    _textLabel.x = kIconPadding + (_iconView.hidden ? 0 : (20 + kIconPadding));
 }
 
 - (void)setIconImage:(UIImage *)image andHighlightedImage:(UIImage *)highlightedImage {

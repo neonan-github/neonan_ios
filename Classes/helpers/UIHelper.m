@@ -44,50 +44,61 @@
     controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
 }
 
-+ (UIButton *)createBarButton:(CGFloat)margin
-{
-    UIImage* buttonImage = [[UIImage imageFromFile:@"bg_bar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0.0];
-//    UIImage* buttonHighlightImage = [[UIImage imageFromFile:@"bg_bar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0.0];
-    
-    // Create a custom button
++ (UIButton *)createBarButtonWithWidth:(CGFloat)width andHeight:(CGFloat)height {
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [button setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateHighlighted];
-    [button setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateSelected];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     
-    // Set the title to use the same font and shadow as the standard back button
     button.titleLabel.font = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
-    //    button.titleLabel.textColor = [UIColor whiteColor];
-    //    button.titleLabel.shadowOffset = CGSizeMake(1, 1);
-    //    button.titleLabel.shadowColor = [UIColor lightGrayColor];
-    
-    // Set the break mode to truncate at the end like the standard back button
     button.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-    
-    // Inset the title on the left and right
     button.titleEdgeInsets = UIEdgeInsetsMake(0, 3.0, 0, 3.0);
     
-    // Make the button as high as the passed in image
-    button.frame = CGRectMake(0, 0, buttonImage.size.width + margin * 2, buttonImage.size.height);
+    button.frame = CGRectMake(0, 0, width, height);
     
-    // Set the stretchable images as the background for the button
-    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-//    [button setBackgroundImage:buttonHighlightImage forState:UIControlStateHighlighted];
-//    [button setBackgroundImage:buttonHighlightImage forState:UIControlStateSelected];
+//    [button setBackgroundImage:[[UIImage imageFromFile:@"bg_nav_bar_item_normal.png"] stretchableImageWithLeftCapWidth:16 topCapHeight:14]
+//                      forState:UIControlStateNormal];
+//    [button setBackgroundImage:[[UIImage imageFromFile:@"bg_nav_bar_item_highlighted.png"] stretchableImageWithLeftCapWidth:16 topCapHeight:14]
+//                      forState:UIControlStateHighlighted];
+//    [button setBackgroundImage:[[UIImage imageFromFile:@"bg_nav_bar_item_highlighted.png"] stretchableImageWithLeftCapWidth:16 topCapHeight:14]
+//                      forState:UIControlStateSelected];
     
     return button;
 }
 
-+ (UIButton *)createBackButton:(CustomNavigationBar *)navigationBar {
-    UIImage* buttonImage = [UIImage imageFromFile:@"bg_back_button.png"];
-    UIButton* button = [navigationBar backButtonWith:buttonImage highlight:buttonImage leftCapWidth:16];
++ (UIButton *)createBackButton:(UINavigationBar *)navigationBar {
+    UIButton *button = [UIHelper createLeftBarButton:@"icon_back_normal.png"];
+    [button addTarget:navigationBar action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [button setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateHighlighted];
-    [button setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateSelected];
-    button.contentEdgeInsets = UIEdgeInsetsMake(2, 0, 0, 0);
+    return button;
+}
+
++ (UIButton *)createLeftBarButton:(NSString *)imageName {
+    UIButton *button = [UIHelper createBarButtonWithWidth:30 andHeight:30];
     
-    [navigationBar setText:@"返回" onBackButton:button];
+    CGFloat inset = 0;
+    button.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
+    
+    if (imageName) {
+        UIImage *iconImage = [UIImage imageFromFile:imageName];
+        [button setImage:iconImage forState:UIControlStateNormal];
+//        [button setImage:iconImage forState:UIControlStateHighlighted];
+    }
+    
+    return button;
+}
+
++ (UIButton *)createRightBarButton:(NSString *)imageName {
+    UIButton *button = [UIHelper createBarButtonWithWidth:30 andHeight:30];
+    
+    CGFloat inset = 0;
+    button.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset);
+    
+    if (imageName) {
+        UIImage *iconImage = [UIImage imageFromFile:imageName];
+        [button setImage:iconImage forState:UIControlStateNormal];
+//        [button setImage:iconImage forState:UIControlStateHighlighted];
+    }
     
     return button;
 }

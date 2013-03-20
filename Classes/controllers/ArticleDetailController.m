@@ -10,14 +10,19 @@
 #import "SignController.h"
 #import "CommentListController.h"
 #import "NNNavigationController.h"
-#import "ShareHelper.h"
-
-#import "CommentBox.h"
-#import <UIWebView+RemoveShadow.h>
-#import <MBProgressHUD.h>
-
 #import "NearWorksModel.h"
 #import "ArticleDetailModel.h"
+
+#import "CommentBox.h"
+#import "EncourageView.h"
+#import "FunctionFlowView.h"
+
+#import "EncourageHelper.h"
+#import "ShareHelper.h"
+#import "SessionManager.h"
+
+#import <UIWebView+RemoveShadow.h>
+#import <MBProgressHUD.h>
 
 static NSString *kHtmlTemplate = @"<html> \n"
 "<head> \n"
@@ -43,13 +48,13 @@ static NSString * const kDirectionRight = @"1";
 @property (unsafe_unretained, nonatomic) IBOutlet UIImageView *titleLineView;
 @property (unsafe_unretained, nonatomic) IBOutlet UIWebView *textView;
 @property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
-@property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
+@property (unsafe_unretained, nonatomic) IBOutlet UIButton *actioenButton;
 //@property (strong, nonatomic) IBOutlet UIButton *commentButton;
+@property (nonatomic, readonly) FunctionFlowView *moreActionView;
+
 @property (strong, nonatomic) ShareHelper *shareHelper;
 
 @property (strong, nonatomic) ArticleDetailModel *dataModel;
-@property (strong, nonatomic) NearWorksModel *idModel;
-@property (assign, nonatomic) NSInteger idIndex;
 
 @property (unsafe_unretained, nonatomic) CALayer *cacheLayer;
 @property (assign, nonatomic) BOOL isAnimating;
@@ -60,9 +65,9 @@ static NSString * const kDirectionRight = @"1";
 @end
 
 @implementation ArticleDetailController
+@synthesize moreActionView = _moreActionView;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -70,8 +75,7 @@ static NSString * const kDirectionRight = @"1";
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = DarkThemeColor;
@@ -101,7 +105,6 @@ static NSString * const kDirectionRight = @"1";
     [_commentBox.countButton addTarget:self action:@selector(showComments) forControlEvents:UIControlEventTouchUpInside];
     [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
     
-    [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -111,16 +114,18 @@ static NSString * const kDirectionRight = @"1";
 }
 
 - (void)cleanUp {
+    _moreActionView = nil;
+    
     self.titleLineView = nil;
     self.titleLabel = nil;
     self.extraInfoLabel = nil;
     self.textView = nil;
     self.commentBox = nil;
-    self.shareButton = nil;
+    self.actioenButton = nil;
     self.shareHelper = nil;
     self.cacheLayer = nil;
     
-    self.idModel = nil;
+    self.dataModel = nil;
 }
 
 #pragma mark - UIViewController life cycle
@@ -138,10 +143,10 @@ static NSString * const kDirectionRight = @"1";
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    if (!_idModel) {
-        [self initIdList];
-    } else if (!_dataModel) {
-        [self requestForContent:_contentId showHUD:YES];
+    if (!_dataModel) {
+        [self fetchDetailInfo:^(NSString *token) {
+            [self requestForContent:_contentId token:token];
+        }];
     }
 }
 
@@ -229,55 +234,86 @@ static NSString * const kDirectionRight = @"1";
 
 #pragma mark - Private Request methods
 
-- (void)requestForNearWorks:(BOOL)next success:(void (^)())success {
-    static NSUInteger count = 3;
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
-                                _contentId, @"content_id",
-                                _sortType == SortTypeHotest ? @"hot" : @"new", @"sort_type",
-                                _channel, @"channel",
-                                [NSNumber numberWithUnsignedInteger:_offset], @"offset",
-                                [NSNumber numberWithUnsignedInteger:count], @"count",
-                                next ? @"1" : @"-1", @"direction", @"true", @"filter", nil];
+- (void)fetchDetailInfo:(void (^)(NSString *token))requestBlock {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    [[NNHttpClient sharedClient] getAtPath:@"api/near_work_ids" parameters:parameters responseClass:[NearWorksModel class] success:^(id<Jsonable> response) {
-        @synchronized(_idModel) {
-            if (!next) {
-                self.idIndex = _idIndex + [[((NearWorksModel *)response) items] count];
-            }
-            [_idModel insertMoreData:response withMode:next];
-        }
+    if ([[SessionManager sharedManager] canAutoLogin]) {
+        [[SessionManager sharedManager] requsetToken:self success:^(NSString *token) {
+            requestBlock(token);
+        }];
         
-        if (success) {
-            success();
-        }
+        return;
+    }
+    
+    requestBlock(nil);
+}
+
+- (void)requestNearDetailInfo:(BOOL)next contentId:(NSString *)contentId token:(NSString *)token success:(void (^)())success {
+    NSMutableDictionary *parameters = [@{@"sort_type": _sortType == SortTypeHotest ? @"hot" : @"new",
+                                       @"channel": _channel, @"content_type": @"article",
+                                       @"content_id": _contentId, @"direction": @(next ? 1 : -1)} mutableCopy];
+    if (token) {
+        [parameters setObject:token forKey:@"token"];
+    }
+    
+    [[NNHttpClient sharedClient] getAtPath:kPathNearWork
+                                parameters:parameters
+                             responseClass:[ArticleDetailModel class]
+                                   success:^(id<Jsonable> response) {
+                                       [MBProgressHUD hideHUDForView:self.view animated:YES];
+                                       
+                                       if (response) {
+                                           if (success) {
+                                               success();
+                                           }
+                                           
+                                           [self onDetailFetched:response];
+                                       } else {
+                                           [self performBounce:!next];
+                                       }
+                                   }
+                                   failure:^(ResponseError *error) {
+                                       DLog(@"error:%@", error.message);
+                                       if (self.isVisible) {
+                                           [UIHelper alertWithMessage:error.message];
+                                       }
+                                   }];
+}
+
+- (void)requestForContent:(NSString *)contentId token:(NSString *)token {
+    NSMutableDictionary *parameters = [[NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
+                                contentId, @"content_id", nil] mutableCopy];
+    
+    if (token) {
+        [parameters setObject:token forKey:@"token"];
+    }
+    
+    [[NNHttpClient sharedClient] getAtPath:kPathWorkInfo parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        [self onDetailFetched:response];
     } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
+        DLog(@"error:%@", error.message);
         if (self.isVisible) {
             [UIHelper alertWithMessage:error.message];
         }
     }];
 }
 
-- (void)requestForContent:(NSString *)contentId showHUD:(BOOL)showHUD {
-    if (showHUD) {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    }
-    
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"article", @"content_type",
-                                contentId, @"content_id", [NSNumber numberWithUnsignedInteger:_offset], @"offset",
-                                nil];
-    
-    [[NNHttpClient sharedClient] getAtPath:@"api/work_info" parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+- (void)requestFavorites:(NSString *)contentId up:(BOOL)up {
+    SessionManager *sessionManager = [SessionManager sharedManager];
+    [sessionManager requsetToken:self success:^(NSString *token) {
+        NSDictionary *parameters = up ? @{@"token": token, @"content_id": contentId} : @{@"token": token, @"content_id": contentId, @"cancel": @"true"};
+        
+        [[NNHttpClient sharedClient] postAtPath:kPathDoFav parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+            if ([contentId isEqualToString:[_contentId description]]) {
+                _dataModel.favorited = up;
+                self.moreActionView.favorited = up;
+            }
             
-        self.dataModel = response;
-        _dataModel.contentId = _contentId;
-        [self updateData];
-    } failure:^(ResponseError *error) {
-        NSLog(@"error:%@", error.message);
-        if (self.isVisible) {
-            [UIHelper alertWithMessage:error.message];
-        }
+        } failure:^(ResponseError *error) {
+            DLog(@"error:%@", error.message);
+        }];
     }];
 }
 
@@ -289,14 +325,16 @@ static NSString * const kDirectionRight = @"1";
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
                                     contentId, @"content_id", comment, @"content", nil];
         
-        [[NNHttpClient sharedClient] postAtPath:@"api/comments_create" parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
+        [[NNHttpClient sharedClient] postAtPath:kPathPublishComment parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             _dataModel.commentNum++;
             [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];
             _commentBox.countButton.enabled = _dataModel.commentNum > 0;
             _commentBox.text = @"";
+            
+            [EncourageView displayScore:EncourageScoreComment at:CGPointMake(CompatibleScreenWidth / 2, 100)];
         } failure:^(ResponseError *error) {
-            NSLog(@"error:%@", error.message);
+            DLog(@"error:%@", error.message);
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if (self.isVisible) {
                 [UIHelper alertWithMessage:error.message];
@@ -351,6 +389,8 @@ static NSString * const kDirectionRight = @"1";
     _titleLabel.text = _contentTitle;
     _titleLabel.hidden = NO;
     
+    [self.moreActionView setFavorited:_dataModel.favorited];
+    
     _extraInfoLabel.text = [NSString stringWithFormat:@"%@ 编辑：%@", _dataModel.date, _dataModel.author];
     _extraInfoLabel.hidden = NO;
     
@@ -385,25 +425,34 @@ static NSString * const kDirectionRight = @"1";
 
 #pragma mark - Private methods
 
-- (void)initIdList {
-    if (!_idModel) {
-        self.idModel = [[NearWorksModel alloc] init];
-        NearItem *item = [[NearItem alloc] init];
-        item.contentId = _contentId;
-        item.contentType = @"article";
-        item.offset = _offset;
-        _idModel.items = [NSMutableArray arrayWithObjects:item, nil];
-        
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [self requestForNearWorks:NO success:^{
-            [self requestForNearWorks:YES success:^{
-                NearItem *currentItem = [_idModel.items objectAtIndex:_idIndex];
-                self.offset = [currentItem offset];
-                self.contentId = [currentItem contentId];
-                [self requestForContent:_contentId showHUD:NO];
-            }];
-        }];
+- (FunctionFlowView *)moreActionView {
+    if (!_moreActionView) {
+        _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(245, 40, 68, 53)];
+        [_moreActionView.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
+        [_moreActionView.favButton addTarget:self action:@selector(doFav) forControlEvents:UIControlEventTouchUpInside];
     }
+    
+    return _moreActionView;
+}
+
+- (IBAction)showMoreAction:(id)sender {
+    [self.view addSubview:self.moreActionView];
+}
+
+- (NSString *)parseImageUrl:(NSString *)html {
+    NSRange imgTagRange = [html rangeOfString:@"<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>" options:NSRegularExpressionSearch];
+    if (imgTagRange.location == NSNotFound) {
+        return nil;
+    }
+    
+    NSString *imageTag = [html substringWithRange:imgTagRange];
+    DLog(@"image tag:%@", imageTag);
+    
+    NSString *src = [imageTag stringByReplacingOccurrencesOfString:@"<img[^>]+src\\s*=\\s*['\"]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, imageTag.length)];
+    src = [src stringByReplacingOccurrencesOfString:@"['\"][^>]*>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, src.length)];
+    DLog(@"src:%@", src);
+    
+    return src;
 }
 
 - (void)share {
@@ -415,9 +464,20 @@ static NSString * const kDirectionRight = @"1";
         self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
     }
     
-    _shareHelper.title = _dataModel.title;
+    _shareHelper.shareText = _dataModel.title;
     _shareHelper.shareUrl = _dataModel.shareUrl;
+    _shareHelper.shareImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[self parseImageUrl:_dataModel.content]]]];
     [_shareHelper showShareView];
+}
+
+- (void)doFav {
+    if (!_dataModel) {
+        return;
+    }
+    
+    BOOL up = !_dataModel.favorited;
+    
+    [self requestFavorites:[_contentId description] up:up];
 }
 
 - (void)publish:(UIButton *)button {
@@ -436,6 +496,30 @@ static NSString * const kDirectionRight = @"1";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)onDetailFetched:(id<Jsonable>)response {
+    self.dataModel = response;
+    NSString *contentId = _dataModel.contentId;
+    _contentId = _dataModel.contentId;
+    
+    Record *record = [[Record alloc] init];
+    record.contentType = @"article";
+    record.contentId = contentId;
+    [[HistoryRecorder sharedRecorder] saveRecord:record];
+    
+    __weak ArticleDetailController *weakSelf = self;
+    [EncourageHelper check:contentId contentType:@"article" afterDelay:5
+                    should:^BOOL{
+                        return [[contentId description] isEqualToString:[_contentId description]] &&
+                        [[SessionManager sharedManager] canAutoLogin] && [weakSelf isVisible];
+                    }
+                   success:^(NSInteger point) {
+                       [EncourageView displayScore:point at:CGPointMake(CompatibleScreenWidth / 2, 100)];
+                   }];
+    
+    
+    [self updateData];
+}
+
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer {
     if (_isAnimating || !_dataModel) {
         return;
@@ -443,47 +527,38 @@ static NSString * const kDirectionRight = @"1";
     
     BOOL next = recognizer.direction == UISwipeGestureRecognizerDirectionLeft;
     
-    NSInteger idIndex = _idIndex;
-    idIndex += (next ? 1 : -1);
-    if (idIndex < 0 || idIndex >= _idModel.items.count) {// 到头或尾
-        [self performBounce:!next];
-        return;
-    }
+//    if ((_currentIndex >= _maxIndex && next) || (_currentIndex < 1 && !next)) {// 到头或尾
+//        [self performBounce:!next];
+//        return;
+//    }
+//
+//    self.currentIndex += next ? 1 : -1;
     
-    self.idIndex = idIndex;
-    
-    self.isAnimating = YES;
-    
-    CGFloat viewWidth = self.view.frame.size.width;
-    CGFloat viewHeight = self.view.frame.size.height;
-    
-    CALayer *cacheLayer = self.cacheLayer = [CALayer layer];
-    UIImage *cacheImage = [UIImage imageFromView:self.view];
-    cacheLayer.frame = CGRectMake((next ? -1 : 1) * viewWidth, 0, viewWidth, viewHeight);
-    cacheLayer.contents = (id)cacheImage.CGImage;
-    [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
-    
-    [self clearContents];
-    
-    NearItem *currentItem = [_idModel.items objectAtIndex:_idIndex];
-    self.offset = [currentItem offset];
-    NSString *contentId = self.contentId = [currentItem contentId];
-    if ((idIndex == 0 && !next) || (idIndex == _idModel.items.count - 1 && next)) {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [self requestForNearWorks:next success:^{ // 获取上或下id
-            [self requestForContent:contentId showHUD:NO];
+    [self fetchDetailInfo:^(NSString *token) {
+        [self requestNearDetailInfo:next contentId:_contentId token:token success:^{
+            self.isAnimating = YES;
+            
+            CGFloat viewWidth = self.view.frame.size.width;
+            CGFloat viewHeight = self.view.frame.size.height;
+            
+            CALayer *cacheLayer = self.cacheLayer = [CALayer layer];
+            UIImage *cacheImage = [UIImage imageFromView:self.view];
+            cacheLayer.frame = CGRectMake((next ? -1 : 1) * viewWidth, 0, viewWidth, viewHeight);
+            cacheLayer.contents = (id)cacheImage.CGImage;
+            [self.view.layer insertSublayer:cacheLayer above:self.view.layer];
+            
+            [self clearContents];
+            
+            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
+            //    animation.duration = 5;
+            animation.delegate = self;
+            animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+            animation.fromValue = [NSValue valueWithCGPoint:CGPointMake((next ? 1.5f : -0.5f) * viewWidth, viewHeight / 2)];
+            animation.toValue = [NSValue valueWithCGPoint:CGPointMake(viewWidth / 2, viewHeight / 2)];
+            [self.view.layer addAnimation:animation forKey:@"position"];
         }];
-    } else {
-        [self requestForContent:contentId showHUD:YES];
-    }
+    }];
     
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position"];
-//    animation.duration = 5;
-    animation.delegate = self;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    animation.fromValue = [NSValue valueWithCGPoint:CGPointMake((next ? 1.5f : -0.5f) * viewWidth, viewHeight / 2)];
-    animation.toValue = [NSValue valueWithCGPoint:CGPointMake(viewWidth / 2, viewHeight / 2)];
-    [self.view.layer addAnimation:animation forKey:@"position"];
 }
 
 #pragma mark - CAAnimationDelegate methods

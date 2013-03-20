@@ -10,6 +10,8 @@
 #import "MathHelper.h"
 #import "UrlModel.h"
 
+#import "EncourageHelper.h"
+
 #import <MBProgressHUD.h>
 
 @interface VideoPlayController () <UIWebViewDelegate>
@@ -37,11 +39,12 @@
         UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     } else { //presented
-        UIButton *navLeftButton = [UIHelper createBarButton:5];
-        [navLeftButton setTitle:@"关闭" forState:UIControlStateNormal];
+        UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
         [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     }
+    
+    self.view.backgroundColor = DarkThemeColor;
     
     _webView.delegate = self;
     _webView.hidden = YES;
@@ -52,6 +55,18 @@
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [self requestUrl:^(NSString * url) {
+        Record *record = [[Record alloc] init];
+        record.contentType = @"video";
+        record.contentId = _contentId;
+        [[HistoryRecorder sharedRecorder] saveRecord:record];
+        
+        __weak VideoPlayController *weakSelf = self;
+        [EncourageHelper check:_contentId contentType:@"video" afterDelay:5
+                        should:^BOOL{
+                            return [[SessionManager sharedManager] canAutoLogin] && weakSelf;
+                        }
+                       success:nil];
+        
         self.videoUrl = url;
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self parseVideoUrl:url]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20];
         [_webView loadRequest:request];
@@ -85,7 +100,7 @@
 #pragma mark - UIWebViewDelegate methods
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"webViewDidFinishLoad");
+    DLog(@"webViewDidFinishLoad");
 //    CGFloat contentWidth = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.clientWidth;"] floatValue];
 //    CGFloat contentHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.clientHeight;"] floatValue];
 //    NSLog(@"width:%f height:%f", contentWidth, contentHeight);
@@ -121,7 +136,7 @@
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:_contentId, @"content_id",
                                     @"video", @"content_type", nil];
         
-        [[NNHttpClient sharedClient] getAtPath:@"api/work_info" parameters:parameters responseClass:[UrlModel class] success:^(id<Jsonable> response)
+        [[NNHttpClient sharedClient] getAtPath:kPathWorkInfo parameters:parameters responseClass:[UrlModel class] success:^(id<Jsonable> response)
         {
             if (completion) {
                 completion(((UrlModel *)response).url);
@@ -130,7 +145,7 @@
             if (self.isVisible) {
                 [UIHelper alertWithMessage:error.message];
             }
-            NSLog(@"error:%@", error.message);
+            DLog(@"error:%@", error.message);
         }];
     }
 }

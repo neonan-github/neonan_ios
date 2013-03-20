@@ -109,7 +109,7 @@
 #pragma mark - iCarouselDelegate methods
 
 - (void)carouselWillBeginDecelerating:(iCarousel *)carousel {
-    NSLog(@"carouselWillBeginDecelerating");
+    DLog(@"carouselWillBeginDecelerating");
     if (_previousIndex != carousel.currentItemIndex) {
         [carousel scrollToItemAtIndex:carousel.currentItemIndex animated:YES];
     }
@@ -117,20 +117,20 @@
 }
 
 - (void)carouselDidEndDecelerating:(iCarousel *)carousel {
-    NSLog(@"carouselDidEndDecelerating");
+    DLog(@"carouselDidEndDecelerating");
     [self startAutoScroll:self.slideInterval];
 }
 
 - (void)carouselWillBeginDragging:(iCarousel *)carousel {
     self.startScrollOffset = carousel.scrollOffset;
-    NSLog(@"carouselWillBeginDragging:%f", _startScrollOffset);
+    DLog(@"carouselWillBeginDragging:%f", _startScrollOffset);
     _previousIndex = carousel.currentItemIndex;
     [self stopAutoScroll]; 
 }
 
 - (void)carouselDidEndDragging:(iCarousel *)carousel willDecelerate:(BOOL)decelerate {
     CGFloat endScrollOffset = carousel.scrollOffset;
-    NSLog(@"carouselDidEndDragging:%f", endScrollOffset);
+    DLog(@"carouselDidEndDragging:%f", endScrollOffset);
     
     if (_startScrollOffset == 0.0f && endScrollOffset == 0.0f) {// 已划到头，但继续往左划
         if ([_delegate respondsToSelector:@selector(slideShowView:overSwipWithDirection:)]) {

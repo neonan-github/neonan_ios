@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SHSCore.h"
 
-@interface ShareEditController : NNViewController <SHSOAuthDelegate>
+#import "NNSharer.h"
 
-@property (strong, nonatomic) id shareItem;
+@interface ShareEditController : NNViewController
 
-- (NSString *)getTrackUrl:(NSString *)source trackCB:(BOOL)trackCB site:(NSString *)site;
+@property (nonatomic, strong) NNSharer *sharer;
+
+@property (nonatomic, copy) NSString *shareText;
+@property (nonatomic, copy) NSString *shareUrl;
+@property (nonatomic, strong) UIImage *shareImage;
+
 @end

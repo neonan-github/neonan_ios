@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ShareHelper : NSObject <UIActionSheetDelegate>
-@property (nonatomic, unsafe_unretained) UIViewController *rootViewController;
+@interface ShareHelper : NSObject
 
-@property (copy, nonatomic) NSString *shareUrl;
-@property (copy, nonatomic) NSString *title;
+@property (nonatomic, copy) NSString *shareUrl;
+@property (nonatomic, copy) NSString *shareText;
+@property (nonatomic, strong) UIImage *shareImage;
 
 - (id)initWithRootViewController:(UIViewController *)rootViewController;
 - (void)showShareView;
