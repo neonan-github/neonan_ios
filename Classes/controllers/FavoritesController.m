@@ -23,6 +23,7 @@ static NSString *const kChannel = @"fav";
 
 @property (nonatomic, weak) UILabel *countLabel;
 @property (nonatomic, weak) UITableView *tableView;
+@property (nonatomic, weak) UILabel *noFavoritesHintLabel;
 
 @property (nonatomic, strong) CommonListModel *dataModel;
 
@@ -161,12 +162,27 @@ static NSString *const kChannel = @"fav";
 
 #pragma mark - Private methods
 
+- (UILabel *)noFavoritesHintLabel {
+    if (!_noFavoritesHintLabel) {
+        UILabel *noFavoritesHintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, CompatibleScreenWidth, 20)];
+        self.noFavoritesHintLabel = noFavoritesHintLabel;
+        noFavoritesHintLabel.backgroundColor = [UIColor clearColor];
+        noFavoritesHintLabel.textAlignment = NSTextAlignmentCenter;
+        noFavoritesHintLabel.textColor = [UIColor whiteColor];//RGB(10, 10, 10);
+        noFavoritesHintLabel.text = @"还没有收藏";
+        [self.view addSubview:noFavoritesHintLabel];
+    }
+    
+    return _noFavoritesHintLabel;
+}
+
 - (void)close {
     [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)updateData:(RequestType)requestType {
     _countLabel.text = [NSString stringWithFormat:@"共%d篇", _dataModel.totalCount];
+    self.noFavoritesHintLabel.hidden = _dataModel.totalCount > 0;
     
     [self updateTableView:requestType];
 }
