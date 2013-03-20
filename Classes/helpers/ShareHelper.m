@@ -42,6 +42,14 @@ static const NSUInteger kWCTimelineIndex = 4;
     return self;
 }
 
+- (void)setShareUrl:(NSString *)shareUrl {
+    if ([[SessionManager sharedManager] canAutoLogin]) {
+        _shareUrl = [NSString stringWithFormat:@"%@?uid=%@", shareUrl, [[SessionManager sharedManager] getUID]];
+    } else {
+        _shareUrl = [shareUrl copy];
+    }
+}
+
 - (NSArray *)menuItems {
     return @[@"新浪微博", @"腾讯微博", @"人人网", @"短信分享", @"电子邮件"];
 }

@@ -26,6 +26,7 @@ static NSString *const kLoginOptionKey = @"login_option";
 
 @interface SessionManager ()
 
+@property (nonatomic, copy) NSString *neoId;// neonan uid
 @property (nonatomic, copy) NSString *token;
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, copy) NSString *avatarUrl;
@@ -71,6 +72,10 @@ static NSString *const kLoginOptionKey = @"login_option";
     }
     
     return _token || (account && [Reachability reachabilityForInternetConnection].isReachable);
+}
+
+- (NSString *)getUID {
+    return _neoId;
 }
 
 - (void)requsetToken:(UIViewController *)controller success:(void (^)(NSString *token))success {
@@ -157,6 +162,7 @@ static NSString *const kLoginOptionKey = @"login_option";
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:email, @"email", password, @"password", nil];
     [[NNHttpClient sharedClient] postAtPath:path parameters:parameters responseClass:[LoginResult class] success:^(id<Jsonable> response) {
         LoginResult *result = (LoginResult *)response;
+        self.neoId = result.uid;
         self.token = result.token;
         self.userName = result.userName;
         self.avatarUrl = result.avatar;
@@ -193,6 +199,7 @@ static NSString *const kLoginOptionKey = @"login_option";
     
     [[NNHttpClient sharedClient] postAtPath:kPath3rdLogin parameters:parameters responseClass:[LoginResult class] success:^(id<Jsonable> response) {
         LoginResult *result = (LoginResult *)response;
+        self.neoId = result.uid;
         self.token = result.token;
         self.userName = result.userName ?: userName;
         self.avatarUrl = result.avatar ?: avatar;
