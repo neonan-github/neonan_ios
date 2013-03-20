@@ -17,6 +17,8 @@
 - (BOOL)isLoggedIn;
 - (BOOL)canAutoLogin;
 
+- (NSString *)getUID;
+
 - (void)requsetToken:(UIViewController *)controller success:(void (^)(NSString *token))success;// 若token存在，直接返回；否则，请求；
 
 - (void)signWithThirdPlatform:(ThirdPlatformType)platform

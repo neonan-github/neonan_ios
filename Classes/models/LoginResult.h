@@ -11,6 +11,7 @@
 @interface LoginResult : NSObject <Jsonable>
 
 @property (nonatomic, strong) NSString *token;
+@property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *avatar;
 
