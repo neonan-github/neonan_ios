@@ -16,3 +16,5 @@
 "Data not found!" = "数据不存在";
 "Not auth!" = "尚未登录";
 "User has already voted the baby!" = "已投票";
+
+"Email" = "邮箱地址";
