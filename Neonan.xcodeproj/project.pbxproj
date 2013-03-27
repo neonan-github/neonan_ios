@@ -18,6 +18,7 @@
 		340716E71640ED7D006E40FE /* img_password_input.png in Resources */ = {isa = PBXBuildFile; fileRef = 340716E61640ED7D006E40FE /* img_password_input.png */; };
 		340716F8164128E7006E40FE /* VideoPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340716F6164128E7006E40FE /* VideoPlayController.m */; };
 		34071703164133C3006E40FE /* VideoPlayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34071702164133C3006E40FE /* VideoPlayController.xib */; };
+		3408646D1702912A00823A91 /* NNTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3408646C1702912A00823A91 /* NNTextField.m */; };
 		340A13471631331900E8D594 /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13461631331900E8D594 /* CommentModel.m */; };
 		340A134A1631419600E8D594 /* CommentBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13491631419600E8D594 /* CommentBox.m */; };
 		340A134F163142F100E8D594 /* bg_comment_box.png in Resources */ = {isa = PBXBuildFile; fileRef = 340A134B163142F100E8D594 /* bg_comment_box.png */; };
@@ -385,6 +386,8 @@
 		340716F5164128E7006E40FE /* VideoPlayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayController.h; sourceTree = "<group>"; };
 		340716F6164128E7006E40FE /* VideoPlayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayController.m; sourceTree = "<group>"; };
 		34071702164133C3006E40FE /* VideoPlayController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VideoPlayController.xib; path = Classes/controllers/VideoPlayController.xib; sourceTree = SOURCE_ROOT; };
+		3408646B1702912A00823A91 /* NNTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNTextField.h; sourceTree = "<group>"; };
+		3408646C1702912A00823A91 /* NNTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNTextField.m; sourceTree = "<group>"; };
 		340A13451631331900E8D594 /* CommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentModel.h; sourceTree = "<group>"; };
 		340A13461631331900E8D594 /* CommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentModel.m; sourceTree = "<group>"; };
 		340A13481631419600E8D594 /* CommentBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentBox.h; sourceTree = "<group>"; };
@@ -1885,6 +1888,8 @@
 				348983D116BA5FCD001CFFB6 /* NNTableView.m */,
 				34F7794016DF6ED800744C01 /* NNUnderlinedButton.h */,
 				34F7794116DF6ED800744C01 /* NNUnderlinedButton.m */,
+				3408646B1702912A00823A91 /* NNTextField.h */,
+				3408646C1702912A00823A91 /* NNTextField.m */,
 				348E51AF16E1ED9800E364F3 /* EncourageView.h */,
 				348E51B016E1ED9800E364F3 /* EncourageView.m */,
 				342DA8B616E3531700404730 /* FunctionFlowView.h */,
@@ -2317,6 +2322,7 @@
 				34CA181B16EDEFA5000654AC /* EncourageModel.m in Sources */,
 				3448826D16EECD2D00203846 /* UserInfoModel.m in Sources */,
 				3419ABC716F0890600C460AF /* OrderError.m in Sources */,
+				3408646D1702912A00823A91 /* NNTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

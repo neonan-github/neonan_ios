@@ -17,6 +17,7 @@
 
 #import "EncourageView.h"
 #import "NNUnderlinedButton.h"
+#import "NNTextField.h"
 
 #import <DCRoundSwitch.h>
 #import <SSKeychain.h>
@@ -24,8 +25,8 @@
 
 @interface SignController ()
 @property (unsafe_unretained, nonatomic) NNUnderlinedButton *switchTypeButton;
-@property (unsafe_unretained, nonatomic) IBOutlet UITextField *userTextField;
-@property (unsafe_unretained, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (unsafe_unretained, nonatomic) IBOutlet NNTextField *userTextField;
+@property (unsafe_unretained, nonatomic) IBOutlet NNTextField *passwordTextField;
 @property (unsafe_unretained, nonatomic) IBOutlet UIButton *actionButton;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *rememberPWLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet DCRoundSwitch *rememberSwitch;
@@ -60,6 +61,11 @@
     self.view.backgroundColor = DarkThemeColor;
     
     [_actionButton addTarget:self action:@selector(sign:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _userTextField.placeholderColor = [UIColor darkGrayColor];
+    _userTextField.placeholder = NSLocalizedString(@"Email", @"");
+    
+    _passwordTextField.placeholderColor = [UIColor darkGrayColor];
     
     NNUnderlinedButton *switchTypeButton = self.switchTypeButton = [[NNUnderlinedButton alloc] initWithFrame:CGRectMake(250, -2, 67, 50)];
     switchTypeButton.titleLabel.font = [UIFont systemFontOfSize:18];
