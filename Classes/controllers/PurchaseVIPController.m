@@ -81,11 +81,11 @@
 }
 
 - (NSArray *)productIds {
-    return @[@"com.neonan.Neonan.vip12", @"com.neonan.Neonan.vip6", @"com.neonan.Neonan.vip3", @"com.neonan.Neonan.vip1"];
+    return @[@"com.neonan.Neonan.vip12months", @"com.neonan.Neonan.vip6months", @"com.neonan.Neonan.vip3months", @"com.neonan.Neonan.vip1month"];
 }
 
 - (NSDictionary *)productIdsMapping {
-    return @{@"com.neonan.Neonan.vip12": @"1", @"com.neonan.Neonan.vip6": @"3", @"com.neonan.Neonan.vip3": @"2", @"com.neonan.Neonan.vip1": @"8"};
+    return @{@"com.neonan.Neonan.vip12months": @"1", @"com.neonan.Neonan.vip6months": @"3", @"com.neonan.Neonan.vip3months": @"2", @"com.neonan.Neonan.vip1month": @"8"};
 }
 
 - (void)close {
