@@ -18,6 +18,8 @@
 #import <UIAlertView+Blocks.h>
 #import <SVProgressHUD.h>
 
+static const NSInteger kDefaultRetryTimes = 2;
+
 @interface PurchaseVIPController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -109,7 +111,7 @@
 }
 
 - (void)onPurchaseSuccess:(NSString *)orderId receipt:(NSData *)purchasedReceipt {
-    [self syncPurchaseInfo:[orderId description] receipt:[purchasedReceipt base64EncodedString]];
+    [self syncPurchaseInfo:[orderId description] receipt:[purchasedReceipt base64EncodedString] retryTimesLeft:kDefaultRetryTimes];
     
 //    RIButtonItem *okItem = [RIButtonItem item];
 //    okItem.label = @"确定";
@@ -143,7 +145,7 @@
     [alertView show];
 }
 
-- (void)syncPurchaseInfo:(NSString *)orderId receipt:(NSString *)purchasedReceipt{
+- (void)syncPurchaseInfo:(NSString *)orderId receipt:(NSString *)purchasedReceipt retryTimesLeft:(NSInteger)retryTimesLeft {
     [SVProgressHUD showWithStatus:@"正在验证购买信息" maskType:SVProgressHUDMaskTypeClear];
     
     [[PurchaseManager sharedManager] syncPurchaseInfo:orderId
@@ -154,7 +156,7 @@
                                                   okItem.action = ^{
                                                       [self close];
                                                   };
-        
+                                                  
                                                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                                                                       message:@"验证成功"
                                                                                              cancelButtonItem:nil
@@ -162,9 +164,11 @@
                                                   [alertView show];
                                               }
                                               failure:^(ResponseError *error){
+                                                  DLog(@"retry times:%d", retryTimesLeft);
+                                                  
                                                   if (error.errorCode == ERROR_BAD_ORDER) {
                                                       [UIHelper alertWithMessage:@"无效的购买信息"];
-                                                  } else {
+                                                  } else if (retryTimesLeft == 0){
                                                       RIButtonItem *cancelItem = [RIButtonItem item];
                                                       cancelItem.label = @"取消";
                                                       cancelItem.action = ^{
@@ -174,7 +178,7 @@
                                                       RIButtonItem *retryItem = [RIButtonItem item];
                                                       retryItem.label = @"重试";
                                                       retryItem.action = ^{
-                                                          [self syncPurchaseInfo:orderId receipt:purchasedReceipt];
+                                                          [self syncPurchaseInfo:orderId receipt:purchasedReceipt retryTimesLeft:kDefaultRetryTimes];
                                                       };
                                                       
                                                       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"验证失败"
@@ -182,8 +186,11 @@
                                                                                                  cancelButtonItem:cancelItem
                                                                                                  otherButtonItems:retryItem, nil];
                                                       [alertView show];
+                                                  } else {
+                                                      [self syncPurchaseInfo:orderId receipt:purchasedReceipt retryTimesLeft:retryTimesLeft - 1];
                                                   }
                                               }];
 }
+
 
 @end
