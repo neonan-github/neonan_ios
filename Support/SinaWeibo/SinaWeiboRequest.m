@@ -17,7 +17,7 @@
 
 #import "SinaWeiboRequest.h"
 #import "SinaWeiboConstants.h"
-#import <JSONKit.h>
+#import "JSONKit.h"
 #import "SinaWeibo.h"
 
 #define kSinaWeiboRequestTimeOutInterval   180.0

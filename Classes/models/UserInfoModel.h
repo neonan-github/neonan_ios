@@ -17,6 +17,9 @@
 @property (nonatomic, assign) NSInteger exp;
 @property (nonatomic, assign) NSInteger rank;
 @property (nonatomic, assign) NSInteger level;
+@property (nonatomic, strong) NSNumber *expiration;
 @property (nonatomic, assign, getter = isVip) BOOL vip;
+
+@property (nonatomic, readonly) NSString *expirationText;
 
 @end

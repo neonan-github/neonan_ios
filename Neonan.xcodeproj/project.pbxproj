@@ -356,6 +356,7 @@
 		34E9FDD916646EA500F90A88 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD816646EA500F90A88 /* CoreTelephony.framework */; };
 		34E9FDDB16646F4700F90A88 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E9FDDA16646F4700F90A88 /* PushConfig.plist */; };
 		34F7794216DF6ED800744C01 /* NNUnderlinedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F7794116DF6ED800744C01 /* NNUnderlinedButton.m */; };
+		34FA4759171168120044AB5F /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FA4758171168120044AB5F /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		34FB6A0816B7D7E10020C6A2 /* TopicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34FB6A0716B7D7E10020C6A2 /* TopicCell.m */; };
 		53816AFB16265E9400B0672C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFA16265E9400B0672C /* UIKit.framework */; };
 		53816AFD16265E9400B0672C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53816AFC16265E9400B0672C /* Foundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -905,6 +906,8 @@
 		34E9FDDA16646F4700F90A88 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		34F7794016DF6ED800744C01 /* NNUnderlinedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNUnderlinedButton.h; sourceTree = "<group>"; };
 		34F7794116DF6ED800744C01 /* NNUnderlinedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNUnderlinedButton.m; sourceTree = "<group>"; };
+		34FA4757171168120044AB5F /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		34FA4758171168120044AB5F /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		34FB6A0616B7D7E10020C6A2 /* TopicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicCell.h; sourceTree = "<group>"; };
 		34FB6A0716B7D7E10020C6A2 /* TopicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicCell.m; sourceTree = "<group>"; };
 		53816AF616265E9400B0672C /* Neonan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neonan.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1757,6 +1760,15 @@
 			path = MKStoreKit;
 			sourceTree = "<group>";
 		};
+		34FA4756171168120044AB5F /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				34FA4757171168120044AB5F /* JSONKit.h */,
+				34FA4758171168120044AB5F /* JSONKit.m */,
+			);
+			path = JSONKit;
+			sourceTree = "<group>";
+		};
 		53816AEB16265E9400B0672C = {
 			isa = PBXGroup;
 			children = (
@@ -1844,6 +1856,7 @@
 		53816B2116265FB100B0672C /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				34FA4756171168120044AB5F /* JSONKit */,
 				34E8CF6C16E9D666000079E6 /* MKStoreKit */,
 				34C8A66916E7126700DF79A0 /* Harpy */,
 				3442AA0316E0B2DC000C8F72 /* TCWeiBoSDK */,
@@ -2323,6 +2336,7 @@
 				3448826D16EECD2D00203846 /* UserInfoModel.m in Sources */,
 				3419ABC716F0890600C460AF /* OrderError.m in Sources */,
 				3408646D1702912A00823A91 /* NNTextField.m in Sources */,
+				34FA4759171168120044AB5F /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
