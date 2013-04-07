@@ -9,6 +9,7 @@
 #import "NNHttpClient.h"
 #import <AFJSONRequestOperation.h>
 #import "ResponseError.h"
+#import "OrderError.h"
 #import "NNJSONRequestOperation.h"
 
 //#ifdef DEBUG
@@ -63,7 +64,7 @@ static NSString * const kAPIBaseURLString = @"http://api.neonan.com/";
         
         DLog(@"response json:%@", JSON);
         
-        if ([JSON objectForKey:@"error"]) {
+        if ([JSON objectForKey:@"error"] && responseClass != [OrderError class]) {
             ResponseError *error = [ResponseError parse:[JSON objectForKey:@"error"]];
             if (failure) {
                 dispatch_sync(dispatch_get_main_queue(), ^{

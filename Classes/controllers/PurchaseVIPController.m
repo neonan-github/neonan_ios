@@ -168,6 +168,7 @@ static const NSInteger kDefaultRetryTimes = 2;
                                                   
                                                   if (error.errorCode == ERROR_BAD_ORDER) {
                                                       [UIHelper alertWithMessage:@"无效的购买信息"];
+                                                      [SVProgressHUD dismiss];
                                                   } else if (retryTimesLeft == 0){
                                                       RIButtonItem *cancelItem = [RIButtonItem item];
                                                       cancelItem.label = @"取消";
