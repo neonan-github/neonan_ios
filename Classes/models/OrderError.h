@@ -10,7 +10,7 @@
 
 @interface OrderError : NSObject <Jsonable>
 
-@property (nonatomic, assign) BOOL error;
+@property (nonatomic, assign) NSInteger error;
 @property (nonatomic, assign) NSInteger status;
 
 @end
