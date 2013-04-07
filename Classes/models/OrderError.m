@@ -10,4 +10,11 @@
 
 @implementation OrderError
 
++ (id<Jsonable>)parse:(NSDictionary *)JSON {
+    DCParserConfiguration *config = [DCParserConfiguration configuration];
+    
+    DCKeyValueObjectMapping *parser = [DCKeyValueObjectMapping mapperForClass:self andConfiguration:config];
+    return [parser parseDictionary:JSON];
+}
+
 @end

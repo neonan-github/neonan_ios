@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *experienceLabel;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *rankLabel;
+@property (weak, nonatomic) IBOutlet UILabel *expirationHintLabel;
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 
 @property (nonatomic, strong) UserInfoModel *userInfoModel;
@@ -75,6 +76,7 @@
     self.experienceLabel = nil;
     self.rankLabel = nil;
     self.buyButton = nil;
+    self.expirationHintLabel = nil;
 }
 
 #pragma mark - Private Request related
@@ -119,6 +121,7 @@
     [self displayExperience:_userInfoModel.exp];
     [self displayRank:_userInfoModel.rank];
     
+    _expirationHintLabel.text = _userInfoModel.isVip ? @"到期时间：2015-09-08" : @"";
     [_buyButton setBackgroundImage:[UIImage imageFromFile:_userInfoModel.isVip ? @"bg_btn_renew_vip.png" : @"bg_btn_buy_vip.png"]
                           forState:UIControlStateNormal];
     _buyButton.hidden = NO;
