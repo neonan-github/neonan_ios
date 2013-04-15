@@ -8,6 +8,9 @@
 #warning "This project uses features only available in iOS SDK 3.0 and later."
 #endif
 
+//#define _AFNETWORKING_PREFER_NSJSONSERIALIZATION_
+//defined in Pods.xcodeproj
+
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>

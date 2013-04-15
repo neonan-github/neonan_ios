@@ -185,7 +185,7 @@ static MKStoreManager* _sharedStoreManager;
 #endif
       [_sharedStoreManager requestProductData];
       [[SKPaymentQueue defaultQueue] addTransactionObserver:_sharedStoreManager];
-      [_sharedStoreManager startVerifyingSubscriptionReceipts];
+//      [_sharedStoreManager startVerifyingSubscriptionReceipts];
     });
     
     if([self iCloudAvailable])
@@ -608,28 +608,28 @@ static MKStoreManager* _sharedStoreManager;
             forReceipt:(NSData*) receiptData
          hostedContent:(NSArray*) hostedContent
 {
-  MKSKSubscriptionProduct *subscriptionProduct = [self.subscriptionProducts objectForKey:productIdentifier];
-  if(subscriptionProduct)
-  {
-    // MAC In App Purchases can never be a subscription product (at least as on Dec 2011)
-    // so this can be safely ignored.
-    
-    subscriptionProduct.receipt = receiptData;
-    [subscriptionProduct verifyReceiptOnComplete:^(NSNumber* isActive)
-     {
-       [[NSNotificationCenter defaultCenter] postNotificationName:kSubscriptionsPurchasedNotification
-                                                           object:productIdentifier];
-       
-       [MKStoreManager setObject:receiptData forKey:productIdentifier];
-       if(self.onTransactionCompleted)
-         self.onTransactionCompleted(productIdentifier, receiptData, hostedContent);
-     }
-                                         onError:^(NSError* error)
-     {
-       NSLog(@"%@", [error description]);
-     }];
-  }
-  else
+//  MKSKSubscriptionProduct *subscriptionProduct = [self.subscriptionProducts objectForKey:productIdentifier];
+//  if(subscriptionProduct)
+//  {
+//    // MAC In App Purchases can never be a subscription product (at least as on Dec 2011)
+//    // so this can be safely ignored.
+//    
+//    subscriptionProduct.receipt = receiptData;
+//    [subscriptionProduct verifyReceiptOnComplete:^(NSNumber* isActive)
+//     {
+//       [[NSNotificationCenter defaultCenter] postNotificationName:kSubscriptionsPurchasedNotification
+//                                                           object:productIdentifier];
+//       
+//       [MKStoreManager setObject:receiptData forKey:productIdentifier];
+//       if(self.onTransactionCompleted)
+//         self.onTransactionCompleted(productIdentifier, receiptData, hostedContent);
+//     }
+//                                         onError:^(NSError* error)
+//     {
+//       NSLog(@"%@", [error description]);
+//     }];
+//  }
+//  else
   {
     if(!receiptData) {
       
