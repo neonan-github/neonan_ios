@@ -101,14 +101,6 @@ static Renren *sharedRenren = nil;
     return (self.accessToken != nil && self.expirationDate != nil && self.sessionKey != nil && NSOrderedDescending == [self.expirationDate compare:[NSDate date]]);	
 }
 
--(RenrenPay *)getRenrenPayWithSecret:(NSString *)secret andLocalMem:(BOOL)isUsed
-{
-    RenrenPay *rrPay  = [[[RenrenPay alloc] init] autorelease];
-    [rrPay initPayWithRenren:self andSecretKey:secret andLocalMem:isUsed];
-    
-    return rrPay;
-}
-
 #pragma mark - Private Methods -
 
 /**

@@ -26,12 +26,10 @@
 @protocol RenrenDelegate;
 @protocol RORequestDelegate;
 @protocol RODialogDelegate;
-@protocol RenrenPayDelegate;
 
 @class RORequest;
 @class ROPublishPhotoRequestParam;
 @class ROPasswordFlowRequestParam;
-@class RenrenPay;
 
 @interface Renren: NSObject <RODialogDelegate, RORequestDelegate> {
 	NSString *_accessToken;
@@ -95,14 +93,6 @@
  * 取得登录用户的userID
  */
 - (void)getLoggedInUserId;
-
-/*
- * 获得支付功能对象
- * @param secret APP的secret。
- * @param isUsed 是否使用本地存储。
- * @return 返回RenrenPay对象。
- */
--(RenrenPay *)getRenrenPayWithSecret:(NSString *)secret andLocalMem:(BOOL)isUsed;
 
 /*
  * 提供给其他扩展功能使用，可以发出http请求，取得Json数据
