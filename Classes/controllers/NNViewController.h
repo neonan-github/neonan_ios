@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#import <JASidePanelController.h>
+#import <UIViewController+JASidePanel.h>
+
 @interface NNViewController : UIViewController 
 
 @property (nonatomic, assign, getter = isVisible) BOOL visible;

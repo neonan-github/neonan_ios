@@ -26,6 +26,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "JASidePanelController.h"
 
+#import "NNContainerViewController.h"
+
 static char ja_kvoContext;
 
 @interface JASidePanelController() {
@@ -602,10 +604,11 @@ static char ja_kvoContext;
     } else if ([root isKindOfClass:[UITabBarController class]]) {
         UITabBarController *tab = (UITabBarController *)root;
         return [self _isOnTopLevelViewController:tab.selectedViewController];
-    } /*else if ([root isKindOfClass:[ContainerController class]]) {
-        ContainerController *container = (ContainerController *)root;
+    } else if ([root isKindOfClass:[NNContainerViewController class]]) {
+        NNContainerViewController *container = (NNContainerViewController *)root;
         return [self _isOnTopLevelViewController:container.currentViewController];
-    }*/
+    }
+    
     return root != nil;
 }
 
