@@ -65,4 +65,14 @@
     self.visible = NO;
 }
 
+#pragma mark - Side Panel Related
+
+- (void)showLeftPanel {
+    [self.sidePanelController toggleLeftPanel:nil];
+}
+
+- (void)showRightPanel {
+    [self.sidePanelController toggleRightPanel:nil];
+}
+
 @end

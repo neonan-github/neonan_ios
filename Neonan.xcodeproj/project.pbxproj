@@ -27,6 +27,9 @@
 		340E020A165F4B860094DCCE /* NearWorksModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E0209165F4B860094DCCE /* NearWorksModel.m */; };
 		341565F916BA18CB0012B2C7 /* GridListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 341565F816BA18CB0012B2C7 /* GridListController.m */; };
 		3415660716BA1C7F0012B2C7 /* GridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3415660616BA1C7F0012B2C7 /* GridCell.m */; };
+		34197637174E0A4600D301C8 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34197634174E0A4600D301C8 /* JASidePanelController.m */; };
+		34197638174E0A4600D301C8 /* UIViewController+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34197636174E0A4600D301C8 /* UIViewController+JASidePanel.m */; };
+		3419763B174E0EE300D301C8 /* NNContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3419763A174E0EE300D301C8 /* NNContainerViewController.m */; };
 		3419ABC716F0890600C460AF /* OrderError.m in Sources */ = {isa = PBXBuildFile; fileRef = 3419ABC616F0890600C460AF /* OrderError.m */; };
 		341CB04C165B59DA00BF1D76 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 341CB04E165B59DA00BF1D76 /* Localizable.strings */; };
 		341CB053165B744300BF1D76 /* NNURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 341CB052165B744300BF1D76 /* NNURLCache.m */; };
@@ -389,6 +392,12 @@
 		341565F816BA18CB0012B2C7 /* GridListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridListController.m; sourceTree = "<group>"; };
 		3415660516BA1C7F0012B2C7 /* GridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridCell.h; sourceTree = "<group>"; };
 		3415660616BA1C7F0012B2C7 /* GridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridCell.m; sourceTree = "<group>"; };
+		34197633174E0A4600D301C8 /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASidePanelController.h; sourceTree = "<group>"; };
+		34197634174E0A4600D301C8 /* JASidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JASidePanelController.m; sourceTree = "<group>"; };
+		34197635174E0A4600D301C8 /* UIViewController+JASidePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+JASidePanel.h"; sourceTree = "<group>"; };
+		34197636174E0A4600D301C8 /* UIViewController+JASidePanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+JASidePanel.m"; sourceTree = "<group>"; };
+		34197639174E0EE300D301C8 /* NNContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNContainerViewController.h; sourceTree = "<group>"; };
+		3419763A174E0EE300D301C8 /* NNContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNContainerViewController.m; sourceTree = "<group>"; };
 		3419ABC516F0890600C460AF /* OrderError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderError.h; sourceTree = "<group>"; };
 		3419ABC616F0890600C460AF /* OrderError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderError.m; sourceTree = "<group>"; };
 		341CB040165B56FE00BF1D76 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -942,6 +951,8 @@
 				343658EE16BF5D8600576DE0 /* NNViewController.m */,
 				34584642163A3582008AAD38 /* NNNavigationController.h */,
 				34584643163A3582008AAD38 /* NNNavigationController.m */,
+				34197639174E0EE300D301C8 /* NNContainerViewController.h */,
+				3419763A174E0EE300D301C8 /* NNContainerViewController.m */,
 				340716F5164128E7006E40FE /* VideoPlayController.h */,
 				340716F6164128E7006E40FE /* VideoPlayController.m */,
 				349EF62A1675E92E0086A7F1 /* AboutController.h */,
@@ -1012,6 +1023,17 @@
 				3448826C16EECD2D00203846 /* UserInfoModel.m */,
 			);
 			path = models;
+			sourceTree = "<group>";
+		};
+		34197632174E0A4600D301C8 /* JASidePanels */ = {
+			isa = PBXGroup;
+			children = (
+				34197633174E0A4600D301C8 /* JASidePanelController.h */,
+				34197634174E0A4600D301C8 /* JASidePanelController.m */,
+				34197635174E0A4600D301C8 /* UIViewController+JASidePanel.h */,
+				34197636174E0A4600D301C8 /* UIViewController+JASidePanel.m */,
+			);
+			path = JASidePanels;
 			sourceTree = "<group>";
 		};
 		343EB97316E09BA800501101 /* SinaWeibo */ = {
@@ -1695,7 +1717,7 @@
 			isa = PBXGroup;
 			children = (
 				53816B1F16265FB100B0672C /* Classes */,
-				53816B2116265FB100B0672C /* Support */,
+				53816B2116265FB100B0672C /* Vendor */,
 				3499BEC01626DAAF0084B838 /* Resources */,
 				53816B0016265E9400B0672C /* Neonan */,
 				53816AF916265E9400B0672C /* Frameworks */,
@@ -1775,9 +1797,10 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		53816B2116265FB100B0672C /* Support */ = {
+		53816B2116265FB100B0672C /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				34197632174E0A4600D301C8 /* JASidePanels */,
 				34FA4756171168120044AB5F /* JSONKit */,
 				34E8CF6C16E9D666000079E6 /* MKStoreKit */,
 				34C8A66916E7126700DF79A0 /* Harpy */,
@@ -1793,6 +1816,7 @@
 				34AC9C68163E41640020DE4B /* CustomNavigationBar */,
 				34D464E21630243900D8EE28 /* SMPageControl */,
 			);
+			name = Vendor;
 			path = Support;
 			sourceTree = "<group>";
 		};
@@ -2245,6 +2269,9 @@
 				34FA4759171168120044AB5F /* JSONKit.m in Sources */,
 				3484365B172BBF54000B10F3 /* ROBaseDialogViewController.m in Sources */,
 				3484365E172BBF54000B10F3 /* ROWebDialogViewController.m in Sources */,
+				34197637174E0A4600D301C8 /* JASidePanelController.m in Sources */,
+				34197638174E0A4600D301C8 /* UIViewController+JASidePanel.m in Sources */,
+				3419763B174E0EE300D301C8 /* NNContainerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

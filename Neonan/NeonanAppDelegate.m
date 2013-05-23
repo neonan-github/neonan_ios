@@ -15,12 +15,15 @@
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
 #import "GalleryDetailController.h"
+#import "AboutController.h"
 
 #import "APService.h"
 //#import "Flurry.h"
 #import "MobClick.h"
 #import "Harpy.h"
 #import "MKStoreManager.h"
+
+#import "JASidePanelController.h"
 
 #import <AFNetworkActivityIndicatorManager.h>
 
@@ -54,20 +57,23 @@
     
     [self notifyServerOnActive];
     
-    self.navController = [[NNNavigationController alloc] init];
-    self.navController.logoHidden = NO;
-    self.window.rootViewController = self.navController;
-       
-    MainController *controller = [[MainController alloc] init];
-    controller.showSplash = YES;
-    [self.navController pushViewController:controller animated:NO];
+    NNContainerViewController *containerController = [[NNContainerViewController alloc] init];
+    containerController.viewControllers = [self createSubControllers];
+    self.containerController = containerController;
+    
+    JASidePanelController *panelController = [[JASidePanelController alloc] init];
+    panelController.shouldDelegateAutorotateToVisiblePanel = YES;
+    panelController.recognizesPanGesture = NO;
+    panelController.leftPanel = [[AboutController alloc] init];
+    panelController.centerPanel = containerController;
+    
+    self.window.rootViewController = panelController;
+    [self.window makeKeyAndVisible];
     
 //    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
 //    if (remoteNotif) {
 //        [self enterControllerByType:[remoteNotif objectForKey:@"content_type"] andId:[remoteNotif objectForKey:@"content_id"]];
 //    }
-    
-    [self.window makeKeyAndVisible];
     
     return YES;
 }
@@ -117,6 +123,17 @@
 }
 
 #pragma mark - Private methods
+
+- (NSArray *)createSubControllers {
+    NNNavigationController *navController = [[NNNavigationController alloc] init];
+    self.navController.logoHidden = NO;
+    
+    MainController *controller = [[MainController alloc] init];
+    controller.showSplash = YES;
+    [navController pushViewController:controller animated:NO];
+    
+    return @[navController];
+}
 
 - (void)enterControllerByType:(NSString *)contentType andId:(NSString *)contentId {
     Class controllerClass;
