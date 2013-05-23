@@ -20,9 +20,14 @@ install_resource()
       xcrun momc "${PODS_ROOT}/$1" "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/`basename $1 .xcdatamodeld`.momd"
       ;;
     *)
-      echo "cp -R ${PODS_ROOT}/$1 ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
-      cp -R "${PODS_ROOT}/$1" "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+      echo "rsync -av --exclude '*/.svn/*' ${PODS_ROOT}/$1 ${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+      rsync -av --exclude '*/.svn/*' "${PODS_ROOT}/$1" "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
       ;;
   esac
 }
+install_resource 'AQGridView/Resources/AQGridSelection.png'
+install_resource 'AQGridView/Resources/AQGridSelectionGray.png'
+install_resource 'AQGridView/Resources/AQGridSelectionGrayBlue.png'
+install_resource 'AQGridView/Resources/AQGridSelectionGreen.png'
+install_resource 'AQGridView/Resources/AQGridSelectionRed.png'
 install_resource 'SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle'

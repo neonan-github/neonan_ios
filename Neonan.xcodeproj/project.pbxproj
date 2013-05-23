@@ -32,6 +32,7 @@
 		3419763B174E0EE300D301C8 /* NNContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3419763A174E0EE300D301C8 /* NNContainerViewController.m */; };
 		3419763F174E1B2A00D301C8 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3419763D174E1B2A00D301C8 /* HomeViewController.m */; };
 		34197640174E1B2A00D301C8 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3419763E174E1B2A00D301C8 /* HomeViewController.xib */; };
+		34197643174E28ED00D301C8 /* HomeGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34197642174E28ED00D301C8 /* HomeGridViewCell.m */; };
 		3419ABC716F0890600C460AF /* OrderError.m in Sources */ = {isa = PBXBuildFile; fileRef = 3419ABC616F0890600C460AF /* OrderError.m */; };
 		341CB04C165B59DA00BF1D76 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 341CB04E165B59DA00BF1D76 /* Localizable.strings */; };
 		341CB053165B744300BF1D76 /* NNURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 341CB052165B744300BF1D76 /* NNURLCache.m */; };
@@ -403,6 +404,8 @@
 		3419763C174E1B2A00D301C8 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		3419763D174E1B2A00D301C8 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		3419763E174E1B2A00D301C8 /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HomeViewController.xib; path = ../Classes/controllers/HomeViewController.xib; sourceTree = "<group>"; };
+		34197641174E28ED00D301C8 /* HomeGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeGridViewCell.h; sourceTree = "<group>"; };
+		34197642174E28ED00D301C8 /* HomeGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeGridViewCell.m; sourceTree = "<group>"; };
 		3419ABC516F0890600C460AF /* OrderError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderError.h; sourceTree = "<group>"; };
 		3419ABC616F0890600C460AF /* OrderError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderError.m; sourceTree = "<group>"; };
 		341CB040165B56FE00BF1D76 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -1866,6 +1869,8 @@
 				342DA8B716E3531700404730 /* FunctionFlowView.m */,
 				34E8CF6916E9C860000079E6 /* PurchaseVIPCell.h */,
 				34E8CF6A16E9C860000079E6 /* PurchaseVIPCell.m */,
+				34197641174E28ED00D301C8 /* HomeGridViewCell.h */,
+				34197642174E28ED00D301C8 /* HomeGridViewCell.m */,
 			);
 			name = Views;
 			path = views;
@@ -2286,6 +2291,7 @@
 				34197638174E0A4600D301C8 /* UIViewController+JASidePanel.m in Sources */,
 				3419763B174E0EE300D301C8 /* NNContainerViewController.m in Sources */,
 				3419763F174E1B2A00D301C8 /* HomeViewController.m in Sources */,
+				34197643174E28ED00D301C8 /* HomeGridViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,6 +16,7 @@
 #import "VideoPlayController.h"
 #import "GalleryDetailController.h"
 #import "AboutController.h"
+#import "HomeViewController.h"
 
 #import "APService.h"
 //#import "Flurry.h"
@@ -126,10 +127,10 @@
 
 - (NSArray *)createSubControllers {
     NNNavigationController *navController = [[NNNavigationController alloc] init];
-    self.navController.logoHidden = NO;
+//    self.navController.logoHidden = NO;
     
-    MainController *controller = [[MainController alloc] init];
-    controller.showSplash = YES;
+    HomeViewController *controller = [[HomeViewController alloc] init];
+//    controller.showSplash = YES;
     [navController pushViewController:controller animated:NO];
     
     return @[navController];
