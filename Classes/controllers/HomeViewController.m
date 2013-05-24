@@ -12,9 +12,14 @@
 
 #import <SwipeView.h>
 #import <AQGridView.h>
+#import <TTTAttributedLabel.h>
+#import <UIImageView+WebCache.h>
 
 static const NSInteger kPageCount = 6;
 static const NSInteger kItemPerPageCount = 6;
+
+static const NSInteger kTagHeaderImageView = 1000;
+static const NSInteger kTagHeaderLabel = 1001;
 
 @interface HomeViewController () <SwipeViewDelegate, SwipeViewDataSource,
 AQGridViewDelegate, AQGridViewDataSource>
@@ -129,10 +134,29 @@ AQGridViewDelegate, AQGridViewDataSource>
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 182)];
     headerView.backgroundColor = [UIColor clearColor];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 300, 167)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 300, 166)];
     imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     imageView.backgroundColor = [UIColor greenColor];
+    imageView.tag = kTagHeaderImageView;
+    [imageView setImageWithURL:[NSURL URLWithString:@"http://cdn.neonan.com/uploads/4684cf45-f8e6-4fab-bc6f-1728aac7fbb8.jpg_680"]];
     [headerView addSubview:imageView];
+    
+    TTTAttributedLabel *label = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(10, 177 - 28, 300, 28)];
+    label.textInsets = UIEdgeInsetsMake(0, 8, 0, 0);
+    label.clipsToBounds = YES;
+    label.font = [UIFont systemFontOfSize:16];
+    label.textColor = [UIColor whiteColor];
+    label.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    label.backgroundColor = RGBA(0, 0, 0, 0.5);
+    label.tag = kTagHeaderLabel;
+    
+    CALayer *bottomLineLayer = [CALayer layer];
+    bottomLineLayer.frame = CGRectMake(0, 27, 300, 1);
+    bottomLineLayer.backgroundColor = HEXCOLOR(0x0096ff).CGColor;
+    [label.layer addSublayer:bottomLineLayer];
+    
+    label.text = @"请掌握穷变富的原则top 10";
+    [headerView addSubview:label];
     
     return headerView;
 }
