@@ -52,18 +52,18 @@ static const CGFloat kLabelHeight = 23;
     self.imageView.highlighted = self.highlighted || self.selected;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+- (void)setSelected:(BOOL)selected {
+    [super setSelected:selected];
     
     self.titleLabel.highlighted = self.selected || self.highlighted;
     self.imageView.highlighted = self.selected || self.highlighted;
 }
 
-- (void)drawRect:(CGRect)rect {
-    self.titleLabel.highlighted = self.selected || self.highlighted;
-    self.imageView.highlighted = self.selected || self.highlighted;
-    
-    [super drawRect:rect];
-}
+//- (void)drawRect:(CGRect)rect {
+//    [super drawRect:rect];
+//    
+//    self.titleLabel.highlighted = self.selected || self.highlighted;
+//    self.imageView.highlighted = self.selected || self.highlighted;
+//}
 
 @end

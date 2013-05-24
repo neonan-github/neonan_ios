@@ -137,8 +137,13 @@ KKGridViewDataSource, KKGridViewDelegate>
 #pragma mark - KKGridViewDelegate methods
 
 - (void)gridView:(KKGridView *)gridView didSelectItemAtIndexPath:(KKIndexPath *)indexPath {
-    DLog(@"select at: %d", gridView.tag * kItemPerPageCount + indexPath.index);
     [gridView deselectItemsAtIndexPaths:@[indexPath] animated:YES];
+    
+    if (self.swipeView.isDragging) {
+        return;
+    }
+    
+    DLog(@"select at: %d", gridView.tag * kItemPerPageCount + indexPath.index);
 }
 
 #pragma mark - Private methods
