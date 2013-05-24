@@ -12,12 +12,6 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking 10
 #define COCOAPODS_VERSION_PATCH_AFNetworking 1
 
-// AQGridView
-#define COCOAPODS_POD_AVAILABLE_AQGridView
-#define COCOAPODS_VERSION_MAJOR_AQGridView 1
-#define COCOAPODS_VERSION_MINOR_AQGridView 3
-#define COCOAPODS_VERSION_PATCH_AQGridView 0
-
 // ActionSheetPicker
 #define COCOAPODS_POD_AVAILABLE_ActionSheetPicker
 #define COCOAPODS_VERSION_MAJOR_ActionSheetPicker 0

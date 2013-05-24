@@ -25,9 +25,4 @@ install_resource()
       ;;
   esac
 }
-install_resource 'AQGridView/Resources/AQGridSelection.png'
-install_resource 'AQGridView/Resources/AQGridSelectionGray.png'
-install_resource 'AQGridView/Resources/AQGridSelectionGrayBlue.png'
-install_resource 'AQGridView/Resources/AQGridSelectionGreen.png'
-install_resource 'AQGridView/Resources/AQGridSelectionRed.png'
 install_resource 'SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle'
