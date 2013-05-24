@@ -14,11 +14,14 @@
 #import <AQGridView.h>
 
 static const NSInteger kPageCount = 6;
+static const NSInteger kItemPerPageCount = 6;
 
 @interface HomeViewController () <SwipeViewDelegate, SwipeViewDataSource,
 AQGridViewDelegate, AQGridViewDataSource>
 
 @property (weak, nonatomic) IBOutlet SwipeView *swipeView;
+
+@property (nonatomic, assign) NSInteger currentPageIndex;
 
 @end
 
@@ -38,6 +41,8 @@ AQGridViewDelegate, AQGridViewDataSource>
     
     self.swipeView.dataSource = self;
     self.swipeView.delegate = self;
+    
+    self.currentPageIndex = self.swipeView.currentPage;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,29 +75,36 @@ AQGridViewDelegate, AQGridViewDataSource>
     
     if (!view) {   
         gridView = [[AQGridView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleContainerHeight)];
-        gridView.contentSizeGrowsToFillBounds = NO;
         gridView.leftContentInset = 5;
-//        gridView.rightContentInset = 10;
+        gridView.rightContentInset = 5;
 //        gridView.layoutDirection = AQGridViewLayoutDirectionHorizontal;
-        gridView.backgroundColor = [UIColor redColor];
+        gridView.backgroundColor = [UIColor clearColor];
         gridView.dataSource = self;
         gridView.delegate = self;
         
-        UIImageView *headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 167)];
-        headerImageView.backgroundColor = [UIColor greenColor];
-        gridView.gridHeaderView = headerImageView;
+        gridView.gridHeaderView = [self createHeaderView];
+        gridView.gridFooterView = [self createFooterView];
     }
     
+    AQGridView *currentPageView = ((AQGridView *)[swipeView itemViewAtIndex:self.currentPageIndex]);
+    
     gridView.tag = index;
+    gridView.contentOffset = currentPageView.contentOffset;
     [gridView reloadData];
     
     return gridView;
 }
 
+#pragma mark - SwipeViewDelegate methods
+
+- (void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView {
+    self.currentPageIndex = swipeView.currentPage;
+}
+
 #pragma mark - AQGridViewDataSource methods
 
 - (NSUInteger)numberOfItemsInGridView:(AQGridView *)gridView {
-    return 6;
+    return kItemPerPageCount;
 }
 
 - (AQGridViewCell *)gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index {
@@ -109,6 +121,24 @@ AQGridViewDelegate, AQGridViewDataSource>
 
 - (CGSize)portraitGridCellSizeForGridView:(AQGridView *)gridView {
     return CGSizeMake(155.0, 126.0);
+}
+
+#pragma mark - Private methods
+
+- (UIView *)createHeaderView {
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 182)];
+    headerView.backgroundColor = [UIColor clearColor];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 300, 167)];
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    imageView.backgroundColor = [UIColor greenColor];
+    [headerView addSubview:imageView];
+    
+    return headerView;
+}
+
+- (UIView *)createFooterView {
+    return [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 5)];
 }
 
 @end
