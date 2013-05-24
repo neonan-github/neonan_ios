@@ -8,9 +8,11 @@
 
 #import "AQGridViewCell.h"
 
+#import <TTTAttributedLabel.h>
+
 @interface HomeGridViewCell : AQGridViewCell
 
 @property (nonatomic, weak) UIImageView *imageView;
-@property (nonatomic, weak) UILabel *titleLabel;
+@property (nonatomic, weak) TTTAttributedLabel *titleLabel;
 
 @end

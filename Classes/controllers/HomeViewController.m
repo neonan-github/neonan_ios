@@ -14,6 +14,7 @@
 #import <AQGridView.h>
 #import <TTTAttributedLabel.h>
 #import <UIImageView+WebCache.h>
+#import <UIImage+Filtering.h>
 
 static const NSInteger kPageCount = 6;
 static const NSInteger kItemPerPageCount = 6;
@@ -43,6 +44,8 @@ AQGridViewDelegate, AQGridViewDataSource>
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    self.view.backgroundColor = HEXCOLOR(0x171717);
     
     self.swipeView.dataSource = self;
     self.swipeView.delegate = self;
@@ -118,14 +121,29 @@ AQGridViewDelegate, AQGridViewDataSource>
     HomeGridViewCell * cell = (HomeGridViewCell *)[gridView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
         cell = [[HomeGridViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 145.0, 116.0) reuseIdentifier:CellIdentifier];
-        cell.contentView.backgroundColor = [UIColor blueColor];
     }
+    
+    cell.titleLabel.text = @"跳绳快速运动减肥法的好处";
+    [cell.imageView setImageWithURL:[NSURL URLWithString:@"http://cdn.neonan.com/uploads/d8c0a3e4-bded-47e9-aa4d-baf69156e9af.jpg_300"]
+                            success:^(UIImage *image, BOOL cached) {
+                                cell.imageView.highlightedImage = [image opacity:0.8];
+                            } failure:^(NSError *error) {
+                                
+                            }];
     
     return cell;
 }
 
 - (CGSize)portraitGridCellSizeForGridView:(AQGridView *)gridView {
     return CGSizeMake(155.0, 126.0);
+}
+
+#pragma mark - AQGridViewDelegate methods
+
+- (void)gridView:(AQGridView *)gridView didSelectItemAtIndex:(NSUInteger)index {
+    DLog(@"select at: %d", gridView.tag * kItemPerPageCount + index);
+    
+    [gridView deselectItemAtIndex:index animated:YES];
 }
 
 #pragma mark - Private methods

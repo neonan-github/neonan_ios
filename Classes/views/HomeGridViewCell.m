@@ -8,14 +8,65 @@
 
 #import "HomeGridViewCell.h"
 
+static const CGFloat kLabelHeight = 23;
+
 @implementation HomeGridViewCell
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        self.selectionStyle = AQGridViewCellSelectionStyleNone;
+        self.contentView.backgroundColor = [UIColor blackColor];
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width,
+                                                                               frame.size.height - kLabelHeight)];
+        self.imageView = imageView;
+        imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.contentView addSubview:imageView];
+        
+        TTTAttributedLabel *titleLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(imageView.frame),
+                                                                                         frame.size.width, kLabelHeight)];
+        self.titleLabel = titleLabel;
+        titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        titleLabel.backgroundColor = [UIColor blackColor];
+        titleLabel.numberOfLines = 1;
+        titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        titleLabel.textInsets = UIEdgeInsetsMake(0, 8, 0, 0);
+        titleLabel.textColor = [UIColor whiteColor];
+        titleLabel.highlightedTextColor = [UIColor lightTextColor];
+        titleLabel.font = [UIFont systemFontOfSize:12];
+        
+        CALayer *leftLineLayer = [CALayer layer];
+        leftLineLayer.frame = CGRectMake(0, 0, 1, kLabelHeight);
+        leftLineLayer.backgroundColor = HEXCOLOR(0x0096ff).CGColor;
+        [titleLabel.layer addSublayer:leftLineLayer];
+        
+        [self.contentView addSubview:titleLabel];
     }
+    
     return self;
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+    
+    self.titleLabel.highlighted = self.highlighted || self.selected;
+    self.imageView.highlighted = self.highlighted || self.selected;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    
+    self.titleLabel.highlighted = self.selected || self.highlighted;
+    self.imageView.highlighted = self.selected || self.highlighted;
+}
+
+- (void)drawRect:(CGRect)rect {
+    self.titleLabel.highlighted = self.selected || self.highlighted;
+    self.imageView.highlighted = self.selected || self.highlighted;
+    
+    [super drawRect:rect];
 }
 
 @end
