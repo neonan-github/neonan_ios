@@ -16,16 +16,13 @@ static const CGFloat kLabelHeight = 23;
     self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle = AQGridViewCellSelectionStyleNone;
         self.contentView.backgroundColor = [UIColor blackColor];
+        self.highlightAlpha = 0.0f;
         
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width,
-                                                                               frame.size.height - kLabelHeight)];
-        self.imageView = imageView;
-        imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [self.contentView addSubview:imageView];
+        self.imageView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height - kLabelHeight);
+        self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
-        TTTAttributedLabel *titleLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(imageView.frame),
+        TTTAttributedLabel *titleLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.imageView.frame),
                                                                                          frame.size.width, kLabelHeight)];
         self.titleLabel = titleLabel;
         titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -48,8 +45,8 @@ static const CGFloat kLabelHeight = 23;
     return self;
 }
 
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    [super setHighlighted:highlighted animated:animated];
+- (void)setHighlighted:(BOOL)highlighted {
+    [super setHighlighted:highlighted];
     
     self.titleLabel.highlighted = self.highlighted || self.selected;
     self.imageView.highlighted = self.highlighted || self.selected;

@@ -11,7 +11,7 @@
 #import "HomeGridViewCell.h"
 
 #import <SwipeView.h>
-#import <AQGridView.h>
+#import <KKGridView.h>
 #import <TTTAttributedLabel.h>
 #import <UIImageView+WebCache.h>
 #import <UIImage+Filtering.h>
@@ -23,7 +23,7 @@ static const NSInteger kTagHeaderImageView = 1000;
 static const NSInteger kTagHeaderLabel = 1001;
 
 @interface HomeViewController () <SwipeViewDelegate, SwipeViewDataSource,
-AQGridViewDelegate, AQGridViewDataSource>
+KKGridViewDataSource, KKGridViewDelegate>
 
 @property (weak, nonatomic) IBOutlet SwipeView *swipeView;
 
@@ -79,22 +79,20 @@ AQGridViewDelegate, AQGridViewDataSource>
 }
 
 - (UIView *)swipeView:(SwipeView *)swipeView viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view {
-    AQGridView *gridView = (AQGridView *)view;
+    KKGridView *gridView = (KKGridView *)view;
     
     if (!view) {   
-        gridView = [[AQGridView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleContainerHeight)];
-        gridView.leftContentInset = 5;
-        gridView.rightContentInset = 5;
-//        gridView.layoutDirection = AQGridViewLayoutDirectionHorizontal;
+        gridView = [[KKGridView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleContainerHeight)];
         gridView.backgroundColor = [UIColor clearColor];
         gridView.dataSource = self;
         gridView.delegate = self;
-        
+        gridView.cellSize = CGSizeMake(145.0, 116.0);
+        gridView.cellPadding = CGSizeMake(10, 10);
         gridView.gridHeaderView = [self createHeaderView];
         gridView.gridFooterView = [self createFooterView];
     }
     
-    AQGridView *currentPageView = ((AQGridView *)[swipeView itemViewAtIndex:self.currentPageIndex]);
+    KKGridView *currentPageView = ((KKGridView *)[swipeView itemViewAtIndex:self.currentPageIndex]);
     
     gridView.tag = index;
     gridView.contentOffset = currentPageView.contentOffset;
@@ -109,13 +107,13 @@ AQGridViewDelegate, AQGridViewDataSource>
     self.currentPageIndex = swipeView.currentPage;
 }
 
-#pragma mark - AQGridViewDataSource methods
+#pragma mark - KKGridViewDataSource methods
 
-- (NSUInteger)numberOfItemsInGridView:(AQGridView *)gridView {
+- (NSUInteger)gridView:(KKGridView *)gridView numberOfItemsInSection:(NSUInteger)section {
     return kItemPerPageCount;
 }
 
-- (AQGridViewCell *)gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index {
+- (KKGridViewCell *)gridView:(KKGridView *)gridView cellForItemAtIndexPath:(KKIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     
     HomeGridViewCell * cell = (HomeGridViewCell *)[gridView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -124,9 +122,11 @@ AQGridViewDelegate, AQGridViewDataSource>
     }
     
     cell.titleLabel.text = @"跳绳快速运动减肥法的好处";
+    
+    __weak HomeGridViewCell *weakCell = cell;
     [cell.imageView setImageWithURL:[NSURL URLWithString:@"http://cdn.neonan.com/uploads/d8c0a3e4-bded-47e9-aa4d-baf69156e9af.jpg_300"]
                             success:^(UIImage *image, BOOL cached) {
-                                cell.imageView.highlightedImage = [image opacity:0.8];
+                                weakCell.imageView.highlightedImage = [image opacity:0.8];
                             } failure:^(NSError *error) {
                                 
                             }];
@@ -134,16 +134,11 @@ AQGridViewDelegate, AQGridViewDataSource>
     return cell;
 }
 
-- (CGSize)portraitGridCellSizeForGridView:(AQGridView *)gridView {
-    return CGSizeMake(155.0, 126.0);
-}
+#pragma mark - KKGridViewDelegate methods
 
-#pragma mark - AQGridViewDelegate methods
-
-- (void)gridView:(AQGridView *)gridView didSelectItemAtIndex:(NSUInteger)index {
-    DLog(@"select at: %d", gridView.tag * kItemPerPageCount + index);
-    
-    [gridView deselectItemAtIndex:index animated:YES];
+- (void)gridView:(KKGridView *)gridView didSelectItemAtIndexPath:(KKIndexPath *)indexPath {
+    DLog(@"select at: %d", gridView.tag * kItemPerPageCount + indexPath.index);
+    [gridView deselectItemsAtIndexPaths:@[indexPath] animated:YES];
 }
 
 #pragma mark - Private methods

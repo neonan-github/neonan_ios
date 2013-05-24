@@ -6,13 +6,11 @@
 //  Copyright (c) 2013年 neonan. All rights reserved.
 //
 
-#import "AQGridViewCell.h"
-
+#import <KKGridViewCell.h>
 #import <TTTAttributedLabel.h>
 
-@interface HomeGridViewCell : AQGridViewCell
+@interface HomeGridViewCell : KKGridViewCell
 
-@property (nonatomic, weak) UIImageView *imageView;
 @property (nonatomic, weak) TTTAttributedLabel *titleLabel;
 
 @end
