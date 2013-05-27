@@ -7,6 +7,9 @@
 //
 
 #import "HomeViewController.h"
+#import "ArticleDetailController.h"
+#import "GalleryDetailController.h"
+#import "VideoPlayController.h"
 
 #import "NNButton.h"
 #import "HomeGridViewCell.h"
@@ -155,11 +158,12 @@ KKGridViewDataSource, KKGridViewDelegate>
 - (void)gridView:(KKGridView *)gridView didSelectItemAtIndexPath:(KKIndexPath *)indexPath {
     [gridView deselectItemsAtIndexPaths:@[indexPath] animated:YES];
     
-    if (self.swipeView.isDragging) {
+    if (self.swipeView.isDragging || !self.listDataModel) {
         return;
     }
     
-    DLog(@"select at: %d", gridView.tag * kItemPerPageCount + indexPath.index);
+    NSInteger index = gridView.tag * kItemPerPageCount + indexPath.index;
+    [self enterControllerByType:self.listDataModel.items[index]];
 }
 
 #pragma mark - Private Event Handle
@@ -323,6 +327,47 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     TTTAttributedLabel *label = (TTTAttributedLabel *)[headerView viewWithTag:kTagHeaderLabel];
     label.text = model.title;
+}
+
+- (ContentType)judgeContentType:(id)item {
+    NSString *type = [item contentType];
+    if ([type isEqualToString:@"article"]) {
+        return ContentTypeArticle;
+    }
+    
+    if ([type isEqualToString:@"video"]) {
+        return ContentTypeVideo;
+    }
+    
+    return ContentTypeSlide;
+}
+
+- (void)enterControllerByType:(id)dataItem {
+    id controller;
+    
+    switch ([self judgeContentType:dataItem]) {
+        case ContentTypeArticle:
+            controller = [[ArticleDetailController alloc] init];
+            [controller setContentId:[dataItem contentId]];
+            [controller setContentTitle:[dataItem title]];
+            [controller setChannel:@"home"];
+            break;
+            
+        case ContentTypeSlide:
+            controller = [[GalleryDetailController alloc] init];
+            [controller setContentType:[dataItem contentType]];
+            [controller setContentId:[dataItem contentId]];
+            [controller setContentTitle:[dataItem title]];
+            [controller setChannel:@"home"];
+            break;
+            
+        case ContentTypeVideo:
+            controller = [[VideoPlayController alloc] init];
+            [controller setContentId:[dataItem contentId]];
+            [controller setVideoUrl:[dataItem videoUrl]];
+    }
+    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end
