@@ -17,6 +17,7 @@
 #import <UIImageView+WebCache.h>
 #import <UIButton+WebCache.h>
 #import <UIImage+Filtering.h>
+#import <SVPullToRefresh.h>
 
 static const NSInteger kPageCount = 6;
 static const NSInteger kItemPerPageCount = 6;
@@ -92,6 +93,10 @@ KKGridViewDataSource, KKGridViewDelegate>
         gridView.cellPadding = CGSizeMake(10, 10);
         gridView.gridHeaderView = [self createHeaderView];
         gridView.gridFooterView = [self createFooterView];
+        
+        [gridView addPullToRefreshWithActionHandler:^{
+            
+        }];
     }
     
     KKGridView *currentPageView = ((KKGridView *)[swipeView itemViewAtIndex:self.currentPageIndex]);

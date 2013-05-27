@@ -232,8 +232,6 @@
 		34632AA516BB994E00396AC1 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 34632AA416BB994E00396AC1 /* libsqlite3.dylib */; };
 		34632AAF16BB9A7900396AC1 /* DBHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34632AAE16BB9A7900396AC1 /* DBHelper.m */; };
 		34632AB216BBB41000396AC1 /* TopicGridsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34632AB116BBB41000396AC1 /* TopicGridsModel.m */; };
-		34632AC416BBBC7800396AC1 /* SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 34632AC316BBBC7800396AC1 /* SVPullToRefresh.m */; };
-		34632ACE16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 34632ACD16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m */; };
 		34632AD116BBC5CB00396AC1 /* TopicDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34632AD016BBC5CB00396AC1 /* TopicDetailModel.m */; };
 		34632AD416BBCFB100396AC1 /* icon_praise_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 34632AD216BBCFB100396AC1 /* icon_praise_highlighted.png */; };
 		34632AD516BBCFB100396AC1 /* icon_criticise_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 34632AD316BBCFB100396AC1 /* icon_criticise_highlighted.png */; };
@@ -712,10 +710,6 @@
 		34632AAE16BB9A7900396AC1 /* DBHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBHelper.m; sourceTree = "<group>"; };
 		34632AB016BBB41000396AC1 /* TopicGridsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicGridsModel.h; sourceTree = "<group>"; };
 		34632AB116BBB41000396AC1 /* TopicGridsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicGridsModel.m; sourceTree = "<group>"; };
-		34632AC216BBBC7800396AC1 /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
-		34632AC316BBBC7800396AC1 /* SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVPullToRefresh.m; sourceTree = "<group>"; };
-		34632ACC16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+SVInfiniteScrolling.h"; sourceTree = "<group>"; };
-		34632ACD16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
 		34632ACF16BBC5CB00396AC1 /* TopicDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicDetailModel.h; sourceTree = "<group>"; };
 		34632AD016BBC5CB00396AC1 /* TopicDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicDetailModel.m; sourceTree = "<group>"; };
 		34632AD216BBCFB100396AC1 /* icon_praise_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_praise_highlighted.png; sourceTree = "<group>"; };
@@ -1470,17 +1464,6 @@
 			path = FMDB;
 			sourceTree = "<group>";
 		};
-		34632AC116BBBC7800396AC1 /* SVPullToRefresh */ = {
-			isa = PBXGroup;
-			children = (
-				34632AC216BBBC7800396AC1 /* SVPullToRefresh.h */,
-				34632AC316BBBC7800396AC1 /* SVPullToRefresh.m */,
-				34632ACC16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.h */,
-				34632ACD16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m */,
-			);
-			path = SVPullToRefresh;
-			sourceTree = "<group>";
-		};
 		346C7067167EBAF000EA0057 /* JPush */ = {
 			isa = PBXGroup;
 			children = (
@@ -1825,7 +1808,6 @@
 				3442A8F616E0B082000C8F72 /* SBJSON */,
 				343EBA6116E0ACDB00501101 /* RenRenSDK */,
 				343EB97316E09BA800501101 /* SinaWeibo */,
-				34632AC116BBBC7800396AC1 /* SVPullToRefresh */,
 				34632A9316BB98E500396AC1 /* FMDB */,
 				346C7067167EBAF000EA0057 /* JPush */,
 				34C56C3B16770BCD0013ECE6 /* SSTextView */,
@@ -2184,8 +2166,6 @@
 				34632AA216BB98E500396AC1 /* FMResultSet.m in Sources */,
 				34632AAF16BB9A7900396AC1 /* DBHelper.m in Sources */,
 				34632AB216BBB41000396AC1 /* TopicGridsModel.m in Sources */,
-				34632AC416BBBC7800396AC1 /* SVPullToRefresh.m in Sources */,
-				34632ACE16BBC1E000396AC1 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				34632AD116BBC5CB00396AC1 /* TopicDetailModel.m in Sources */,
 				3403029E16BEA67200FEC584 /* NearTopicDetailsModel.m in Sources */,
 				343658EF16BF5D8600576DE0 /* NNViewController.m in Sources */,

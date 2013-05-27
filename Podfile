@@ -1,6 +1,6 @@
 platform :ios, 5.0
 
-#pod 'SVPullToRefresh',     '~> 0.3'
+pod 'SVPullToRefresh',     '~> 0.3'
 pod 'iCarousel',           '~> 1.7.2'
 pod 'HPGrowingTextView',   '~> 0.0.1'
 #pod 'NSLogger',            '~> 1.1' 

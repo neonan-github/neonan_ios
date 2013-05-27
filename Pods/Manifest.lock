@@ -17,6 +17,7 @@ PODS:
   - SDWebImage/Main (2.7.4)
   - SSKeychain (0.1.4)
   - SVProgressHUD (0.9)
+  - SVPullToRefresh (0.4.1)
   - SwipeView (1.2.9)
   - TTTAttributedLabel (1.4.1)
   - UIAlertView-Blocks (0.0.1)
@@ -39,6 +40,7 @@ DEPENDENCIES:
   - SDWebImage (~> 2.7)
   - SSKeychain (~> 0.1.4)
   - SVProgressHUD (~> 0.8)
+  - SVPullToRefresh (~> 0.3)
   - SwipeView (~> 1.2.9)
   - TTTAttributedLabel (~> 1.4.0)
   - UIAlertView-Blocks (~> 0.0.1)
@@ -61,6 +63,7 @@ SPEC CHECKSUMS:
   SDWebImage: 06f076026fe7867ab0100fce95d943f7bff981eb
   SSKeychain: bae692a4354f48691ca3463a121dc8060f781a7d
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
+  SVPullToRefresh: 61a0e4bd12bd6f8e3465909810b0fbeb1a28d5f2
   SwipeView: 4b05b28f0a2ea1c143459257e73a907912794700
   TTTAttributedLabel: 14873436523cdbe45784c404161e4575fa22706a
   UIAlertView-Blocks: 7689ad7dd941417e7a7da81507482bc6f4f15bcd
