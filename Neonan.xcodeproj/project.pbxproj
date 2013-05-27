@@ -57,6 +57,7 @@
 		342DA8C116E356F100404730 /* icon_share_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 342DA8BD16E356F000404730 /* icon_share_highlighted.png */; };
 		342DA8C216E356F100404730 /* icon_share_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 342DA8BE16E356F100404730 /* icon_share_normal.png */; };
 		3432926F1647B2230070B66A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3432926E1647B2230070B66A /* MessageUI.framework */; };
+		3435891B175302C80040F370 /* NNButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3435891A175302C80040F370 /* NNButton.m */; };
 		343658EC16BF5C4700576DE0 /* img_grid_place_holder.png in Resources */ = {isa = PBXBuildFile; fileRef = 343658EB16BF5C4700576DE0 /* img_grid_place_holder.png */; };
 		343658EF16BF5D8600576DE0 /* NNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 343658EE16BF5D8600576DE0 /* NNViewController.m */; };
 		343EB97116E09A1800501101 /* bg_3rd_sina.png in Resources */ = {isa = PBXBuildFile; fileRef = 343EB96F16E09A1800501101 /* bg_3rd_sina.png */; };
@@ -439,6 +440,8 @@
 		342DA8BE16E356F100404730 /* icon_share_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_share_normal.png; sourceTree = "<group>"; };
 		3432926C1647B2140070B66A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3432926E1647B2230070B66A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		34358919175302C80040F370 /* NNButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNButton.h; sourceTree = "<group>"; };
+		3435891A175302C80040F370 /* NNButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNButton.m; sourceTree = "<group>"; };
 		343658EB16BF5C4700576DE0 /* img_grid_place_holder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_grid_place_holder.png; sourceTree = "<group>"; };
 		343658ED16BF5D8600576DE0 /* NNViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNViewController.h; sourceTree = "<group>"; };
 		343658EE16BF5D8600576DE0 /* NNViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNViewController.m; sourceTree = "<group>"; };
@@ -1837,6 +1840,16 @@
 		53816B2B16266F1100B0672C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				349EF6131675A62C0086A7F1 /* NNDropDownMenu.h */,
+				349EF6141675A62C0086A7F1 /* NNDropDownMenu.m */,
+				348983D016BA5FCD001CFFB6 /* NNTableView.h */,
+				348983D116BA5FCD001CFFB6 /* NNTableView.m */,
+				34F7794016DF6ED800744C01 /* NNUnderlinedButton.h */,
+				34F7794116DF6ED800744C01 /* NNUnderlinedButton.m */,
+				3408646B1702912A00823A91 /* NNTextField.h */,
+				3408646C1702912A00823A91 /* NNTextField.m */,
+				34358919175302C80040F370 /* NNButton.h */,
+				3435891A175302C80040F370 /* NNButton.m */,
 				34648C3E1627E74E00115082 /* HotListCell.h */,
 				34648C3F1627E74E00115082 /* HotListCell.m */,
 				34C81B4D162BF78000DA093B /* BabyCell.h */,
@@ -1855,14 +1868,6 @@
 				346614ED1635489B00B1FF5A /* FoldableTextBox.m */,
 				340A13481631419600E8D594 /* CommentBox.h */,
 				340A13491631419600E8D594 /* CommentBox.m */,
-				349EF6131675A62C0086A7F1 /* NNDropDownMenu.h */,
-				349EF6141675A62C0086A7F1 /* NNDropDownMenu.m */,
-				348983D016BA5FCD001CFFB6 /* NNTableView.h */,
-				348983D116BA5FCD001CFFB6 /* NNTableView.m */,
-				34F7794016DF6ED800744C01 /* NNUnderlinedButton.h */,
-				34F7794116DF6ED800744C01 /* NNUnderlinedButton.m */,
-				3408646B1702912A00823A91 /* NNTextField.h */,
-				3408646C1702912A00823A91 /* NNTextField.m */,
 				348E51AF16E1ED9800E364F3 /* EncourageView.h */,
 				348E51B016E1ED9800E364F3 /* EncourageView.m */,
 				342DA8B616E3531700404730 /* FunctionFlowView.h */,
@@ -2292,6 +2297,7 @@
 				3419763B174E0EE300D301C8 /* NNContainerViewController.m in Sources */,
 				3419763F174E1B2A00D301C8 /* HomeViewController.m in Sources */,
 				34197643174E28ED00D301C8 /* HomeGridViewCell.m in Sources */,
+				3435891B175302C80040F370 /* NNButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

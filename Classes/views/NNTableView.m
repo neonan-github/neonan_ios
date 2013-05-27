@@ -21,7 +21,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        [self addObserver:self forKeyPath:@"loading" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+//        [self addObserver:self forKeyPath:@"loading" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }

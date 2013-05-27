@@ -8,12 +8,14 @@
 
 #import "HomeViewController.h"
 
+#import "NNButton.h"
 #import "HomeGridViewCell.h"
 
 #import <SwipeView.h>
 #import <KKGridView.h>
 #import <TTTAttributedLabel.h>
 #import <UIImageView+WebCache.h>
+#import <UIButton+WebCache.h>
 #import <UIImage+Filtering.h>
 
 static const NSInteger kPageCount = 6;
@@ -95,6 +97,7 @@ KKGridViewDataSource, KKGridViewDelegate>
     KKGridView *currentPageView = ((KKGridView *)[swipeView itemViewAtIndex:self.currentPageIndex]);
     
     gridView.tag = index;
+    gridView.gridHeaderView.tag = index;
     gridView.contentOffset = currentPageView.contentOffset;
     [gridView reloadData];
     
@@ -146,23 +149,39 @@ KKGridViewDataSource, KKGridViewDelegate>
     DLog(@"select at: %d", gridView.tag * kItemPerPageCount + indexPath.index);
 }
 
+#pragma mark - Private Event Handle
+
+- (void)onHeaderViewClicked:(id)sender {
+    DLog(@"onHeaderViewClicked: %d", [sender tag]);
+}
+
 #pragma mark - Private methods
 
 - (UIView *)createHeaderView {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 182)];
-    headerView.backgroundColor = [UIColor clearColor];
+    NNButton *headerView = [[NNButton alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 182)];
+    [headerView addTarget:self action:@selector(onHeaderViewClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 300, 166)];
     imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    imageView.backgroundColor = [UIColor greenColor];
+    imageView.backgroundColor = [UIColor blackColor];
     imageView.tag = kTagHeaderImageView;
-    [imageView setImageWithURL:[NSURL URLWithString:@"http://cdn.neonan.com/uploads/4684cf45-f8e6-4fab-bc6f-1728aac7fbb8.jpg_680"]];
+    
+    __weak UIImageView *weakImageView = imageView;
+    [imageView setImageWithURL:[NSURL URLWithString:@"http://cdn.neonan.com/uploads/4684cf45-f8e6-4fab-bc6f-1728aac7fbb8.jpg_680"]
+              placeholderImage:nil
+                       success:^(UIImage *image, BOOL cached) {
+                           weakImageView.highlightedImage = [image opacity:0.8];
+                       }
+                       failure:^(NSError *error) {
+        
+                       }];
     [headerView addSubview:imageView];
     
     TTTAttributedLabel *label = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(10, 177 - 28, 300, 28)];
     label.textInsets = UIEdgeInsetsMake(0, 8, 0, 0);
     label.clipsToBounds = YES;
     label.font = [UIFont systemFontOfSize:16];
+    label.highlightedTextColor = [UIColor lightTextColor];
     label.textColor = [UIColor whiteColor];
     label.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     label.backgroundColor = RGBA(0, 0, 0, 0.5);
