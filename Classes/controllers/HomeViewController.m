@@ -20,7 +20,6 @@
 #import <UIImageView+WebCache.h>
 #import <UIButton+WebCache.h>
 #import <UIImage+Filtering.h>
-#import <SVPullToRefresh.h>
 
 static const NSInteger kPageCount = 6;
 static const NSInteger kItemPerPageCount = 6;
@@ -102,10 +101,6 @@ KKGridViewDataSource, KKGridViewDelegate>
         gridView.cellPadding = CGSizeMake(10, 10);
         gridView.gridHeaderView = [self createHeaderView];
         gridView.gridFooterView = [self createFooterView];
-        
-        [gridView addPullToRefreshWithActionHandler:^{
-            
-        }];
     }
     
     KKGridView *currentPageView = ((KKGridView *)[swipeView itemViewAtIndex:self.currentPageIndex]);
@@ -113,6 +108,8 @@ KKGridViewDataSource, KKGridViewDelegate>
     gridView.tag = index;
     gridView.gridHeaderView.tag = index;
     gridView.contentOffset = currentPageView.contentOffset;
+    
+    [self fillDataInHeaderView:gridView.gridHeaderView];
     [gridView reloadData];
     
     return gridView;
@@ -215,20 +212,35 @@ KKGridViewDataSource, KKGridViewDelegate>
 }
 
 - (void)requestData {
+    void (^done)() = ^ {
+        double delayInSeconds = 0.5;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self.swipeView reloadItemAtIndex:self.currentPageIndex];
+            self.swipeView.scrollEnabled = YES;
+        });
+    };
+    
     void (^success)() = ^{
         if (self.listDataModel && self.slideShowModel) {
-            self.responseError = nil;
             if (self.visible) {
-                [self.swipeView reloadData];
+                done();
             }
         }
     };
     
     void (^failure)() = ^{
         if (self.responseError && (!self.listDataModel || !self.slideShowModel)) {
+            self.listDataModel = nil;
+            self.slideShowModel = nil;
+            
             if (self.visible) {
                 [UIHelper alertWithMessage:self.responseError.message];
+                
+                done();
             }
+            
+            self.responseError = nil;
         }
     };
 
@@ -294,6 +306,23 @@ KKGridViewDataSource, KKGridViewDelegate>
 
 - (UIView *)createFooterView {
     return [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 5)];
+}
+
+- (void)fillDataInHeaderView:(UIView *)headerView {
+    MSSItem *model = !self.slideShowModel ? nil : self.slideShowModel.list[headerView.tag];
+    
+    __weak UIImageView *weakImageView = (UIImageView *)[headerView viewWithTag:kTagHeaderImageView];
+    [weakImageView setImageWithURL:[NSURL URLWithString:model.imgUrl]
+              placeholderImage:nil
+                       success:^(UIImage *image, BOOL cached) {
+                           weakImageView.highlightedImage = [image opacity:0.8];
+                       }
+                       failure:^(NSError *error) {
+                           
+                       }];
+    
+    TTTAttributedLabel *label = (TTTAttributedLabel *)[headerView viewWithTag:kTagHeaderLabel];
+    label.text = model.title;
 }
 
 @end
