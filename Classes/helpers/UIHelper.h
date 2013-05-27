@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#import "CustomNavigationBar.h"
+#import "NNNavigationBar.h"
 
 #define NavBar                              self.navigationController.navigationBar
 #define TabBar                              self.tabBarController.tabBar

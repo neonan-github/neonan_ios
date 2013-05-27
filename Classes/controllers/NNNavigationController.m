@@ -7,7 +7,7 @@
 //
 
 #import "NNNavigationController.h"
-#import "CustomNavigationBar.h"
+#import "NNNavigationBar.h"
 
 @interface NNNavigationController ()
 @property (unsafe_unretained, nonatomic) UIImageView *logoView;
@@ -19,7 +19,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        CustomNavigationBar *navigationBar = [[CustomNavigationBar alloc] init];
+        NNNavigationBar *navigationBar = [[NNNavigationBar alloc] init];
         navigationBar.topLineColor = RGB(32, 32, 32);
         navigationBar.bottomLineColor = RGB(32, 32, 32);
         navigationBar.gradientStartColor = RGB(32, 32, 32);

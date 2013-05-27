@@ -31,7 +31,7 @@
 #import "TopicCell.h"
 #import "CircleHeaderView.h"
 #import "SlideShowView.h"
-#import "CustomNavigationBar.h"
+#import "NNNavigationBar.h"
 #import "NNDropDownMenu.h"
 #import "NNTableView.h"
 

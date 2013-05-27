@@ -45,8 +45,7 @@
     [super viewDidLoad];
     
     if (_showType == ShowTypePush) {
-        CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
-        UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+        UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     } else {
         UIButton *cancelButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];

@@ -1,5 +1,5 @@
 //
-//  CustomNavigationBar.h
+//  NNNavigationBar.h
 //  CustomBackButton
 //
 //  Created by Peter Boctor on 1/11/11.
@@ -25,7 +25,7 @@
 //  THE SOFTWARE
 #import <PrettyKit.h>
 
-@interface CustomNavigationBar : PrettyNavigationBar
+@interface NNNavigationBar : PrettyNavigationBar
 
 @property (nonatomic, strong) UIImageView *navigationBarBackgroundImage;
 @property (nonatomic, strong) IBOutlet UINavigationController* navigationController;

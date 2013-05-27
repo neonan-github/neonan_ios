@@ -71,9 +71,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
-    // Create a custom back button
-    UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+    UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, -NavBarHeight, CompatibleScreenWidth, CompatibleScreenHeight - StatusBarHeight)];

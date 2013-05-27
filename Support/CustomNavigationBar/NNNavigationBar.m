@@ -1,5 +1,5 @@
 //
-//  CustomNavigationBar.m
+//  NNNavigationBar.m
 //  CustomBackButton
 //
 //  Created by Peter Boctor on 1/11/11.
@@ -24,11 +24,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE
 
-#import "CustomNavigationBar.h"
+#import "NNNavigationBar.h"
 
 #define MAX_BACK_BUTTON_WIDTH 160.0
 
-@implementation CustomNavigationBar
+@implementation NNNavigationBar
 
 - (void)drawRect:(CGRect)rect {
     if (self.navigationBarBackgroundImage) {

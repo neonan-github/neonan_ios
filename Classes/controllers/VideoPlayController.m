@@ -34,9 +34,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     if (self.navigationController.viewControllers.count > 1) {// pushed
-        CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
-        // Create a custom back button
-        UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+        UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     } else { //presented
         UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];

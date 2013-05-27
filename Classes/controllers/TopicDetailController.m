@@ -68,9 +68,7 @@ static NSString *const kTypeKey = @"type";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
-    // Create a custom back button
-    UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+    UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     UISwipeGestureRecognizer *swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];

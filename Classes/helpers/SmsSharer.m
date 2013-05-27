@@ -9,7 +9,7 @@
 #import "SmsSharer.h"
 #import <MessageUI/MessageUI.h>
 
-#import "CustomNavigationBar.h"
+#import "NNNavigationBar.h"
 
 @interface SmsSharer () <MFMessageComposeViewControllerDelegate>
 
@@ -45,7 +45,7 @@
             self.shareFailureBlock = failure;
             
             MFMessageComposeViewController *smsController=[[MFMessageComposeViewController alloc] init];
-            CustomNavigationBar *navigationBar = [[CustomNavigationBar alloc] init];
+            NNNavigationBar *navigationBar = [[NNNavigationBar alloc] init];
             navigationBar.topLineColor = RGB(32, 32, 32);
             navigationBar.bottomLineColor = RGB(32, 32, 32);
             navigationBar.gradientStartColor = RGB(32, 32, 32);

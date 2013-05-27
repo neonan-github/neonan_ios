@@ -48,9 +48,7 @@ HPGrowingTextViewDelegate>
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = DarkThemeColor;
     
-    CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
-    // Create a custom back button
-    UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+    UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     [self adjustLayout:_articleInfo.title];
