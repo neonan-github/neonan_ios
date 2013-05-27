@@ -30,6 +30,8 @@ static const NSInteger kItemPerPageCount = 6;
 static const NSInteger kTagHeaderImageView = 1000;
 static const NSInteger kTagHeaderLabel = 1001;
 
+static NSString *const kHeaderBottomLineName = @"bottomLine";
+
 @interface HomeViewController () <SwipeViewDelegate, SwipeViewDataSource,
 KKGridViewDataSource, KKGridViewDelegate>
 
@@ -112,6 +114,12 @@ KKGridViewDataSource, KKGridViewDelegate>
     gridView.gridHeaderView.tag = index;
     gridView.contentOffset = currentPageView.contentOffset;
     
+    CALayer *headerBottomLineLayer = [UIHelper layerWithName:kHeaderBottomLineName
+                                                      inView:[gridView.gridHeaderView viewWithTag:kTagHeaderLabel]];
+    CGRect frame = headerBottomLineLayer.frame;
+    frame.size.width = 50 * (index + 1);
+    headerBottomLineLayer.frame = frame;
+    
     [self fillDataInHeaderView:gridView.gridHeaderView];
     [gridView reloadData];
     
@@ -169,7 +177,11 @@ KKGridViewDataSource, KKGridViewDelegate>
 #pragma mark - Private Event Handle
 
 - (void)onHeaderViewClicked:(id)sender {
-    DLog(@"onHeaderViewClicked: %d", [sender tag]);
+    if (!self.slideShowModel) {
+        return;
+    }
+    
+    [self enterControllerByType:self.slideShowModel.list[[sender tag]]];
 }
 
 #pragma mark - Private Request methods
@@ -298,11 +310,11 @@ KKGridViewDataSource, KKGridViewDelegate>
     label.tag = kTagHeaderLabel;
     
     CALayer *bottomLineLayer = [CALayer layer];
-    bottomLineLayer.frame = CGRectMake(0, 27, 300, 1);
+    bottomLineLayer.name = kHeaderBottomLineName;
+    bottomLineLayer.frame = CGRectMake(0, 26, 50, 2);
     bottomLineLayer.backgroundColor = HEXCOLOR(0x0096ff).CGColor;
     [label.layer addSublayer:bottomLineLayer];
     
-    label.text = @"请掌握穷变富的原则top 10";
     [headerView addSubview:label];
     
     return headerView;

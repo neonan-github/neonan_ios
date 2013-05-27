@@ -68,6 +68,9 @@ typedef enum {
 + (void)alertWithMessage:(NSString *)message;
 
 + (CAAnimation *)createBounceAnimation:(NNDirection)direction;
+
++ (CALayer *)layerWithName:(NSString *)name inView:(UIView *)view;
+
 @end
 
 @interface UIImage (UIImageUtil)
