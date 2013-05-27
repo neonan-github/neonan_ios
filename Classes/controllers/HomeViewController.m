@@ -11,6 +11,9 @@
 #import "NNButton.h"
 #import "HomeGridViewCell.h"
 
+#import "MainSlideShowModel.h"
+#import "CommentListModel.h"
+
 #import <SwipeView.h>
 #import <KKGridView.h>
 #import <TTTAttributedLabel.h>
@@ -158,6 +161,33 @@ KKGridViewDataSource, KKGridViewDelegate>
 
 - (void)onHeaderViewClicked:(id)sender {
     DLog(@"onHeaderViewClicked: %d", [sender tag]);
+}
+
+#pragma mark - Private Request methods
+
+- (void)requestForSlideShow {
+    NSDictionary *parameters = @{@"channel": @"home", @"count": @(6)};
+    
+    [[NNHttpClient sharedClient] getAtPath:kPathSlideShow
+                                parameters:parameters
+                             responseClass:[MainSlideShowModel class]
+                                   success:^(id<Jsonable> response) {
+                                   }
+                                   failure:^(ResponseError *error) {
+                                   }];
+}
+
+- (void)requestForList {
+    NSDictionary *parameters = @{@"channel": @"home", @"sort_type": @"new", @"count": @(36),
+                                 @"offset": @(0)};
+    
+    [[NNHttpClient sharedClient] getAtPath:kPathWorkList
+                                parameters:parameters
+                             responseClass:[CommentListModel class]
+                                   success:^(id<Jsonable> response) {
+                                   }
+                                   failure:^(ResponseError *error) {
+                                   }];
 }
 
 #pragma mark - Private methods
