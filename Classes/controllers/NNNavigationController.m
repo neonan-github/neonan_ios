@@ -15,8 +15,7 @@
 
 @implementation NNNavigationController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -28,25 +27,24 @@
         navigationBar.tintColor = RGB(32, 32, 32);
         navigationBar.navigationController = self;
 
-        UIImageView *logoView = self.logoView = [[UIImageView alloc] initWithFrame:CGRectMake((CompatibleScreenWidth - 85) / 2, (NavBarHeight - 19) / 2, 85, 19)];
+        UIImageView *logoView = self.logoView = [[UIImageView alloc] initWithFrame:CGRectMake((CompatibleScreenWidth - 107) / 2, (NavBarHeight - 25) / 2,
+                                                                                              107, 25)];
         logoView.image = [UIImage imageFromFile:@"img_logo.png"];
         [navigationBar addSubview:logoView];
         
-        self.logoHidden = YES;
+//        self.logoHidden = YES;
         
         [self setValue:navigationBar forKeyPath:@"navigationBar"];
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -68,6 +66,7 @@
 - (NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
+
 // pre-iOS 6 support
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return _autoRotate ? (toInterfaceOrientation != UIDeviceOrientationPortraitUpsideDown) : (toInterfaceOrientation == UIInterfaceOrientationPortrait);

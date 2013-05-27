@@ -15,7 +15,7 @@
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
 #import "GalleryDetailController.h"
-#import "AboutController.h"
+#import "LeftMenuViewController.h"
 #import "HomeViewController.h"
 
 #import "APService.h"
@@ -65,7 +65,7 @@
     JASidePanelController *panelController = [[JASidePanelController alloc] init];
     panelController.shouldDelegateAutorotateToVisiblePanel = YES;
     panelController.recognizesPanGesture = NO;
-    panelController.leftPanel = [[AboutController alloc] init];
+    panelController.leftPanel = [[LeftMenuViewController alloc] init];
     panelController.centerPanel = containerController;
     
     self.window.rootViewController = panelController;
