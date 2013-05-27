@@ -15,7 +15,8 @@
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
 #import "GalleryDetailController.h"
-#import "AboutController.h"
+#import "LeftMenuViewController.h"
+#import "HomeViewController.h"
 
 #import "APService.h"
 //#import "Flurry.h"
@@ -64,7 +65,7 @@
     JASidePanelController *panelController = [[JASidePanelController alloc] init];
     panelController.shouldDelegateAutorotateToVisiblePanel = YES;
     panelController.recognizesPanGesture = NO;
-    panelController.leftPanel = [[AboutController alloc] init];
+    panelController.leftPanel = [[LeftMenuViewController alloc] init];
     panelController.centerPanel = containerController;
     
     self.window.rootViewController = panelController;
@@ -126,10 +127,10 @@
 
 - (NSArray *)createSubControllers {
     NNNavigationController *navController = [[NNNavigationController alloc] init];
-    self.navController.logoHidden = NO;
+//    self.navController.logoHidden = NO;
     
-    MainController *controller = [[MainController alloc] init];
-    controller.showSplash = YES;
+    HomeViewController *controller = [[HomeViewController alloc] init];
+//    controller.showSplash = YES;
     [navController pushViewController:controller animated:NO];
     
     return @[navController];

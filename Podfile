@@ -1,6 +1,6 @@
 platform :ios, 5.0
 
-#pod 'SVPullToRefresh',     '~> 0.3'
+pod 'SVPullToRefresh',     '~> 0.3'
 pod 'iCarousel',           '~> 1.7.2'
 pod 'HPGrowingTextView',   '~> 0.0.1'
 #pod 'NSLogger',            '~> 1.1' 
@@ -24,3 +24,4 @@ pod 'KKGridView',          '~> 0.6.8.2'
 #pod 'JSONKit',             '~> 1.4'
 pod 'SVProgressHUD',       '~> 0.8'
 pod 'RNCryptor',           '~> 2.1'
+pod 'SwipeView',           '~> 1.2.9'

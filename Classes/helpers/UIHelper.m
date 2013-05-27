@@ -169,6 +169,17 @@
     return animation;
 }
 
++ (CALayer *)layerWithName:(NSString *)name inView:(UIView *)view {
+    for (CALayer *layer in [view.layer sublayers]) {
+        DLog(@"layer name: %@", layer.name);
+        if ([[layer name] isEqualToString:name]) {
+            return layer;
+        }
+    }
+        
+    return nil;
+}
+
 @end
 
 @implementation UIImage (UIImageUtil)
