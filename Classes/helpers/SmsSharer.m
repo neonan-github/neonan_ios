@@ -46,7 +46,10 @@
             
             MFMessageComposeViewController *smsController=[[MFMessageComposeViewController alloc] init];
             CustomNavigationBar *navigationBar = [[CustomNavigationBar alloc] init];
-            [navigationBar setBackgroundWith:[UIImage imageFromFile:@"bg_navigation_bar.png"]];
+            navigationBar.topLineColor = RGB(32, 32, 32);
+            navigationBar.bottomLineColor = RGB(32, 32, 32);
+            navigationBar.gradientStartColor = RGB(32, 32, 32);
+            navigationBar.gradientEndColor = RGB(32, 32, 32);
             navigationBar.tintColor = RGB(32, 32, 32);
             navigationBar.navigationController = smsController;
             [smsController setValue:navigationBar forKeyPath:@"navigationBar"];
