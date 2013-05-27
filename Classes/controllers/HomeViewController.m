@@ -12,7 +12,7 @@
 #import "HomeGridViewCell.h"
 
 #import "MainSlideShowModel.h"
-#import "CommentListModel.h"
+#import "CommonListModel.h"
 
 #import <SwipeView.h>
 #import <KKGridView.h>
@@ -34,6 +34,10 @@ KKGridViewDataSource, KKGridViewDelegate>
 @property (weak, nonatomic) IBOutlet SwipeView *swipeView;
 
 @property (nonatomic, assign) NSInteger currentPageIndex;
+
+@property (nonatomic, strong) MainSlideShowModel *slideShowModel;
+@property (nonatomic, strong) CommonListModel *listDataModel;
+@property (nonatomic, strong) ResponseError *responseError;
 
 @end
 
@@ -75,7 +79,9 @@ KKGridViewDataSource, KKGridViewDelegate>
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.swipeView reloadData];
+    if (!self.slideShowModel || !self.listDataModel) {
+        [self requestData];
+    }
 }
 
 #pragma mark - SwipeViewDataSource methods
@@ -132,10 +138,12 @@ KKGridViewDataSource, KKGridViewDelegate>
         cell = [[HomeGridViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 145.0, 116.0) reuseIdentifier:CellIdentifier];
     }
     
-    cell.titleLabel.text = @"跳绳快速运动减肥法的好处";
+    CommonItem *model = !self.listDataModel ? nil : self.listDataModel.items[gridView.tag * kItemPerPageCount + indexPath.index];
+    
+    cell.titleLabel.text = model.title;
     
     __weak HomeGridViewCell *weakCell = cell;
-    [cell.imageView setImageWithURL:[NSURL URLWithString:@"http://cdn.neonan.com/uploads/d8c0a3e4-bded-47e9-aa4d-baf69156e9af.jpg_300"]
+    [cell.imageView setImageWithURL:[NSURL URLWithString:model.thumbUrl]
                             success:^(UIImage *image, BOOL cached) {
                                 weakCell.imageView.highlightedImage = [image opacity:0.8];
                             } failure:^(NSError *error) {
@@ -165,29 +173,80 @@ KKGridViewDataSource, KKGridViewDelegate>
 
 #pragma mark - Private Request methods
 
-- (void)requestForSlideShow {
-    NSDictionary *parameters = @{@"channel": @"home", @"count": @(6)};
+- (void)requestForSlideShow:(NSString *)channel success:(void (^)())success failure:(void (^)())failure {
+    NSDictionary *parameters = @{@"channel": channel, @"count": @(6)};
     
     [[NNHttpClient sharedClient] getAtPath:kPathSlideShow
                                 parameters:parameters
                              responseClass:[MainSlideShowModel class]
                                    success:^(id<Jsonable> response) {
+                                       self.slideShowModel = response;
+                                       if (success) {
+                                           success();
+                                       }
                                    }
                                    failure:^(ResponseError *error) {
+                                       self.responseError = error;
+                                       if (failure) {
+                                           failure();
+                                       }
                                    }];
 }
 
-- (void)requestForList {
-    NSDictionary *parameters = @{@"channel": @"home", @"sort_type": @"new", @"count": @(36),
+- (void)requestForList:(NSString *)channel success:(void (^)())success failure:(void (^)())failure {
+    NSDictionary *parameters = @{@"channel": channel, @"sort_type": @"new", @"count": @(36),
                                  @"offset": @(0)};
     
     [[NNHttpClient sharedClient] getAtPath:kPathWorkList
                                 parameters:parameters
-                             responseClass:[CommentListModel class]
+                             responseClass:[CommonListModel class]
                                    success:^(id<Jsonable> response) {
+                                       self.listDataModel = response;
+                                       if (success) {
+                                           success();
+                                       }
                                    }
                                    failure:^(ResponseError *error) {
+                                       self.responseError = error;
+                                       if (failure) {
+                                           failure();
+                                       }
                                    }];
+}
+
+- (void)requestData {
+    void (^success)() = ^{
+        if (self.listDataModel && self.slideShowModel) {
+            self.responseError = nil;
+            if (self.visible) {
+                [self.swipeView reloadData];
+            }
+        }
+    };
+    
+    void (^failure)() = ^{
+        if (self.responseError && (!self.listDataModel || !self.slideShowModel)) {
+            if (self.visible) {
+                [UIHelper alertWithMessage:self.responseError.message];
+            }
+        }
+    };
+
+    [self requestForSlideShow:@"home"
+                      success:^{
+                          success();
+                      }
+                      failure:^{
+                          failure();
+                      }];
+    
+    [self requestForList:@"home"
+                 success:^{
+                     success();
+                 }
+                 failure:^{
+                     failure();
+                 }];
 }
 
 #pragma mark - Private methods
