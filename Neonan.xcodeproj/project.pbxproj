@@ -284,7 +284,6 @@
 		349EF62E1675E92E0086A7F1 /* AboutController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349EF62C1675E92E0086A7F1 /* AboutController.xib */; };
 		34AB4A3C164CA1C30011B8F9 /* CommonListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AB4A3B164CA1C30011B8F9 /* CommonListModel.m */; };
 		34AB4A3F164CD3050011B8F9 /* SlideShowDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AB4A3E164CD3050011B8F9 /* SlideShowDetailModel.m */; };
-		34AC9C6B163E41640020DE4B /* NNNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC9C6A163E41640020DE4B /* NNNavigationBar.m */; };
 		34AC9C6F163E5DB10020DE4B /* bg_bar_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C6E163E5DB10020DE4B /* bg_bar_button.png */; };
 		34AC9C75163E75870020DE4B /* bg_header_view.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C74163E75870020DE4B /* bg_header_view.png */; };
 		34AC9C77163E80770020DE4B /* img_header_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C76163E80770020DE4B /* img_header_indicator.png */; };
@@ -326,6 +325,7 @@
 		34D0481316E4A146006BFDB5 /* img_paper_clip.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D0481216E4A146006BFDB5 /* img_paper_clip.png */; };
 		34D464D21630065C00D8EE28 /* UIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464D11630065C00D8EE28 /* UIHelper.m */; };
 		34D464E51630243900D8EE28 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464E41630243900D8EE28 /* SMPageControl.m */; };
+		34D572081754514F00D96FC8 /* NNNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D572071754514F00D96FC8 /* NNNavigationBar.m */; };
 		34E17E16164B5E9C00810CD4 /* MainSlideShowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E17E15164B5E9C00810CD4 /* MainSlideShowModel.m */; };
 		34E17E44164BBD3400810CD4 /* BabyListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E17E43164BBD3400810CD4 /* BabyListModel.m */; };
 		34E17E47164BC16600810CD4 /* VideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E17E46164BC16600810CD4 /* VideoModel.m */; };
@@ -797,8 +797,6 @@
 		34AB4A3B164CA1C30011B8F9 /* CommonListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonListModel.m; sourceTree = "<group>"; };
 		34AB4A3D164CD3050011B8F9 /* SlideShowDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideShowDetailModel.h; sourceTree = "<group>"; };
 		34AB4A3E164CD3050011B8F9 /* SlideShowDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideShowDetailModel.m; sourceTree = "<group>"; };
-		34AC9C69163E41640020DE4B /* NNNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNNavigationBar.h; sourceTree = "<group>"; };
-		34AC9C6A163E41640020DE4B /* NNNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNNavigationBar.m; sourceTree = "<group>"; };
 		34AC9C6E163E5DB10020DE4B /* bg_bar_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_bar_button.png; sourceTree = "<group>"; };
 		34AC9C74163E75870020DE4B /* bg_header_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_header_view.png; sourceTree = "<group>"; };
 		34AC9C76163E80770020DE4B /* img_header_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_header_indicator.png; sourceTree = "<group>"; };
@@ -853,6 +851,8 @@
 		34D464D11630065C00D8EE28 /* UIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIHelper.m; sourceTree = "<group>"; };
 		34D464E31630243900D8EE28 /* SMPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SMPageControl.h; sourceTree = "<group>"; };
 		34D464E41630243900D8EE28 /* SMPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMPageControl.m; sourceTree = "<group>"; };
+		34D572061754514F00D96FC8 /* NNNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNNavigationBar.h; sourceTree = "<group>"; };
+		34D572071754514F00D96FC8 /* NNNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNNavigationBar.m; sourceTree = "<group>"; };
 		34E17E12164B5CB100810CD4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		34E17E14164B5E9C00810CD4 /* MainSlideShowModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainSlideShowModel.h; sourceTree = "<group>"; };
 		34E17E15164B5E9C00810CD4 /* MainSlideShowModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainSlideShowModel.m; sourceTree = "<group>"; };
@@ -1541,15 +1541,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		34AC9C68163E41640020DE4B /* CustomNavigationBar */ = {
-			isa = PBXGroup;
-			children = (
-				34AC9C69163E41640020DE4B /* NNNavigationBar.h */,
-				34AC9C6A163E41640020DE4B /* NNNavigationBar.m */,
-			);
-			path = CustomNavigationBar;
-			sourceTree = "<group>";
-		};
 		34C56BE81676CE390013ECE6 /* UMeng */ = {
 			isa = PBXGroup;
 			children = (
@@ -1835,7 +1826,6 @@
 				346C7067167EBAF000EA0057 /* JPush */,
 				34C56C3B16770BCD0013ECE6 /* SSTextView */,
 				34C56BE81676CE390013ECE6 /* UMeng */,
-				34AC9C68163E41640020DE4B /* CustomNavigationBar */,
 				34D464E21630243900D8EE28 /* SMPageControl */,
 			);
 			name = Vendor;
@@ -1845,6 +1835,8 @@
 		53816B2B16266F1100B0672C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				34D572061754514F00D96FC8 /* NNNavigationBar.h */,
+				34D572071754514F00D96FC8 /* NNNavigationBar.m */,
 				349EF6131675A62C0086A7F1 /* NNDropDownMenu.h */,
 				349EF6141675A62C0086A7F1 /* NNDropDownMenu.m */,
 				348983D016BA5FCD001CFFB6 /* NNTableView.h */,
@@ -2162,7 +2154,6 @@
 				347AAB5D163672E500D243BA /* SignController.m in Sources */,
 				3401FDFC1636A1D700FAF971 /* ArticleDetailController.m in Sources */,
 				34584644163A3582008AAD38 /* NNNavigationController.m in Sources */,
-				34AC9C6B163E41640020DE4B /* NNNavigationBar.m in Sources */,
 				340716F8164128E7006E40FE /* VideoPlayController.m in Sources */,
 				34E3E3A8164276C50058F5CF /* NNHttpClient.m in Sources */,
 				34843563164360F30073468D /* ResponseError.m in Sources */,
@@ -2308,6 +2299,7 @@
 				34197643174E28ED00D301C8 /* HomeGridViewCell.m in Sources */,
 				3435891B175302C80040F370 /* NNButton.m in Sources */,
 				34358921175349AC0040F370 /* LeftMenuViewController.m in Sources */,
+				34D572081754514F00D96FC8 /* NNNavigationBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
