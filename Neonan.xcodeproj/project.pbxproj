@@ -250,7 +250,6 @@
 		346C706D167EBAF000EA0057 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 346C706B167EBAF000EA0057 /* libPushSDK.a */; };
 		3470DBD21653B14000273244 /* CommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3470DBD11653B14000273244 /* CommentListModel.m */; };
 		3475E899175366E600386EDC /* icon_nav_account.png in Resources */ = {isa = PBXBuildFile; fileRef = 3475E897175366E600386EDC /* icon_nav_account.png */; };
-		3475E89A175366E600386EDC /* icon_nav_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3475E898175366E600386EDC /* icon_nav_menu.png */; };
 		347AAB5D163672E500D243BA /* SignController.m in Sources */ = {isa = PBXBuildFile; fileRef = 347AAB5B163672E500D243BA /* SignController.m */; };
 		347AAB5E163672E500D243BA /* SignController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 347AAB5C163672E500D243BA /* SignController.xib */; };
 		34843563164360F30073468D /* ResponseError.m in Sources */ = {isa = PBXBuildFile; fileRef = 34843562164360F30073468D /* ResponseError.m */; };
@@ -746,7 +745,6 @@
 		3470DBD01653B14000273244 /* CommentListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListModel.h; sourceTree = "<group>"; };
 		3470DBD11653B14000273244 /* CommentListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListModel.m; sourceTree = "<group>"; };
 		3475E897175366E600386EDC /* icon_nav_account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nav_account.png; sourceTree = "<group>"; };
-		3475E898175366E600386EDC /* icon_nav_menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nav_menu.png; sourceTree = "<group>"; };
 		347AAB5A163672E500D243BA /* SignController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignController.h; sourceTree = "<group>"; };
 		347AAB5B163672E500D243BA /* SignController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignController.m; sourceTree = "<group>"; };
 		347AAB5C163672E500D243BA /* SignController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SignController.xib; path = ../Classes/controllers/SignController.xib; sourceTree = "<group>"; };
@@ -1619,7 +1617,6 @@
 				342DA8B916E356EA00404730 /* icon_over_flow_highlighted.png */,
 				34358927175356D30040F370 /* icon_search.png */,
 				3475E897175366E600386EDC /* icon_nav_account.png */,
-				3475E898175366E600386EDC /* icon_nav_menu.png */,
 				3435891C175349AC0040F370 /* img_logo.png */,
 				340716E11640DC01006E40FE /* img_logo_big.png */,
 				34CB8FE8163FB1B80001AD87 /* img_nav_bottom_line.png */,
@@ -2108,7 +2105,6 @@
 				343589261753567D0040F370 /* bg_search_bar@2x.png in Resources */,
 				34358928175356D30040F370 /* icon_search.png in Resources */,
 				3475E899175366E600386EDC /* icon_nav_account.png in Resources */,
-				3475E89A175366E600386EDC /* icon_nav_menu.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

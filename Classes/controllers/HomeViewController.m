@@ -61,6 +61,14 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     self.view.backgroundColor = HEXCOLOR(0x171717);
     
+    UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_menu_normal.png"];
+    [navLeftButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
+    
+    UIButton *navRightButton = [UIHelper createLeftBarButton:@"icon_nav_account.png"];
+    [navRightButton addTarget:self action:@selector(showRightPanel) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
+    
     self.swipeView.dataSource = self;
     self.swipeView.delegate = self;
     
