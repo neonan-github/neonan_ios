@@ -7,17 +7,20 @@
 //
 
 #import "NeonanAppDelegate.h"
+
 #import "MainController.h"
-
-#import "NNURLCache.h"
-#import "EncourageHelper.h"
-
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
 #import "GalleryDetailController.h"
+
 #import "LeftMenuViewController.h"
+#import "RightMenuViewController.h"
 #import "HomeViewController.h"
+
 #import "ChannelListViewController.h"
+
+#import "NNURLCache.h"
+#import "EncourageHelper.h"
 
 #import "APService.h"
 //#import "Flurry.h"
@@ -65,10 +68,11 @@
     
     JASidePanelController *panelController = [[JASidePanelController alloc] init];
     panelController.shouldDelegateAutorotateToVisiblePanel = YES;
-    panelController.recognizesPanGesture = NO;
+//    panelController.recognizesPanGesture = NO;
     panelController.leftFixedWidth = 200;
     panelController.leftPanel = [[LeftMenuViewController alloc] init];
     panelController.rightFixedWidth = 200;
+    panelController.rightPanel = [[RightMenuViewController alloc] init];
     panelController.centerPanel = containerController;
     
     self.window.rootViewController = panelController;

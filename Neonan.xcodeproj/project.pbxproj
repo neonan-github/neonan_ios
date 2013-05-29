@@ -324,6 +324,8 @@
 		34CB8FED163FBB4E0001AD87 /* bg_comment_count.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FEC163FBB4E0001AD87 /* bg_comment_count.png */; };
 		34CB8FEF163FD2F20001AD87 /* bg_back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FEE163FD2F20001AD87 /* bg_back_button.png */; };
 		34CB8FF4163FDFD40001AD87 /* CommentListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CB8FF3163FDFD40001AD87 /* CommentListController.xib */; };
+		34CFE1D01755FCB6004518AC /* RightMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CFE1CF1755FCB6004518AC /* RightMenuViewController.m */; };
+		34CFE1D517560C6D004518AC /* RightMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CFE1D417560C6D004518AC /* RightMenuViewController.xib */; };
 		34D0480E16E478EA006BFDB5 /* img_default_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 34D0480D16E478EA006BFDB5 /* img_default_avatar.jpg */; };
 		34D0481116E48DCC006BFDB5 /* FavoritesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D0481016E48DCC006BFDB5 /* FavoritesController.m */; };
 		34D0481316E4A146006BFDB5 /* img_paper_clip.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D0481216E4A146006BFDB5 /* img_paper_clip.png */; };
@@ -854,6 +856,9 @@
 		34CB8FEC163FBB4E0001AD87 /* bg_comment_count.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_comment_count.png; sourceTree = "<group>"; };
 		34CB8FEE163FD2F20001AD87 /* bg_back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_back_button.png; sourceTree = "<group>"; };
 		34CB8FF3163FDFD40001AD87 /* CommentListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CommentListController.xib; path = Classes/controllers/CommentListController.xib; sourceTree = SOURCE_ROOT; };
+		34CFE1CE1755FCB6004518AC /* RightMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightMenuViewController.h; sourceTree = "<group>"; };
+		34CFE1CF1755FCB6004518AC /* RightMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightMenuViewController.m; sourceTree = "<group>"; };
+		34CFE1D417560C6D004518AC /* RightMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RightMenuViewController.xib; sourceTree = "<group>"; };
 		34D0480D16E478EA006BFDB5 /* img_default_avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img_default_avatar.jpg; sourceTree = "<group>"; };
 		34D0480F16E48DCC006BFDB5 /* FavoritesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesController.h; sourceTree = "<group>"; };
 		34D0481016E48DCC006BFDB5 /* FavoritesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesController.m; sourceTree = "<group>"; };
@@ -1010,6 +1015,8 @@
 				3419763D174E1B2A00D301C8 /* HomeViewController.m */,
 				3435891E175349AC0040F370 /* LeftMenuViewController.h */,
 				3435891F175349AC0040F370 /* LeftMenuViewController.m */,
+				34CFE1CE1755FCB6004518AC /* RightMenuViewController.h */,
+				34CFE1CF1755FCB6004518AC /* RightMenuViewController.m */,
 				348AF7551755AE5A00690F81 /* ChannelListViewController.h */,
 				348AF7561755AE5A00690F81 /* ChannelListViewController.m */,
 			);
@@ -1530,6 +1537,7 @@
 				34E8CF6116E9BDCC000079E6 /* InfoEditController.xib */,
 				34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */,
 				34358920175349AC0040F370 /* LeftMenuViewController.xib */,
+				34CFE1D417560C6D004518AC /* RightMenuViewController.xib */,
 			);
 			name = Layouts;
 			sourceTree = "<group>";
@@ -2128,6 +2136,7 @@
 				3475E899175366E600386EDC /* icon_nav_account.png in Resources */,
 				34B8337D17560C02004BF79B /* bg_menu_cell.png in Resources */,
 				34B83382175610EB004BF79B /* img_menu_separator.png in Resources */,
+				34CFE1D517560C6D004518AC /* RightMenuViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2322,6 +2331,7 @@
 				34B8338017560C31004BF79B /* SideMenuCell.m in Sources */,
 				348AF7571755AE5A00690F81 /* ChannelListViewController.m in Sources */,
 				348AF75A1755AEC000690F81 /* ChannelListViewCell.m in Sources */,
+				34CFE1D01755FCB6004518AC /* RightMenuViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

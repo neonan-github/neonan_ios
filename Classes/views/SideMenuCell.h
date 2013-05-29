@@ -8,8 +8,15 @@
 
 #import "PrettyTableViewCell.h"
 
+typedef NS_ENUM(NSInteger, SideMenuCellStyle) {
+    SideMenuCellStyleLeft = 0,
+    SideMenuCellStyleRight,
+};
+
 @interface SideMenuCell : UITableViewCell
 
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+
+@property (nonatomic, assign) SideMenuCellStyle cellStyle;
 
 @end

@@ -10,8 +10,6 @@
 
 @interface SideMenuCell ()
 
-@property (nonatomic, weak) UIImageView *bgImageView;
-
 @end
 
 @implementation SideMenuCell
@@ -21,9 +19,7 @@
     if (self) {
         // Initialization code
         UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:self.frame];
-        bgImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        bgImageView.image = [[UIImage imageFromFile:@"bg_menu_cell.png"] resizableImageWithCapInsets:
-                             UIEdgeInsetsMake(0, 0, 1, 0)];
+        bgImageView.image = [[UIImage imageFromFile:@"bg_menu_cell.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 1, 0)];
         self.backgroundView = bgImageView;
         
         self.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -36,7 +32,7 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    self.textLabel.x -= 60;
+    self.textLabel.x -= self.cellStyle == SideMenuCellStyleLeft ? 60 : -60;
 }
 
 @end
