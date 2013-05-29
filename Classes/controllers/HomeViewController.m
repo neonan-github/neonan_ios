@@ -85,6 +85,10 @@ KKGridViewDataSource, KKGridViewDelegate>
 - (void)cleanUp {
     [super cleanUp];
     
+    self.slideShowModel = nil;
+    self.listDataModel = nil;
+    self.responseError = nil;
+    
     self.swipeView.dataSource = nil;
     self.swipeView.delegate = nil;
     self.swipeView = nil;

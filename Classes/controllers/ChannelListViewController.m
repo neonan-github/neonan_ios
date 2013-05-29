@@ -58,10 +58,13 @@
     [self.tableView addPullToRefreshWithActionHandler:^{
         [self requestForList:self.channel requestType:RequestTypeRefresh];
     }];
+    self.tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     
     [self.tableView addInfiniteScrollingWithActionHandler:^{
         [self requestForList:self.channel requestType:RequestTypeAppend];
     }];
+    self.tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    self.tableView.showsInfiniteScrolling = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -69,11 +72,15 @@
     
     if (!self.dataModel) {
         [self.tableView triggerPullToRefresh];
+    } else {
+        [self.tableView reloadData];
     }
 }
 
 - (void)cleanUp {
     [super cleanUp];
+    
+    self.dataModel = nil;
     
     self.tableView.dataSource = nil;
     self.tableView.delegate = nil;

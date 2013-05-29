@@ -15,6 +15,12 @@ static const float kCellMarginBottom = 5;
 // 图片长宽比
 static const CGFloat kThumbNailRatio = 320.f / 185.f;
 
+@interface ChannelListViewCell ()
+
+@property (nonatomic, strong) CALayer *leftLineLayer;
+
+@end
+
 @implementation ChannelListViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -50,12 +56,31 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
         dateLabel.font = [UIFont systemFontOfSize:9];
         dateLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentBottom;
         
+        CALayer *leftLineLayer = [CALayer layer];
+        self.leftLineLayer = leftLineLayer;
+        leftLineLayer.frame = CGRectMake(0, 0, 1, 69);
+        leftLineLayer.backgroundColor = HEXCOLOR(0x0096ff).CGColor;
+        [self.layer addSublayer:leftLineLayer];
+        
         [self.contentView addSubview:thumbnail];
         [self.contentView addSubview:titleLabel];
         [self.contentView addSubview:descriptionLabel];
         [self.contentView addSubview:dateLabel];
     }
+    
     return self;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    
+    self.leftLineLayer.opacity = self.selected || self.highlighted ? 1 : 0;
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+    
+    self.leftLineLayer.opacity = self.selected || self.highlighted ? 1 : 0;
 }
 
 - (void)setViewed:(BOOL)viewed {
@@ -75,8 +100,8 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
     self.thumbnail.frame = CGRectMake(x, kCellMarginTop, thumbnailWidth, contentHeight);
     
     x += thumbnailWidth + kCellMarginLeft;
-    self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x, contentHeight * 2 / 3);
-    self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, cellWidth - x, contentHeight / 3);
+    self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x - 5, contentHeight * 2 / 3);
+    self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, cellWidth - x - 5, contentHeight / 3);
     self.dateLabel.frame = CGRectMake(cellWidth - 65, kCellMarginTop + contentHeight * 2 / 3 + 3, 55, contentHeight / 3);
 }
 
