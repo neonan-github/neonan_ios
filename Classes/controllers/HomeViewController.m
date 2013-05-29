@@ -59,7 +59,7 @@ KKGridViewDataSource, KKGridViewDelegate>
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.view.backgroundColor = HEXCOLOR(0x171717);
+    self.view.backgroundColor = DarkThemeColor;
     
     UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_menu_normal.png"];
     [navLeftButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpInside];
