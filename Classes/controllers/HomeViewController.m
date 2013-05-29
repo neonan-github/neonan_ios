@@ -183,7 +183,9 @@ KKGridViewDataSource, KKGridViewDelegate>
     }
     
     NSInteger index = gridView.tag * kItemPerPageCount + indexPath.index;
-    [self enterControllerByType:self.listDataModel.items[index]];
+    [(NeonanAppDelegate *)ApplicationDelegate navigationController:self.navigationController
+                                          pushViewControllerByType:self.listDataModel.items[index]
+                                                        andChannel:@"home"];
 }
 
 #pragma mark - Private Event Handle
@@ -193,7 +195,9 @@ KKGridViewDataSource, KKGridViewDelegate>
         return;
     }
     
-    [self enterControllerByType:self.slideShowModel.list[[sender tag]]];
+    [(NeonanAppDelegate *)ApplicationDelegate navigationController:self.navigationController
+                                          pushViewControllerByType:self.slideShowModel.list[[sender tag]]
+                                                        andChannel:@"home"];
 }
 
 #pragma mark - Private Request methods
@@ -358,47 +362,6 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     TTTAttributedLabel *label = (TTTAttributedLabel *)[headerView viewWithTag:kTagHeaderLabel];
     label.text = model.title;
-}
-
-- (ContentType)judgeContentType:(id)item {
-    NSString *type = [item contentType];
-    if ([type isEqualToString:@"article"]) {
-        return ContentTypeArticle;
-    }
-    
-    if ([type isEqualToString:@"video"]) {
-        return ContentTypeVideo;
-    }
-    
-    return ContentTypeSlide;
-}
-
-- (void)enterControllerByType:(id)dataItem {
-    id controller;
-    
-    switch ([self judgeContentType:dataItem]) {
-        case ContentTypeArticle:
-            controller = [[ArticleDetailController alloc] init];
-            [controller setContentId:[dataItem contentId]];
-            [controller setContentTitle:[dataItem title]];
-            [controller setChannel:@"home"];
-            break;
-            
-        case ContentTypeSlide:
-            controller = [[GalleryDetailController alloc] init];
-            [controller setContentType:[dataItem contentType]];
-            [controller setContentId:[dataItem contentId]];
-            [controller setContentTitle:[dataItem title]];
-            [controller setChannel:@"home"];
-            break;
-            
-        case ContentTypeVideo:
-            controller = [[VideoPlayController alloc] init];
-            [controller setContentId:[dataItem contentId]];
-            [controller setVideoUrl:[dataItem videoUrl]];
-    }
-    
-    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

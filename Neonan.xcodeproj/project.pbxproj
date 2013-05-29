@@ -265,6 +265,8 @@
 		348983E216BA7093001CFFB6 /* icon_criticise_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DD16BA7093001CFFB6 /* icon_criticise_normal.png */; };
 		348983E316BA7093001CFFB6 /* icon_number_symbol.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DE16BA7093001CFFB6 /* icon_number_symbol.png */; };
 		348983E416BA7093001CFFB6 /* icon_praise_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DF16BA7093001CFFB6 /* icon_praise_normal.png */; };
+		348AF7571755AE5A00690F81 /* ChannelListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 348AF7561755AE5A00690F81 /* ChannelListViewController.m */; };
+		348AF75A1755AEC000690F81 /* ChannelListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 348AF7591755AEC000690F81 /* ChannelListViewCell.m */; };
 		348BCEF61678312C00D8FCB5 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */; };
 		348BCEF91678314E00D8FCB5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 348BCEF81678314E00D8FCB5 /* libz.dylib */; };
 		348E51A916E1AB5700E364F3 /* HistoryRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 348E51A816E1AB5700E364F3 /* HistoryRecorder.m */; };
@@ -772,6 +774,10 @@
 		348983DD16BA7093001CFFB6 /* icon_criticise_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_criticise_normal.png; sourceTree = "<group>"; };
 		348983DE16BA7093001CFFB6 /* icon_number_symbol.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_number_symbol.png; sourceTree = "<group>"; };
 		348983DF16BA7093001CFFB6 /* icon_praise_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_praise_normal.png; sourceTree = "<group>"; };
+		348AF7551755AE5A00690F81 /* ChannelListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelListViewController.h; sourceTree = "<group>"; };
+		348AF7561755AE5A00690F81 /* ChannelListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelListViewController.m; sourceTree = "<group>"; };
+		348AF7581755AEC000690F81 /* ChannelListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelListViewCell.h; sourceTree = "<group>"; };
+		348AF7591755AEC000690F81 /* ChannelListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelListViewCell.m; sourceTree = "<group>"; };
 		348BCEF41678312C00D8FCB5 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		348BCEF51678312C00D8FCB5 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		348BCEF81678314E00D8FCB5 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -1004,6 +1010,8 @@
 				3419763D174E1B2A00D301C8 /* HomeViewController.m */,
 				3435891E175349AC0040F370 /* LeftMenuViewController.h */,
 				3435891F175349AC0040F370 /* LeftMenuViewController.m */,
+				348AF7551755AE5A00690F81 /* ChannelListViewController.h */,
+				348AF7561755AE5A00690F81 /* ChannelListViewController.m */,
 			);
 			name = Controllers;
 			path = controllers;
@@ -1881,6 +1889,8 @@
 				34197642174E28ED00D301C8 /* HomeGridViewCell.m */,
 				34B8337E17560C31004BF79B /* SideMenuCell.h */,
 				34B8337F17560C31004BF79B /* SideMenuCell.m */,
+				348AF7581755AEC000690F81 /* ChannelListViewCell.h */,
+				348AF7591755AEC000690F81 /* ChannelListViewCell.m */,
 			);
 			name = Views;
 			path = views;
@@ -2310,6 +2320,8 @@
 				34358921175349AC0040F370 /* LeftMenuViewController.m in Sources */,
 				34D572081754514F00D96FC8 /* NNNavigationBar.m in Sources */,
 				34B8338017560C31004BF79B /* SideMenuCell.m in Sources */,
+				348AF7571755AE5A00690F81 /* ChannelListViewController.m in Sources */,
+				348AF75A1755AEC000690F81 /* ChannelListViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

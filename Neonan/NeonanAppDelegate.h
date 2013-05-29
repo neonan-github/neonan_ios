@@ -18,4 +18,7 @@
 @property (nonatomic, strong) NNNavigationController *navController;
 @property (nonatomic, strong) NNContainerViewController *containerController;
 
+- (ContentType)judgeContentType:(id)item;
+- (void)navigationController:(UINavigationController *)navigationController pushViewControllerByType:(id)dataItem andChannel:(NSString *)channel;
+
 @end

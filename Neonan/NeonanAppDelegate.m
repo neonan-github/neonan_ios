@@ -17,6 +17,7 @@
 #import "GalleryDetailController.h"
 #import "LeftMenuViewController.h"
 #import "HomeViewController.h"
+#import "ChannelListViewController.h"
 
 #import "APService.h"
 //#import "Flurry.h"
@@ -125,40 +126,66 @@
 //    [self enterControllerByType:[userInfo objectForKey:@"content_type"] andId:[userInfo objectForKey:@"content_id"]];
 }
 
+#pragma mark - Public methods
+
+- (ContentType)judgeContentType:(id)item {
+    NSString *type = [item contentType];
+    if ([type isEqualToString:@"article"]) {
+        return ContentTypeArticle;
+    }
+    
+    if ([type isEqualToString:@"video"]) {
+        return ContentTypeVideo;
+    }
+    
+    return ContentTypeSlide;
+}
+
+- (void)navigationController:(UINavigationController *)navigationController pushViewControllerByType:(id)dataItem andChannel:(NSString *)channel {
+    id controller;
+    
+    switch ([self judgeContentType:dataItem]) {
+        case ContentTypeArticle:
+            controller = [[ArticleDetailController alloc] init];
+            [controller setContentId:[dataItem contentId]];
+            [controller setContentTitle:[dataItem title]];
+            [controller setChannel:channel];
+            break;
+            
+        case ContentTypeSlide:
+            controller = [[GalleryDetailController alloc] init];
+            [controller setContentType:[dataItem contentType]];
+            [controller setContentId:[dataItem contentId]];
+            [controller setContentTitle:[dataItem title]];
+            [controller setChannel:channel];
+            break;
+            
+        case ContentTypeVideo:
+            controller = [[VideoPlayController alloc] init];
+            [controller setContentId:[dataItem contentId]];
+            [controller setVideoUrl:[dataItem videoUrl]];
+    }
+    
+    [navigationController pushViewController:controller animated:YES];
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)createSubControllers {
-    NNNavigationController *navController = [[NNNavigationController alloc] init];
-//    self.navController.logoHidden = NO;
+    NSMutableArray *subControllers = [NSMutableArray array];
     
-    HomeViewController *controller = [[HomeViewController alloc] init];
-//    controller.showSplash = YES;
-    [navController pushViewController:controller animated:NO];
+    HomeViewController *viewController0 = [[HomeViewController alloc] init];
+    [subControllers addObject:[[NNNavigationController alloc] initWithRootViewController:viewController0]];
     
-    return @[navController];
-}
-
-- (void)enterControllerByType:(NSString *)contentType andId:(NSString *)contentId {
-    Class controllerClass;
-    if ([contentType isEqualToString:@"article"]) {
-        controllerClass = [ArticleDetailController class];
-    } else if ([contentType isEqualToString:@"video"]) {
-        controllerClass = [VideoPlayController class];
-    } else {
-        controllerClass = [GalleryDetailController class];
-    }
+    NSArray *channels = @[@"women", @"know", @"play", @"video"];
+    [channels enumerateObjectsUsingBlock:^(NSString *channel, NSUInteger idx, BOOL *stop) {
+        ChannelListViewController *viewController = [[ChannelListViewController alloc] init];
+        viewController.channel = channel;
+        
+        [subControllers addObject:[[NNNavigationController alloc] initWithRootViewController:viewController]];
+    }];
     
-    id controller = [[controllerClass alloc] init];
-    [controller setContentId:contentId];
-    if ([controller respondsToSelector:@selector(setChannel:)]) {
-        [controller setChannel:@"home"];
-    }
-    
-    if ([controller respondsToSelector:@selector(setContentType:)]) {
-        [controller setContentType:contentType];
-    }
-    
-    [self.navController pushViewController:controller animated:YES];
+    return [NSArray arrayWithArray:subControllers];
 }
 
 - (NSURLCache *)createURLCache {
