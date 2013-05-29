@@ -80,6 +80,8 @@
 #pragma mark - UITableViewDelegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.sidePanelController.centerPanel = self.sidePanelController.centerPanel;
+    [self performSelector:@selector(changeController:) withObject:@(indexPath.row) afterDelay:0.2];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -102,6 +104,14 @@
     }
     
     return _channelTypes;
+}
+
+- (void)changeController:(NSNumber *)index {
+    NNContainerViewController *containerController = ((NeonanAppDelegate *)ApplicationDelegate).containerController;
+    if (containerController.selectedIndex == index.integerValue) {
+        return;
+    }
+    containerController.selectedIndex = index.integerValue;
 }
 
 @end
