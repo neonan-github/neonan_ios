@@ -23,6 +23,7 @@
 #import <UIImageView+WebCache.h>
 #import <UIButton+WebCache.h>
 #import <UIImage+Filtering.h>
+#import <MBProgressHUD.h>
 
 static const NSInteger kPageCount = 6;
 static const NSInteger kItemPerPageCount = 6;
@@ -31,6 +32,7 @@ static const NSInteger kTagHeaderImageView = 1000;
 static const NSInteger kTagHeaderLabel = 1001;
 
 static NSString *const kHeaderBottomLineName = @"bottomLine";
+static NSString *const kLastUpdateKey = @"home_last_update";
 
 @interface HomeViewController () <SwipeViewDelegate, SwipeViewDataSource,
 KKGridViewDataSource, KKGridViewDelegate>
@@ -91,7 +93,9 @@ KKGridViewDataSource, KKGridViewDelegate>
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (!self.slideShowModel || !self.listDataModel) {
+    NSDate *lastUpdateDate = [NSDate dateWithTimeIntervalSince1970:[UserDefaults integerForKey:kLastUpdateKey]];
+    if (!self.slideShowModel || !self.listDataModel ||
+        [[NSDate date] timeIntervalSinceDate:lastUpdateDate] > 10 * kMinuteSeconds) {
         [self requestData];
     }
 }
@@ -236,10 +240,14 @@ KKGridViewDataSource, KKGridViewDelegate>
 }
 
 - (void)requestData {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     void (^done)() = ^ {
         double delayInSeconds = 0.5;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            
             [self.swipeView reloadItemAtIndex:self.currentPageIndex];
             self.swipeView.scrollEnabled = YES;
         });
@@ -247,6 +255,9 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     void (^success)() = ^{
         if (self.listDataModel && self.slideShowModel) {
+            [UserDefaults setInteger:[[NSDate date] timeIntervalSince1970] forKey:kLastUpdateKey];
+            [UserDefaults synchronize];
+            
             if (self.visible) {
                 done();
             }
