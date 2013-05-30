@@ -7,7 +7,7 @@
 //
 
 #import "RightMenuViewController.h"
-#import "SignController.h"
+#import "SignViewController.h"
 #import "PersonalInfoController.h"
 
 #import "SideMenuCell.h"

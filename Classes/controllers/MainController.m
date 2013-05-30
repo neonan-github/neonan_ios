@@ -12,7 +12,7 @@
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
 #import "GridListController.h"
-#import "SignController.h"
+#import "SignViewController.h"
 #import "AboutController.h"
 #import "FeedbackController.h"
 #import "PersonalInfoController.h"

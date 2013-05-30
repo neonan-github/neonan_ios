@@ -7,7 +7,7 @@
 //
 
 #import "ArticleDetailController.h"
-#import "SignController.h"
+#import "SignViewController.h"
 #import "CommentListController.h"
 #import "NNNavigationController.h"
 #import "NearWorksModel.h"

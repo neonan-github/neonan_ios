@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import "SignController.h"
+#import "SignViewController.h"
 #import "NNNavigationController.h"
 
 #import "LoginResult.h"
@@ -23,7 +23,7 @@
 #import <SSKeychain.h>
 #import <SVProgressHUD.h>
 
-@interface SignController ()
+@interface SignViewController ()
 @property (unsafe_unretained, nonatomic) NNUnderlinedButton *switchTypeButton;
 @property (unsafe_unretained, nonatomic) IBOutlet NNTextField *userTextField;
 @property (unsafe_unretained, nonatomic) IBOutlet NNTextField *passwordTextField;
@@ -37,7 +37,7 @@
 
 @end
 
-@implementation SignController
+@implementation SignViewController
 
 - (id)initWithType:(signType)type {
     self = [super init];

@@ -7,7 +7,7 @@
 //
 
 #import "SessionManager.h"
-#import "SignController.h"
+#import "SignViewController.h"
 #import "SignHelper.h"
 
 #import "LoginResult.h"
@@ -100,7 +100,7 @@ static NSString *const kUserInfoKey = @"user_info";
                 }
             }];
         } else {
-            SignController *signController = [[SignController alloc] init];
+            SignViewController *signController = [[SignViewController alloc] init];
             signController.success = success;
             [controller presentModalViewController:signController animated:YES];
         }
@@ -119,7 +119,7 @@ static NSString *const kUserInfoKey = @"user_info";
             }
         }];
     } else {
-        SignController *signController = [[SignController alloc] init];
+        SignViewController *signController = [[SignViewController alloc] init];
         signController.success = success;
         [controller presentModalViewController:signController animated:YES];
     }

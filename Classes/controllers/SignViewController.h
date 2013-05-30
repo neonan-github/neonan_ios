@@ -15,7 +15,7 @@ typedef enum {
 
 typedef void(^SignSuccessBlock)(NSString *token);
 
-@interface SignController : NNViewController
+@interface SignViewController : NNViewController
 
 @property (assign, nonatomic) signType type;
 @property (copy, nonatomic) SignSuccessBlock success;
