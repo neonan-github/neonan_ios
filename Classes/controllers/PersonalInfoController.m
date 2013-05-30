@@ -46,11 +46,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"个人中心";
+//    self.title = @"个人中心";
     
-    UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
-    [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *navLeftButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
+    
+    UIButton *navRightButton = [UIHelper createRightBarButton:@"icon_nav_edit.png"];
+    [navRightButton addTarget:self action:@selector(editInfo:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
     
     self.view.backgroundColor = DarkThemeColor;
     
@@ -176,11 +179,13 @@
         _nameLabel.text = name;
     };
     
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.8f];
-    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.view.window cache:NO];
-    [self presentModalViewController:[[NNNavigationController alloc] initWithRootViewController:controller] animated:NO];
-    [UIView commitAnimations];
+    [self.navigationController pushViewController:controller animated:YES];
+    
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:0.8f];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.view.window cache:NO];
+//    [self presentModalViewController:[[NNNavigationController alloc] initWithRootViewController:controller] animated:NO];
+//    [UIView commitAnimations];
 }
 
 - (IBAction)buyVIP:(id)sender {

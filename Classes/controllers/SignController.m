@@ -52,7 +52,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIButton *cancelButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
+    UIButton *cancelButton = [UIHelper createLeftBarButton:@"icon_nav_close.png"];
     cancelButton.frame = CGRectMake(14, 8, 30, 30);
     cancelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     [cancelButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];

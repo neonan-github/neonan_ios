@@ -8,6 +8,7 @@
 
 #import "RightMenuViewController.h"
 #import "SignController.h"
+#import "PersonalInfoController.h"
 
 #import "SideMenuCell.h"
 
@@ -105,7 +106,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.sidePanelController.centerPanel = self.sidePanelController.centerPanel;
-//    [self performSelector:@selector(changeController:) withObject:@(indexPath.row) afterDelay:0.2];
+    
+    NNNavigationController *topNavController = (NNNavigationController *)((NeonanAppDelegate *)ApplicationDelegate).containerController.currentViewController;
+    PersonalInfoController *viewController = [[PersonalInfoController alloc] init];
+    [topNavController pushViewController:viewController animated:NO];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

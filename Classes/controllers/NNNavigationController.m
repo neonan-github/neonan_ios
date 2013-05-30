@@ -20,11 +20,11 @@
     if (self) {
         // Custom initialization
         NNNavigationBar *navigationBar = [[NNNavigationBar alloc] init];
-        navigationBar.topLineColor = RGB(32, 32, 32);
-        navigationBar.bottomLineColor = RGB(32, 32, 32);
-        navigationBar.gradientStartColor = RGB(32, 32, 32);
-        navigationBar.gradientEndColor = RGB(32, 32, 32);
-        navigationBar.tintColor = RGB(32, 32, 32);
+        navigationBar.topLineColor = RGB(0, 0, 0);
+        navigationBar.bottomLineColor = RGB(0, 0, 0);
+        navigationBar.gradientStartColor = RGB(0, 0, 0);
+        navigationBar.gradientEndColor = RGB(0, 0, 0);
+        navigationBar.tintColor = RGB(0, 0, 0);
         navigationBar.navigationController = self;
 
         UIImageView *logoView = self.logoView = [[UIImageView alloc] initWithFrame:CGRectMake((CompatibleScreenWidth - 107) / 2, (NavBarHeight - 25) / 2,

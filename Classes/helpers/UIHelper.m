@@ -67,7 +67,7 @@
 }
 
 + (UIButton *)createBackButton:(UINavigationBar *)navigationBar {
-    UIButton *button = [UIHelper createLeftBarButton:@"icon_back_normal.png"];
+    UIButton *button = [UIHelper createLeftBarButton:@"icon_nav_back.png"];
     [button addTarget:navigationBar action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     
     return button;

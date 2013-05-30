@@ -38,13 +38,12 @@ UIActionSheetDelegate>
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"编辑资料";
+//    self.title = @"编辑资料";
     
-    UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
-    [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *navLeftButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
-    UIButton *navRightButton = [UIHelper createRightBarButton:@"icon_done_normal.png"];
+    UIButton *navRightButton = [UIHelper createRightBarButton:@"icon_nav_done.png"];
     [navRightButton addTarget:self action:@selector(commit) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
     
@@ -113,7 +112,7 @@ UIActionSheetDelegate>
                                             }
                                             
                                             [SVProgressHUD showSuccessWithStatus:@"更新成功"];
-                                            [self close];
+                                            [self.navigationController popViewControllerAnimated:YES];
                                         }
                                         failure:^(ResponseError *error) {
                                             DLog(@"error:%@", error.message);

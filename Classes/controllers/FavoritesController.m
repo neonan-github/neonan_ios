@@ -49,7 +49,7 @@ static NSString *const kChannel = @"fav";
 	// Do any additional setup after loading the view.
     self.title = @"我的收藏";
     
-    UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
+    UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_nav_close.png"];
     [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     

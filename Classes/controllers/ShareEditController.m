@@ -46,7 +46,7 @@ const NSUInteger kMaxInputLimit = 140;
     UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    UIButton *navRightButton = self.shareButton = [UIHelper createRightBarButton:@"icon_done_normal.png"];
+    UIButton *navRightButton = self.shareButton = [UIHelper createRightBarButton:@"icon_nav_done.png"];
     [navRightButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
     

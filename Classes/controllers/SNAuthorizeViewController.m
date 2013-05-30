@@ -50,7 +50,7 @@
         UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     } else {
-        UIButton *cancelButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
+        UIButton *cancelButton = [UIHelper createLeftBarButton:@"icon_nav_close.png"];
         [cancelButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     }
