@@ -13,9 +13,10 @@
 
 #import "CommonListModel.h"
 
-#import "HotListCell.h"
+#import "ChannelListViewCell.h"
 
 #import <SVPullToRefresh.h>
+#import <UIImageView+WebCache.h>
 
 static NSString *const kChannel = @"fav";
 
@@ -49,8 +50,7 @@ static NSString *const kChannel = @"fav";
 	// Do any additional setup after loading the view.
     self.title = @"我的收藏";
     
-    UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_nav_close.png"];
-    [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *navLeftButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
     
     UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
@@ -80,16 +80,22 @@ static NSString *const kChannel = @"fav";
 
 - (void)cleanUp {
     self.countLabel = nil;
+    self.noFavoritesHintLabel = nil;
+    
+    self.tableView.dataSource = nil;
+    self.tableView.delegate = nil;
     self.tableView = nil;
+    
+    self.dataModel = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if (!_dataModel) {
-        [_tableView.pullToRefreshView performSelector:@selector(triggerRefresh) withObject:nil afterDelay:0.5];
+    if (!self.dataModel) {
+        [self.tableView triggerPullToRefresh];
     } else {
-        [_tableView reloadData];
+        [self.tableView reloadData];
     }
 }
 
@@ -100,11 +106,11 @@ static NSString *const kChannel = @"fav";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *listCellIdentifier = @"HotListCell";
+    static NSString *CellIdentifier = @"HotListCell";
     
-    HotListCell *cell = [tableView dequeueReusableCellWithIdentifier:listCellIdentifier];
+    ChannelListViewCell *cell = (ChannelListViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
-        cell = [[HotListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:listCellIdentifier];
+        cell = [[ChannelListViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     CommonItem *dataItem = [[_dataModel items] objectAtIndex:indexPath.row];
@@ -150,7 +156,6 @@ static NSString *const kChannel = @"fav";
             
             [self updateData:requestType];
         } failure:^(ResponseError *error) {
-            DLog(@"error:%@", error.message);
             if (self.isVisible) {
                 [UIHelper alertWithMessage:error.message];
             }

@@ -9,6 +9,7 @@
 #import "RightMenuViewController.h"
 #import "SignViewController.h"
 #import "PersonalInfoController.h"
+#import "FavoritesController.h"
 
 #import "SideMenuCell.h"
 
@@ -105,11 +106,24 @@
 #pragma mark - UITableViewDelegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    self.sidePanelController.centerPanel = self.sidePanelController.centerPanel;
+    void (^itemClicked)() = ^{
+        NSArray *classes = @[[PersonalInfoController class], [FavoritesController class]];
+        self.sidePanelController.centerPanel = self.sidePanelController.centerPanel;
+        
+        NNNavigationController *topNavController = (NNNavigationController *)((NeonanAppDelegate *)ApplicationDelegate).containerController.currentViewController;
+        UIViewController *viewController = [[classes[indexPath.row] alloc] init];
+        [topNavController pushViewController:viewController animated:NO];
+    };
     
-    NNNavigationController *topNavController = (NNNavigationController *)((NeonanAppDelegate *)ApplicationDelegate).containerController.currentViewController;
-    PersonalInfoController *viewController = [[PersonalInfoController alloc] init];
-    [topNavController pushViewController:viewController animated:NO];
+    if (indexPath.row < 2 && ![[SessionManager sharedManager] canAutoLogin]) {
+        [[SessionManager sharedManager] requsetToken:self success:^(NSString *token) {
+            [self updateStatus:YES];
+            
+            itemClicked();
+        }];
+    } else {
+        itemClicked();
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
