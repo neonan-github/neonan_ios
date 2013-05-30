@@ -8,7 +8,7 @@
 
 #import "NNViewController.h"
 
-@interface InfoEditController : NNViewController
+@interface InfoEditViewController : NNViewController
 
 @property (nonatomic, strong) UIImage *avatarImage;
 @property (nonatomic, copy) NSString *nickName;

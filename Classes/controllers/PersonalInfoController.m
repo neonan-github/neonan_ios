@@ -7,7 +7,7 @@
 //
 
 #import "PersonalInfoController.h"
-#import "InfoEditController.h"
+#import "InfoEditViewController.h"
 #import "PurchaseVIPController.h"
 
 #import "UserInfoModel.h"
@@ -171,7 +171,7 @@
         return;
     }
     
-    InfoEditController *controller = [[InfoEditController alloc] init];
+    InfoEditViewController *controller = [[InfoEditViewController alloc] init];
     controller.avatarImage = _avatarView.image;
     controller.nickName = _userInfoModel.username;
     controller.infoChangedBlock = ^(UIImage *avatarImage, NSString *name) {

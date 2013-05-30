@@ -351,8 +351,8 @@
 		34E4BC141647571000C07DFA /* MathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E4BC131647571000C07DFA /* MathHelper.m */; };
 		34E8CF5C16E9BC11000079E6 /* img_vip_rights.png in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF5B16E9BC11000079E6 /* img_vip_rights.png */; };
 		34E8CF5E16E9BC1A000079E6 /* bg_btn_buy_vip.png in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF5D16E9BC1A000079E6 /* bg_btn_buy_vip.png */; };
-		34E8CF6216E9BDCC000079E6 /* InfoEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6016E9BDCC000079E6 /* InfoEditController.m */; };
-		34E8CF6316E9BDCC000079E6 /* InfoEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF6116E9BDCC000079E6 /* InfoEditController.xib */; };
+		34E8CF6216E9BDCC000079E6 /* InfoEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6016E9BDCC000079E6 /* InfoEditViewController.m */; };
+		34E8CF6316E9BDCC000079E6 /* InfoEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF6116E9BDCC000079E6 /* InfoEditViewController.xib */; };
 		34E8CF6716E9C669000079E6 /* PurchaseVIPController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */; };
 		34E8CF6816E9C669000079E6 /* PurchaseVIPController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */; };
 		34E8CF6B16E9C860000079E6 /* PurchaseVIPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6A16E9C860000079E6 /* PurchaseVIPCell.m */; };
@@ -900,9 +900,9 @@
 		34E4BC131647571000C07DFA /* MathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MathHelper.m; sourceTree = "<group>"; };
 		34E8CF5B16E9BC11000079E6 /* img_vip_rights.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_vip_rights.png; sourceTree = "<group>"; };
 		34E8CF5D16E9BC1A000079E6 /* bg_btn_buy_vip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_btn_buy_vip.png; sourceTree = "<group>"; };
-		34E8CF5F16E9BDCC000079E6 /* InfoEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoEditController.h; sourceTree = "<group>"; };
-		34E8CF6016E9BDCC000079E6 /* InfoEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoEditController.m; sourceTree = "<group>"; };
-		34E8CF6116E9BDCC000079E6 /* InfoEditController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InfoEditController.xib; path = ../Classes/controllers/InfoEditController.xib; sourceTree = "<group>"; };
+		34E8CF5F16E9BDCC000079E6 /* InfoEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoEditViewController.h; sourceTree = "<group>"; };
+		34E8CF6016E9BDCC000079E6 /* InfoEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoEditViewController.m; sourceTree = "<group>"; };
+		34E8CF6116E9BDCC000079E6 /* InfoEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InfoEditViewController.xib; path = ../Classes/controllers/InfoEditViewController.xib; sourceTree = "<group>"; };
 		34E8CF6416E9C669000079E6 /* PurchaseVIPController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseVIPController.h; sourceTree = "<group>"; };
 		34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseVIPController.m; sourceTree = "<group>"; };
 		34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PurchaseVIPController.xib; path = ../Classes/controllers/PurchaseVIPController.xib; sourceTree = "<group>"; };
@@ -1017,8 +1017,8 @@
 				342DA8A416E3308200404730 /* PersonalInfoController.m */,
 				34D0480F16E48DCC006BFDB5 /* FavoritesController.h */,
 				34D0481016E48DCC006BFDB5 /* FavoritesController.m */,
-				34E8CF5F16E9BDCC000079E6 /* InfoEditController.h */,
-				34E8CF6016E9BDCC000079E6 /* InfoEditController.m */,
+				34E8CF5F16E9BDCC000079E6 /* InfoEditViewController.h */,
+				34E8CF6016E9BDCC000079E6 /* InfoEditViewController.m */,
 				34E8CF6416E9C669000079E6 /* PurchaseVIPController.h */,
 				34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */,
 				34CA181116EDC679000654AC /* SplashViewController.h */,
@@ -1546,7 +1546,7 @@
 				34071702164133C3006E40FE /* VideoPlayController.xib */,
 				342DA8A516E3308300404730 /* PersonalInfoController.xib */,
 				342DA8B416E3505000404730 /* FunctionFlowView.xib */,
-				34E8CF6116E9BDCC000079E6 /* InfoEditController.xib */,
+				34E8CF6116E9BDCC000079E6 /* InfoEditViewController.xib */,
 				34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */,
 				34358920175349AC0040F370 /* LeftMenuViewController.xib */,
 				34CFE1D417560C6D004518AC /* RightMenuViewController.xib */,
@@ -2137,7 +2137,7 @@
 				34D0481316E4A146006BFDB5 /* img_paper_clip.png in Resources */,
 				34E8CF5C16E9BC11000079E6 /* img_vip_rights.png in Resources */,
 				34E8CF5E16E9BC1A000079E6 /* bg_btn_buy_vip.png in Resources */,
-				34E8CF6316E9BDCC000079E6 /* InfoEditController.xib in Resources */,
+				34E8CF6316E9BDCC000079E6 /* InfoEditViewController.xib in Resources */,
 				34E8CF6816E9C669000079E6 /* PurchaseVIPController.xib in Resources */,
 				34E8CF7E16E9D6AD000079E6 /* MKStoreKitConfigs.plist in Resources */,
 				34CA181516EDC679000654AC /* SplashViewController.xib in Resources */,
@@ -2327,7 +2327,7 @@
 				34D0481116E48DCC006BFDB5 /* FavoritesController.m in Sources */,
 				34C8A66D16E7126700DF79A0 /* Harpy.m in Sources */,
 				345403E016E86EB7006B76DC /* Constants.m in Sources */,
-				34E8CF6216E9BDCC000079E6 /* InfoEditController.m in Sources */,
+				34E8CF6216E9BDCC000079E6 /* InfoEditViewController.m in Sources */,
 				34E8CF6716E9C669000079E6 /* PurchaseVIPController.m in Sources */,
 				34E8CF6B16E9C860000079E6 /* PurchaseVIPCell.m in Sources */,
 				34E8CF7816E9D666000079E6 /* MKSKProduct.m in Sources */,

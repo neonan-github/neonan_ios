@@ -6,7 +6,7 @@
 //  Copyright (c) 2013年 neonan. All rights reserved.
 //
 
-#import "InfoEditController.h"
+#import "InfoEditViewController.h"
 
 #import "NSData+MKBase64.h"
 
@@ -14,7 +14,7 @@
 #import <UIImageView+WebCache.h>
 #import <NYXImagesKit.h>
 
-@interface InfoEditController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
+@interface InfoEditViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
 UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *avatarBlockView;
@@ -24,7 +24,7 @@ UIActionSheetDelegate>
 
 @end
 
-@implementation InfoEditController
+@implementation InfoEditViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
