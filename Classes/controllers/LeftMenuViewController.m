@@ -55,7 +55,13 @@
     
     self.searchBgView = nil;
     self.searchButton = nil;
+    
+    self.tableView.dataSource = nil;
+    self.tableView.delegate = nil;
     self.tableView = nil;
+    
+    _channelTexts = nil;
+    _channelTypes = nil;
 }
 
 #pragma mark － UITableViewDataSource methods

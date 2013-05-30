@@ -7,12 +7,14 @@
 //
 
 #import "RightMenuViewController.h"
+#import "SignController.h"
 
 #import "SideMenuCell.h"
 
 #import "UserInfoModel.h"
 
 #import <UIImageView+WebCache.h>
+#import <UIAlertView+Blocks.h>
 
 @interface RightMenuViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -25,8 +27,6 @@
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @property (nonatomic, readonly) NSArray *menuTexts;
-
-@property (nonatomic, strong) UserInfoModel *userInfoModel;
 
 @end
 
@@ -71,6 +71,8 @@
     self.tableView.dataSource = nil;
     self.tableView.delegate = nil;
     self.tableView = nil;
+    
+    _menuTexts = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -112,6 +114,29 @@
 
 #pragma mark - Private Request methods
 
+- (IBAction)onPowerClicked:(id)sender {
+    if ([[SessionManager sharedManager] canAutoLogin]) {
+        RIButtonItem *cancelItem = [RIButtonItem item];
+        cancelItem.label = @"取消";
+        
+        RIButtonItem *okItem = [RIButtonItem item];
+        okItem.label = @"确定";
+        okItem.action = ^{
+            [[SessionManager sharedManager] logout];
+            [self updateStatus:NO];
+        };
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"确定注销？"
+                                                   cancelButtonItem:cancelItem
+                                                   otherButtonItems:okItem, nil];
+        [alertView show];
+    } else {
+        [[SessionManager sharedManager] requsetToken:self success:^(NSString *token) {
+            [self updateStatus:YES];
+        }];
+    }
+}
 
 
 #pragma mark - Private methods

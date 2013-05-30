@@ -172,6 +172,9 @@ static char ja_kvoContext;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self refreshState];
+    
     // ensure correct view dimensions
     [self _layoutSideContainers:NO duration:0.0f];
     [self _layoutSidePanels];
@@ -966,6 +969,34 @@ static char ja_kvoContext;
                 }
             }];
         }
+    }
+}
+
+#pragma mark - Add by Steven
+
+// reload sidePanel if viewDidUnload
+- (void)refreshState {
+    JASidePanelState tmpState = self.state;
+    
+    if (tmpState == JASidePanelLeftVisible && self.leftPanel.isViewLoaded) {
+        return;
+    } else if (tmpState == JASidePanelRightVisible && self.rightPanel.isViewLoaded) {
+        return;
+    }
+    
+    [self showCenterPanel:NO];
+    
+    switch (tmpState) {
+        case JASidePanelLeftVisible:
+            [self showLeftPanel:NO];
+            break;
+            
+        case JASidePanelRightVisible:
+            [self showRightPanel:NO];
+            break;
+            
+        default:
+            break;
     }
 }
 

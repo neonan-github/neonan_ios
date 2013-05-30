@@ -68,7 +68,7 @@
     
     JASidePanelController *panelController = [[JASidePanelController alloc] init];
     panelController.shouldDelegateAutorotateToVisiblePanel = YES;
-//    panelController.recognizesPanGesture = NO;
+    panelController.recognizesPanGesture = NO;
     panelController.leftFixedWidth = 200;
     panelController.leftPanel = [[LeftMenuViewController alloc] init];
     panelController.rightFixedWidth = 200;
