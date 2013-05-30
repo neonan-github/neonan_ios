@@ -23,6 +23,7 @@ static NSString *const kServiceName = @"neonan.com";
 static NSString *const kAccountKey = @"account";
 static NSString *const kPasswordKey = @"password";
 static NSString *const kLoginOptionKey = @"login_option";
+static NSString *const kUserInfoKey = @"user_info";
 
 @interface SessionManager ()
 
@@ -122,6 +123,53 @@ static NSString *const kLoginOptionKey = @"login_option";
         signController.success = success;
         [controller presentModalViewController:signController animated:YES];
     }
+}
+
+- (void)requsetUserInfo:(UIViewController *)controller
+            forceUpdate:(BOOL)forceUpdate
+                success:(void (^)(UserInfoModel *info))success
+                failure:(void (^)(ResponseError *error))failure {
+    if (![self canAutoLogin]) {
+        if (success) {
+            success(nil);
+        }
+        return;
+    }
+    
+    void (^requestFromNet)() = ^{
+        [[SessionManager sharedManager] requsetToken:controller success:^(NSString *token) {
+            [[NNHttpClient sharedClient] getAtPath:kPathGetUserInfo
+                                        parameters:@{@"token" : token}
+                                     responseClass:[UserInfoModel class]
+                                           success:^(id<Jsonable> response) {
+                                               [UserDefaults setObject:response forKey:kUserInfoKey];
+                                               [UserDefaults synchronize];
+                                               
+                                               if (success) {
+                                                   success((UserInfoModel *)response);
+                                               }
+                                           }
+                                           failure:^(ResponseError *error) {
+                                               if (forceUpdate && failure) {
+                                                   failure(error);
+                                               }
+                                           }];
+        }];
+    };
+    
+    if (forceUpdate) {
+        requestFromNet();
+        return;
+    }
+    
+    UserInfoModel *userInfo = [UserDefaults objectForKey:kUserInfoKey];
+    if (userInfo) {
+        if (success) {
+            success(userInfo);
+        }
+    }
+    
+    requestFromNet();
 }
 
 - (NSDictionary *)checkAccountInKeyChain {

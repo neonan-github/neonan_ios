@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UserInfoModel.h"
 
 @interface SessionManager : NSObject
 
@@ -20,6 +21,11 @@
 - (NSString *)getUID;
 
 - (void)requsetToken:(UIViewController *)controller success:(void (^)(NSString *token))success;// 若token存在，直接返回；否则，请求；
+
+- (void)requsetUserInfo:(UIViewController *)controller
+            forceUpdate:(BOOL)forceUpdate
+                success:(void (^)(UserInfoModel *info))success
+                failure:(void (^)(ResponseError *error))failure;
 
 - (void)signWithThirdPlatform:(ThirdPlatformType)platform
            rootViewController:(UIViewController *)controller
