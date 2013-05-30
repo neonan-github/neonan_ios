@@ -63,6 +63,8 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     self.view.backgroundColor = DarkThemeColor;
     
+    self.navigationItem.titleView = [UIHelper createLogoView];
+    
     UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_menu_normal.png"];
     [navLeftButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];

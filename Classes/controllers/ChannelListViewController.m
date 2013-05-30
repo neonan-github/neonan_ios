@@ -47,6 +47,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+//    self.navigationItem.titleView = [UIHelper createLogoView];
+    
     UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_menu_normal.png"];
     [navLeftButton addTarget:self action:@selector(showLeftPanel) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];

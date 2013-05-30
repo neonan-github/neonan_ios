@@ -103,6 +103,19 @@
     return button;
 }
 
++ (UIView *)createLogoView {
+    UIView *logoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, NavBarHeight)];
+    
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 107, 25)];
+    imgView.center = logoView.center;
+    imgView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin |
+    UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
+    imgView.image = [UIImage imageFromFile:@"img_logo.png"];
+    [logoView addSubview:imgView];
+    
+    return logoView;
+}
+
 + (void)alertWithMessage:(NSString *)message {
     static UIAlertView *alertView = nil;
     static dispatch_once_t onceToken;

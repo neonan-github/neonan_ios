@@ -10,7 +10,7 @@
 #import "NNNavigationBar.h"
 
 @interface NNNavigationController ()
-@property (unsafe_unretained, nonatomic) UIImageView *logoView;
+//@property (unsafe_unretained, nonatomic) UIImageView *logoView;
 @end
 
 @implementation NNNavigationController
@@ -27,10 +27,10 @@
         navigationBar.tintColor = RGB(0, 0, 0);
         navigationBar.navigationController = self;
 
-        UIImageView *logoView = self.logoView = [[UIImageView alloc] initWithFrame:CGRectMake((CompatibleScreenWidth - 107) / 2, (NavBarHeight - 25) / 2,
-                                                                                              107, 25)];
-        logoView.image = [UIImage imageFromFile:@"img_logo.png"];
-        [navigationBar addSubview:logoView];
+//        UIImageView *logoView = self.logoView = [[UIImageView alloc] initWithFrame:CGRectMake((CompatibleScreenWidth - 107) / 2, (NavBarHeight - 25) / 2,
+//                                                                                              107, 25)];
+//        logoView.image = [UIImage imageFromFile:@"img_logo.png"];
+//        [navigationBar addSubview:logoView];
         
 //        self.logoHidden = YES;
         
@@ -50,7 +50,7 @@
 }
 
 - (void)viewDidUnload {
-    self.logoView = nil;
+//    self.logoView = nil;
     
     [super viewDidUnload];
 }
@@ -72,12 +72,12 @@
     return _autoRotate ? (toInterfaceOrientation != UIDeviceOrientationPortraitUpsideDown) : (toInterfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)setLogoHidden:(BOOL)hidden {
-    if (_logoHidden != hidden) {
-        _logoHidden = hidden;
-        
-        _logoView.hidden = hidden;
-    }
-}
+//- (void)setLogoHidden:(BOOL)hidden {
+//    if (_logoHidden != hidden) {
+//        _logoHidden = hidden;
+//        
+//        _logoView.hidden = hidden;
+//    }
+//}
 
 @end

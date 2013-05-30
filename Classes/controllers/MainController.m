@@ -209,7 +209,7 @@ headerView = _headerView;
     [super viewWillAppear:animated];
     
 //    [self updateUserStatus];
-    [self.navigationController performSelector:@selector(setLogoHidden:) withObject:nil];
+//    [self.navigationController performSelector:@selector(setLogoHidden:) withObject:nil];
     
     [_headerView.carousel scrollToItemAtIndex:_channelIndex animated:NO];
     
@@ -362,7 +362,7 @@ headerView = _headerView;
 - (void)playVideo:(NSString *)videoUrl {
     VideoPlayController *controller = [[VideoPlayController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
-    navController.logoHidden = NO;
+//    navController.logoHidden = NO;
     controller.videoUrl = videoUrl;
     [self presentModalViewController:navController animated:YES];
 }

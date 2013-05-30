@@ -64,6 +64,7 @@ typedef enum {
 + (UIButton *)createBackButton:(UINavigationBar *)navigationBar;
 + (UIButton *)createLeftBarButton:(NSString *)imageName;
 + (UIButton *)createRightBarButton:(NSString *)imageName;
++ (UIView *)createLogoView;
 
 + (void)alertWithMessage:(NSString *)message;
 

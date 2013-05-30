@@ -42,7 +42,7 @@
 	// Do any additional setup after loading the view.
     
     NNNavigationController *navController = (NNNavigationController *)self.navigationController;
-    navController.logoHidden = YES;
+//    navController.logoHidden = YES;
     
     UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];

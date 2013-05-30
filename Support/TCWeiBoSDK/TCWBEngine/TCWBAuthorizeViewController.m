@@ -44,6 +44,8 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     
+    self.title = @"授权";
+    
     if (_showType == ShowTypePush) {
         UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];

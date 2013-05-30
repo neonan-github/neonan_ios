@@ -38,7 +38,7 @@ UIActionSheetDelegate>
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-//    self.title = @"编辑资料";
+    self.title = @"编辑资料";
     
     UIButton *navLeftButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];

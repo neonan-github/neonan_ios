@@ -182,9 +182,11 @@
     [subControllers addObject:[[NNNavigationController alloc] initWithRootViewController:viewController0]];
     
     NSArray *channels = @[@"women", @"know", @"play", @"video"];
+    NSArray *titles = @[@"女人", @"知道", @"爱玩", @"视频"];
     [channels enumerateObjectsUsingBlock:^(NSString *channel, NSUInteger idx, BOOL *stop) {
         ChannelListViewController *viewController = [[ChannelListViewController alloc] init];
         viewController.channel = channel;
+        viewController.title = titles[idx];
         
         [subControllers addObject:[[NNNavigationController alloc] initWithRootViewController:viewController]];
     }];

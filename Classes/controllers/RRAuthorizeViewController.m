@@ -28,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-//    self.title = @"授权";
+    self.title = @"授权";
     
     if (_showType == ShowTypePush) {
         UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
