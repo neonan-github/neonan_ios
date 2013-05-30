@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 neonan. All rights reserved.
 //
 
-#import "PersonalInfoController.h"
+#import "PersonalInfoViewController.h"
 #import "InfoEditViewController.h"
-#import "PurchaseVIPController.h"
+#import "PurchaseVIPViewController.h"
 
 #import "UserInfoModel.h"
 
@@ -16,7 +16,7 @@
 #import <SVProgressHUD.h>
 #import <UIImageView+WebCache.h>
 
-@interface PersonalInfoController ()
+@interface PersonalInfoViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarView;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
@@ -33,7 +33,7 @@
 
 @end
 
-@implementation PersonalInfoController
+@implementation PersonalInfoViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -189,7 +189,7 @@
 }
 
 - (IBAction)buyVIP:(id)sender {
-    PurchaseVIPController *controller = [[PurchaseVIPController alloc] init];
+    PurchaseVIPViewController *controller = [[PurchaseVIPViewController alloc] init];
     [self presentModalViewController:[[NNNavigationController alloc] initWithRootViewController:controller] animated:YES];
 }
 

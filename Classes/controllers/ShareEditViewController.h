@@ -10,7 +10,7 @@
 
 #import "NNSharer.h"
 
-@interface ShareEditController : NNViewController
+@interface ShareEditViewController : NNViewController
 
 @property (nonatomic, strong) NNSharer *sharer;
 

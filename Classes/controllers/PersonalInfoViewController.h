@@ -8,6 +8,6 @@
 
 #import "NNViewController.h"
 
-@interface PersonalInfoController : NNViewController
+@interface PersonalInfoViewController : NNViewController
 
 @end

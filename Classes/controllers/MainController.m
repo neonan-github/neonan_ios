@@ -15,8 +15,8 @@
 #import "SignViewController.h"
 #import "AboutController.h"
 #import "FeedbackController.h"
-#import "PersonalInfoController.h"
-#import "FavoritesController.h"
+#import "PersonalInfoViewController.h"
+#import "FavoritesViewController.h"
 #import "SplashViewController.h"
 
 #import "MainSlideShowModel.h"
@@ -474,14 +474,14 @@ headerView = _headerView;
 }
 
 - (void)showPersonalInfoController {
-    PersonalInfoController *controller = [[PersonalInfoController alloc] init];
+    PersonalInfoViewController *controller = [[PersonalInfoViewController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     
     [self presentModalViewController:navController animated:YES];
 }
 
 - (void)showFavoritesController {
-    FavoritesController *controller = [[FavoritesController alloc] init];
+    FavoritesViewController *controller = [[FavoritesViewController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     
     [self presentModalViewController:navController animated:YES];

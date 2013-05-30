@@ -8,6 +8,6 @@
 
 #import "NNViewController.h"
 
-@interface FavoritesController : NNViewController
+@interface FavoritesViewController : NNViewController
 
 @end

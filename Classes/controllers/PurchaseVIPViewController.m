@@ -6,7 +6,7 @@
 //  Copyright (c) 2013年 neonan. All rights reserved.
 //
 
-#import "PurchaseVIPController.h"
+#import "PurchaseVIPViewController.h"
 
 #import "PurchaseVIPCell.h"
 
@@ -20,13 +20,13 @@
 
 static const NSInteger kDefaultRetryTimes = 2;
 
-@interface PurchaseVIPController () <UITableViewDataSource, UITableViewDelegate>
+@interface PurchaseVIPViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
-@implementation PurchaseVIPController
+@implementation PurchaseVIPViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

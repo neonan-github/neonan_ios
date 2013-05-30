@@ -8,8 +8,8 @@
 
 #import "RightMenuViewController.h"
 #import "SignViewController.h"
-#import "PersonalInfoController.h"
-#import "FavoritesController.h"
+#import "PersonalInfoViewController.h"
+#import "FavoritesViewController.h"
 
 #import "SideMenuCell.h"
 
@@ -107,7 +107,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     void (^itemClicked)() = ^{
-        NSArray *classes = @[[PersonalInfoController class], [FavoritesController class]];
+        NSArray *classes = @[[PersonalInfoViewController class], [FavoritesViewController class]];
         self.sidePanelController.centerPanel = self.sidePanelController.centerPanel;
         
         NNNavigationController *topNavController = (NNNavigationController *)((NeonanAppDelegate *)ApplicationDelegate).containerController.currentViewController;

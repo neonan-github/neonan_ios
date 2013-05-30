@@ -41,8 +41,8 @@
 		342DA89C16E321C200404730 /* icon_nav_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 342DA89616E321C200404730 /* icon_nav_close.png */; };
 		342DA89D16E321C200404730 /* icon_nav_done.png in Resources */ = {isa = PBXBuildFile; fileRef = 342DA89716E321C200404730 /* icon_nav_done.png */; };
 		342DA89F16E321C200404730 /* icon_menu_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 342DA89916E321C200404730 /* icon_menu_normal.png */; };
-		342DA8A616E3308300404730 /* PersonalInfoController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342DA8A416E3308200404730 /* PersonalInfoController.m */; };
-		342DA8A716E3308300404730 /* PersonalInfoController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 342DA8A516E3308300404730 /* PersonalInfoController.xib */; };
+		342DA8A616E3308300404730 /* PersonalInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342DA8A416E3308200404730 /* PersonalInfoViewController.m */; };
+		342DA8A716E3308300404730 /* PersonalInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 342DA8A516E3308300404730 /* PersonalInfoViewController.xib */; };
 		342DA8A916E3362800404730 /* img_horizontal_divider.png in Resources */ = {isa = PBXBuildFile; fileRef = 342DA8A816E3362800404730 /* img_horizontal_divider.png */; };
 		342DA8B116E34CBA00404730 /* icon_over_flow_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 342DA8B016E34CBA00404730 /* icon_over_flow_normal.png */; };
 		342DA8B316E34D0100404730 /* bg_function_flow.png in Resources */ = {isa = PBXBuildFile; fileRef = 342DA8B216E34D0100404730 /* bg_function_flow.png */; };
@@ -212,8 +212,8 @@
 		3442AAC216E0B2DC000C8F72 /* TCWBEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AA6F16E0B2DC000C8F72 /* TCWBEngine.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3442AAC316E0B2DC000C8F72 /* TCWBRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AA7216E0B2DC000C8F72 /* TCWBRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3442AAC616E0B63D000C8F72 /* ShareHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAC516E0B63C000C8F72 /* ShareHelper.m */; };
-		3442AACA16E0B6AC000C8F72 /* ShareEditController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAC816E0B6AC000C8F72 /* ShareEditController.m */; };
-		3442AACB16E0B6AC000C8F72 /* ShareEditController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3442AAC916E0B6AC000C8F72 /* ShareEditController.xib */; };
+		3442AACA16E0B6AC000C8F72 /* ShareEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAC816E0B6AC000C8F72 /* ShareEditViewController.m */; };
+		3442AACB16E0B6AC000C8F72 /* ShareEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3442AAC916E0B6AC000C8F72 /* ShareEditViewController.xib */; };
 		3442AAD916E0B711000C8F72 /* EmailSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AACE16E0B711000C8F72 /* EmailSharer.m */; };
 		3442AADA16E0B711000C8F72 /* NNSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAD016E0B711000C8F72 /* NNSharer.m */; };
 		3442AADB16E0B711000C8F72 /* RenRenSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3442AAD216E0B711000C8F72 /* RenRenSharer.m */; };
@@ -333,7 +333,7 @@
 		34CFE1D01755FCB6004518AC /* RightMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34CFE1CF1755FCB6004518AC /* RightMenuViewController.m */; };
 		34CFE1D517560C6D004518AC /* RightMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34CFE1D417560C6D004518AC /* RightMenuViewController.xib */; };
 		34D0480E16E478EA006BFDB5 /* img_default_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 34D0480D16E478EA006BFDB5 /* img_default_avatar.jpg */; };
-		34D0481116E48DCC006BFDB5 /* FavoritesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D0481016E48DCC006BFDB5 /* FavoritesController.m */; };
+		34D0481116E48DCC006BFDB5 /* FavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D0481016E48DCC006BFDB5 /* FavoritesViewController.m */; };
 		34D0481316E4A146006BFDB5 /* img_paper_clip.png in Resources */ = {isa = PBXBuildFile; fileRef = 34D0481216E4A146006BFDB5 /* img_paper_clip.png */; };
 		34D464D21630065C00D8EE28 /* UIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464D11630065C00D8EE28 /* UIHelper.m */; };
 		34D464E51630243900D8EE28 /* SMPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D464E41630243900D8EE28 /* SMPageControl.m */; };
@@ -353,8 +353,8 @@
 		34E8CF5E16E9BC1A000079E6 /* bg_btn_buy_vip.png in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF5D16E9BC1A000079E6 /* bg_btn_buy_vip.png */; };
 		34E8CF6216E9BDCC000079E6 /* InfoEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6016E9BDCC000079E6 /* InfoEditViewController.m */; };
 		34E8CF6316E9BDCC000079E6 /* InfoEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF6116E9BDCC000079E6 /* InfoEditViewController.xib */; };
-		34E8CF6716E9C669000079E6 /* PurchaseVIPController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */; };
-		34E8CF6816E9C669000079E6 /* PurchaseVIPController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */; };
+		34E8CF6716E9C669000079E6 /* PurchaseVIPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6516E9C669000079E6 /* PurchaseVIPViewController.m */; };
+		34E8CF6816E9C669000079E6 /* PurchaseVIPViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E8CF6616E9C669000079E6 /* PurchaseVIPViewController.xib */; };
 		34E8CF6B16E9C860000079E6 /* PurchaseVIPCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6A16E9C860000079E6 /* PurchaseVIPCell.m */; };
 		34E8CF7816E9D666000079E6 /* MKSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF6E16E9D666000079E6 /* MKSKProduct.m */; };
 		34E8CF7916E9D666000079E6 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF7016E9D666000079E6 /* MKSKSubscriptionProduct.m */; };
@@ -438,9 +438,9 @@
 		342DA89616E321C200404730 /* icon_nav_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nav_close.png; sourceTree = "<group>"; };
 		342DA89716E321C200404730 /* icon_nav_done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nav_done.png; sourceTree = "<group>"; };
 		342DA89916E321C200404730 /* icon_menu_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_menu_normal.png; sourceTree = "<group>"; };
-		342DA8A316E3308200404730 /* PersonalInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalInfoController.h; sourceTree = "<group>"; };
-		342DA8A416E3308200404730 /* PersonalInfoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalInfoController.m; sourceTree = "<group>"; };
-		342DA8A516E3308300404730 /* PersonalInfoController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PersonalInfoController.xib; path = ../Classes/controllers/PersonalInfoController.xib; sourceTree = "<group>"; };
+		342DA8A316E3308200404730 /* PersonalInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalInfoViewController.h; sourceTree = "<group>"; };
+		342DA8A416E3308200404730 /* PersonalInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalInfoViewController.m; sourceTree = "<group>"; };
+		342DA8A516E3308300404730 /* PersonalInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PersonalInfoViewController.xib; path = ../Classes/controllers/PersonalInfoViewController.xib; sourceTree = "<group>"; };
 		342DA8A816E3362800404730 /* img_horizontal_divider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_horizontal_divider.png; sourceTree = "<group>"; };
 		342DA8B016E34CBA00404730 /* icon_over_flow_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_over_flow_normal.png; sourceTree = "<group>"; };
 		342DA8B216E34D0100404730 /* bg_function_flow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_function_flow.png; sourceTree = "<group>"; };
@@ -691,9 +691,9 @@
 		3442AA7416E0B2DC000C8F72 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Language.strings"; sourceTree = "<group>"; };
 		3442AAC416E0B63C000C8F72 /* ShareHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareHelper.h; sourceTree = "<group>"; };
 		3442AAC516E0B63C000C8F72 /* ShareHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareHelper.m; sourceTree = "<group>"; };
-		3442AAC716E0B6AC000C8F72 /* ShareEditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareEditController.h; sourceTree = "<group>"; };
-		3442AAC816E0B6AC000C8F72 /* ShareEditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareEditController.m; sourceTree = "<group>"; };
-		3442AAC916E0B6AC000C8F72 /* ShareEditController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ShareEditController.xib; path = ../Classes/controllers/ShareEditController.xib; sourceTree = "<group>"; };
+		3442AAC716E0B6AC000C8F72 /* ShareEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareEditViewController.h; sourceTree = "<group>"; };
+		3442AAC816E0B6AC000C8F72 /* ShareEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareEditViewController.m; sourceTree = "<group>"; };
+		3442AAC916E0B6AC000C8F72 /* ShareEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ShareEditViewController.xib; path = ../Classes/controllers/ShareEditViewController.xib; sourceTree = "<group>"; };
 		3442AACD16E0B711000C8F72 /* EmailSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailSharer.h; sourceTree = "<group>"; };
 		3442AACE16E0B711000C8F72 /* EmailSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailSharer.m; sourceTree = "<group>"; };
 		3442AACF16E0B711000C8F72 /* NNSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNSharer.h; sourceTree = "<group>"; };
@@ -872,8 +872,8 @@
 		34CFE1CF1755FCB6004518AC /* RightMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightMenuViewController.m; sourceTree = "<group>"; };
 		34CFE1D417560C6D004518AC /* RightMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RightMenuViewController.xib; sourceTree = "<group>"; };
 		34D0480D16E478EA006BFDB5 /* img_default_avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = img_default_avatar.jpg; sourceTree = "<group>"; };
-		34D0480F16E48DCC006BFDB5 /* FavoritesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesController.h; sourceTree = "<group>"; };
-		34D0481016E48DCC006BFDB5 /* FavoritesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesController.m; sourceTree = "<group>"; };
+		34D0480F16E48DCC006BFDB5 /* FavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesViewController.h; sourceTree = "<group>"; };
+		34D0481016E48DCC006BFDB5 /* FavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesViewController.m; sourceTree = "<group>"; };
 		34D0481216E4A146006BFDB5 /* img_paper_clip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_paper_clip.png; sourceTree = "<group>"; };
 		34D464D01630065C00D8EE28 /* UIHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIHelper.h; sourceTree = "<group>"; };
 		34D464D11630065C00D8EE28 /* UIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIHelper.m; sourceTree = "<group>"; };
@@ -903,9 +903,9 @@
 		34E8CF5F16E9BDCC000079E6 /* InfoEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoEditViewController.h; sourceTree = "<group>"; };
 		34E8CF6016E9BDCC000079E6 /* InfoEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoEditViewController.m; sourceTree = "<group>"; };
 		34E8CF6116E9BDCC000079E6 /* InfoEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = InfoEditViewController.xib; path = ../Classes/controllers/InfoEditViewController.xib; sourceTree = "<group>"; };
-		34E8CF6416E9C669000079E6 /* PurchaseVIPController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseVIPController.h; sourceTree = "<group>"; };
-		34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseVIPController.m; sourceTree = "<group>"; };
-		34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PurchaseVIPController.xib; path = ../Classes/controllers/PurchaseVIPController.xib; sourceTree = "<group>"; };
+		34E8CF6416E9C669000079E6 /* PurchaseVIPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseVIPViewController.h; sourceTree = "<group>"; };
+		34E8CF6516E9C669000079E6 /* PurchaseVIPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseVIPViewController.m; sourceTree = "<group>"; };
+		34E8CF6616E9C669000079E6 /* PurchaseVIPViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PurchaseVIPViewController.xib; path = ../Classes/controllers/PurchaseVIPViewController.xib; sourceTree = "<group>"; };
 		34E8CF6916E9C860000079E6 /* PurchaseVIPCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseVIPCell.h; sourceTree = "<group>"; };
 		34E8CF6A16E9C860000079E6 /* PurchaseVIPCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseVIPCell.m; sourceTree = "<group>"; };
 		34E8CF6D16E9D666000079E6 /* MKSKProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKProduct.h; sourceTree = "<group>"; };
@@ -1011,16 +1011,16 @@
 				341565F816BA18CB0012B2C7 /* GridListController.m */,
 				348983D416BA691C001CFFB6 /* TopicDetailController.h */,
 				348983D516BA691C001CFFB6 /* TopicDetailController.m */,
-				3442AAC716E0B6AC000C8F72 /* ShareEditController.h */,
-				3442AAC816E0B6AC000C8F72 /* ShareEditController.m */,
-				342DA8A316E3308200404730 /* PersonalInfoController.h */,
-				342DA8A416E3308200404730 /* PersonalInfoController.m */,
-				34D0480F16E48DCC006BFDB5 /* FavoritesController.h */,
-				34D0481016E48DCC006BFDB5 /* FavoritesController.m */,
+				3442AAC716E0B6AC000C8F72 /* ShareEditViewController.h */,
+				3442AAC816E0B6AC000C8F72 /* ShareEditViewController.m */,
+				342DA8A316E3308200404730 /* PersonalInfoViewController.h */,
+				342DA8A416E3308200404730 /* PersonalInfoViewController.m */,
+				34D0480F16E48DCC006BFDB5 /* FavoritesViewController.h */,
+				34D0481016E48DCC006BFDB5 /* FavoritesViewController.m */,
 				34E8CF5F16E9BDCC000079E6 /* InfoEditViewController.h */,
 				34E8CF6016E9BDCC000079E6 /* InfoEditViewController.m */,
-				34E8CF6416E9C669000079E6 /* PurchaseVIPController.h */,
-				34E8CF6516E9C669000079E6 /* PurchaseVIPController.m */,
+				34E8CF6416E9C669000079E6 /* PurchaseVIPViewController.h */,
+				34E8CF6516E9C669000079E6 /* PurchaseVIPViewController.m */,
 				34CA181116EDC679000654AC /* SplashViewController.h */,
 				34CA181216EDC679000654AC /* SplashViewController.m */,
 				3419763C174E1B2A00D301C8 /* HomeViewController.h */,
@@ -1536,7 +1536,7 @@
 			children = (
 				3419763E174E1B2A00D301C8 /* HomeViewController.xib */,
 				34CA181316EDC679000654AC /* SplashViewController.xib */,
-				3442AAC916E0B6AC000C8F72 /* ShareEditController.xib */,
+				3442AAC916E0B6AC000C8F72 /* ShareEditViewController.xib */,
 				348983D616BA691C001CFFB6 /* TopicDetailController.xib */,
 				34C56BF01676CEE00013ECE6 /* FeedbackController.xib */,
 				349EF62C1675E92E0086A7F1 /* AboutController.xib */,
@@ -1544,10 +1544,10 @@
 				3401FDFB1636A1D700FAF971 /* ArticleDetailController.xib */,
 				34CB8FF3163FDFD40001AD87 /* CommentListController.xib */,
 				34071702164133C3006E40FE /* VideoPlayController.xib */,
-				342DA8A516E3308300404730 /* PersonalInfoController.xib */,
+				342DA8A516E3308300404730 /* PersonalInfoViewController.xib */,
 				342DA8B416E3505000404730 /* FunctionFlowView.xib */,
 				34E8CF6116E9BDCC000079E6 /* InfoEditViewController.xib */,
-				34E8CF6616E9C669000079E6 /* PurchaseVIPController.xib */,
+				34E8CF6616E9C669000079E6 /* PurchaseVIPViewController.xib */,
 				34358920175349AC0040F370 /* LeftMenuViewController.xib */,
 				34CFE1D417560C6D004518AC /* RightMenuViewController.xib */,
 			);
@@ -2118,12 +2118,12 @@
 				3442AAAB16E0B2DC000C8F72 /* separatorLine@2x.png in Resources */,
 				3442AAAC16E0B2DC000C8F72 /* test.png in Resources */,
 				3442AAAD16E0B2DC000C8F72 /* test@2x.png in Resources */,
-				3442AACB16E0B6AC000C8F72 /* ShareEditController.xib in Resources */,
+				3442AACB16E0B6AC000C8F72 /* ShareEditViewController.xib in Resources */,
 				348E51AB16E1EA2500E364F3 /* bg_encourage_circle.png in Resources */,
 				342DA89C16E321C200404730 /* icon_nav_close.png in Resources */,
 				342DA89D16E321C200404730 /* icon_nav_done.png in Resources */,
 				342DA89F16E321C200404730 /* icon_menu_normal.png in Resources */,
-				342DA8A716E3308300404730 /* PersonalInfoController.xib in Resources */,
+				342DA8A716E3308300404730 /* PersonalInfoViewController.xib in Resources */,
 				342DA8A916E3362800404730 /* img_horizontal_divider.png in Resources */,
 				342DA8B116E34CBA00404730 /* icon_over_flow_normal.png in Resources */,
 				342DA8B316E34D0100404730 /* bg_function_flow.png in Resources */,
@@ -2138,7 +2138,7 @@
 				34E8CF5C16E9BC11000079E6 /* img_vip_rights.png in Resources */,
 				34E8CF5E16E9BC1A000079E6 /* bg_btn_buy_vip.png in Resources */,
 				34E8CF6316E9BDCC000079E6 /* InfoEditViewController.xib in Resources */,
-				34E8CF6816E9C669000079E6 /* PurchaseVIPController.xib in Resources */,
+				34E8CF6816E9C669000079E6 /* PurchaseVIPViewController.xib in Resources */,
 				34E8CF7E16E9D6AD000079E6 /* MKStoreKitConfigs.plist in Resources */,
 				34CA181516EDC679000654AC /* SplashViewController.xib in Resources */,
 				34E23EA216EF02D700C0A8C0 /* bg_btn_renew_vip.png in Resources */,
@@ -2310,7 +2310,7 @@
 				3442AAC216E0B2DC000C8F72 /* TCWBEngine.m in Sources */,
 				3442AAC316E0B2DC000C8F72 /* TCWBRequest.m in Sources */,
 				3442AAC616E0B63D000C8F72 /* ShareHelper.m in Sources */,
-				3442AACA16E0B6AC000C8F72 /* ShareEditController.m in Sources */,
+				3442AACA16E0B6AC000C8F72 /* ShareEditViewController.m in Sources */,
 				3442AAD916E0B711000C8F72 /* EmailSharer.m in Sources */,
 				3442AADA16E0B711000C8F72 /* NNSharer.m in Sources */,
 				3442AADB16E0B711000C8F72 /* RenRenSharer.m in Sources */,
@@ -2322,13 +2322,13 @@
 				348E51A916E1AB5700E364F3 /* HistoryRecorder.m in Sources */,
 				348E51B116E1ED9800E364F3 /* EncourageView.m in Sources */,
 				34B5591A16E20BE5001D378A /* EncourageHelper.m in Sources */,
-				342DA8A616E3308300404730 /* PersonalInfoController.m in Sources */,
+				342DA8A616E3308300404730 /* PersonalInfoViewController.m in Sources */,
 				342DA8B816E3531700404730 /* FunctionFlowView.m in Sources */,
-				34D0481116E48DCC006BFDB5 /* FavoritesController.m in Sources */,
+				34D0481116E48DCC006BFDB5 /* FavoritesViewController.m in Sources */,
 				34C8A66D16E7126700DF79A0 /* Harpy.m in Sources */,
 				345403E016E86EB7006B76DC /* Constants.m in Sources */,
 				34E8CF6216E9BDCC000079E6 /* InfoEditViewController.m in Sources */,
-				34E8CF6716E9C669000079E6 /* PurchaseVIPController.m in Sources */,
+				34E8CF6716E9C669000079E6 /* PurchaseVIPViewController.m in Sources */,
 				34E8CF6B16E9C860000079E6 /* PurchaseVIPCell.m in Sources */,
 				34E8CF7816E9D666000079E6 /* MKSKProduct.m in Sources */,
 				34E8CF7916E9D666000079E6 /* MKSKSubscriptionProduct.m in Sources */,

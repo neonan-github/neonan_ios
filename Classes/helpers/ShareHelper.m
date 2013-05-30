@@ -8,7 +8,7 @@
 
 #import "ShareHelper.h"
 
-#import "ShareEditController.h"
+#import "ShareEditViewController.h"
 
 #import "SinaSharer.h"
 #import "TencentSharer.h"
@@ -91,7 +91,7 @@ static const NSUInteger kWCTimelineIndex = 4;
             [SVProgressHUD showErrorWithStatus:@"分享失败"];
         }];
     }  else {
-        ShareEditController *controller = [[ShareEditController alloc] init];
+        ShareEditViewController *controller = [[ShareEditViewController alloc] init];
         sharer.rootViewController = controller;
         
         controller.shareText = _shareText;

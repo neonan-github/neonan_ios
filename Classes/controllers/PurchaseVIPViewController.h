@@ -8,6 +8,6 @@
 
 #import "NNViewController.h"
 
-@interface PurchaseVIPController : NNViewController
+@interface PurchaseVIPViewController : NNViewController
 
 @end

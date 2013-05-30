@@ -6,7 +6,7 @@
 //  Copyright (c) 2013年 neonan. All rights reserved.
 //
 
-#import "FavoritesController.h"
+#import "FavoritesViewController.h"
 #import "GalleryDetailController.h"
 #import "ArticleDetailController.h"
 #import "VideoPlayController.h"
@@ -20,7 +20,7 @@
 
 static NSString *const kChannel = @"fav";
 
-@interface FavoritesController () <UITableViewDataSource, UITableViewDelegate>
+@interface FavoritesViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) UILabel *countLabel;
 @property (nonatomic, weak) UITableView *tableView;
@@ -30,7 +30,7 @@ static NSString *const kChannel = @"fav";
 
 @end
 
-@implementation FavoritesController 
+@implementation FavoritesViewController 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

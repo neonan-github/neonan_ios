@@ -6,13 +6,13 @@
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import "ShareEditController.h"
+#import "ShareEditViewController.h"
 
 #import <SVProgressHUD.h>
 
 const NSUInteger kMaxInputLimit = 140;
 
-@interface ShareEditController () <UITextViewDelegate>
+@interface ShareEditViewController () <UITextViewDelegate>
 
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *bindInfoLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *inputLimitLabel;
@@ -25,7 +25,7 @@ const NSUInteger kMaxInputLimit = 140;
 
 @end
 
-@implementation ShareEditController
+@implementation ShareEditViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
