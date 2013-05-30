@@ -12,11 +12,11 @@
 
 @interface ChannelListViewCell : PrettyTableViewCell
 
-@property (nonatomic, unsafe_unretained) UIImageView *thumbnail;
-@property (nonatomic, unsafe_unretained) TTTAttributedLabel *titleLabel;
-@property (nonatomic, unsafe_unretained) TTTAttributedLabel *descriptionLabel;
-@property (nonatomic, unsafe_unretained) TTTAttributedLabel *dateLabel;
+@property (nonatomic, weak) UIImageView *thumbnail;
+@property (nonatomic, weak) TTTAttributedLabel *titleLabel;
+@property (nonatomic, weak) TTTAttributedLabel *dateLabel;
 
 - (void)setViewed:(BOOL)viewed;
+- (void)setContentType:(NSString *)contentType;
 
 @end

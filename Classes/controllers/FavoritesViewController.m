@@ -122,8 +122,8 @@ static NSString *const kChannel = @"fav";
     cell.viewed = [[HistoryRecorder sharedRecorder] isRecorded:record];
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl] placeholderImage:[UIImage imageNamed:@"img_common_list_place_holder.png"]];
     cell.titleLabel.text = dataItem.title;
-    cell.descriptionLabel.text = dataItem.readableContentType;
     cell.dateLabel.text = dataItem.date;
+    [cell setContentType:dataItem.contentType];
     
     return cell;
 }

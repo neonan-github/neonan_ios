@@ -43,6 +43,11 @@
     UIImageView *firstSeparatorView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -2, CompatibleScreenWidth, 2)];
     firstSeparatorView.image = [UIImage imageFromFile:@"img_menu_separator.png"];
     [self.tableView addSubview:firstSeparatorView];
+    
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:((NeonanAppDelegate *)ApplicationDelegate).containerController.selectedIndex
+                                                            inSection:0]
+                                animated:NO
+                          scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)didReceiveMemoryWarning {

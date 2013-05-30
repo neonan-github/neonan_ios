@@ -19,6 +19,8 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
 
 @property (nonatomic, strong) CALayer *leftLineLayer;
 
+@property (nonatomic, weak) UIImageView *contentTypeView;
+
 @end
 
 @implementation ChannelListViewCell
@@ -32,9 +34,11 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
         self.selectionGradientStartColor = HEXCOLOR(0x1e1e1e);
         self.selectionGradientEndColor = HEXCOLOR(0x1e1e1e);
         
-        UIImageView *thumbnail = self.thumbnail = [[UIImageView alloc] init];
+        UIImageView *thumbnail = [[UIImageView alloc] init];
+        self.thumbnail = thumbnail;
         
-        TTTAttributedLabel *titleLabel = self.titleLabel = [[TTTAttributedLabel alloc] init];
+        TTTAttributedLabel *titleLabel = [[TTTAttributedLabel alloc] init];
+        self.titleLabel = titleLabel;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.numberOfLines = 2;
@@ -42,14 +46,11 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
         titleLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
         titleLabel.font = [UIFont systemFontOfSize:13];
         
-        TTTAttributedLabel *descriptionLabel = self.descriptionLabel = [[TTTAttributedLabel alloc] init];
-        descriptionLabel.textAlignment = NSTextAlignmentLeft;
-        descriptionLabel.backgroundColor = [UIColor clearColor];
-        descriptionLabel.textColor = HEXCOLOR(0x777777);
-        descriptionLabel.font = [UIFont systemFontOfSize:9];
-        descriptionLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentBottom;
+        UIImageView *contentTypeView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 12, 12)];
+        self.contentTypeView = contentTypeView;
         
-        TTTAttributedLabel *dateLabel = self.dateLabel = [[TTTAttributedLabel alloc] init];
+        TTTAttributedLabel *dateLabel = [[TTTAttributedLabel alloc] init];
+        self.dateLabel = dateLabel;
         dateLabel.textAlignment = NSTextAlignmentRight;
         dateLabel.backgroundColor = [UIColor clearColor];
         dateLabel.textColor = HEXCOLOR(0x777777);
@@ -64,7 +65,7 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
         
         [self.contentView addSubview:thumbnail];
         [self.contentView addSubview:titleLabel];
-        [self.contentView addSubview:descriptionLabel];
+        [self.contentView addSubview:contentTypeView];
         [self.contentView addSubview:dateLabel];
     }
     
@@ -85,7 +86,21 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
 
 - (void)setViewed:(BOOL)viewed {
     _titleLabel.textColor = viewed ? HEXCOLOR(0x777777) : [UIColor whiteColor];
-    _descriptionLabel.textColor = _dateLabel.textColor = viewed ? HEXCOLOR(0x555555) : HEXCOLOR(0x777777);
+    _dateLabel.textColor = viewed ? HEXCOLOR(0x555555) : HEXCOLOR(0x777777);
+}
+
+- (void)setContentType:(NSString *)contentType {
+    NSString *imageName;
+    
+    if ([contentType isEqualToString:@"video"]) {
+        imageName = @"icon_content_type_video";
+    } else if ([contentType isEqualToString:@"article"]) {
+        imageName = @"icon_content_type_article";
+    } else {
+        imageName = @"icon_content_type_gallery";
+    }
+    
+    self.contentTypeView.image = [UIImage imageNamed:imageName];
 }
 
 - (void)layoutSubviews {
@@ -101,8 +116,8 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
     
     x += thumbnailWidth + kCellMarginLeft;
     self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x - 5, contentHeight * 2 / 3);
-    self.descriptionLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3, cellWidth - x - 5, contentHeight / 3);
-    self.dateLabel.frame = CGRectMake(cellWidth - 65, kCellMarginTop + contentHeight * 2 / 3 + 3, 55, contentHeight / 3);
+    self.dateLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3 + 3, 55, contentHeight / 3);
+    self.contentTypeView.frame = CGRectMake(cellWidth - 20, cellHeight - 14, 12, 12);
 }
 
 @end

@@ -280,6 +280,9 @@
 		349A1B8B175733150055D688 /* icon_vip.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A1B89175733150055D688 /* icon_vip.png */; };
 		349A1B8D17574AC50055D688 /* icon_nav_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A1B8C17574AC50055D688 /* icon_nav_edit.png */; };
 		349A1B8F17574D1B0055D688 /* icon_nav_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A1B8E17574D1B0055D688 /* icon_nav_back.png */; };
+		349A1B9317575E5C0055D688 /* icon_content_type_article.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A1B9017575E5C0055D688 /* icon_content_type_article.png */; };
+		349A1B9417575E5C0055D688 /* icon_content_type_gallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A1B9117575E5C0055D688 /* icon_content_type_gallery.png */; };
+		349A1B9517575E5C0055D688 /* icon_content_type_video.png in Resources */ = {isa = PBXBuildFile; fileRef = 349A1B9217575E5C0055D688 /* icon_content_type_video.png */; };
 		349EF606167590CA0086A7F1 /* icon_config_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 349EF604167590CA0086A7F1 /* icon_config_highlighted.png */; };
 		349EF607167590CA0086A7F1 /* icon_config_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 349EF605167590CA0086A7F1 /* icon_config_normal.png */; };
 		349EF6151675A62C0086A7F1 /* NNDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 349EF6141675A62C0086A7F1 /* NNDropDownMenu.m */; };
@@ -803,6 +806,9 @@
 		349A1B89175733150055D688 /* icon_vip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_vip.png; sourceTree = "<group>"; };
 		349A1B8C17574AC50055D688 /* icon_nav_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nav_edit.png; sourceTree = "<group>"; };
 		349A1B8E17574D1B0055D688 /* icon_nav_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nav_back.png; sourceTree = "<group>"; };
+		349A1B9017575E5C0055D688 /* icon_content_type_article.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_content_type_article.png; sourceTree = "<group>"; };
+		349A1B9117575E5C0055D688 /* icon_content_type_gallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_content_type_gallery.png; sourceTree = "<group>"; };
+		349A1B9217575E5C0055D688 /* icon_content_type_video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_content_type_video.png; sourceTree = "<group>"; };
 		349EF604167590CA0086A7F1 /* icon_config_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_config_highlighted.png; sourceTree = "<group>"; };
 		349EF605167590CA0086A7F1 /* icon_config_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_config_normal.png; sourceTree = "<group>"; };
 		349EF6131675A62C0086A7F1 /* NNDropDownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNDropDownMenu.h; sourceTree = "<group>"; };
@@ -1659,6 +1665,9 @@
 				349A1B8E17574D1B0055D688 /* icon_nav_back.png */,
 				342DA89616E321C200404730 /* icon_nav_close.png */,
 				342DA89716E321C200404730 /* icon_nav_done.png */,
+				349A1B9017575E5C0055D688 /* icon_content_type_article.png */,
+				349A1B9117575E5C0055D688 /* icon_content_type_gallery.png */,
+				349A1B9217575E5C0055D688 /* icon_content_type_video.png */,
 				3435891C175349AC0040F370 /* img_logo.png */,
 				340716E11640DC01006E40FE /* img_logo_big.png */,
 				34CB8FE8163FB1B80001AD87 /* img_nav_bottom_line.png */,
@@ -2161,6 +2170,9 @@
 				349A1B8B175733150055D688 /* icon_vip.png in Resources */,
 				349A1B8D17574AC50055D688 /* icon_nav_edit.png in Resources */,
 				349A1B8F17574D1B0055D688 /* icon_nav_back.png in Resources */,
+				349A1B9317575E5C0055D688 /* icon_content_type_article.png in Resources */,
+				349A1B9417575E5C0055D688 /* icon_content_type_gallery.png in Resources */,
+				349A1B9517575E5C0055D688 /* icon_content_type_video.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
