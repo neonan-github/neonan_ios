@@ -13,6 +13,7 @@
 @interface ChannelListViewCell : PrettyTableViewCell
 
 @property (nonatomic, weak) UIImageView *thumbnail;
+@property (nonatomic, weak) UIImageView *tagImageView;
 @property (nonatomic, weak) TTTAttributedLabel *titleLabel;
 @property (nonatomic, weak) TTTAttributedLabel *dateLabel;
 

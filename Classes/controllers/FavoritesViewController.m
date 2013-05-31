@@ -120,8 +120,13 @@ static NSString *const kChannel = @"fav";
     record.contentType = dataItem.contentType;
     
     cell.viewed = [[HistoryRecorder sharedRecorder] isRecorded:record];
+    
+    cell.tagImageView.image = [dataItem.contentType isEqualToString:@"video"] ?
+    [UIImage imageNamed:@"icon_video_tag"] : nil;
+    
     [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl]
                    placeholderImage:[UIImage imageNamed:@"img_placeholder_common.png"]];
+    
     cell.titleLabel.text = dataItem.title;
     cell.dateLabel.text = dataItem.date;
     [cell setContentType:dataItem.contentType];

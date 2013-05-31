@@ -34,8 +34,13 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
         self.selectionGradientStartColor = HEXCOLOR(0x1e1e1e);
         self.selectionGradientEndColor = HEXCOLOR(0x1e1e1e);
         
-        UIImageView *thumbnail = [[UIImageView alloc] init];
-        self.thumbnail = thumbnail;
+        self.thumbnail = self.imageView;
+        
+        UIImageView *tagImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        self.tagImageView = tagImageView;
+        tagImageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin |
+        UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
+        [self.thumbnail addSubview:tagImageView];
         
         TTTAttributedLabel *titleLabel = [[TTTAttributedLabel alloc] init];
         self.titleLabel = titleLabel;
@@ -63,7 +68,6 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
         leftLineLayer.backgroundColor = HEXCOLOR(0x0096ff).CGColor;
         [self.layer addSublayer:leftLineLayer];
         
-        [self.contentView addSubview:thumbnail];
         [self.contentView addSubview:titleLabel];
         [self.contentView addSubview:contentTypeView];
         [self.contentView addSubview:dateLabel];
@@ -118,6 +122,8 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
     self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x - 5, contentHeight * 2 / 3);
     self.dateLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3 + 3, 55, contentHeight / 3);
     self.contentTypeView.frame = CGRectMake(cellWidth - 20, cellHeight - 14, 12, 12);
+    
+//    self.tagImageView.center = self.thumbnail.center;
 }
 
 @end

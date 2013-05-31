@@ -174,6 +174,8 @@ KKGridViewDataSource, KKGridViewDelegate>
     cell.viewed = [[HistoryRecorder sharedRecorder] isRecorded:record];
     cell.titleLabel.text = model.title;
     
+    cell.tagImageView.image = [model.contentType isEqualToString:@"video"] ? [UIImage imageNamed:@"icon_video_tag"] : nil;
+    
     [cell.imageView setImageWithURL:[URLHelper imageURLWithString:model.thumbUrl]
                    placeholderImage:[UIImage imageNamed:@"img_placeholder_common"]];
     
