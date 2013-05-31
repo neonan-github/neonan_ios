@@ -45,13 +45,11 @@ static NSString * const kDirectionRight = @"1";
 
 @interface ArticleDetailController () <UIWebViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *extraInfoLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *titleLineView;
+@property (weak, nonatomic) MarqueeLabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIWebView *textView;
 @property (weak, nonatomic) IBOutlet CommentBox *commentBox;
-@property (weak, nonatomic) IBOutlet UIButton *actioenButton;
-//@property (strong, nonatomic) IBOutlet UIButton *commentButton;
+@property (weak, nonatomic) IBOutlet UIButton *actionButton;
+
 @property (nonatomic, readonly) FunctionFlowView *moreActionView;
 
 @property (strong, nonatomic) ShareHelper *shareHelper;
@@ -61,9 +59,6 @@ static NSString * const kDirectionRight = @"1";
 @property (weak, nonatomic) CALayer *cacheLayer;
 @property (assign, nonatomic) BOOL isAnimating;
 
-- (void)updateData;
-
-- (void)adjustLayout:(NSString *)title;
 @end
 
 @implementation ArticleDetailController
@@ -83,14 +78,16 @@ static NSString * const kDirectionRight = @"1";
     self.view.backgroundColor = DarkThemeColor;
     
     MarqueeLabel *titleLabel = [UIHelper createNavMarqueeLabel];
+    self.titleLabel = titleLabel;
     titleLabel.text = self.contentTitle;
     self.navigationItem.titleView = titleLabel;
-    
     
     UIButton *backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     UIButton *navRightButton = [UIHelper createRightBarButton:@"icon_nav_flow.png"];
+    self.actionButton = navRightButton;
+    [navRightButton addTarget:self action:@selector(showMoreAction:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
     
     UISwipeGestureRecognizer *swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
@@ -100,10 +97,7 @@ static NSString * const kDirectionRight = @"1";
     [swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer:swipeRightRecognizer];
     
-    [self adjustLayout:_contentTitle];
-    _titleLabel.text = _contentTitle;
-    
-    [_textView removeShadow];
+    [self.textView removeShadow];
     _textView.scalesPageToFit = YES;
     _textView.delegate = self;
     _textView.dataDetectorTypes = UIDataDetectorTypeNone;
@@ -125,12 +119,10 @@ static NSString * const kDirectionRight = @"1";
 - (void)cleanUp {
     _moreActionView = nil;
     
-    self.titleLineView = nil;
     self.titleLabel = nil;
-    self.extraInfoLabel = nil;
     self.textView = nil;
     self.commentBox = nil;
-    self.actioenButton = nil;
+    self.actionButton = nil;
     self.shareHelper = nil;
     self.cacheLayer = nil;
     
@@ -355,29 +347,6 @@ static NSString * const kDirectionRight = @"1";
 
 #pragma mark - Private UI related
 
-- (void)adjustLayout:(NSString *)title {
-    CGFloat titleOriginalHeight = _titleLabel.frame.size.height;
-    CGFloat titleAdjustedHeight = [UIHelper computeHeightForLabel:_titleLabel withText:title];
-    CGFloat delta = titleAdjustedHeight - titleOriginalHeight;
-    
-    CGRect frame = _titleLabel.frame;
-    frame.size.height = titleAdjustedHeight;
-    _titleLabel.frame = frame;
-    
-    frame = _extraInfoLabel.frame;
-    frame.origin.y += delta;
-    _extraInfoLabel.frame = frame;
-    
-    frame = _titleLineView.frame;
-    frame.origin.y += delta;
-    _titleLineView.frame = frame;
-    
-    frame = _textView.frame;
-    frame.origin.y += delta;
-    frame.size.height -= delta;
-    _textView.frame = frame;
-}
-
 - (void)renderHtml:(NSString *)html {
     // Load HTML data
     //	NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"article_sample.html" ofType:nil];
@@ -393,15 +362,13 @@ static NSString * const kDirectionRight = @"1";
 
 - (void)updateData {
     self.contentTitle = _dataModel.title;
-    [self adjustLayout:_contentTitle];
     
-    _titleLabel.text = _contentTitle;
-    _titleLabel.hidden = NO;
+    self.titleLabel.text = _contentTitle;
+    self.titleLabel.hidden = NO;
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.titleLabel performSelector:@selector(setTapToScroll:) withObject:@(YES) afterDelay:5];
     
     [self.moreActionView setFavorited:_dataModel.favorited];
-    
-    _extraInfoLabel.text = [NSString stringWithFormat:@"%@ 编辑：%@", _dataModel.date, _dataModel.author];
-    _extraInfoLabel.hidden = NO;
     
     [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];
     _commentBox.countButton.enabled = _dataModel.commentNum > 0;
@@ -414,8 +381,9 @@ static NSString * const kDirectionRight = @"1";
 - (void)clearContents {
     self.dataModel = nil;
     
-    _titleLabel.hidden = YES;
-    _extraInfoLabel.hidden = YES;
+    self.titleLabel.hidden = YES;
+    [self.titleLabel canPerformAction:@selector(setTapToScroll:) withSender:@(YES)];
+    self.titleLabel.tapToScroll = NO;
     
     _commentBox.text = @"";
     [_commentBox.countButton setTitle:@"" forState:UIControlStateNormal];
@@ -436,7 +404,7 @@ static NSString * const kDirectionRight = @"1";
 
 - (FunctionFlowView *)moreActionView {
     if (!_moreActionView) {
-        _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(245, 40, 68, 53)];
+        _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(CompatibleScreenWidth - 68, 5, 68, 53)];
         [_moreActionView.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
         [_moreActionView.favButton addTarget:self action:@selector(doFav) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -473,10 +441,14 @@ static NSString * const kDirectionRight = @"1";
         self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
     }
     
-    _shareHelper.shareText = _dataModel.title;
-    _shareHelper.shareUrl = _dataModel.shareUrl;
-    _shareHelper.shareImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[self parseImageUrl:_dataModel.content]]]];
-    [_shareHelper showShareView];
+    [self.shareHelper showShareView];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        self.shareHelper.shareText = _dataModel.title;
+        self.shareHelper.shareUrl = _dataModel.shareUrl;
+        self.shareHelper.shareImage = nil;
+        self.shareHelper.shareImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[self parseImageUrl:_dataModel.content]]]];
+    });
 }
 
 - (void)doFav {

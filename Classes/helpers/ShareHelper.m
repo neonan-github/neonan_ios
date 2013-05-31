@@ -68,7 +68,7 @@ static const NSUInteger kWCTimelineIndex = 4;
     
     [actionSheet addButtonWithTitle:@"取消"];
     [actionSheet setCancelButtonIndex:actionSheet.numberOfButtons - 1];
-    [actionSheet showInView:_rootViewController.view];
+    [actionSheet showInView:SharedApplication.keyWindow];
 }
 
 #pragma mark- UIActionSheetDelegate

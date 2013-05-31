@@ -115,12 +115,12 @@ HPGrowingTextViewDelegate>
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    
+    [self.tableView triggerPullToRefresh];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [self.tableView triggerPullToRefresh];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
