@@ -21,8 +21,6 @@
 #import <KKGridView.h>
 #import <TTTAttributedLabel.h>
 #import <UIImageView+WebCache.h>
-#import <UIButton+WebCache.h>
-#import <UIImage+Filtering.h>
 #import <MBProgressHUD.h>
 
 static const NSInteger kPageCount = 6;
@@ -103,6 +101,9 @@ KKGridViewDataSource, KKGridViewDelegate>
     if (!self.slideShowModel || !self.listDataModel ||
         [[NSDate date] timeIntervalSinceDate:lastUpdateDate] > 10 * kMinuteSeconds) {
         [self requestData];
+    } else {
+        KKGridView *currentPageView = ((KKGridView *)[self.swipeView itemViewAtIndex:self.currentPageIndex]);
+        [currentPageView reloadData];
     }
 }
 
@@ -166,15 +167,14 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     CommonItem *model = !self.listDataModel ? nil : self.listDataModel.items[gridView.tag * kItemPerPageCount + indexPath.index];
     
+    Record *record = [[Record alloc] init];
+    record.contentId = model.contentId;
+    record.contentType = model.contentType;
+    
+    cell.viewed = [[HistoryRecorder sharedRecorder] isRecorded:record];
     cell.titleLabel.text = model.title;
     
-    __weak HomeGridViewCell *weakCell = cell;
-    [cell.imageView setImageWithURL:[URLHelper imageURLWithString:model.thumbUrl]
-                            success:^(UIImage *image, BOOL cached) {
-//                                weakCell.imageView.highlightedImage = [image opacity:0.8];
-                            } failure:^(NSError *error) {
-                                
-                            }];
+    [cell.imageView setImageWithURL:[URLHelper imageURLWithString:model.thumbUrl]];
     
     return cell;
 }
@@ -322,7 +322,7 @@ KKGridViewDataSource, KKGridViewDelegate>
     label.textInsets = UIEdgeInsetsMake(0, 8, 0, 0);
     label.clipsToBounds = YES;
     label.font = [UIFont systemFontOfSize:16];
-    label.highlightedTextColor = [UIColor lightTextColor];
+    label.highlightedTextColor = HEXCOLOR(0x0096ff);
     label.textColor = [UIColor whiteColor];
     label.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     label.backgroundColor = RGBA(0, 0, 0, 0.5);
@@ -346,15 +346,15 @@ KKGridViewDataSource, KKGridViewDelegate>
 - (void)fillDataInHeaderView:(UIView *)headerView {
     MSSItem *model = !self.slideShowModel ? nil : self.slideShowModel.list[headerView.tag];
     
+    Record *record = [[Record alloc] init];
+    record.contentId = model.contentId;
+    record.contentType = model.contentType;
+    
+    ((NNButton *)headerView).viewed = [[HistoryRecorder sharedRecorder] isRecorded:record];
+    
     __weak UIImageView *weakImageView = (UIImageView *)[headerView viewWithTag:kTagHeaderImageView];
     [weakImageView setImageWithURL:[URLHelper imageURLWithString:model.imgUrl]
-              placeholderImage:nil
-                       success:^(UIImage *image, BOOL cached) {
-//                           weakImageView.highlightedImage = [image opacity:0.8];
-                       }
-                       failure:^(NSError *error) {
-                           
-                       }];
+                  placeholderImage:nil];
     
     TTTAttributedLabel *label = (TTTAttributedLabel *)[headerView viewWithTag:kTagHeaderLabel];
     label.text = model.title;

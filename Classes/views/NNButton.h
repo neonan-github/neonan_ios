@@ -10,4 +10,6 @@
 
 @interface NNButton : UIButton
 
+- (void)setViewed:(BOOL)viewed;
+
 @end

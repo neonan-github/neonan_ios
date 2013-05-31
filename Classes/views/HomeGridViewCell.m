@@ -31,7 +31,7 @@ static const CGFloat kLabelHeight = 23;
         titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         titleLabel.textInsets = UIEdgeInsetsMake(0, 8, 0, 0);
         titleLabel.textColor = [UIColor whiteColor];
-        titleLabel.highlightedTextColor = [UIColor lightTextColor];
+        titleLabel.highlightedTextColor = HEXCOLOR(0x0096ff);
         titleLabel.font = [UIFont systemFontOfSize:12];
         
         CALayer *leftLineLayer = [CALayer layer];
@@ -49,21 +49,18 @@ static const CGFloat kLabelHeight = 23;
     [super setHighlighted:highlighted];
     
     self.titleLabel.highlighted = self.highlighted || self.selected;
-    self.imageView.highlighted = self.highlighted || self.selected;
+    self.imageView.layer.opacity = (self.selected || self.highlighted) ? 0.8 : 1;
 }
 
 - (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
     
     self.titleLabel.highlighted = self.selected || self.highlighted;
-    self.imageView.highlighted = self.selected || self.highlighted;
+    self.imageView.layer.opacity = (self.selected || self.highlighted) ? 0.8 : 1;
 }
 
-//- (void)drawRect:(CGRect)rect {
-//    [super drawRect:rect];
-//    
-//    self.titleLabel.highlighted = self.selected || self.highlighted;
-//    self.imageView.highlighted = self.selected || self.highlighted;
-//}
+- (void)setViewed:(BOOL)viewed {
+    self.titleLabel.textColor = viewed ? HEXCOLOR(0x777777) : [UIColor whiteColor];
+}
 
 @end

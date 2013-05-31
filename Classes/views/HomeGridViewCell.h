@@ -13,4 +13,6 @@
 
 @property (nonatomic, weak) TTTAttributedLabel *titleLabel;
 
+- (void)setViewed:(BOOL)viewed;
+
 @end
