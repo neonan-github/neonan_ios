@@ -120,7 +120,7 @@ HPGrowingTextViewDelegate>
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [_tableView.pullToRefreshView triggerRefresh];
+    [self.tableView triggerPullToRefresh];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

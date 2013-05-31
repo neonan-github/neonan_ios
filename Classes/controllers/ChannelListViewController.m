@@ -110,7 +110,8 @@
     record.contentType = dataItem.contentType;
     
     cell.viewed = [[HistoryRecorder sharedRecorder] isRecorded:record];
-    [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl] placeholderImage:[UIImage imageNamed:@"img_common_list_place_holder.png"]];
+    [cell.thumbnail setImageWithURL:[NSURL URLWithString:dataItem.thumbUrl]
+                   placeholderImage:[UIImage imageNamed:@"img_placeholder_common.png"]];
     cell.titleLabel.text = dataItem.title;
     cell.dateLabel.text = dataItem.date;
     [cell setContentType:dataItem.contentType];

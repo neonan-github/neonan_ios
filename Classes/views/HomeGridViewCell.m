@@ -22,11 +22,16 @@ static const CGFloat kLabelHeight = 23;
         self.imageView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height - kLabelHeight);
         self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
+        UIImageView *tagImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        self.tagImageView = tagImageView;
+        tagImageView.center = self.imageView.center;
+        [self.imageView addSubview:tagImageView];
+        
         TTTAttributedLabel *titleLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.imageView.frame),
                                                                                          frame.size.width, kLabelHeight)];
         self.titleLabel = titleLabel;
         titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        titleLabel.backgroundColor = [UIColor blackColor];
+        titleLabel.backgroundColor = HEXCOLOR(0x050505);
         titleLabel.numberOfLines = 1;
         titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         titleLabel.textInsets = UIEdgeInsetsMake(0, 8, 0, 0);

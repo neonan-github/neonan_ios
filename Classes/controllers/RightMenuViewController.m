@@ -47,7 +47,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    self.view.backgroundColor = DarkThemeColor;
+    self.view.backgroundColor = HEXCOLOR(0x121212);
     
     UIImageView *firstSeparatorView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -2, CompatibleScreenWidth, 2)];
     firstSeparatorView.image = [UIImage imageFromFile:@"img_menu_separator.png"];

@@ -174,7 +174,8 @@ KKGridViewDataSource, KKGridViewDelegate>
     cell.viewed = [[HistoryRecorder sharedRecorder] isRecorded:record];
     cell.titleLabel.text = model.title;
     
-    [cell.imageView setImageWithURL:[URLHelper imageURLWithString:model.thumbUrl]];
+    [cell.imageView setImageWithURL:[URLHelper imageURLWithString:model.thumbUrl]
+                   placeholderImage:[UIImage imageNamed:@"img_placeholder_common"]];
     
     return cell;
 }
@@ -354,7 +355,7 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     __weak UIImageView *weakImageView = (UIImageView *)[headerView viewWithTag:kTagHeaderImageView];
     [weakImageView setImageWithURL:[URLHelper imageURLWithString:model.imgUrl]
-                  placeholderImage:nil];
+                  placeholderImage:[UIImage imageFromFile:@"img_placeholder_home_slide.png"]];
     
     TTTAttributedLabel *label = (TTTAttributedLabel *)[headerView viewWithTag:kTagHeaderLabel];
     label.text = model.title;

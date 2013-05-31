@@ -12,6 +12,7 @@
 @interface HomeGridViewCell : KKGridViewCell
 
 @property (nonatomic, weak) TTTAttributedLabel *titleLabel;
+@property (nonatomic, weak) UIImageView *tagImageView;
 
 - (void)setViewed:(BOOL)viewed;
 
