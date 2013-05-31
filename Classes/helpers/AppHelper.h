@@ -77,3 +77,6 @@
 #   define ULog(...)
 #endif
 
+FOUNDATION_EXPORT NSUInteger NNUsedMemory(void);
+FOUNDATION_EXPORT NSUInteger NNFreeMemory(void);
+FOUNDATION_EXPORT NSUInteger NNTotalMemory(void);

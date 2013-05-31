@@ -169,9 +169,9 @@ KKGridViewDataSource, KKGridViewDelegate>
     cell.titleLabel.text = model.title;
     
     __weak HomeGridViewCell *weakCell = cell;
-    [cell.imageView setImageWithURL:[NSURL URLWithString:model.thumbUrl]
+    [cell.imageView setImageWithURL:[URLHelper imageURLWithString:model.thumbUrl]
                             success:^(UIImage *image, BOOL cached) {
-                                weakCell.imageView.highlightedImage = [image opacity:0.8];
+//                                weakCell.imageView.highlightedImage = [image opacity:0.8];
                             } failure:^(NSError *error) {
                                 
                             }];
@@ -316,16 +316,6 @@ KKGridViewDataSource, KKGridViewDelegate>
     imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     imageView.backgroundColor = [UIColor blackColor];
     imageView.tag = kTagHeaderImageView;
-    
-    __weak UIImageView *weakImageView = imageView;
-    [imageView setImageWithURL:[NSURL URLWithString:@"http://cdn.neonan.com/uploads/4684cf45-f8e6-4fab-bc6f-1728aac7fbb8.jpg_680"]
-              placeholderImage:nil
-                       success:^(UIImage *image, BOOL cached) {
-                           weakImageView.highlightedImage = [image opacity:0.8];
-                       }
-                       failure:^(NSError *error) {
-        
-                       }];
     [headerView addSubview:imageView];
     
     TTTAttributedLabel *label = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(10, 177 - 28, 300, 28)];
@@ -357,10 +347,10 @@ KKGridViewDataSource, KKGridViewDelegate>
     MSSItem *model = !self.slideShowModel ? nil : self.slideShowModel.list[headerView.tag];
     
     __weak UIImageView *weakImageView = (UIImageView *)[headerView viewWithTag:kTagHeaderImageView];
-    [weakImageView setImageWithURL:[NSURL URLWithString:model.imgUrl]
+    [weakImageView setImageWithURL:[URLHelper imageURLWithString:model.imgUrl]
               placeholderImage:nil
                        success:^(UIImage *image, BOOL cached) {
-                           weakImageView.highlightedImage = [image opacity:0.8];
+//                           weakImageView.highlightedImage = [image opacity:0.8];
                        }
                        failure:^(NSError *error) {
                            
