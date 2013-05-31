@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "MarqueeLabel.h"
+
 #import "NNNavigationBar.h"
 
 #define NavBar                              self.navigationController.navigationBar
@@ -65,6 +67,7 @@ typedef enum {
 + (UIButton *)createLeftBarButton:(NSString *)imageName;
 + (UIButton *)createRightBarButton:(NSString *)imageName;
 + (UIView *)createLogoView;
++ (MarqueeLabel *)createNavMarqueeLabel;
 
 + (void)alertWithMessage:(NSString *)message;
 

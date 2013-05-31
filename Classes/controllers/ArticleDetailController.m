@@ -21,6 +21,8 @@
 #import "ShareHelper.h"
 #import "SessionManager.h"
 
+#import "MarqueeLabel.h"
+
 #import <UIWebView+RemoveShadow.h>
 #import <MBProgressHUD.h>
 
@@ -43,12 +45,12 @@ static NSString * const kDirectionRight = @"1";
 
 @interface ArticleDetailController () <UIWebViewDelegate>
 
-@property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
-@property (unsafe_unretained, nonatomic) IBOutlet UILabel *extraInfoLabel;
-@property (unsafe_unretained, nonatomic) IBOutlet UIImageView *titleLineView;
-@property (unsafe_unretained, nonatomic) IBOutlet UIWebView *textView;
-@property (unsafe_unretained, nonatomic) IBOutlet CommentBox *commentBox;
-@property (unsafe_unretained, nonatomic) IBOutlet UIButton *actioenButton;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *extraInfoLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *titleLineView;
+@property (weak, nonatomic) IBOutlet UIWebView *textView;
+@property (weak, nonatomic) IBOutlet CommentBox *commentBox;
+@property (weak, nonatomic) IBOutlet UIButton *actioenButton;
 //@property (strong, nonatomic) IBOutlet UIButton *commentButton;
 @property (nonatomic, readonly) FunctionFlowView *moreActionView;
 
@@ -56,7 +58,7 @@ static NSString * const kDirectionRight = @"1";
 
 @property (strong, nonatomic) ArticleDetailModel *dataModel;
 
-@property (unsafe_unretained, nonatomic) CALayer *cacheLayer;
+@property (weak, nonatomic) CALayer *cacheLayer;
 @property (assign, nonatomic) BOOL isAnimating;
 
 - (void)updateData;
@@ -79,15 +81,24 @@ static NSString * const kDirectionRight = @"1";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = DarkThemeColor;
+    
+    MarqueeLabel *titleLabel = [UIHelper createNavMarqueeLabel];
+    titleLabel.text = self.contentTitle;
+    self.navigationItem.titleView = titleLabel;
+    
+    
+    UIButton *backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
+    UIButton *navRightButton = [UIHelper createRightBarButton:@"icon_nav_flow.png"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
+    
     UISwipeGestureRecognizer *swipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     [swipeLeftRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
     [self.view addGestureRecognizer:swipeLeftRecognizer];
     UISwipeGestureRecognizer *swipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     [swipeRightRecognizer setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer:swipeRightRecognizer];
-    
-    UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     [self adjustLayout:_contentTitle];
     _titleLabel.text = _contentTitle;

@@ -116,6 +116,19 @@
     return logoView;
 }
 
++ (MarqueeLabel *)createNavMarqueeLabel {
+    MarqueeLabel *titleLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(0, 0, 240, 20) duration:5 andFadeLength:8];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont systemFontOfSize:16];
+    titleLabel.animationDelay = 0.5;
+    titleLabel.animationCurve = UIViewAnimationCurveLinear;
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.marqueeType = MLContinuous;
+    [titleLabel performSelector:@selector(setTapToScroll:) withObject:@(YES) afterDelay:5]; // only auto scroll once
+    
+    return titleLabel;
+}
+
 + (void)alertWithMessage:(NSString *)message {
     static UIAlertView *alertView = nil;
     static dispatch_once_t onceToken;
