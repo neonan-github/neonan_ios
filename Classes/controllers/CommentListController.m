@@ -66,6 +66,7 @@ HPGrowingTextViewDelegate>
         [self requestForComments:_articleInfo.contentId withRequestType:RequestTypeRefresh];
     }];
     _tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    
     [_tableView addInfiniteScrollingWithActionHandler:^{
         // add data to data source, insert new cells into table view
         [self requestForComments:_articleInfo.contentId withRequestType:RequestTypeAppend];
@@ -136,30 +137,19 @@ HPGrowingTextViewDelegate>
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DLog(@"cellForRowAtIndexPath");
-    
     static NSString *cellIdentifier = @"Cell";
     
     CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
-        cell = [[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[CommentCell alloc] initWithReuseIdentifier:cellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     CommentItem *comment = [_dataModel.items objectAtIndex:indexPath.row];
-    cell.commentLabel.numberOfLines = comment.expanded ? 0 : 2;
-    cell.commentLabel.lineBreakMode = comment.expanded ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
     cell.commentLabel.text = comment.content;
-    
     cell.userNameLabel.text = comment.visitor;
-    
     cell.timeLabel.text = comment.date;
-    
     [cell setVip:comment.isVip andLevel:comment.level];
-    
-    cell.expanded = comment.expanded;
-    comment.expandable = [UIHelper computeContentLines:cell.commentLabel.text withWidth:[CommentCell getContentWidth:320] andFont:cell.commentLabel.font] > 2;
-    cell.arrowView.hidden = !comment.expandable;
     
     return cell;
     
@@ -167,36 +157,15 @@ HPGrowingTextViewDelegate>
 
 #pragma mark - UITableViewDelegate methods
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DLog(@"didSelectRowAtIndexPath:%@", indexPath);
-    
-    CommentItem *comment = [_dataModel.items objectAtIndex:indexPath.row];
-    comment.expanded = !comment.expanded;
-    
-    if (comment.expandable) {
-        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:YES];
-    //    [tableView reloadData];
-    }
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     CommentItem *comment = [_dataModel.items objectAtIndex:indexPath.row];
     UIFont *font = [CommentCell getCommentFont];
-    
-    NSUInteger lines = [UIHelper computeContentLines:comment.content withWidth:[CommentCell getContentWidth:CompatibleScreenWidth] andFont:font];
-    CGFloat shrinkedHeight = font.lineHeight * MIN(lines, 2) + [CommentCell getFixedPartHeight];
-    
-    if (!comment.expanded) {
-        return shrinkedHeight;
-    }
     
     CGSize constraint = CGSizeMake([CommentCell getContentWidth:CompatibleScreenWidth], 20000.0f);
     
     CGSize size = [comment.content sizeWithFont:font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     
-    return MAX(size.height + [CommentCell getFixedPartHeight], shrinkedHeight);
+    return MAX(size.height + [CommentCell getFixedPartHeight], 70);
 }
 
 #pragma mark - Keyboard events handle
@@ -336,7 +305,10 @@ HPGrowingTextViewDelegate>
             [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_articleInfo.commentNum].description forState:UIControlStateNormal];
             _commentBox.text = @"";
             
-            [_tableView.pullToRefreshView triggerRefresh];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView triggerPullToRefresh];
+            });
+            
         } failure:^(ResponseError *error) {
             DLog(@"error:%@", error.message);
             [MBProgressHUD hideHUDForView:self.view animated:YES];

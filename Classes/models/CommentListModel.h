@@ -18,8 +18,6 @@
 
 @property (readonly, nonatomic) NSString *date;
 
-@property (nonatomic, assign) BOOL expanded;
-@property (nonatomic, assign) BOOL expandable;
 @end
 
 @interface CommentListModel : NSObject <Jsonable>

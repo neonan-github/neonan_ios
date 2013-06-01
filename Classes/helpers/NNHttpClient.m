@@ -60,6 +60,7 @@ static NSString * const kAPIBaseURLString = @"http://api.neonan.com/";
     
     NSMutableURLRequest *request = [self requestWithMethod:method path:path parameters:parameters];
     request.timeoutInterval = 20;
+    DLog(@"request url: %@", request.URL.absoluteString);
     NNJSONRequestOperation *operation = [NNJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
         
         DLog(@"response json:%@", JSON);

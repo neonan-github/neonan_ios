@@ -8,12 +8,12 @@
 
 #import "CommentCell.h"
 
-static const CGFloat kHorizontalMargin = 8;
-static const CGFloat kTopMargin = 5;
-static const CGFloat kBottomMargin = 5;
-static const CGFloat kHorizontalGap = 8;
+static const CGFloat kHorizontalMargin = 10;
+static const CGFloat kTopMargin = 10;
+static const CGFloat kBottomMargin = 10;
+static const CGFloat kHorizontalGap = 10;
 static const CGFloat kVerticalGap = 5;
-static const CGFloat kAvatarSize = 32;
+static const CGFloat kAvatarSize = 43;
 
 static UIFont *commentFont;
 
@@ -38,68 +38,63 @@ static UIFont *commentFont;
 }
 
 + (CGFloat)getFixedPartHeight {
-    return kTopMargin + kBottomMargin  + 18 + kVerticalGap * 2;
+    return kTopMargin + kVerticalGap + 14 + kBottomMargin;
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
         self.customBackgroundColor = DarkThemeColor;
-        self.customSeparatorColor = RGB(13, 13, 13);
+        self.customSeparatorColor = HEXCOLOR(0x232323);
         
         CGFloat layoutX = kHorizontalMargin;
         CGFloat layoutY = kTopMargin;
         
-        UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(layoutX, layoutY, kAvatarSize, kAvatarSize)];
+        UIImageView *avatarView = self.imageView;
+        self.avatarView = avatarView;
         avatarView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
         avatarView.image = [UIImage imageNamed:@"img_default_avatar.jpg"];
-        self.avatarView = avatarView;
-        [self addSubview:avatarView];
         
-        UIButton *emblemView = [[UIButton alloc] initWithFrame:CGRectMake(layoutX + kAvatarSize - 10, layoutY + kAvatarSize - 10, 15, 15)];
+        UIButton *emblemView = [[UIButton alloc] initWithFrame:CGRectMake(layoutX + kAvatarSize - 10, layoutY + kAvatarSize - 10, 16, 16)];
         emblemView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
         emblemView.userInteractionEnabled = NO;
+        [emblemView setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
         emblemView.titleLabel.font = [UIFont systemFontOfSize:7];
         self.emblemView = emblemView;
         [self addSubview:emblemView];
         
         layoutX += kAvatarSize + kHorizontalGap;
-        UILabel *userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(layoutX, layoutY, 150, 10)];
-        userNameLabel.font = [UIFont systemFontOfSize:10];
+        UILabel *userNameLabel = self.textLabel;
+        self.userNameLabel = userNameLabel;
+        userNameLabel.frame = CGRectMake(layoutX, layoutY, 200, 14);
+        userNameLabel.font = [UIFont boldSystemFontOfSize:14];
         userNameLabel.backgroundColor = [UIColor clearColor];
         userNameLabel.textColor = [UIColor whiteColor];
-        self.userNameLabel = userNameLabel;
         [self addSubview:userNameLabel];
         
         layoutX = self.width - kHorizontalMargin - 100;
         UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(layoutX, layoutY, 100, 10)];
-        timeLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        timeLabel.font = [UIFont systemFontOfSize:10];
-        timeLabel.backgroundColor = [UIColor clearColor];
-        timeLabel.textColor = [UIColor whiteColor];
-        timeLabel.textAlignment = NSTextAlignmentRight;
         self.timeLabel = timeLabel;
+        timeLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
+        timeLabel.font = [UIFont systemFontOfSize:9];
+        timeLabel.backgroundColor = [UIColor clearColor];
+        timeLabel.textColor = [UIColor darkGrayColor];
+        timeLabel.textAlignment = NSTextAlignmentRight;
         [self addSubview:timeLabel];
         
-        layoutX = self.width - kHorizontalMargin - 12;
-        UIImageView *arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(layoutX, self.height - kBottomMargin - 8, 12, 8)];
-        arrowView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-        arrowView.image = [UIImage imageFromFile:@"icon_down_arrow.png"];
-        self.arrowView = arrowView;
-        [self addSubview:arrowView];
-        
         layoutX = kHorizontalMargin + kAvatarSize + kHorizontalGap;
-        layoutY += kVerticalGap + 10;
-        UILabel *commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(layoutX, layoutY,  [CommentCell getContentWidth:self.width], self.height - [CommentCell getFixedPartHeight])];
+        layoutY += kVerticalGap + 14;
+        UILabel *commentLabel = self.detailTextLabel;
+        self.commentLabel = commentLabel;
+        commentLabel.frame = CGRectMake(layoutX, layoutY, [CommentCell getContentWidth:self.width], 0);
+        commentLabel.numberOfLines = 0;
         commentLabel.font = [CommentCell getCommentFont];
         commentLabel.backgroundColor = [UIColor clearColor];
-        commentLabel.textColor = [UIColor whiteColor];
+        commentLabel.textColor = [UIColor lightTextColor];
         commentLabel.textAlignment = NSTextAlignmentLeft;
-        self.commentLabel = commentLabel;
-        [self addSubview:commentLabel];
-        
     }
+    
     return self;
 }
 
@@ -108,20 +103,28 @@ static UIFont *commentFont;
     [_emblemView setTitle:vip ? @"" : @(level).stringValue forState:UIControlStateNormal];
 }
 
-- (void)setExpanded:(BOOL)expanded {
-    if (_expanded != expanded) {
-        _expanded = expanded;
-        
-        _arrowView.transform = CGAffineTransformMakeRotation(expanded ? M_PI : 0);
-    }
-}
-
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGRect frame = self.commentLabel.frame;
-    frame.size.height = self.frame.size.height - [CommentCell getFixedPartHeight];
-    self.commentLabel.frame = frame;
+    CGFloat layoutX = kHorizontalMargin;
+    CGFloat layoutY = kTopMargin;
+    
+    self.avatarView.frame = CGRectMake(layoutX, layoutY, kAvatarSize, kAvatarSize);
+    
+    layoutX += kAvatarSize + kHorizontalGap;
+    self.userNameLabel.frame = CGRectMake(layoutX, layoutY, 200, 14);
+    
+    layoutX = kHorizontalMargin + kAvatarSize + kHorizontalGap;
+    layoutY += kVerticalGap + 14;
+    
+    UIFont *commentFont = [CommentCell getCommentFont];
+    
+    NSUInteger lines = [UIHelper computeContentLines:self.commentLabel.text
+                                           withWidth:[CommentCell getContentWidth:CompatibleScreenWidth]
+                                             andFont:commentFont];
+    
+    self.commentLabel.frame = CGRectMake(layoutX, layoutY, [CommentCell getContentWidth:self.width],
+                                         commentFont.lineHeight * lines);
 }
 
 @end

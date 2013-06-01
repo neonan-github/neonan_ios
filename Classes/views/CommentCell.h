@@ -15,12 +15,13 @@
 @property (nonatomic, weak) UILabel *userNameLabel;
 @property (nonatomic, weak) UILabel *timeLabel;
 @property (nonatomic, weak) UILabel *commentLabel;
-@property (nonatomic, weak) UIImageView *arrowView;
-@property (nonatomic, assign) BOOL expanded;
 
 + (CGFloat)getContentWidth:(CGFloat)width;
 + (CGFloat)getFixedPartHeight;
 + (UIFont *)getCommentFont;
 
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+
 - (void)setVip:(BOOL)vip andLevel:(NSInteger)level;
+
 @end
