@@ -30,7 +30,7 @@
                 NSString *fileType = [suffix substringWithRange:[suffix rangeOfString:@".(?:jpg|gif|png)" options:NSRegularExpressionSearch]];
                 URLString = [[URLString substringToIndex:range.location] stringByAppendingFormat:@"%@_320", fileType];
             }
-        } else {
+        } else if ([URLString rangeOfString:@"cdn.neonan.com" options:NSCaseInsensitiveSearch].location != NSNotFound){
             URLString = [URLString stringByAppendingString:@"_212"];
         }
     }
