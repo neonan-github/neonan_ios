@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ArticleDetailModel.h"
 
-@interface CommentListController: NNViewController 
+@interface CommentListViewController: NNViewController 
 
 @property (strong, nonatomic) ArticleDetailModel *articleInfo;
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import "CommentListController.h"
+#import "CommentListViewController.h"
 #import "NNNavigationController.h"
 
 #import "CommentListModel.h"
@@ -27,7 +27,7 @@
 static const NSUInteger kRequestCount = 20;
 static NSString * const kRequestCountString = @"20";
 
-@interface CommentListController () <UITableViewDataSource, UITableViewDelegate,
+@interface CommentListViewController () <UITableViewDataSource, UITableViewDelegate,
 HPGrowingTextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *titleLineView;
@@ -38,7 +38,7 @@ HPGrowingTextViewDelegate>
 
 @end
 
-@implementation CommentListController
+@implementation CommentListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

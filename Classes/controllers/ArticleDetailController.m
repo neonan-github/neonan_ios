@@ -8,7 +8,7 @@
 
 #import "ArticleDetailController.h"
 #import "SignViewController.h"
-#import "CommentListController.h"
+#import "CommentListViewController.h"
 #import "NNNavigationController.h"
 #import "NearWorksModel.h"
 #import "ArticleDetailModel.h"
@@ -472,7 +472,7 @@ static NSString * const kDirectionRight = @"1";
 }
 
 - (void)showComments {
-    CommentListController *controller = [[CommentListController alloc] init];
+    CommentListViewController *controller = [[CommentListViewController alloc] init];
     controller.articleInfo = self.dataModel;
     
     [self.navigationController pushViewController:controller animated:NO];
