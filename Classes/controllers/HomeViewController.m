@@ -7,7 +7,7 @@
 //
 
 #import "HomeViewController.h"
-#import "ArticleDetailController.h"
+#import "ArticleDetailViewController.h"
 #import "GalleryDetailController.h"
 #import "VideoPlayController.h"
 

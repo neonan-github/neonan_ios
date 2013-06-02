@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import "ArticleDetailController.h"
+#import "ArticleDetailViewController.h"
 #import "SignViewController.h"
 #import "CommentListViewController.h"
 #import "NNNavigationController.h"
@@ -43,7 +43,7 @@ static NSString *kHtmlTemplate = @"<html> \n"
 static NSString * const kDirectionLeft = @"-1";
 static NSString * const kDirectionRight = @"1";
 
-@interface ArticleDetailController () <UIWebViewDelegate>
+@interface ArticleDetailViewController () <UIWebViewDelegate>
 
 @property (weak, nonatomic) MarqueeLabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIWebView *textView;
@@ -61,7 +61,7 @@ static NSString * const kDirectionRight = @"1";
 
 @end
 
-@implementation ArticleDetailController
+@implementation ArticleDetailViewController
 @synthesize moreActionView = _moreActionView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -493,7 +493,7 @@ static NSString * const kDirectionRight = @"1";
     record.contentId = contentId;
     [[HistoryRecorder sharedRecorder] saveRecord:record];
     
-    __weak ArticleDetailController *weakSelf = self;
+    __weak ArticleDetailViewController *weakSelf = self;
     [EncourageHelper check:contentId contentType:@"article" afterDelay:5
                     should:^BOOL{
                         return [[contentId description] isEqualToString:[_contentId description]] &&

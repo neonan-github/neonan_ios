@@ -9,7 +9,7 @@
 #import "NeonanAppDelegate.h"
 
 #import "MainController.h"
-#import "ArticleDetailController.h"
+#import "ArticleDetailViewController.h"
 #import "VideoPlayController.h"
 #import "GalleryDetailController.h"
 
@@ -150,7 +150,7 @@
     
     switch ([self judgeContentType:dataItem]) {
         case ContentTypeArticle:
-            controller = [[ArticleDetailController alloc] init];
+            controller = [[ArticleDetailViewController alloc] init];
             [controller setContentId:[dataItem contentId]];
             [controller setContentTitle:[dataItem title]];
             [controller setChannel:channel];

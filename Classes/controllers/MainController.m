@@ -9,7 +9,7 @@
 #import "MainController.h"
 #import "NNNavigationController.h"
 #import "GalleryDetailController.h"
-#import "ArticleDetailController.h"
+#import "ArticleDetailViewController.h"
 #import "VideoPlayController.h"
 #import "GridListController.h"
 #import "SignViewController.h"
@@ -727,7 +727,7 @@ headerView = _headerView;
     
     switch ([self judgeContentType:dataItem]) {
         case ContentTypeArticle:
-            controller = [[ArticleDetailController alloc] init];
+            controller = [[ArticleDetailViewController alloc] init];
             [controller setContentId:[dataItem contentId]];
             [controller setContentTitle:[dataItem title]];
             [controller setSortType:_type];

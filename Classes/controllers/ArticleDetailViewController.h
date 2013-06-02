@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ArticleDetailController : NNViewController
+@interface ArticleDetailViewController : NNViewController
 
 @property (assign, nonatomic) SortType sortType;
 @property (copy, nonatomic) NSString *channel;

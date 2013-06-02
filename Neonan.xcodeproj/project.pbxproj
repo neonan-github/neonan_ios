@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		34011A56165A1BCA007A8FD6 /* NNJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 34011A55165A1BCA007A8FD6 /* NNJSONRequestOperation.m */; };
-		3401FDFC1636A1D700FAF971 /* ArticleDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3401FDFA1636A1D700FAF971 /* ArticleDetailController.m */; };
-		3401FDFD1636A1D700FAF971 /* ArticleDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3401FDFB1636A1D700FAF971 /* ArticleDetailController.xib */; };
+		3401FDFC1636A1D700FAF971 /* ArticleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3401FDFA1636A1D700FAF971 /* ArticleDetailViewController.m */; };
+		3401FDFD1636A1D700FAF971 /* ArticleDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3401FDFB1636A1D700FAF971 /* ArticleDetailViewController.xib */; };
 		3403029E16BEA67200FEC584 /* NearTopicDetailsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3403029D16BEA67200FEC584 /* NearTopicDetailsModel.m */; };
 		340716D61640BDD2006E40FE /* icon_down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 340716D51640BDD2006E40FE /* icon_down_arrow.png */; };
 		340716DA1640D43C006E40FE /* icon_up_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 340716D91640D43C006E40FE /* icon_up_arrow_white.png */; };
@@ -389,9 +389,9 @@
 /* Begin PBXFileReference section */
 		34011A54165A1BCA007A8FD6 /* NNJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNJSONRequestOperation.h; sourceTree = "<group>"; };
 		34011A55165A1BCA007A8FD6 /* NNJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNJSONRequestOperation.m; sourceTree = "<group>"; };
-		3401FDF91636A1D700FAF971 /* ArticleDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArticleDetailController.h; sourceTree = "<group>"; };
-		3401FDFA1636A1D700FAF971 /* ArticleDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleDetailController.m; sourceTree = "<group>"; };
-		3401FDFB1636A1D700FAF971 /* ArticleDetailController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ArticleDetailController.xib; path = ../Classes/controllers/ArticleDetailController.xib; sourceTree = "<group>"; };
+		3401FDF91636A1D700FAF971 /* ArticleDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArticleDetailViewController.h; sourceTree = "<group>"; };
+		3401FDFA1636A1D700FAF971 /* ArticleDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleDetailViewController.m; sourceTree = "<group>"; };
+		3401FDFB1636A1D700FAF971 /* ArticleDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ArticleDetailViewController.xib; path = ../Classes/controllers/ArticleDetailViewController.xib; sourceTree = "<group>"; };
 		3403029C16BEA67200FEC584 /* NearTopicDetailsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearTopicDetailsModel.h; sourceTree = "<group>"; };
 		3403029D16BEA67200FEC584 /* NearTopicDetailsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearTopicDetailsModel.m; sourceTree = "<group>"; };
 		340716D51640BDD2006E40FE /* icon_down_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_down_arrow.png; sourceTree = "<group>"; };
@@ -1005,8 +1005,8 @@
 				346614DA163521C500B1FF5A /* CommentListViewController.m */,
 				347AAB5A163672E500D243BA /* SignViewController.h */,
 				347AAB5B163672E500D243BA /* SignViewController.m */,
-				3401FDF91636A1D700FAF971 /* ArticleDetailController.h */,
-				3401FDFA1636A1D700FAF971 /* ArticleDetailController.m */,
+				3401FDF91636A1D700FAF971 /* ArticleDetailViewController.h */,
+				3401FDFA1636A1D700FAF971 /* ArticleDetailViewController.m */,
 				343658ED16BF5D8600576DE0 /* NNViewController.h */,
 				343658EE16BF5D8600576DE0 /* NNViewController.m */,
 				34584642163A3582008AAD38 /* NNNavigationController.h */,
@@ -1562,7 +1562,7 @@
 				34C56BF01676CEE00013ECE6 /* FeedbackController.xib */,
 				349EF62C1675E92E0086A7F1 /* AboutController.xib */,
 				347AAB5C163672E500D243BA /* SignViewController.xib */,
-				3401FDFB1636A1D700FAF971 /* ArticleDetailController.xib */,
+				3401FDFB1636A1D700FAF971 /* ArticleDetailViewController.xib */,
 				34CB8FF3163FDFD40001AD87 /* CommentListViewController.xib */,
 				34071702164133C3006E40FE /* VideoPlayController.xib */,
 				342DA8A516E3308300404730 /* PersonalInfoViewController.xib */,
@@ -2009,7 +2009,7 @@
 				53816B0F16265E9400B0672C /* Default@2x.png in Resources */,
 				53816B1116265E9400B0672C /* Default-568h@2x.png in Resources */,
 				347AAB5E163672E500D243BA /* SignViewController.xib in Resources */,
-				3401FDFD1636A1D700FAF971 /* ArticleDetailController.xib in Resources */,
+				3401FDFD1636A1D700FAF971 /* ArticleDetailViewController.xib in Resources */,
 				34B2B77F16380F4500F75977 /* bg_btn_sign.png in Resources */,
 				3453220116390EC2002137E6 /* img_comment_placeholder.png in Resources */,
 				34AC9C6F163E5DB10020DE4B /* bg_bar_button.png in Resources */,
@@ -2233,7 +2233,7 @@
 				346614DB163521C500B1FF5A /* CommentListViewController.m in Sources */,
 				346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */,
 				347AAB5D163672E500D243BA /* SignViewController.m in Sources */,
-				3401FDFC1636A1D700FAF971 /* ArticleDetailController.m in Sources */,
+				3401FDFC1636A1D700FAF971 /* ArticleDetailViewController.m in Sources */,
 				34584644163A3582008AAD38 /* NNNavigationController.m in Sources */,
 				340716F8164128E7006E40FE /* VideoPlayController.m in Sources */,
 				34E3E3A8164276C50058F5CF /* NNHttpClient.m in Sources */,

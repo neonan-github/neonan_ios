@@ -8,7 +8,7 @@
 
 #import "FavoritesViewController.h"
 #import "GalleryDetailController.h"
-#import "ArticleDetailController.h"
+#import "ArticleDetailViewController.h"
 #import "VideoPlayController.h"
 
 #import "CommonListModel.h"
@@ -214,7 +214,7 @@ static NSString *const kChannel = @"fav";
     
     switch ([self judgeContentType:dataItem]) {
         case ContentTypeArticle:
-            controller = [[ArticleDetailController alloc] init];
+            controller = [[ArticleDetailViewController alloc] init];
             [controller setContentId:[dataItem contentId]];
             [controller setContentTitle:[dataItem title]];
             [controller setChannel:kChannel];
