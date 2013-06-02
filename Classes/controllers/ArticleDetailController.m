@@ -474,7 +474,13 @@ static NSString * const kDirectionRight = @"1";
 - (void)showComments {
     CommentListController *controller = [[CommentListController alloc] init];
     controller.articleInfo = self.dataModel;
-    [self.navigationController pushViewController:controller animated:YES];
+    
+    [self.navigationController pushViewController:controller animated:NO];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:1.2f];
+    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
+    [UIView commitAnimations];
 }
 
 - (void)onDetailFetched:(id<Jsonable>)response {

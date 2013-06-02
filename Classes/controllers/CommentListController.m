@@ -15,9 +15,10 @@
 #import "CommentBox.h"
 #import "CommentCell.h"
 
-#import "SVPullToRefresh.h"
+#import "MarqueeLabel.h"
 
 #import <MBProgressHUD.h>
+#import <SVPullToRefresh.h>
 
 #define CELL_CONTENT_WIDTH 320.0f
 #define CELL_CONTENT_MARGIN 10.0f
@@ -29,16 +30,12 @@ static NSString * const kRequestCountString = @"20";
 @interface CommentListController () <UITableViewDataSource, UITableViewDelegate,
 HPGrowingTextViewDelegate>
 
-@property (unsafe_unretained, nonatomic) IBOutlet UILabel *titleLabel;
-@property (unsafe_unretained, nonatomic) IBOutlet UIButton *shareButton;
-@property (unsafe_unretained, nonatomic) IBOutlet UIImageView *titleLineView;
-@property (nonatomic, unsafe_unretained) IBOutlet UITableView *tableView;
-@property (nonatomic, unsafe_unretained) IBOutlet CommentBox *commentBox;
-//@property (nonatomic, strong) UIButton *commentButton;
+@property (weak, nonatomic) IBOutlet UIImageView *titleLineView;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet CommentBox *commentBox;
 
-//@property (nonatomic, strong) NSMutableArray *comments;
-@property (strong, nonatomic) ShareHelper *shareHelper;
 @property (nonatomic, strong) CommentListModel *dataModel;
+
 @end
 
 @implementation CommentListController
@@ -46,56 +43,53 @@ HPGrowingTextViewDelegate>
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.view.backgroundColor = DarkThemeColor;
     
-    UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
+    MarqueeLabel *titleLabel = [UIHelper createNavMarqueeLabel];
+    titleLabel.tapToScroll = YES;
+    titleLabel.text = self.articleInfo.title;
+    self.navigationItem.titleView = titleLabel;
+    
+    UIButton* backButton = [UIHelper createLeftBarButton:@"icon_nav_back.png"];
+    [backButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    [self adjustLayout:_articleInfo.title];
-    _titleLabel.text = _articleInfo.title;
+    self.view.backgroundColor = DarkThemeColor;
     
-    [_shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
-    
-    _tableView.backgroundColor = DarkThemeColor;
-    _tableView.dataSource = self;
-    _tableView.delegate = self;
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [_tableView addPullToRefreshWithActionHandler:^{
+    self.tableView.backgroundColor = DarkThemeColor;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.tableView addPullToRefreshWithActionHandler:^{
         // refresh data
         // call [tableView.pullToRefreshView stopAnimating] when done
         [self requestForComments:_articleInfo.contentId withRequestType:RequestTypeRefresh];
     }];
-    _tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    self.tableView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     
-    [_tableView addInfiniteScrollingWithActionHandler:^{
+    [self.tableView addInfiniteScrollingWithActionHandler:^{
         // add data to data source, insert new cells into table view
         [self requestForComments:_articleInfo.contentId withRequestType:RequestTypeAppend];
     }];
-    _tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-    _tableView.showsInfiniteScrolling = NO;
+    self.tableView.infiniteScrollingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    self.tableView.showsInfiniteScrolling = NO;
     
-//    self.comments = [[NSMutableArray alloc] initWithCapacity:20];
-//    for (NSUInteger i = 0; i < 20; i++) {
-//        CommentModel *comment = [[CommentModel alloc] init];
-//        [self.comments addObject:comment];
-//    }
-
-    [_commentBox.countButton setTitle:[NSString stringWithFormat:@"%u", _articleInfo.commentNum] forState:UIControlStateNormal];
-    _commentBox.countButton.enabled = NO;
+    [self.commentBox.countButton setTitle:[NSString stringWithFormat:@"%u", self.articleInfo.commentNum]
+                                 forState:UIControlStateNormal];
+    self.commentBox.countButton.enabled = NO;
     
-    [_commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside]; 
+    [self.commentBox.doneButton addTarget:self action:@selector(publish:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)cleanUp {
     self.titleLineView = nil;
-    self.titleLabel = nil;
-    self.shareButton = nil;
     
     self.tableView.dataSource = nil;
     self.tableView.delegate = nil;
     self.tableView = nil;
     
     self.commentBox = nil;
+    
+    self.dataModel = nil;
 }
 
 #pragma mark - UIViewController life cycle
@@ -233,25 +227,6 @@ HPGrowingTextViewDelegate>
 
 #pragma mark - Prviate UI related
 
-- (void)adjustLayout:(NSString *)title {
-    CGFloat titleOriginalHeight = _titleLabel.frame.size.height;
-    CGFloat titleAdjustedHeight = [UIHelper computeHeightForLabel:_titleLabel withText:title];
-    CGFloat delta = titleAdjustedHeight - titleOriginalHeight;
-    
-    CGRect frame = _titleLabel.frame;
-    frame.size.height = titleAdjustedHeight;
-    _titleLabel.frame = frame;
-    
-    frame = _titleLineView.frame;
-    frame.origin.y += delta;
-    _titleLineView.frame = frame;
-    
-    frame = _tableView.frame;
-    frame.origin.y += delta;
-    frame.size.height -= delta;
-    _tableView.frame = frame;
-}
-
 - (void)updateTableView:(RequestType)requestType {
     [_tableView reloadData];
     if (requestType == RequestTypeRefresh) {
@@ -322,20 +297,6 @@ HPGrowingTextViewDelegate>
 
 #pragma mark - Private methods
 
-- (void)share {
-    if (!_dataModel) {
-        return;
-    }
-    
-    if (!self.shareHelper) {
-        self.shareHelper = [[ShareHelper alloc] initWithRootViewController:self];
-    }
-    
-    _shareHelper.shareText = _articleInfo.title;
-    _shareHelper.shareUrl = _articleInfo.shareUrl;
-    [_shareHelper showShareView];
-}
-
 - (void)publish:(UIButton *)button {
     NSString *comment = _commentBox.text;
     if (comment.length < 1) {
@@ -344,6 +305,14 @@ HPGrowingTextViewDelegate>
     }
     
     [self publishComment:_commentBox.text withContentId:_articleInfo.contentId];
+}
+
+- (void)back:(UIButton *)button {
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:1.2f];
+    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
+    [self.navigationController popViewControllerAnimated:NO];
+    [UIView commitAnimations];
 }
 
 @end
