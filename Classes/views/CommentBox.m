@@ -22,7 +22,8 @@
 @synthesize rightView = _rightView;
 
 - (void)setUp:(CGRect)frame {
-    HPGrowingTextView *textView = self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(50, 7, 208, 30)];
+    HPGrowingTextView *textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(50, 7, 208, 30)];
+    self.textView = textView;
     textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 0);
     textView.minNumberOfLines = 1;
     textView.maxNumberOfLines = 4;
@@ -33,7 +34,8 @@
     textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     textView.backgroundColor = [UIColor clearColor];
     
-    UIImageView *placeHolderView = self.placeHolderView = [[UIImageView alloc] initWithFrame:CGRectMake(5, (textView.frame.size.height - 16) / 2 , 56, 16)];
+    UIImageView *placeHolderView = [[UIImageView alloc] initWithFrame:CGRectMake(5, (textView.frame.size.height - 16) / 2 , 56, 16)];
+    self.placeHolderView = placeHolderView;
     NSString *fileLocation = [[NSBundle mainBundle] pathForResource:@"img_comment_placeholder" ofType:@"png"];
     NSData *imageData = [NSData dataWithContentsOfFile:fileLocation];
     placeHolderView.image = [UIImage imageWithData:imageData];
@@ -56,11 +58,13 @@
     [self addSubview:entryImageView];
     [self addSubview:textView];
     
-    UIButton *doneButton = self.doneButton = [self setUpDoneButton];
+    UIButton *doneButton = [self setUpDoneButton];
+    self.doneButton = doneButton;
     doneButton.enabled = NO;
     [self addSubview:doneButton];
     
-    UIButton *countButton = self.countButton = [[UIButton alloc] initWithFrame:CGRectMake(4, (frame.size.height - 40) / 2, 40, 40)];
+    UIButton *countButton = [[UIButton alloc] initWithFrame:CGRectMake(4, (frame.size.height - 40) / 2, 40, 40)];
+    self.countButton =countButton;
     [countButton setBackgroundImage:[UIImage imageFromFile:@"bg_comment_count.png"] forState:UIControlStateNormal];
     countButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 4, 0);
     countButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];

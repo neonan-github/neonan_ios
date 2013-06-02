@@ -10,11 +10,13 @@
 #import <HPGrowingTextView.h>
 
 @interface CommentBox : UIView <HPGrowingTextViewDelegate, UITextViewDelegate>
-@property (nonatomic, unsafe_unretained) UIButton *countButton;
-@property (nonatomic, unsafe_unretained) HPGrowingTextView *textView;
-@property (nonatomic, unsafe_unretained) UIView *rightView;
-@property (nonatomic, unsafe_unretained) UIButton *doneButton;
-@property (nonatomic, unsafe_unretained) UIImageView *placeHolderView;
+
+@property (nonatomic, weak) UIButton *countButton;
+@property (nonatomic, weak) HPGrowingTextView *textView;
+@property (nonatomic, weak) UIView *rightView;
+@property (nonatomic, weak) UIButton *doneButton;
+@property (nonatomic, weak) UIImageView *placeHolderView;
 
 @property (nonatomic, copy) NSString *text;
+
 @end
