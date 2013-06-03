@@ -18,7 +18,7 @@
     return self;
 }
 
-- (void) drawPlaceholderInRect:(CGRect)rect {
+- (void)drawPlaceholderInRect:(CGRect)rect {
     [self.placeholderColor setFill];
     [self.placeholder drawInRect:rect
                         withFont:self.font

@@ -180,7 +180,7 @@
     NSMutableArray *subControllers = [NSMutableArray array];
     
     SignViewController2 *viewController0 = [[SignViewController2 alloc] init];
-    [subControllers addObject:[[NNNavigationController alloc] initWithRootViewController:viewController0]];
+    [subControllers addObject:viewController0];
     
     NSArray *channels = @[@"women", @"know", @"play", @"video"];
     NSArray *titles = @[@"女人", @"知道", @"爱玩", @"视频"];

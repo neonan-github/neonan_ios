@@ -8,6 +8,17 @@
 
 #import "NNViewController.h"
 
+typedef enum {
+    SignTypeIn = 0,
+    SignTypeUp
+} SignType;
+
+typedef void(^SignSuccessBlock)(NSString *token);
+
 @interface SignViewController2 : NNViewController
+
+@property (copy, nonatomic) SignSuccessBlock success;
+
+- (id)initWithType:(SignType)type;
 
 @end

@@ -35,7 +35,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="191373211">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIImageView" id="193229992">
@@ -279,6 +279,7 @@
 					</object>
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
+				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="924026251"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -484,7 +485,7 @@
 			<string key="bg_3rd_sina.png">{244, 55}</string>
 			<string key="bg_3rd_tencent.png">{244, 54}</string>
 			<string key="bg_btn_sign.png">{62, 23}</string>
-			<string key="img_logo_big.png">{188, 60}</string>
+			<string key="img_logo_big.png">{384, 122}</string>
 			<string key="img_password_input.png">{196, 34}</string>
 			<string key="img_user_input.png">{196, 34}</string>
 		</dictionary>
