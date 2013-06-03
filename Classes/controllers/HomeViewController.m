@@ -23,7 +23,7 @@
 #import <UIImageView+WebCache.h>
 #import <MBProgressHUD.h>
 
-static const NSInteger kPageCount = 3;
+static const NSInteger kPageCount = 6;
 static const NSInteger kItemPerPageCount = 6;
 
 static const NSInteger kTagHeaderImageView = 1000;
