@@ -9,7 +9,7 @@
 #import "HomeViewController.h"
 #import "ArticleDetailViewController.h"
 #import "GalleryDetailController.h"
-#import "VideoPlayController.h"
+#import "VideoPlayViewController.h"
 
 #import "NNButton.h"
 #import "HomeGridViewCell.h"
@@ -105,6 +105,8 @@ KKGridViewDataSource, KKGridViewDelegate>
         KKGridView *currentPageView = ((KKGridView *)[self.swipeView itemViewAtIndex:self.currentPageIndex]);
         [currentPageView reloadData];
     }
+    
+    [UIViewController attemptRotationToDeviceOrientation];
 }
 
 #pragma mark - SwipeViewDataSource methods

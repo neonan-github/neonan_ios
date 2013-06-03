@@ -10,7 +10,7 @@
 
 #import "MainController.h"
 #import "ArticleDetailViewController.h"
-#import "VideoPlayController.h"
+#import "VideoPlayViewController.h"
 #import "GalleryDetailController.h"
 
 #import "LeftMenuViewController.h"
@@ -165,7 +165,7 @@
             break;
             
         case ContentTypeVideo:
-            controller = [[VideoPlayController alloc] init];
+            controller = [[VideoPlayViewController alloc] init];
             [controller setContentId:[dataItem contentId]];
             [controller setVideoUrl:[dataItem videoUrl]];
     }

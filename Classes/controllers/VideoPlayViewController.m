@@ -6,21 +6,23 @@
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import "VideoPlayController.h"
+#import "VideoPlayViewController.h"
+
 #import "MathHelper.h"
 #import "UrlModel.h"
-
 #import "EncourageHelper.h"
+
+#import "UIViewController+JASidePanel.h"
 
 #import <MBProgressHUD.h>
 
-@interface VideoPlayController () <UIWebViewDelegate>
+@interface VideoPlayViewController () <UIWebViewDelegate>
 
 @property (unsafe_unretained, nonatomic) IBOutlet UIWebView *webView;
 
 @end
 
-@implementation VideoPlayController
+@implementation VideoPlayViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -47,18 +49,21 @@
     _webView.delegate = self;
     _webView.hidden = YES;
     
-    for (id subview in _webView.subviews)
-        if ([[subview class] isSubclassOfClass: [UIScrollView class]])
+    for (id subview in _webView.subviews) {
+        if ([[subview class] isSubclassOfClass: [UIScrollView class]]) {
             ((UIScrollView *)subview).bounces = NO;
+        }
+    }
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     [self requestUrl:^(NSString * url) {
         Record *record = [[Record alloc] init];
         record.contentType = @"video";
         record.contentId = _contentId;
         [[HistoryRecorder sharedRecorder] saveRecord:record];
         
-        __weak VideoPlayController *weakSelf = self;
+        __weak VideoPlayViewController *weakSelf = self;
         [EncourageHelper check:_contentId contentType:@"video" afterDelay:5
                         should:^BOOL{
                             return [[SessionManager sharedManager] canAutoLogin] && weakSelf;
@@ -66,6 +71,7 @@
                        success:nil];
         
         self.videoUrl = url;
+        
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self parseVideoUrl:url]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20];
         [_webView loadRequest:request];
     }];    
@@ -79,20 +85,34 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    NNNavigationController *navController = (NNNavigationController *)self.navigationController;
-    navController.autoRotate = NO;
+    NNContainerViewController *containerController = (NNContainerViewController *)self.sidePanelController.centerPanel;
+    containerController.autoRotate = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated {
+    [UIViewController attemptRotationToDeviceOrientation];
+    
+    NSArray *viewControllers = self.navigationController.viewControllers;
+    if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
+        // View is disappearing because a new view controller was pushed onto the stack
+        DLog(@"New view controller was pushed");
+        NNContainerViewController *containerController = (NNContainerViewController *)self.sidePanelController.centerPanel;
+        containerController.autoRotate = YES;
+
+    } else if ([viewControllers indexOfObject:self] == NSNotFound) {
+        // View is disappearing because it was popped from the stack
+        DLog(@"View controller was popped");
+    }
+    
     if (SYSTEM_VERSION_LESS_THAN(@"6.0")) {
         [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];//停止播放
     }
     
-    [super viewDidDisappear:animated];
+    [super viewWillDisappear:animated];
 }
 
 #pragma mark - UIWebViewDelegate methods

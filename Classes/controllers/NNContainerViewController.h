@@ -14,4 +14,6 @@
 @property (nonatomic,copy) NSArray *viewControllers;
 @property (nonatomic, assign) NSInteger selectedIndex;
 
+@property (nonatomic, assign) BOOL autoRotate;
+
 @end

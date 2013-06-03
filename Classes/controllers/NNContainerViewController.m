@@ -43,18 +43,18 @@
     _selectedIndex = selectedIndex;
 }
 
-//- (BOOL)shouldAutorotate {
-//    return NO;
-//}
-//
-//- (NSUInteger)supportedInterfaceOrientations {
-//    return UIInterfaceOrientationMaskPortrait;
-//}
-//
-//// pre-iOS 6 support
-//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-//    return toInterfaceOrientation == UIInterfaceOrientationPortrait;
-//}
+- (BOOL)shouldAutorotate {
+    return self.autoRotate;
+}
 
+- (NSUInteger)supportedInterfaceOrientations {
+    return self.autoRotate ? UIInterfaceOrientationMaskAllButUpsideDown : UIInterfaceOrientationMaskPortrait;
+}
+
+// pre-iOS 6 support
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return self.autoRotate ? (toInterfaceOrientation != UIDeviceOrientationPortraitUpsideDown) :
+    (toInterfaceOrientation == UIInterfaceOrientationPortrait);
+}
 
 @end

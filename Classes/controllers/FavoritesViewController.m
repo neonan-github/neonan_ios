@@ -9,7 +9,7 @@
 #import "FavoritesViewController.h"
 #import "GalleryDetailController.h"
 #import "ArticleDetailViewController.h"
-#import "VideoPlayController.h"
+#import "VideoPlayViewController.h"
 
 #import "CommonListModel.h"
 

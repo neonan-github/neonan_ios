@@ -10,7 +10,7 @@
 #import "NNNavigationController.h"
 #import "GalleryDetailController.h"
 #import "ArticleDetailViewController.h"
-#import "VideoPlayController.h"
+#import "VideoPlayViewController.h"
 #import "GridListController.h"
 #import "SignViewController.h"
 #import "AboutViewController.h"
@@ -360,7 +360,7 @@ headerView = _headerView;
 }
 
 - (void)playVideo:(NSString *)videoUrl {
-    VideoPlayController *controller = [[VideoPlayController alloc] init];
+    VideoPlayViewController *controller = [[VideoPlayViewController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
 //    navController.logoHidden = NO;
     controller.videoUrl = videoUrl;
@@ -750,7 +750,7 @@ headerView = _headerView;
             break;
             
         case ContentTypeVideo:
-            controller = [[VideoPlayController alloc] init];
+            controller = [[VideoPlayViewController alloc] init];
             [controller setContentId:[dataItem contentId]];
             [controller setVideoUrl:[dataItem videoUrl]];
     }

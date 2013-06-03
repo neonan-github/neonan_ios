@@ -15,8 +15,8 @@
 		340716DA1640D43C006E40FE /* icon_up_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 340716D91640D43C006E40FE /* icon_up_arrow_white.png */; };
 		340716E51640EB12006E40FE /* img_user_input.png in Resources */ = {isa = PBXBuildFile; fileRef = 340716E41640EB12006E40FE /* img_user_input.png */; };
 		340716E71640ED7D006E40FE /* img_password_input.png in Resources */ = {isa = PBXBuildFile; fileRef = 340716E61640ED7D006E40FE /* img_password_input.png */; };
-		340716F8164128E7006E40FE /* VideoPlayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340716F6164128E7006E40FE /* VideoPlayController.m */; };
-		34071703164133C3006E40FE /* VideoPlayController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34071702164133C3006E40FE /* VideoPlayController.xib */; };
+		340716F8164128E7006E40FE /* VideoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340716F6164128E7006E40FE /* VideoPlayViewController.m */; };
+		34071703164133C3006E40FE /* VideoPlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34071702164133C3006E40FE /* VideoPlayViewController.xib */; };
 		3408646D1702912A00823A91 /* NNTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3408646C1702912A00823A91 /* NNTextField.m */; };
 		340A13471631331900E8D594 /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13461631331900E8D594 /* CommentModel.m */; };
 		340A134A1631419600E8D594 /* CommentBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13491631419600E8D594 /* CommentBox.m */; };
@@ -413,9 +413,9 @@
 		340716D91640D43C006E40FE /* icon_up_arrow_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_up_arrow_white.png; sourceTree = "<group>"; };
 		340716E41640EB12006E40FE /* img_user_input.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_user_input.png; sourceTree = "<group>"; };
 		340716E61640ED7D006E40FE /* img_password_input.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_password_input.png; sourceTree = "<group>"; };
-		340716F5164128E7006E40FE /* VideoPlayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayController.h; sourceTree = "<group>"; };
-		340716F6164128E7006E40FE /* VideoPlayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayController.m; sourceTree = "<group>"; };
-		34071702164133C3006E40FE /* VideoPlayController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VideoPlayController.xib; path = Classes/controllers/VideoPlayController.xib; sourceTree = SOURCE_ROOT; };
+		340716F5164128E7006E40FE /* VideoPlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayViewController.h; sourceTree = "<group>"; };
+		340716F6164128E7006E40FE /* VideoPlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayViewController.m; sourceTree = "<group>"; };
+		34071702164133C3006E40FE /* VideoPlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = VideoPlayViewController.xib; path = Classes/controllers/VideoPlayViewController.xib; sourceTree = SOURCE_ROOT; };
 		3408646B1702912A00823A91 /* NNTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNTextField.h; sourceTree = "<group>"; };
 		3408646C1702912A00823A91 /* NNTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNTextField.m; sourceTree = "<group>"; };
 		340A13451631331900E8D594 /* CommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentModel.h; sourceTree = "<group>"; };
@@ -1048,8 +1048,8 @@
 				34584643163A3582008AAD38 /* NNNavigationController.m */,
 				34197639174E0EE300D301C8 /* NNContainerViewController.h */,
 				3419763A174E0EE300D301C8 /* NNContainerViewController.m */,
-				340716F5164128E7006E40FE /* VideoPlayController.h */,
-				340716F6164128E7006E40FE /* VideoPlayController.m */,
+				340716F5164128E7006E40FE /* VideoPlayViewController.h */,
+				340716F6164128E7006E40FE /* VideoPlayViewController.m */,
 				349EF62A1675E92E0086A7F1 /* AboutViewController.h */,
 				349EF62B1675E92E0086A7F1 /* AboutViewController.m */,
 				34C56BEE1676CEE00013ECE6 /* FeedbackViewController.h */,
@@ -1602,7 +1602,7 @@
 				349EF62C1675E92E0086A7F1 /* AboutViewController.xib */,
 				3401FDFB1636A1D700FAF971 /* ArticleDetailViewController.xib */,
 				34CB8FF3163FDFD40001AD87 /* CommentListViewController.xib */,
-				34071702164133C3006E40FE /* VideoPlayController.xib */,
+				34071702164133C3006E40FE /* VideoPlayViewController.xib */,
 				342DA8A516E3308300404730 /* PersonalInfoViewController.xib */,
 				342DA8B416E3505000404730 /* FunctionFlowView.xib */,
 				34E8CF6116E9BDCC000079E6 /* InfoEditViewController.xib */,
@@ -2096,7 +2096,7 @@
 				340716DA1640D43C006E40FE /* icon_up_arrow_white.png in Resources */,
 				340716E51640EB12006E40FE /* img_user_input.png in Resources */,
 				340716E71640ED7D006E40FE /* img_password_input.png in Resources */,
-				34071703164133C3006E40FE /* VideoPlayController.xib in Resources */,
+				34071703164133C3006E40FE /* VideoPlayViewController.xib in Resources */,
 				34268EF7165B209E00DEEF63 /* icon.png in Resources */,
 				34268EF9165B20A500DEEF63 /* icon@2x.png in Resources */,
 				341CB04C165B59DA00BF1D76 /* Localizable.strings in Resources */,
@@ -2310,7 +2310,7 @@
 				346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */,
 				3401FDFC1636A1D700FAF971 /* ArticleDetailViewController.m in Sources */,
 				34584644163A3582008AAD38 /* NNNavigationController.m in Sources */,
-				340716F8164128E7006E40FE /* VideoPlayController.m in Sources */,
+				340716F8164128E7006E40FE /* VideoPlayViewController.m in Sources */,
 				34E3E3A8164276C50058F5CF /* NNHttpClient.m in Sources */,
 				34843563164360F30073468D /* ResponseError.m in Sources */,
 				348435B81643C6540073468D /* MD5.m in Sources */,
