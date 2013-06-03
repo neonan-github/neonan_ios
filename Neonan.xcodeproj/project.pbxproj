@@ -287,8 +287,8 @@
 		349EF6211675D9850086A7F1 /* icon_about_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 349EF6201675D9850086A7F1 /* icon_about_normal.png */; };
 		349EF6231675D9C90086A7F1 /* icon_sign_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 349EF6221675D9C90086A7F1 /* icon_sign_normal.png */; };
 		349EF6251675DAC90086A7F1 /* icon_clear_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 349EF6241675DAC90086A7F1 /* icon_clear_normal.png */; };
-		349EF62D1675E92E0086A7F1 /* AboutController.m in Sources */ = {isa = PBXBuildFile; fileRef = 349EF62B1675E92E0086A7F1 /* AboutController.m */; };
-		349EF62E1675E92E0086A7F1 /* AboutController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349EF62C1675E92E0086A7F1 /* AboutController.xib */; };
+		349EF62D1675E92E0086A7F1 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 349EF62B1675E92E0086A7F1 /* AboutViewController.m */; };
+		349EF62E1675E92E0086A7F1 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 349EF62C1675E92E0086A7F1 /* AboutViewController.xib */; };
 		34AB4A3C164CA1C30011B8F9 /* CommonListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AB4A3B164CA1C30011B8F9 /* CommonListModel.m */; };
 		34AB4A3F164CD3050011B8F9 /* SlideShowDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AB4A3E164CD3050011B8F9 /* SlideShowDetailModel.m */; };
 		34AC9C6F163E5DB10020DE4B /* bg_bar_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C6E163E5DB10020DE4B /* bg_bar_button.png */; };
@@ -305,8 +305,8 @@
 		34BE36AA1651F76B0018B3A8 /* UrlModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34BE36A91651F76B0018B3A8 /* UrlModel.m */; };
 		34BE36AC16520F860018B3A8 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BE36AB16520F860018B3A8 /* CoreFoundation.framework */; };
 		34C56BEC1676CE390013ECE6 /* libUMFeedback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C56BE91676CE390013ECE6 /* libUMFeedback.a */; };
-		34C56BF11676CEE00013ECE6 /* FeedbackController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C56BEF1676CEE00013ECE6 /* FeedbackController.m */; };
-		34C56BF21676CEE00013ECE6 /* FeedbackController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BF01676CEE00013ECE6 /* FeedbackController.xib */; };
+		34C56BF11676CEE00013ECE6 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34C56BEF1676CEE00013ECE6 /* FeedbackViewController.m */; };
+		34C56BF21676CEE00013ECE6 /* FeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BF01676CEE00013ECE6 /* FeedbackViewController.xib */; };
 		34C56BF61676E1530013ECE6 /* bg_feedback_input.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BF51676E1530013ECE6 /* bg_feedback_input.png */; };
 		34C56BF81676E1680013ECE6 /* bg_age_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BF71676E1680013ECE6 /* bg_age_select.png */; };
 		34C56BFC1676E9C10013ECE6 /* bg_share_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 34C56BFB1676E9C10013ECE6 /* bg_share_edit.png */; };
@@ -831,9 +831,9 @@
 		349EF6201675D9850086A7F1 /* icon_about_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_about_normal.png; sourceTree = "<group>"; };
 		349EF6221675D9C90086A7F1 /* icon_sign_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sign_normal.png; sourceTree = "<group>"; };
 		349EF6241675DAC90086A7F1 /* icon_clear_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_clear_normal.png; sourceTree = "<group>"; };
-		349EF62A1675E92E0086A7F1 /* AboutController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutController.h; sourceTree = "<group>"; };
-		349EF62B1675E92E0086A7F1 /* AboutController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutController.m; sourceTree = "<group>"; };
-		349EF62C1675E92E0086A7F1 /* AboutController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutController.xib; path = ../Classes/controllers/AboutController.xib; sourceTree = "<group>"; };
+		349EF62A1675E92E0086A7F1 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		349EF62B1675E92E0086A7F1 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		349EF62C1675E92E0086A7F1 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutViewController.xib; path = ../Classes/controllers/AboutViewController.xib; sourceTree = "<group>"; };
 		34AB4A3A164CA1C30011B8F9 /* CommonListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonListModel.h; sourceTree = "<group>"; };
 		34AB4A3B164CA1C30011B8F9 /* CommonListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonListModel.m; sourceTree = "<group>"; };
 		34AB4A3D164CD3050011B8F9 /* SlideShowDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideShowDetailModel.h; sourceTree = "<group>"; };
@@ -856,9 +856,9 @@
 		34BE36AB16520F860018B3A8 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		34C56BE91676CE390013ECE6 /* libUMFeedback.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMFeedback.a; sourceTree = "<group>"; };
 		34C56BEB1676CE390013ECE6 /* UMFeedback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMFeedback.h; sourceTree = "<group>"; };
-		34C56BEE1676CEE00013ECE6 /* FeedbackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackController.h; sourceTree = "<group>"; };
-		34C56BEF1676CEE00013ECE6 /* FeedbackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackController.m; sourceTree = "<group>"; };
-		34C56BF01676CEE00013ECE6 /* FeedbackController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeedbackController.xib; path = ../Classes/controllers/FeedbackController.xib; sourceTree = "<group>"; };
+		34C56BEE1676CEE00013ECE6 /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
+		34C56BEF1676CEE00013ECE6 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
+		34C56BF01676CEE00013ECE6 /* FeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeedbackViewController.xib; path = ../Classes/controllers/FeedbackViewController.xib; sourceTree = "<group>"; };
 		34C56BF51676E1530013ECE6 /* bg_feedback_input.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_feedback_input.png; sourceTree = "<group>"; };
 		34C56BF71676E1680013ECE6 /* bg_age_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_age_select.png; sourceTree = "<group>"; };
 		34C56BFB1676E9C10013ECE6 /* bg_share_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_share_edit.png; sourceTree = "<group>"; };
@@ -1050,10 +1050,10 @@
 				3419763A174E0EE300D301C8 /* NNContainerViewController.m */,
 				340716F5164128E7006E40FE /* VideoPlayController.h */,
 				340716F6164128E7006E40FE /* VideoPlayController.m */,
-				349EF62A1675E92E0086A7F1 /* AboutController.h */,
-				349EF62B1675E92E0086A7F1 /* AboutController.m */,
-				34C56BEE1676CEE00013ECE6 /* FeedbackController.h */,
-				34C56BEF1676CEE00013ECE6 /* FeedbackController.m */,
+				349EF62A1675E92E0086A7F1 /* AboutViewController.h */,
+				349EF62B1675E92E0086A7F1 /* AboutViewController.m */,
+				34C56BEE1676CEE00013ECE6 /* FeedbackViewController.h */,
+				34C56BEF1676CEE00013ECE6 /* FeedbackViewController.m */,
 				341565F716BA18CB0012B2C7 /* GridListController.h */,
 				341565F816BA18CB0012B2C7 /* GridListController.m */,
 				348983D416BA691C001CFFB6 /* TopicDetailController.h */,
@@ -1598,8 +1598,8 @@
 				34CA181316EDC679000654AC /* SplashViewController.xib */,
 				3442AAC916E0B6AC000C8F72 /* ShareEditViewController.xib */,
 				348983D616BA691C001CFFB6 /* TopicDetailController.xib */,
-				34C56BF01676CEE00013ECE6 /* FeedbackController.xib */,
-				349EF62C1675E92E0086A7F1 /* AboutController.xib */,
+				34C56BF01676CEE00013ECE6 /* FeedbackViewController.xib */,
+				349EF62C1675E92E0086A7F1 /* AboutViewController.xib */,
 				3401FDFB1636A1D700FAF971 /* ArticleDetailViewController.xib */,
 				34CB8FF3163FDFD40001AD87 /* CommentListViewController.xib */,
 				34071702164133C3006E40FE /* VideoPlayController.xib */,
@@ -2107,8 +2107,8 @@
 				349EF6211675D9850086A7F1 /* icon_about_normal.png in Resources */,
 				349EF6231675D9C90086A7F1 /* icon_sign_normal.png in Resources */,
 				349EF6251675DAC90086A7F1 /* icon_clear_normal.png in Resources */,
-				349EF62E1675E92E0086A7F1 /* AboutController.xib in Resources */,
-				34C56BF21676CEE00013ECE6 /* FeedbackController.xib in Resources */,
+				349EF62E1675E92E0086A7F1 /* AboutViewController.xib in Resources */,
+				34C56BF21676CEE00013ECE6 /* FeedbackViewController.xib in Resources */,
 				34C56BF61676E1530013ECE6 /* bg_feedback_input.png in Resources */,
 				34C56BF81676E1680013ECE6 /* bg_age_select.png in Resources */,
 				34C56BFC1676E9C10013ECE6 /* bg_share_edit.png in Resources */,
@@ -2327,8 +2327,8 @@
 				341CB053165B744300BF1D76 /* NNURLCache.m in Sources */,
 				340E020A165F4B860094DCCE /* NearWorksModel.m in Sources */,
 				349EF6151675A62C0086A7F1 /* NNDropDownMenu.m in Sources */,
-				349EF62D1675E92E0086A7F1 /* AboutController.m in Sources */,
-				34C56BF11676CEE00013ECE6 /* FeedbackController.m in Sources */,
+				349EF62D1675E92E0086A7F1 /* AboutViewController.m in Sources */,
+				34C56BF11676CEE00013ECE6 /* FeedbackViewController.m in Sources */,
 				34C56C3E16770BCD0013ECE6 /* SSTextView.m in Sources */,
 				34FB6A0816B7D7E10020C6A2 /* TopicCell.m in Sources */,
 				341565F916BA18CB0012B2C7 /* GridListController.m in Sources */,

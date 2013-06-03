@@ -6,16 +6,16 @@
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import "AboutController.h"
+#import "AboutViewController.h"
 
-@interface AboutController ()
+@interface AboutViewController ()
 
 @property (unsafe_unretained, nonatomic) IBOutlet UITextView *descriptionView;
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *rightLabel;
 
 @end
 
-@implementation AboutController
+@implementation AboutViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

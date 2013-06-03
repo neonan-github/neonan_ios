@@ -8,5 +8,5 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FeedbackController : NNViewController
+@interface FeedbackViewController : NNViewController
 @end

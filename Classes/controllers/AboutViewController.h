@@ -8,5 +8,5 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AboutController : NNViewController
+@interface AboutViewController : NNViewController
 @end

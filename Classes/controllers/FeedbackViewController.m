@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import "FeedbackController.h"
+#import "FeedbackViewController.h"
 #import "UMFeedback.h"
 
 #import <MBProgressHUD.h>
@@ -14,7 +14,7 @@
 
 #import <SSTextView.h>
 
-@interface FeedbackController () <UMFeedbackDataDelegate>
+@interface FeedbackViewController () <UMFeedbackDataDelegate>
 
 @property (unsafe_unretained, nonatomic) IBOutlet UILabel *deviceInfoLabel;
 @property (unsafe_unretained, nonatomic) IBOutlet UIImageView *editBackgroundView;
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation FeedbackController
+@implementation FeedbackViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

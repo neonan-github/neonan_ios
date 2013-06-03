@@ -7,8 +7,8 @@
 //
 
 #import "SettingViewController.h"
-#import "AboutController.h"
-#import "FeedbackController.h"
+#import "AboutViewController.h"
+#import "FeedbackViewController.h"
 
 #import "NNDefaultCell.h"
 
@@ -71,7 +71,7 @@
             tmpCell.accessoryView = [UIHelper defaultAccessoryView];
             [tmpCell prepareForTableView:tableView indexPath:indexPath];
         } whenSelected:^(NSIndexPath *indexPath) {
-            FeedbackController *viewController = [[FeedbackController alloc] init];
+            FeedbackViewController *viewController = [[FeedbackViewController alloc] init];
             [weakSelf.navigationController pushViewController:viewController animated:YES];
         }];
         
@@ -83,7 +83,7 @@
             [tmpCell prepareForTableView:tableView indexPath:indexPath];
             tmpCell.accessoryView = [UIHelper defaultAccessoryView];
         } whenSelected:^(NSIndexPath *indexPath) {
-            AboutController *viewController = [[AboutController alloc] init];
+            AboutViewController *viewController = [[AboutViewController alloc] init];
             [weakSelf.navigationController pushViewController:viewController animated:YES];
         }];
     }];

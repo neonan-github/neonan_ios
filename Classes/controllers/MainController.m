@@ -13,8 +13,8 @@
 #import "VideoPlayController.h"
 #import "GridListController.h"
 #import "SignViewController.h"
-#import "AboutController.h"
-#import "FeedbackController.h"
+#import "AboutViewController.h"
+#import "FeedbackViewController.h"
 #import "PersonalInfoViewController.h"
 #import "FavoritesViewController.h"
 #import "SplashViewController.h"
@@ -460,14 +460,14 @@ headerView = _headerView;
 }
 
 - (void)showAboutController {
-    AboutController *controller = [[AboutController alloc] init];
+    AboutViewController *controller = [[AboutViewController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     
     [self presentModalViewController:navController animated:YES];
 }
 
 - (void)showFeedbackController {
-    FeedbackController *controller = [[FeedbackController alloc] init];
+    FeedbackViewController *controller = [[FeedbackViewController alloc] init];
     NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
     
     [self presentModalViewController:navController animated:YES];
