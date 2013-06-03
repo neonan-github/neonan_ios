@@ -1,146 +1,225 @@
 //
-//  SignController.m
+//  SignViewController.m
 //  Neonan
 //
-//  Created by capricorn on 12-10-23.
-//  Copyright (c) 2012年 neonan. All rights reserved.
+//  Created by Wu Yunpeng on 13-6-2.
+//  Copyright (c) 2013年 neonan. All rights reserved.
 //
 
-#import "SignViewController.h"
-#import "NNNavigationController.h"
-
-#import "LoginResult.h"
-
-#import "SessionManager.h"
-#import "EncourageHelper.h"
-#import "MD5.h"
-
-#import "EncourageView.h"
-#import "NNUnderlinedButton.h"
 #import "NNTextField.h"
 
-#import <DCRoundSwitch.h>
-#import <SSKeychain.h>
+#import "SignViewController.h"
+
+#import "MD5.h"
+#import "EncourageHelper.h"
+
+#import "EncourageView.h"
+
 #import <SVProgressHUD.h>
 
-@interface SignViewController ()
-@property (unsafe_unretained, nonatomic) NNUnderlinedButton *switchTypeButton;
-@property (unsafe_unretained, nonatomic) IBOutlet NNTextField *userTextField;
-@property (unsafe_unretained, nonatomic) IBOutlet NNTextField *passwordTextField;
-@property (unsafe_unretained, nonatomic) IBOutlet UIButton *actionButton;
-@property (unsafe_unretained, nonatomic) IBOutlet UILabel *rememberPWLabel;
-@property (unsafe_unretained, nonatomic) IBOutlet DCRoundSwitch *rememberSwitch;
+@interface SignViewController () <UITextFieldDelegate>
 
-- (BOOL)validateEmail:(NSString *)string;
-- (void)signUpWithEmail:(NSString *)email andPassword:(NSString *)password;
-- (void)signInWithEmail:(NSString *)email andPassword:(NSString *)password;
+@property (weak, nonatomic) IBOutlet UIScrollView *flipView;
+
+@property (weak, nonatomic) IBOutlet UIImageView *nameBgView0;
+@property (weak, nonatomic) IBOutlet UIImageView *passwordBgView0;
+@property (weak, nonatomic) IBOutlet UIImageView *nameBgView1;
+@property (weak, nonatomic) IBOutlet UIImageView *passwordBgView1;
+
+@property (weak, nonatomic) IBOutlet NNTextField *nameField0;
+@property (weak, nonatomic) IBOutlet NNTextField *passwordField0;
+
+@property (weak, nonatomic) IBOutlet NNTextField *nameField1;
+@property (weak, nonatomic) IBOutlet NNTextField *passwordField1;
+
+@property (weak, nonatomic) IBOutlet UIButton *signUpButton;
+@property (weak, nonatomic) IBOutlet UIButton *signInButton;
+
+@property (nonatomic, assign) SignType signType;
 
 @end
 
 @implementation SignViewController
 
-- (id)initWithType:(signType)type {
-    self = [super init];
+- (id)initWithType:(SignType)type {
+    self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
-        _type = type;
+        self.signType = type;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+	// Do any additional setup after loading the view.
     
     UIButton *cancelButton = [UIHelper createLeftBarButton:@"icon_nav_close.png"];
-    cancelButton.frame = CGRectMake(14, 8, 30, 30);
-    cancelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    cancelButton.frame = CGRectMake(-2, -2, 50, 50);
+    cancelButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
     [cancelButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelButton];
     
-    self.view.backgroundColor = DarkThemeColor;
+    self.flipView.contentSize = CGSizeMake(CompatibleScreenWidth * 2, self.flipView.height);
     
-    [_actionButton addTarget:self action:@selector(sign:) forControlEvents:UIControlEventTouchUpInside];
+    UIImage *normalBgImage = [[UIImage imageFromFile:@"bg_left_sign_field_normal.png"] stretchableImageWithLeftCapWidth:35
+                                                                                                               topCapHeight:27];
+    UIImage *highlightedBgImage = [[UIImage imageFromFile:@"bg_left_sign_field_highlighted.png"] stretchableImageWithLeftCapWidth:35
+                                                                                                                         topCapHeight:27];
+    self.nameBgView0.image = normalBgImage;
+    self.nameBgView0.highlightedImage = highlightedBgImage;
+    self.passwordBgView0.image = normalBgImage;
+    self.passwordBgView0.highlightedImage = highlightedBgImage;
     
-    _userTextField.placeholderColor = [UIColor darkGrayColor];
-    _userTextField.placeholder = NSLocalizedString(@"Email", @"");
+    normalBgImage = [[UIImage imageFromFile:@"bg_right_sign_field_normal.png"] stretchableImageWithLeftCapWidth:35
+                                                                                                   topCapHeight:27];
+    highlightedBgImage = [[UIImage imageFromFile:@"bg_right_sign_field_highlighted.png"] stretchableImageWithLeftCapWidth:35
+                                                                                                             topCapHeight:27];
+    self.nameBgView1.image = normalBgImage;
+    self.nameBgView1.highlightedImage = highlightedBgImage;
+    self.passwordBgView1.image = normalBgImage;
+    self.passwordBgView1.highlightedImage = highlightedBgImage;
     
-    _passwordTextField.placeholderColor = [UIColor darkGrayColor];
     
-    NNUnderlinedButton *switchTypeButton = self.switchTypeButton = [[NNUnderlinedButton alloc] initWithFrame:CGRectMake(250, -2, 67, 50)];
-    switchTypeButton.titleLabel.font = [UIFont systemFontOfSize:18];
-    switchTypeButton.backgroundColor = [UIColor clearColor];
-    [switchTypeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [switchTypeButton setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateHighlighted];
-    [switchTypeButton addTarget:self action:@selector(switchType) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:switchTypeButton];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reset)];
+    [self.view addGestureRecognizer:tapGesture];
     
-    self.type = _type;
-    
-    _rememberSwitch.on = YES;
-    _rememberSwitch.onText = @"";
-    _rememberSwitch.offText = @"";
+    [self updateLayout:self.signType];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 - (void)cleanUp {
-    self.switchTypeButton = nil;
-    self.userTextField = nil;
-    self.passwordTextField = nil;
-    self.actionButton = nil;
-    self.rememberPWLabel = nil;
-    self.rememberSwitch = nil;
-}
-
-#pragma mark - UIViewController life cycle
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
-- (void)setType:(signType)type {
-    _type = type;
+    self.flipView = nil;
     
-    [_switchTypeButton setTitle:(_type == signUp ? @"登录" : @"注册") forState:UIControlStateNormal];
-    [_actionButton setTitle:(_type == signIn ? @"登录" : @"注册") forState:UIControlStateNormal];
+    self.nameBgView0 = nil;
+    self.passwordBgView0 = nil;
+    self.nameBgView1 = nil;
+    self.passwordBgView1 = nil;
     
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(_type == signIn ? @"注册" : @"登录")
-//                                                                              style:UIBarButtonItemStylePlain
-//                                                                             target:self
-//                                                                             action:@selector(switchType:)];
+    self.nameField0 = nil;
+    self.passwordField0 = nil;
+    self.nameField1 = nil;
+    self.passwordField1 = nil;
     
+    self.signUpButton = nil;
+    self.signInButton = nil;
 }
 
-#pragma mark - Override
+#pragma mark - UITextFieldDelegate methods
 
-- (BOOL)shouldAutorotate {
-    return NO;
-}
-
-- (NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskPortrait;
-}
-
-// pre-iOS 6 support
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    DLog(@"textFieldShouldBeginEditing: %@", textField);
     
-    UITouch *touch = [[event allTouches] anyObject];
-    if (([_userTextField isFirstResponder] || [_passwordTextField isFirstResponder]) &&
-        ([touch view] != _userTextField && [touch view] != _passwordTextField)) {
-        [_userTextField resignFirstResponder];
-        [_passwordTextField resignFirstResponder];
+    UIScrollView *scrollView = (UIScrollView *)self.view;
+    [scrollView setContentOffset:CGPointMake(0, IS_IPHONE_5 ? 0 : 100) animated:YES];
+
+    if (textField == self.nameField0 || textField == self.nameField1) {
+        self.nameBgView0.highlighted = self.nameBgView1.highlighted = YES;
+    } else if (textField == self.passwordField0 || textField == self.passwordField1) {
+        self.passwordBgView0.highlighted = self.passwordBgView1.highlighted = YES;
     }
-    [super touchesBegan:touches withEvent:event];
+    
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    if (textField == self.nameField0 || textField == self.nameField1) {
+        self.nameBgView0.highlighted = self.nameBgView1.highlighted = NO;
+    } else if (textField == self.passwordField0 || textField == self.passwordField1) {
+        self.passwordBgView0.highlighted = self.passwordBgView1.highlighted = NO;
+    }
+
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == self.nameField0) {
+        [self.passwordField0 becomeFirstResponder];
+    } else if (textField == self.nameField1) {
+        [self.passwordField1 becomeFirstResponder];
+    } else {
+        [self reset];
+    }
+    
+    return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    
+    if (textField == self.nameField0) {
+        self.nameField1.text = newText;
+    } else if (textField == self.nameField1) {
+        self.nameField0.text = newText;
+    } else if (textField == self.passwordField0) {
+        self.passwordField1.text = newText;
+    } else {
+        self.passwordField0.text = newText;
+    }
+    
+    return YES;
+}
+
+#pragma mark - Private Event Handle
+
+- (IBAction)onSignUpButtonClicked:(id)sender {
+    if (self.signType == SignTypeUp) {
+        [self sign];
+    } else {
+        [self updateLayout:SignTypeUp];
+    }
+}
+
+- (IBAction)onSignInButtonClicked:(id)sender {
+    if (self.signType == SignTypeIn) {
+        [self sign];
+    } else {
+        [self updateLayout:SignTypeIn];
+    }
 }
 
 #pragma mark - Private methods
 
-- (void)dismissKeyboard {
-    [_userTextField resignFirstResponder];
-    [_passwordTextField resignFirstResponder];
+- (void)reset {
+    [self.nameField0 resignFirstResponder];
+    [self.nameField1 resignFirstResponder];
+    [self.passwordField0 resignFirstResponder];
+    [self.passwordField1 resignFirstResponder];
+    
+    UIScrollView *scrollView = (UIScrollView *)self.view;
+    [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+}
+
+- (void)updateLayout:(SignType)signType {
+    self.signType = signType;
+    
+    if (signType == SignTypeIn) {
+        [self.flipView scrollRectToVisible:CGRectMake(CompatibleScreenWidth, 0, CompatibleScreenWidth, self.flipView.height)
+                                  animated:YES];
+        [UIView beginAnimations:nil context:NULL];
+        self.signUpButton.frame = CGRectMake(-28, 295, 100, 34);
+        self.signInButton.frame = CGRectMake(158, 295, 100, 34);
+        [UIView commitAnimations];
+    } else {
+        [self.flipView scrollRectToVisible:CGRectMake(0, 0, CompatibleScreenWidth, self.flipView.height)
+                                  animated:YES];
+        [UIView beginAnimations:nil context:NULL];
+        self.signUpButton.frame = CGRectMake(64, 295, 100, 34);
+        self.signInButton.frame = CGRectMake(248, 295, 100, 34);
+        [UIView commitAnimations];
+    }
+    
+    [self.signUpButton setBackgroundImage:[[UIImage imageFromFile:signType == SignTypeUp ? @"bg_btn_sign_normal.png" : @"bg_btn_sign_disabled.png"]
+                                           stretchableImageWithLeftCapWidth:27 topCapHeight:17]
+                                 forState:UIControlStateNormal];
+    [self.signInButton setBackgroundImage:[[UIImage imageFromFile:signType == SignTypeIn ? @"bg_btn_sign_normal.png" : @"bg_btn_sign_disabled.png"]
+                                           stretchableImageWithLeftCapWidth:27 topCapHeight:17]
+                                 forState:UIControlStateNormal];
+
 }
 
 - (void)close {
@@ -155,48 +234,47 @@
     }
 }
 
-- (void)switchType {
-    if (_type == signIn) {
-        self.type = signUp;
-    } else {
-        self.type = signIn;
+- (BOOL)checkNameField:(UITextField *)nameField {
+    NSString *email = [nameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (!email || email.length < 1) {
+        [UIHelper alertWithMessage:@"邮箱不能为空"];
+        return NO;
+    } else if (![self validateEmail:email]) {
+        [UIHelper alertWithMessage:@"邮箱格式错误"];
+        return NO;
     }
+
+    return YES;
 }
 
-- (void)sign:(UIButton *)button {
-    NSString *email = [_userTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (!email || email.length < 1) {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"邮箱不能为空" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
-//        [alertView show];
-        [UIHelper alertWithMessage:@"邮箱不能为空"];
-        return;
-    }
-    
-    NSString *password = [_passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+- (BOOL)checkPasswordField:(UITextField *)passwordField {
+    NSString *password = [passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (!password || password.length < 1) {
         [UIHelper alertWithMessage:@"密码不能为空"];
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (void)sign {
+    if (![self checkNameField:self.nameField0]) {
         return;
     }
     
-    if (![self validateEmail:email]) {
-        [UIHelper alertWithMessage:@"邮箱格式错误"];
+    if (![self checkPasswordField:self.passwordField0]) {
         return;
     }
     
+    NSString *email = [self.nameField0.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *password = [self.passwordField0.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [self performSelector:(_type == signIn ? @selector(signInWithEmail:andPassword:) : @selector(signUpWithEmail:andPassword:))
+    [self performSelector:(self.signType == SignTypeIn ? @selector(signInWithEmail:andPassword:) : @selector(signUpWithEmail:andPassword:))
                withObject:email
                withObject:password];
 #pragma clang diagnostic pop
-    
-//    if (_type == signIn) {
-//        NSLog(@"sign in!!!");
-//        [self signUpWithEmail:email andPassword:password];
-//    } else {
-//        NSLog(@"sing up!!!");
-//    }
 }
 
 - (BOOL)validateEmail:(NSString *)string {
@@ -210,17 +288,13 @@
 
 - (void)signWithEmail:(NSString *)email andPassword:(NSString *)password atPath:(NSString *)path {
     BOOL signUp = [path rangeOfString:@"login"].location == NSNotFound;
-    [SVProgressHUD showWithStatus:signUp ? @"注册中" : @"登录中"];
+    [SVProgressHUD showWithStatus:signUp ? @"注册中" : @"登录中" maskType:SVProgressHUDMaskTypeClear];
     
     password = [password md5];
     
     SessionManager *sessionManager = [SessionManager sharedManager];
-    sessionManager.allowAutoLogin = _rememberSwitch.isOn;
+//    sessionManager.allowAutoLogin = _rememberSwitch.isOn;
     [sessionManager signWithEmail:email andPassword:password atPath:path success:^(NSString *token) {
-        //        if (self.rememberSwitch.isOn) {
-        //            [SSKeychain setPassword:password forService:kServiceName account:email];
-        //        }
-        
         if (_success) {
             _success(token);
         }
@@ -267,7 +341,6 @@
                                            [self close:YES];
                                        } failure:^(ResponseError *error) {
                                            DLog(@"error:%@", error.message);
-                                           //                                           [UIHelper alertWithMessage:error.message];
                                            [SVProgressHUD showErrorWithStatus:@"登录失败"];
                                        }];
 }

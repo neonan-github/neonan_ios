@@ -248,8 +248,6 @@
 		346C706D167EBAF000EA0057 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 346C706B167EBAF000EA0057 /* libPushSDK.a */; };
 		3470DBD21653B14000273244 /* CommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3470DBD11653B14000273244 /* CommentListModel.m */; };
 		3475E899175366E600386EDC /* icon_nav_account.png in Resources */ = {isa = PBXBuildFile; fileRef = 3475E897175366E600386EDC /* icon_nav_account.png */; };
-		347AAB5D163672E500D243BA /* SignViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 347AAB5B163672E500D243BA /* SignViewController.m */; };
-		347AAB5E163672E500D243BA /* SignViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 347AAB5C163672E500D243BA /* SignViewController.xib */; };
 		34843563164360F30073468D /* ResponseError.m in Sources */ = {isa = PBXBuildFile; fileRef = 34843562164360F30073468D /* ResponseError.m */; };
 		348435A81643C1C00073468D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 348435A71643C1C00073468D /* Security.framework */; };
 		348435B81643C6540073468D /* MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 348435B71643C6540073468D /* MD5.m */; };
@@ -298,8 +296,8 @@
 		34AC9C6F163E5DB10020DE4B /* bg_bar_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C6E163E5DB10020DE4B /* bg_bar_button.png */; };
 		34AC9C75163E75870020DE4B /* bg_header_view.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C74163E75870020DE4B /* bg_header_view.png */; };
 		34AC9C77163E80770020DE4B /* img_header_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 34AC9C76163E80770020DE4B /* img_header_indicator.png */; };
-		34B06867175B20D60024AA80 /* SignViewController2.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34B06866175B20D60024AA80 /* SignViewController2.xib */; };
-		34B0686A175B29F50024AA80 /* SignViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B06869175B29F50024AA80 /* SignViewController2.m */; };
+		34B06867175B20D60024AA80 /* SignViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34B06866175B20D60024AA80 /* SignViewController.xib */; };
+		34B0686A175B29F50024AA80 /* SignViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B06869175B29F50024AA80 /* SignViewController.m */; };
 		34B2B77F16380F4500F75977 /* bg_btn_sign.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B2B77E16380F4500F75977 /* bg_btn_sign.png */; };
 		34B5591A16E20BE5001D378A /* EncourageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B5591916E20BE5001D378A /* EncourageHelper.m */; };
 		34B618A3164A0DFE00842F15 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3432926C1647B2140070B66A /* SystemConfiguration.framework */; };
@@ -772,9 +770,6 @@
 		3470DBD01653B14000273244 /* CommentListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListModel.h; sourceTree = "<group>"; };
 		3470DBD11653B14000273244 /* CommentListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListModel.m; sourceTree = "<group>"; };
 		3475E897175366E600386EDC /* icon_nav_account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nav_account.png; sourceTree = "<group>"; };
-		347AAB5A163672E500D243BA /* SignViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignViewController.h; sourceTree = "<group>"; };
-		347AAB5B163672E500D243BA /* SignViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignViewController.m; sourceTree = "<group>"; };
-		347AAB5C163672E500D243BA /* SignViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SignViewController.xib; path = ../Classes/controllers/SignViewController.xib; sourceTree = "<group>"; };
 		34843561164360F30073468D /* ResponseError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseError.h; sourceTree = "<group>"; };
 		34843562164360F30073468D /* ResponseError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResponseError.m; sourceTree = "<group>"; };
 		34843572164367EC0073468D /* Jsonable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Jsonable.h; sourceTree = "<group>"; };
@@ -841,9 +836,9 @@
 		34AC9C6E163E5DB10020DE4B /* bg_bar_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_bar_button.png; sourceTree = "<group>"; };
 		34AC9C74163E75870020DE4B /* bg_header_view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_header_view.png; sourceTree = "<group>"; };
 		34AC9C76163E80770020DE4B /* img_header_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = img_header_indicator.png; sourceTree = "<group>"; };
-		34B06866175B20D60024AA80 /* SignViewController2.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignViewController2.xib; sourceTree = "<group>"; };
-		34B06868175B29F50024AA80 /* SignViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignViewController2.h; sourceTree = "<group>"; };
-		34B06869175B29F50024AA80 /* SignViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignViewController2.m; sourceTree = "<group>"; };
+		34B06866175B20D60024AA80 /* SignViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignViewController.xib; sourceTree = "<group>"; };
+		34B06868175B29F50024AA80 /* SignViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignViewController.h; sourceTree = "<group>"; };
+		34B06869175B29F50024AA80 /* SignViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignViewController.m; sourceTree = "<group>"; };
 		34B2B77E16380F4500F75977 /* bg_btn_sign.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_btn_sign.png; sourceTree = "<group>"; };
 		34B5591816E20BE5001D378A /* EncourageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncourageHelper.h; sourceTree = "<group>"; };
 		34B5591916E20BE5001D378A /* EncourageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncourageHelper.m; sourceTree = "<group>"; };
@@ -1024,8 +1019,6 @@
 				346614D41635138700B1FF5A /* GalleryDetailController.m */,
 				346614D9163521C500B1FF5A /* CommentListViewController.h */,
 				346614DA163521C500B1FF5A /* CommentListViewController.m */,
-				347AAB5A163672E500D243BA /* SignViewController.h */,
-				347AAB5B163672E500D243BA /* SignViewController.m */,
 				3401FDF91636A1D700FAF971 /* ArticleDetailViewController.h */,
 				3401FDFA1636A1D700FAF971 /* ArticleDetailViewController.m */,
 				343658ED16BF5D8600576DE0 /* NNViewController.h */,
@@ -1064,8 +1057,8 @@
 				34CFE1CF1755FCB6004518AC /* RightMenuViewController.m */,
 				348AF7551755AE5A00690F81 /* ChannelListViewController.h */,
 				348AF7561755AE5A00690F81 /* ChannelListViewController.m */,
-				34B06868175B29F50024AA80 /* SignViewController2.h */,
-				34B06869175B29F50024AA80 /* SignViewController2.m */,
+				34B06868175B29F50024AA80 /* SignViewController.h */,
+				34B06869175B29F50024AA80 /* SignViewController.m */,
 			);
 			name = Controllers;
 			path = controllers;
@@ -1584,7 +1577,6 @@
 				348983D616BA691C001CFFB6 /* TopicDetailController.xib */,
 				34C56BF01676CEE00013ECE6 /* FeedbackController.xib */,
 				349EF62C1675E92E0086A7F1 /* AboutController.xib */,
-				347AAB5C163672E500D243BA /* SignViewController.xib */,
 				3401FDFB1636A1D700FAF971 /* ArticleDetailViewController.xib */,
 				34CB8FF3163FDFD40001AD87 /* CommentListViewController.xib */,
 				34071702164133C3006E40FE /* VideoPlayController.xib */,
@@ -1594,7 +1586,7 @@
 				34E8CF6616E9C669000079E6 /* PurchaseVIPViewController.xib */,
 				34358920175349AC0040F370 /* LeftMenuViewController.xib */,
 				34CFE1D417560C6D004518AC /* RightMenuViewController.xib */,
-				34B06866175B20D60024AA80 /* SignViewController2.xib */,
+				34B06866175B20D60024AA80 /* SignViewController.xib */,
 			);
 			name = Layouts;
 			sourceTree = "<group>";
@@ -2040,7 +2032,6 @@
 				53816B0D16265E9400B0672C /* Default.png in Resources */,
 				53816B0F16265E9400B0672C /* Default@2x.png in Resources */,
 				53816B1116265E9400B0672C /* Default-568h@2x.png in Resources */,
-				347AAB5E163672E500D243BA /* SignViewController.xib in Resources */,
 				3401FDFD1636A1D700FAF971 /* ArticleDetailViewController.xib in Resources */,
 				34B2B77F16380F4500F75977 /* bg_btn_sign.png in Resources */,
 				3453220116390EC2002137E6 /* img_comment_placeholder.png in Resources */,
@@ -2221,7 +2212,7 @@
 				343AF7461758AF43004B2280 /* bg_comment_input@2x.png in Resources */,
 				343AF7491758B4D7004B2280 /* bg_comment_box.png in Resources */,
 				343AF74A1758B4D7004B2280 /* bg_comment_box@2x.png in Resources */,
-				34B06867175B20D60024AA80 /* SignViewController2.xib in Resources */,
+				34B06867175B20D60024AA80 /* SignViewController.xib in Resources */,
 				34D3B90E175C393900C89F8C /* bg_left_sign_field_highlighted.png in Resources */,
 				34D3B90F175C393900C89F8C /* bg_left_sign_field_normal.png in Resources */,
 				34D3B910175C393900C89F8C /* bg_right_sign_field_highlighted.png in Resources */,
@@ -2273,7 +2264,6 @@
 				346614D51635138700B1FF5A /* GalleryDetailController.m in Sources */,
 				346614DB163521C500B1FF5A /* CommentListViewController.m in Sources */,
 				346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */,
-				347AAB5D163672E500D243BA /* SignViewController.m in Sources */,
 				3401FDFC1636A1D700FAF971 /* ArticleDetailViewController.m in Sources */,
 				34584644163A3582008AAD38 /* NNNavigationController.m in Sources */,
 				340716F8164128E7006E40FE /* VideoPlayController.m in Sources */,
@@ -2429,7 +2419,7 @@
 				34E2D02B17584AD5009FE9B1 /* URLHelper.m in Sources */,
 				34E2D02D1758583C009FE9B1 /* AppHelper.m in Sources */,
 				343AF73E175894B7004B2280 /* MarqueeLabel.m in Sources */,
-				34B0686A175B29F50024AA80 /* SignViewController2.m in Sources */,
+				34B0686A175B29F50024AA80 /* SignViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

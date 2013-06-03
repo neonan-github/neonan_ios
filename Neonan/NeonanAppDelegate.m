@@ -16,7 +16,6 @@
 #import "LeftMenuViewController.h"
 #import "RightMenuViewController.h"
 #import "HomeViewController.h"
-#import "SignViewController2.h"
 
 #import "ChannelListViewController.h"
 
@@ -179,8 +178,8 @@
 - (NSArray *)createSubControllers {
     NSMutableArray *subControllers = [NSMutableArray array];
     
-    SignViewController2 *viewController0 = [[SignViewController2 alloc] init];
-    [subControllers addObject:viewController0];
+    HomeViewController *viewController0 = [[HomeViewController alloc] init];
+    [subControllers addObject:[[NNNavigationController alloc] initWithRootViewController:viewController0]];
     
     NSArray *channels = @[@"women", @"know", @"play", @"video"];
     NSArray *titles = @[@"女人", @"知道", @"爱玩", @"视频"];
