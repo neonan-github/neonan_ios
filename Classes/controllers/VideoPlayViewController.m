@@ -18,7 +18,7 @@
 
 @interface VideoPlayViewController () <UIWebViewDelegate>
 
-@property (unsafe_unretained, nonatomic) IBOutlet UIWebView *webView;
+@property (nonatomic, weak) IBOutlet UIWebView *webView;
 
 @end
 
@@ -74,12 +74,19 @@
         
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self parseVideoUrl:url]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20];
         [_webView loadRequest:request];
-    }];    
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(playbackStateDidChange:)
+                                                 name:@"MPAVControllerPlaybackStateChangedNotification"
+                                               object:nil];
 }
 
 - (void)cleanUp {
     self.webView.delegate = nil;
     self.webView = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -96,23 +103,20 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [UIViewController attemptRotationToDeviceOrientation];
     
+    [super viewWillDisappear:animated];
+    
+    NNContainerViewController *containerController = (NNContainerViewController *)self.sidePanelController.centerPanel;
+    
     NSArray *viewControllers = self.navigationController.viewControllers;
-    if (viewControllers.count > 1 && [viewControllers objectAtIndex:viewControllers.count-2] == self) {
-        // View is disappearing because a new view controller was pushed onto the stack
-        DLog(@"New view controller was pushed");
-        NNContainerViewController *containerController = (NNContainerViewController *)self.sidePanelController.centerPanel;
-        containerController.autoRotate = YES;
-
-    } else if ([viewControllers indexOfObject:self] == NSNotFound) {
+    if ([viewControllers indexOfObject:self] == NSNotFound) {
         // View is disappearing because it was popped from the stack
-        DLog(@"View controller was popped");
+    } else {
+        containerController.autoRotate = YES;
     }
     
     if (SYSTEM_VERSION_LESS_THAN(@"6.0")) {
         [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];//停止播放
     }
-    
-    [super viewWillDisappear:animated];
 }
 
 #pragma mark - UIWebViewDelegate methods
@@ -223,8 +227,17 @@
 - (void)autoPlay {
     UIButton *playButton = [self findButtonInView:_webView];
     [playButton sendActionsForControlEvents:UIControlEventTouchUpInside];
-    NNNavigationController *navController = (NNNavigationController *)self.navigationController;
-    navController.autoRotate = YES;
+}
+
+- (void)playbackStateDidChange:(NSNotification *)note {
+    NNContainerViewController *containerController = (NNContainerViewController *)self.sidePanelController.centerPanel;
+    
+    NSInteger state = [[note.userInfo objectForKey:@"MPAVControllerNewStateParameter"] integerValue];
+    if (state == 1) { // stop
+        containerController.autoRotate = NO;
+    } else if (state == 2) { // start
+        containerController.autoRotate = YES;
+    }
 }
 
 - (void)close {
