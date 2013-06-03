@@ -14,8 +14,10 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *flipView;
 
-@property (weak, nonatomic) IBOutlet UIImageView *nameBgView;
-@property (weak, nonatomic) IBOutlet UIImageView *passwordBgView;
+@property (weak, nonatomic) IBOutlet UIImageView *nameBgView0;
+@property (weak, nonatomic) IBOutlet UIImageView *passwordBgView0;
+@property (weak, nonatomic) IBOutlet UIImageView *nameBgView1;
+@property (weak, nonatomic) IBOutlet UIImageView *passwordBgView1;
 
 @property (weak, nonatomic) IBOutlet NNTextField *nameField0;
 @property (weak, nonatomic) IBOutlet NNTextField *passwordField0;
@@ -43,6 +45,11 @@
 	// Do any additional setup after loading the view.
     
     self.flipView.contentSize = CGSizeMake(CompatibleScreenWidth * 2, self.flipView.height);
+    
+    self.nameBgView0.image = [[UIImage imageFromFile:@"bg_left_sign_field_normal.png"] stretchableImageWithLeftCapWidth:35 topCapHeight:27];
+    self.passwordBgView0.image = [[UIImage imageFromFile:@"bg_left_sign_field_highlighted.png"] stretchableImageWithLeftCapWidth:35 topCapHeight:27];
+    self.nameBgView1.image = [[UIImage imageFromFile:@"bg_right_sign_field_normal.png"] stretchableImageWithLeftCapWidth:35 topCapHeight:27];
+    self.passwordBgView1.image = [[UIImage imageFromFile:@"bg_right_sign_field_highlighted.png"] stretchableImageWithLeftCapWidth:35 topCapHeight:27];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,8 +60,10 @@
 - (void)cleanUp {
     self.flipView = nil;
     
-    self.nameBgView = nil;
-    self.passwordBgView = nil;
+    self.nameBgView0 = nil;
+    self.passwordBgView0 = nil;
+    self.nameBgView1 = nil;
+    self.passwordBgView1 = nil;
     
     self.nameField0 = nil;
     self.passwordField0 = nil;
