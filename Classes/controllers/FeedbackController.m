@@ -52,9 +52,8 @@
     // Do any additional setup after loading the view from its nib.
     self.title = @"意见反馈";
     
-    UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_nav_close.png"];
-    [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
+    UIButton *backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     UIButton *navRightButton = [UIHelper createLeftBarButton:@"icon_nav_done.png"];
     [navRightButton addTarget:self action:@selector(commit) forControlEvents:UIControlEventTouchUpInside];

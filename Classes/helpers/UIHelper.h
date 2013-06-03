@@ -69,6 +69,8 @@ typedef enum {
 + (UIView *)createLogoView;
 + (MarqueeLabel *)createNavMarqueeLabel;
 
++ (UIView *)defaultAccessoryView;
+
 + (void)alertWithMessage:(NSString *)message;
 
 + (CAAnimation *)createBounceAnimation:(NNDirection)direction;

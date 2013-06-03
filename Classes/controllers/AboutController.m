@@ -30,9 +30,8 @@
     // Do any additional setup after loading the view from its nib.
     self.title = @"关于我们";
     
-    UIButton *navLeftButton = [UIHelper createLeftBarButton:@"icon_nav_close.png"];
-    [navLeftButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navLeftButton];
+    UIButton *backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     self.view.backgroundColor = DarkThemeColor;
     
@@ -43,10 +42,6 @@
 - (void)cleanUp {
     self.rightLabel = nil;
     self.descriptionView = nil;
-}
-
-- (void)close {
-    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end

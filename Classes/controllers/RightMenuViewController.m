@@ -10,6 +10,7 @@
 #import "SignViewController.h"
 #import "PersonalInfoViewController.h"
 #import "FavoritesViewController.h"
+#import "SettingViewController.h"
 
 #import "SideMenuCell.h"
 
@@ -109,7 +110,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     void (^itemClicked)() = ^{
-        NSArray *classes = @[[PersonalInfoViewController class], [FavoritesViewController class]];
+        NSArray *classes = @[[PersonalInfoViewController class], [FavoritesViewController class], [SettingViewController class]];
         self.sidePanelController.centerPanel = self.sidePanelController.centerPanel;
         
         NNNavigationController *topNavController = (NNNavigationController *)((NeonanAppDelegate *)ApplicationDelegate).containerController.currentViewController;

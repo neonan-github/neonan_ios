@@ -165,7 +165,9 @@ KKGridViewDataSource, KKGridViewDelegate>
         cell = [[HomeGridViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 145.0, 116.0) reuseIdentifier:CellIdentifier];
     }
     
-    CommonItem *model = !self.listDataModel ? nil : self.listDataModel.items[gridView.tag * kItemPerPageCount + indexPath.index];
+    NSInteger index = gridView.tag * kItemPerPageCount + indexPath.index;
+    
+    CommonItem *model = index >= self.listDataModel.items.count ? nil : self.listDataModel.items[index];
     
     Record *record = [[Record alloc] init];
     record.contentId = model.contentId;

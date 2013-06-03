@@ -30,7 +30,7 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
     if (self) {
         // Initialization code
         self.customBackgroundColor = DarkThemeColor;
-        self.customSeparatorColor = HEXCOLOR(0x1a1a1a);
+        self.customSeparatorColor = HEXCOLOR(0x1d1d1d);
         self.selectionGradientStartColor = HEXCOLOR(0x1e1e1e);
         self.selectionGradientEndColor = HEXCOLOR(0x1e1e1e);
         

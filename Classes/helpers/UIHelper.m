@@ -129,6 +129,14 @@
     return titleLabel;
 }
 
++ (UIView *)defaultAccessoryView {
+    UIView *accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_default_accessory.png"]];
+    accessoryView.width = 30;
+    accessoryView.height = 30;
+    
+    return accessoryView;
+}
+
 + (void)alertWithMessage:(NSString *)message {
     static UIAlertView *alertView = nil;
     static dispatch_once_t onceToken;
