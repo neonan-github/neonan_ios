@@ -244,6 +244,9 @@
 		346614DB163521C500B1FF5A /* CommentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614DA163521C500B1FF5A /* CommentListViewController.m */; };
 		346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614ED1635489B00B1FF5A /* FoldableTextBox.m */; };
 		346C706D167EBAF000EA0057 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 346C706B167EBAF000EA0057 /* libPushSDK.a */; };
+		346F7492175DF3C5005C31B8 /* GalleryOverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 346F7491175DF3C5005C31B8 /* GalleryOverView.m */; };
+		346F7494175DF3EB005C31B8 /* GalleryOverView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 346F7493175DF3EB005C31B8 /* GalleryOverView.xib */; };
+		346F7496175DF58D005C31B8 /* icon_up_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 346F7495175DF58D005C31B8 /* icon_up_arrow.png */; };
 		3470DBD21653B14000273244 /* CommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3470DBD11653B14000273244 /* CommentListModel.m */; };
 		3475E899175366E600386EDC /* icon_nav_account.png in Resources */ = {isa = PBXBuildFile; fileRef = 3475E897175366E600386EDC /* icon_nav_account.png */; };
 		34843563164360F30073468D /* ResponseError.m in Sources */ = {isa = PBXBuildFile; fileRef = 34843562164360F30073468D /* ResponseError.m */; };
@@ -772,6 +775,10 @@
 		346C7069167EBAF000EA0057 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		346C706A167EBAF000EA0057 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
 		346C706B167EBAF000EA0057 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
+		346F7490175DF3C5005C31B8 /* GalleryOverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryOverView.h; sourceTree = "<group>"; };
+		346F7491175DF3C5005C31B8 /* GalleryOverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryOverView.m; sourceTree = "<group>"; };
+		346F7493175DF3EB005C31B8 /* GalleryOverView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GalleryOverView.xib; sourceTree = "<group>"; };
+		346F7495175DF58D005C31B8 /* icon_up_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_up_arrow.png; sourceTree = "<group>"; };
 		3470DBD01653B14000273244 /* CommentListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListModel.h; sourceTree = "<group>"; };
 		3470DBD11653B14000273244 /* CommentListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentListModel.m; sourceTree = "<group>"; };
 		3475E897175366E600386EDC /* icon_nav_account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nav_account.png; sourceTree = "<group>"; };
@@ -1610,6 +1617,7 @@
 				34358920175349AC0040F370 /* LeftMenuViewController.xib */,
 				34CFE1D417560C6D004518AC /* RightMenuViewController.xib */,
 				34B06866175B20D60024AA80 /* SignViewController.xib */,
+				346F7493175DF3EB005C31B8 /* GalleryOverView.xib */,
 			);
 			name = Layouts;
 			sourceTree = "<group>";
@@ -1731,6 +1739,7 @@
 				34D3B912175C3E6B00C89F8C /* icon_name_field.png */,
 				34D3B913175C3E6B00C89F8C /* icon_password_field.png */,
 				34F1B795175C934B00AC3733 /* icon_default_accessory.png */,
+				346F7495175DF58D005C31B8 /* icon_up_arrow.png */,
 				3435891C175349AC0040F370 /* img_logo.png */,
 				34D3B91A175C480A00C89F8C /* img_logo_big.png */,
 				34CB8FE8163FB1B80001AD87 /* img_nav_bottom_line.png */,
@@ -2011,6 +2020,8 @@
 				348AF7591755AEC000690F81 /* ChannelListViewCell.m */,
 				34F1B792175C8F8000AC3733 /* NNDefaultCell.h */,
 				34F1B793175C8F8000AC3733 /* NNDefaultCell.m */,
+				346F7490175DF3C5005C31B8 /* GalleryOverView.h */,
+				346F7491175DF3C5005C31B8 /* GalleryOverView.m */,
 			);
 			name = Views;
 			path = views;
@@ -2266,6 +2277,8 @@
 				34D3B91D175C7A4E00C89F8C /* img_3rd_tencent.png in Resources */,
 				34D3B91F175C7A5400C89F8C /* img_3rd_sina.png in Resources */,
 				34F1B796175C934B00AC3733 /* icon_default_accessory.png in Resources */,
+				346F7494175DF3EB005C31B8 /* GalleryOverView.xib in Resources */,
+				346F7496175DF58D005C31B8 /* icon_up_arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2470,6 +2483,7 @@
 				34F1B790175C8DA300AC3733 /* JMStaticContentTableViewSection.m in Sources */,
 				34F1B791175C8DA300AC3733 /* JMStaticContentTextFieldTableViewCell.m in Sources */,
 				34F1B794175C8F8000AC3733 /* NNDefaultCell.m in Sources */,
+				346F7492175DF3C5005C31B8 /* GalleryOverView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
