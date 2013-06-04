@@ -19,6 +19,7 @@
 #import "SMPageControl.h"
 #import "EncourageView.h"
 #import "FunctionFlowView.h"
+#import "GalleryOverView.h"
 
 #import <UIImageView+WebCache.h>
 #import <SDImageCache.h>
@@ -136,6 +137,10 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x00a9ff);
     pageControl.userInteractionEnabled = NO;
     [self.view addSubview:pageControl];
+    
+    GalleryOverView *overView = [[GalleryOverView alloc] initWithFrame:self.view.frame];
+    overView.autoresizesSubviews = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    [self.view addSubview:overView];
 }
 
 - (void)cleanUp {

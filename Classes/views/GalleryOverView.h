@@ -16,4 +16,7 @@
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *textLabel;
 @property (weak, nonatomic) IBOutlet KKGridView *gridView;
 
+- (void)shrink;
+- (void)expand;
+
 @end
