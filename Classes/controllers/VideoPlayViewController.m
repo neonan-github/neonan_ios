@@ -15,6 +15,7 @@
 #import "UIViewController+JASidePanel.h"
 
 #import <MBProgressHUD.h>
+#import <AFNetworking.h>
 
 @interface VideoPlayViewController () <UIWebViewDelegate>
 
@@ -58,6 +59,9 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     [self requestUrl:^(NSString * url) {
+        self.videoUrl = url;
+        DLog(@"videoUrl: %@", url);
+        
         Record *record = [[Record alloc] init];
         record.contentType = @"video";
         record.contentId = _contentId;
@@ -70,10 +74,12 @@
                         }
                        success:nil];
         
-        self.videoUrl = url;
-        
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self parseVideoUrl:url]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:20];
-        [_webView loadRequest:request];
+        [self parseVideoUrl:url done:^(NSString *newUrl) {
+            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:newUrl]
+                                                     cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                 timeoutInterval:20];
+            [_webView loadRequest:request];
+        }];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -142,12 +148,9 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    if (self.isVisible) {
-        [UIHelper alertWithMessage:@"网络连接失败"];
-    }
 }
 
-#pragma mark - Private methods
+#pragma mark - Private Request Related
 
 - (void)requestUrl:(void (^)(NSString *))completion {
     if (_videoUrl) {
@@ -158,21 +161,35 @@
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:_contentId, @"content_id",
                                     @"video", @"content_type", nil];
         
-        [[NNHttpClient sharedClient] getAtPath:kPathWorkInfo parameters:parameters responseClass:[UrlModel class] success:^(id<Jsonable> response)
-        {
-            if (completion) {
-                completion(((UrlModel *)response).url);
-            }
-        } failure:^(ResponseError *error) {
-            if (self.isVisible) {
-                [UIHelper alertWithMessage:error.message];
-            }
-            DLog(@"error:%@", error.message);
-        }];
+        [[NNHttpClient sharedClient] getAtPath:kPathWorkInfo
+                                    parameters:parameters
+                                 responseClass:[UrlModel class]
+                                       success:^(id<Jsonable> response) {
+                                           if (completion) {
+                                               completion(((UrlModel *)response).url);
+                                           }
+                                       } failure:^(ResponseError *error) {
+                                           if (self.isVisible) {
+                                               [UIHelper alertWithMessage:error.message];
+                                           }
+                                       }];
     }
 }
 
-- (NSString *)parseVideoUrl:(NSString *)url {
+- (void)parseVideoUrl:(NSString *)url done:(void (^)(NSString *newUrl))done {
+    if (!done) {
+        return;
+    }
+    
+    static NSString *qqPrefix = @"http://static.video.qq.com/TPout.swf?vid=";
+    if ([url rangeOfString:qqPrefix].location != NSNotFound) {
+        [self parseQQVideoUrl:url done:^(NSString *newUrl) {
+            done(newUrl);
+        }];
+        
+        return;
+    }
+    
     static NSString *tudou1 = @"http://www.tudou.com/v/";
     static NSString *tudou1_1 = @"http://www.tudou.com/programs/view/";
     static NSString *tudou2 = @"http://www.tudou.com/programs/view/html5embed.action?code=";
@@ -180,32 +197,65 @@
     static NSString *youku1_1 = @"http://v.youku.com/v_show/id_";
     static NSString *youku2 = @"http://player.youku.com/embed/";
     
+    
     if (url == nil || url.length == 0) {
         
     } else if ([url rangeOfString:tudou1].location == 0) {
         int location = [url rangeOfString:@"/" options:NSCaseInsensitiveSearch range:NSMakeRange(tudou1.length, url.length - tudou1.length)].location;
         if (location < url.length && location > tudou1.length) {
-            return [NSString stringWithFormat:@"%@%@", tudou2, [url substringWithRange:NSMakeRange(tudou1.length, location - tudou1.length)]];
+            done([NSString stringWithFormat:@"%@%@", tudou2, [url substringWithRange:NSMakeRange(tudou1.length, location - tudou1.length)]]);
         }
     } else if ([url rangeOfString:tudou1_1].location == 0) {
         int location = [url rangeOfString:@"?" options:NSCaseInsensitiveSearch range:NSMakeRange(tudou1_1.length, url.length - tudou1_1.length)].location;
         if (location < url.length && location > tudou1_1.length) {
-            return [NSString stringWithFormat:@"%@%@", tudou2, [url substringWithRange:NSMakeRange(tudou1_1.length, location - tudou1_1.length)]];
+            done([NSString stringWithFormat:@"%@%@", tudou2, [url substringWithRange:NSMakeRange(tudou1_1.length, location - tudou1_1.length)]]);
         }
     } else if ([url rangeOfString:youku1].location == 0) {
         int location = [url rangeOfString:@"/" options:NSCaseInsensitiveSearch range:NSMakeRange(youku1.length, url.length - youku1.length)].location;
         if (location < url.length && location > youku1.length) {
-            return [NSString stringWithFormat:@"%@%@", youku2, [url substringWithRange:NSMakeRange(youku1.length, location - youku1.length)]];
+            done([NSString stringWithFormat:@"%@%@", youku2, [url substringWithRange:NSMakeRange(youku1.length, location - youku1.length)]]);
         }
     } else if ([url rangeOfString:youku1_1].location == 0) {
         int location = [url rangeOfString:@"." options:NSCaseInsensitiveSearch range:NSMakeRange(youku1_1.length, url.length - youku1_1.length)].location;
         if (location < url.length && location > youku1_1.length) {
-            return [NSString stringWithFormat:@"%@%@", youku2, [url substringWithRange:NSMakeRange(youku1_1.length, location - youku1_1.length)]];
+            done([NSString stringWithFormat:@"%@%@", youku2, [url substringWithRange:NSMakeRange(youku1_1.length, location - youku1_1.length)]]);
         }
     }
-    
-    return url;
 }
+
+- (void)parseQQVideoUrl:(NSString *)url done:(void (^)(NSString *newUrl))done {
+    static NSString *prefix = @"http://static.video.qq.com/TPout.swf?vid=";
+    
+    NSRange range = [url rangeOfString:prefix];
+    if (range.location != NSNotFound) {
+        NSString *vid = [url substringWithRange:NSMakeRange(range.length, 11)];
+        DLog(@"vid: %@", vid);
+        
+        AFHTTPClient *httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://vv.video.qq.com"]];
+        [httpClient getPath:@"geturl"
+                 parameters:@{@"otype": @"json", @"vid": vid}
+                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        NSString *response = [operation responseString];
+                        NSRange range = [response rangeOfString:[NSString stringWithFormat:@"%@.mp4", vid]];
+                        if (range.location != NSNotFound) {
+                            NSRange prefixQuotationRange = [response rangeOfString:@"\""
+                                                                           options:NSBackwardsSearch
+                                                                             range:NSMakeRange(0, range.location)];
+                            NSRange brRange = [response rangeOfString:@"&br"
+                                                                           options:NSCaseInsensitiveSearch
+                                                                             range:NSMakeRange(range.location, response.length - range.location)];
+                            done([response substringWithRange:NSMakeRange(prefixQuotationRange.location + 1,
+                                                                          brRange.location - 1 - prefixQuotationRange.location)]);
+                        }
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        if (self.isVisible) {
+                            [UIHelper alertWithMessage:@"网络连接失败"];
+                        }
+                    }];
+    }
+}
+
+#pragma mark - Private methods
 
 - (UIButton *)findButtonInView:(UIView *)view {
     UIButton *button = nil;
