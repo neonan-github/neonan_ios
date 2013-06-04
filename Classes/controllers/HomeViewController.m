@@ -105,8 +105,6 @@ KKGridViewDataSource, KKGridViewDelegate>
         KKGridView *currentPageView = ((KKGridView *)[self.swipeView itemViewAtIndex:self.currentPageIndex]);
         [currentPageView reloadData];
     }
-    
-    [UIViewController attemptRotationToDeviceOrientation];
 }
 
 #pragma mark - SwipeViewDataSource methods

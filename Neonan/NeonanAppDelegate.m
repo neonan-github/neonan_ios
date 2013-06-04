@@ -168,6 +168,7 @@
             controller = [[VideoPlayViewController alloc] init];
             [controller setContentId:[dataItem contentId]];
             [controller setVideoUrl:[dataItem videoUrl]];
+            [controller setTitle:[dataItem title]];
     }
     
     [navigationController pushViewController:controller animated:YES];

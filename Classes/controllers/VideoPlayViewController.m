@@ -47,8 +47,10 @@
     
     self.view.backgroundColor = DarkThemeColor;
     
-    _webView.delegate = self;
-    _webView.hidden = YES;
+    self.webView.delegate = self;
+    self.webView.backgroundColor = [UIColor clearColor];
+    self.webView.opaque = NO;
+//    _webView.hidden = YES;
     
     for (id subview in _webView.subviews) {
         if ([[subview class] isSubclassOfClass: [UIScrollView class]]) {
@@ -56,7 +58,7 @@
         }
     }
     
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [MBProgressHUD showHUDAddedTo:self.webView animated:YES];
     
     [self requestUrl:^(NSString * url) {
         self.videoUrl = url;
@@ -107,7 +109,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [UIViewController attemptRotationToDeviceOrientation];
+//    [UIViewController attemptRotationToDeviceOrientation];
     
     [super viewWillDisappear:animated];
     
@@ -128,26 +130,13 @@
 #pragma mark - UIWebViewDelegate methods
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    DLog(@"webViewDidFinishLoad");
-//    CGFloat contentWidth = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.clientWidth;"] floatValue];
-//    CGFloat contentHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.clientHeight;"] floatValue];
-//    NSLog(@"width:%f height:%f", contentWidth, contentHeight);
-//    CGFloat scale = [MathHelper floorValue:(self.view.frame.size.width / contentWidth) withDecimal:2];
-//    CGRect frame = _webView.frame;
-//    frame.size.width = scale * contentWidth;
-//    frame.size.height = scale * contentHeight;
-//    frame.origin.y = (self.view.bounds.size.height - frame.size.height) / 2;
-//    webView.frame = frame;
-    
-//    webView.center = self.view.center;
-    webView.hidden = NO;
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [MBProgressHUD hideHUDForView:self.webView animated:YES];
     
     [self performSelector:@selector(autoPlay) withObject:nil afterDelay:1];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [MBProgressHUD hideHUDForView:self.webView animated:YES];
 }
 
 #pragma mark - Private Request Related
@@ -285,6 +274,7 @@
     NSInteger state = [[note.userInfo objectForKey:@"MPAVControllerNewStateParameter"] integerValue];
     if (state == 1) { // stop
         containerController.autoRotate = NO;
+        [self.navigationController popViewControllerAnimated:NO];
     } else if (state == 2) { // start
         containerController.autoRotate = YES;
     }
