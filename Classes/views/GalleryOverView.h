@@ -13,10 +13,11 @@
 
 @interface GalleryOverView : UIView
 
-@property (weak, nonatomic) IBOutlet TTTAttributedLabel *textLabel;
+@property (weak, nonatomic) UITextView *textView;
 @property (weak, nonatomic) IBOutlet KKGridView *gridView;
 
-- (void)shrink;
-- (void)expand;
+@property (nonatomic, assign) BOOL expanded;
+
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
 
 @end

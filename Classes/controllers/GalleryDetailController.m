@@ -43,6 +43,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 @property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
 @property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
 @property (nonatomic, unsafe_unretained) FoldableTextBox *textBox;
+@property (nonatomic, weak) GalleryOverView *overView;
 @property (nonatomic, readonly) FunctionFlowView *moreActionView;
 
 @property (nonatomic, strong) UIActivityIndicatorView *progressView;
@@ -138,8 +139,8 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     pageControl.userInteractionEnabled = NO;
     [self.view addSubview:pageControl];
     
-    GalleryOverView *overView = [[GalleryOverView alloc] initWithFrame:self.view.frame];
-    overView.autoresizesSubviews = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    GalleryOverView *overView = [[GalleryOverView alloc] initWithFrame:self.view.bounds];
+    self.overView = overView;
     [self.view addSubview:overView];
 }
 
@@ -150,6 +151,8 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     self.likeButton = nil;
     self.actionButton = nil;
     self.titleBox = nil;
+    
+    self.overView = nil;
     
     self.slideShowView.dataSource = nil;
     self.slideShowView.delegate = nil;
@@ -169,6 +172,9 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    self.overView.frame = self.view.bounds;
+    self.overView.expanded = NO;
     
     if (!_dataModel) {
         [self requestForSlideShow];

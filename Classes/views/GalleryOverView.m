@@ -12,11 +12,10 @@
 
 @property (strong, nonatomic) IBOutlet UIView *tmpView;
 
+@property (weak, nonatomic) UIView *textLabelContainerView;
 @property (weak, nonatomic) IBOutlet UIButton *arrowButton;
 @property (weak, nonatomic) IBOutlet UILabel *currentPageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalPageLabel;
-
-@property (nonatomic, assign) BOOL expanded;
 
 @end
 
@@ -24,6 +23,7 @@
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
+    
     if (self) {
         // Initialization code
         [[NSBundle mainBundle] loadNibNamed:@"GalleryOverView" owner:self options:nil];
@@ -37,63 +37,64 @@
     [self setUp];
 }
 
-#pragma mark - Public methods
-
-- (void)shrink {
-    [UIView beginAnimations:nil context:NULL];
-    self.height = 50;
-    
-    CGRect frame = self.textLabel.frame;
-    frame.origin.x = 10;
-    frame.origin.y = 0;
-    frame.size.width = self.width - 102;
-    frame.size.height = 50;
-    self.textLabel.frame = frame;
-    
-    self.arrowButton.transform = CGAffineTransformMakeRotation(M_PI);
-    
-    [UIView commitAnimations];
+- (void)setExpanded:(BOOL)expanded {
+    [self setExpanded:expanded animated:NO];
 }
 
-- (void)expand {
-    [UIView beginAnimations:nil context:NULL];
-    self.height = CompatibleContainerHeight;
+- (void)setExpanded:(BOOL)expanded animated:(BOOL)animated {
+    void (^block)() = ^{
+        self.frame = CGRectMake(0, 0, self.width, expanded ? self.superview.height : 50);
+        self.textView.frame = CGRectMake(0, 0, self.width - (expanded ? 0 : 75), expanded ? 120 : 40);
+        
+        self.arrowButton.transform = CGAffineTransformMakeRotation(expanded ? 0 : M_PI);
+    };
     
-    CGRect frame = self.textLabel.frame;
-    frame.origin.x = 10;
-    frame.origin.y = 0;
-    frame.size.width = 300;
-    frame.size.height = 275;
-    self.textLabel.frame = frame;
+    if (animated) {
+        self.tmpView.layer.opacity = 1;
+        [UIView animateWithDuration:0.5
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             self.textView.layer.opacity = 0.5;
+                             block();
+                             self.textView.layer.opacity = 1;
+                         }
+                         completion:^(BOOL finished) {
+                         }];
+    } else {
+        block();
+    }
     
-    self.arrowButton.transform = CGAffineTransformMakeRotation(0);
-    
-    [UIView commitAnimations];
+    _expanded = expanded;
 }
 
 #pragma mark - Private Event Handle
 
 - (void)shrinkOrExpand {
-    if (self.expanded) {
-        [self shrink];
-    } else {
-        [self expanded];
-    }
-    
-    self.expanded = !self.expanded;
+    [self setExpanded:!self.expanded animated:YES];
 }
 
 #pragma mark - Private methods
 
 - (void)setUp {
+    self.clipsToBounds = YES;
+    self.backgroundColor = RGBA(255, 0, 0, 0.7);
+    
+    self.tmpView.bounds = self.bounds;
     [self.tmpView.subviews enumerateObjectsUsingBlock:^(UIView *subview, NSUInteger idx, BOOL *stop) {
         [subview removeFromSuperview];
         [self addSubview:subview];
     }];
     self.tmpView = nil;
     
-    self.clipsToBounds = YES;
-    self.backgroundColor = RGBA(0, 0, 0, 0.7);
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, self.width - (self.expanded ? 0 : 70), self.expanded ? 120 : 40)];
+    self.textView = textView;
+    textView.userInteractionEnabled = NO;
+    textView.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
+    textView.font = [UIFont systemFontOfSize:15];
+    textView.textColor = [UIColor whiteColor];
+    textView.backgroundColor = [UIColor clearColor];
+    [self addSubview:textView];
     
     [self.arrowButton addTarget:self
                          action:@selector(shrinkOrExpand)
