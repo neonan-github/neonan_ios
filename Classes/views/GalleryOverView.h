@@ -20,4 +20,6 @@
 
 - (void)setExpanded:(BOOL)expanded animated:(BOOL)animated;
 
+- (void)setCurrentPage:(NSInteger)currentPage totalPage:(NSInteger)totalPage;
+    
 @end

@@ -258,6 +258,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 
 - (NSUInteger)numberOfItemsInSlideShowView:(SlideShowView *)slideShowView {
     NSUInteger count = _dataModel.imgUrls.count;
+    [self.overView setCurrentPage:slideShowView.carousel.currentItemIndex + 1 totalPage:count];
     [self.pageControl setNumberOfPages:count];
     return count;
 }
@@ -328,10 +329,11 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
         [UIView commitAnimations];
     }
     [self.pageControl setCurrentPage:currentIndex];
+    [self.overView setCurrentPage:currentIndex + 1 totalPage:slideShowView.carousel.numberOfItems];
     
     NSArray *descriptions = _dataModel.descriptions;
     if (descriptions) {
-        _textBox.text = descriptions[descriptions.count > 1 ? currentIndex : 0];
+        self.overView.textView.text = descriptions[descriptions.count > 1 ? currentIndex : 0];
     }
 }
 

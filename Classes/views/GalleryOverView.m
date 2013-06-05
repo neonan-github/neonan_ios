@@ -44,7 +44,7 @@
 - (void)setExpanded:(BOOL)expanded animated:(BOOL)animated {
     void (^block)() = ^{
         self.frame = CGRectMake(0, 0, self.width, expanded ? self.superview.height : 50);
-        self.textView.frame = CGRectMake(0, 0, self.width - (expanded ? 0 : 75), expanded ? 120 : 40);
+        self.textView.frame = CGRectMake(0, 0, self.width - (expanded ? 0 : 90), expanded ? 120 : 40);
         
         self.arrowButton.transform = CGAffineTransformMakeRotation(expanded ? 0 : M_PI);
     };
@@ -68,6 +68,11 @@
     _expanded = expanded;
 }
 
+- (void)setCurrentPage:(NSInteger)currentPage totalPage:(NSInteger)totalPage {
+    self.currentPageLabel.text = [NSString stringWithFormat:@"%d", currentPage];
+    self.totalPageLabel.text = [NSString stringWithFormat:@"%d", totalPage];
+}
+
 #pragma mark - Private Event Handle
 
 - (void)shrinkOrExpand {
@@ -78,7 +83,7 @@
 
 - (void)setUp {
     self.clipsToBounds = YES;
-    self.backgroundColor = RGBA(255, 0, 0, 0.7);
+    self.backgroundColor = RGBA(0, 0, 0, 0.5);
     
     self.tmpView.bounds = self.bounds;
     [self.tmpView.subviews enumerateObjectsUsingBlock:^(UIView *subview, NSUInteger idx, BOOL *stop) {
@@ -87,7 +92,7 @@
     }];
     self.tmpView = nil;
     
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, self.width - (self.expanded ? 0 : 70), self.expanded ? 120 : 40)];
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, self.width - (self.expanded ? 0 : 90), self.expanded ? 120 : 40)];
     self.textView = textView;
     textView.userInteractionEnabled = NO;
     textView.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
