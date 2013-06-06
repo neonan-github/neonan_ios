@@ -21,6 +21,8 @@ static NSString *const kSearchChannel = @"search";
 @interface SearchResultViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic, weak) UITextField *searchField;
+@property (nonatomic, weak) UIButton *clearButton;
+
 @property (nonatomic, weak) TTTAttributedLabel *resultLabel;
 @property (nonatomic, weak) UITableView *tableView;
 
@@ -96,6 +98,10 @@ static NSString *const kSearchChannel = @"search";
     
     self.dataModel = nil;
     
+    self.searchField.delegate = nil;
+    self.searchField = nil;
+    
+    self.clearButton = nil;
     self.resultLabel = nil;
     
     self.tableView.dataSource = nil;
@@ -152,6 +158,23 @@ static NSString *const kSearchChannel = @"search";
     return 70.0;
 }
 
+#pragma mark - UITextFieldDelegate methods
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.clearButton.hidden = textField.text.length < 1;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    self.clearButton.hidden = newText.length < 1;
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self doSearch:[textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+    return YES;
+}
+
 #pragma mark - Private Request methods
 
 - (void)requestForList:(NSString *)channel requestType:(RequestType)requestType {
@@ -193,6 +216,13 @@ static NSString *const kSearchChannel = @"search";
                                    }];
 }
 
+#pragma mark - Private Event Handle
+
+- (void)clearSearchText {
+    self.searchField.text = @"";
+    self.clearButton.hidden = YES;
+}
+
 #pragma mark - Private methods
 
 - (void)updateTableView:(RequestType)requestType {
@@ -208,20 +238,48 @@ static NSString *const kSearchChannel = @"search";
 }
 
 - (void)configSearchField {
-    UIImageView *fieldBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 186, 28)];
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 186, 40)];
+    
+    UIImageView *fieldBgView = [[UIImageView alloc] initWithFrame:CGRectMake(6, 6, 186, 28)];
     fieldBgView.userInteractionEnabled = YES;
     fieldBgView.image = [[UIImage imageNamed:@"bg_search_bar"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 15, 10, 15)];
     
-    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(13, 0, 143, 28)];
+    UIImageView *searchIconView = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 14, 14)];
+    searchIconView.image = [UIImage imageFromFile:@"icon_search.png"];
+    [fieldBgView addSubview:searchIconView];
+    
+    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(24, 0, 132, 28)];
     self.searchField = searchField;
+    searchField.placeholder = @"请输入关键词";
     searchField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     searchField.font = [UIFont systemFontOfSize:14];
+    searchField.keyboardAppearance = UIKeyboardAppearanceAlert;
     searchField.returnKeyType = UIReturnKeySearch;
     searchField.delegate = self;
     searchField.text = self.keyword;
     [fieldBgView addSubview:searchField];
     
-    self.navigationItem.titleView = fieldBgView;
+    [titleView addSubview:fieldBgView];
+    
+    UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(157, 0, 40, 40)];
+    self.clearButton = clearButton;
+    clearButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
+    [clearButton setImage:[UIImage imageFromFile:@"icon_clear.png"] forState:UIControlStateNormal];
+    [clearButton addTarget:self action:@selector(clearSearchText) forControlEvents:UIControlEventTouchUpInside];
+    [titleView addSubview:clearButton];
+    
+    self.navigationItem.titleView = titleView;
+}
+
+- (void)doSearch:(NSString *)text {
+    if (!text || text.length < 1) {
+        [UIHelper alertWithMessage:@"请输入要搜索的关键词"];
+        return;
+    }
+    
+    self.keyword = text;
+    [self.searchField resignFirstResponder];
+    [self.tableView triggerPullToRefresh];
 }
 
 @end
