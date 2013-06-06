@@ -7,10 +7,13 @@
 //
 
 #import "LeftMenuViewController.h"
+#import "SearchResultViewController.h"
 
 #import "SideMenuCell.h"
 
-@interface LeftMenuViewController () <UITableViewDataSource, UITableViewDelegate>
+#import <UIAlertView+Blocks.h>
+
+@interface LeftMenuViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *searchBgView;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
@@ -99,6 +102,13 @@
     return 40.0;
 }
 
+#pragma mark - UITextFieldDelegate methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self doSearch:[textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+    return YES;
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)channelTexts {
@@ -123,6 +133,20 @@
         return;
     }
     containerController.selectedIndex = index.integerValue;
+}
+
+- (void)doSearch:(NSString *)text {
+    if (!text || text.length < 1) {
+        [UIHelper alertWithMessage:@"请输入要搜索的关键词"];
+        return;
+    }
+    
+    self.sidePanelController.centerPanel = self.sidePanelController.centerPanel;
+    
+    NNNavigationController *topNavController = (NNNavigationController *)((NeonanAppDelegate *)ApplicationDelegate).containerController.currentViewController;
+    SearchResultViewController *viewController = [[SearchResultViewController alloc] init];
+    viewController.keyword = text;
+    [topNavController pushViewController:viewController animated:NO];
 }
 
 @end
