@@ -28,7 +28,7 @@
 
 - (UIColor *)placeholderColor {
     if (!_placeholderColor) {
-        _placeholderColor = [UIColor whiteColor];
+        _placeholderColor = [UIColor lightTextColor];
     }
     
     return _placeholderColor;
