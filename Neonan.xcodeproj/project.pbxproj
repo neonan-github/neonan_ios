@@ -306,6 +306,7 @@
 		34B70E5D176063A80032D2FF /* icon_checkbox_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B70E5B176063A80032D2FF /* icon_checkbox_normal.png */; };
 		34B70E5E176063A80032D2FF /* icon_checkbox_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B70E5C176063A80032D2FF /* icon_checkbox_selected.png */; };
 		34B70E61176069520032D2FF /* SearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B70E60176069520032D2FF /* SearchResultViewController.m */; };
+		34B70E63176087490032D2FF /* icon_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B70E62176087490032D2FF /* icon_clear.png */; };
 		34B8337D17560C02004BF79B /* bg_menu_cell.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B8337C17560C02004BF79B /* bg_menu_cell.png */; };
 		34B8338017560C31004BF79B /* SideMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B8337F17560C31004BF79B /* SideMenuCell.m */; };
 		34B83382175610EB004BF79B /* img_menu_separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B83381175610EB004BF79B /* img_menu_separator.png */; };
@@ -864,6 +865,7 @@
 		34B70E5C176063A80032D2FF /* icon_checkbox_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_checkbox_selected.png; sourceTree = "<group>"; };
 		34B70E5F176069520032D2FF /* SearchResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultViewController.h; sourceTree = "<group>"; };
 		34B70E60176069520032D2FF /* SearchResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultViewController.m; sourceTree = "<group>"; };
+		34B70E62176087490032D2FF /* icon_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_clear.png; sourceTree = "<group>"; };
 		34B8337C17560C02004BF79B /* bg_menu_cell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_menu_cell.png; sourceTree = "<group>"; };
 		34B8337E17560C31004BF79B /* SideMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuCell.h; sourceTree = "<group>"; };
 		34B8337F17560C31004BF79B /* SideMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuCell.m; sourceTree = "<group>"; };
@@ -1754,6 +1756,7 @@
 				346F7495175DF58D005C31B8 /* icon_up_arrow.png */,
 				34B70E5B176063A80032D2FF /* icon_checkbox_normal.png */,
 				34B70E5C176063A80032D2FF /* icon_checkbox_selected.png */,
+				34B70E62176087490032D2FF /* icon_clear.png */,
 				3435891C175349AC0040F370 /* img_logo.png */,
 				34D3B91A175C480A00C89F8C /* img_logo_big.png */,
 				34CB8FE8163FB1B80001AD87 /* img_nav_bottom_line.png */,
@@ -2297,6 +2300,7 @@
 				346F7496175DF58D005C31B8 /* icon_up_arrow.png in Resources */,
 				34B70E5D176063A80032D2FF /* icon_checkbox_normal.png in Resources */,
 				34B70E5E176063A80032D2FF /* icon_checkbox_selected.png in Resources */,
+				34B70E63176087490032D2FF /* icon_clear.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,12 +14,14 @@
 
 #import <UIImageView+WebCache.h>
 #import <SVPullToRefresh.h>
+#import <TTTAttributedLabel.h>
 
 static NSString *const kSearchChannel = @"search";
 
-@interface SearchResultViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface SearchResultViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
-@property (nonatomic, weak) UILabel *resultLabel;
+@property (nonatomic, weak) UITextField *searchField;
+@property (nonatomic, weak) TTTAttributedLabel *resultLabel;
 @property (nonatomic, weak) UITableView *tableView;
 
 @property (nonatomic, strong) CommonListModel *dataModel;
@@ -42,14 +44,15 @@ static NSString *const kSearchChannel = @"search";
     
     self.view.backgroundColor = DarkThemeColor;
     
-    //    self.navigationItem.titleView = [UIHelper createLogoView];
+    [self configSearchField];
     
     UIButton *backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    UILabel *resultLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 0, CompatibleScreenWidth - 10, 30)];
+    TTTAttributedLabel *resultLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 30)];
     self.resultLabel = resultLabel;
     resultLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    resultLabel.textInsets = UIEdgeInsetsMake(0, 8, 0, 0);
     resultLabel.backgroundColor = HEXCOLOR(0x232323);
     resultLabel.textColor = [UIColor whiteColor];
     resultLabel.font = [UIFont systemFontOfSize:14];
@@ -92,6 +95,8 @@ static NSString *const kSearchChannel = @"search";
     [super cleanUp];
     
     self.dataModel = nil;
+    
+    self.resultLabel = nil;
     
     self.tableView.dataSource = nil;
     self.tableView.delegate = nil;
@@ -200,6 +205,23 @@ static NSString *const kSearchChannel = @"search";
     }
     
     self.tableView.showsInfiniteScrolling = [self.dataModel totalCount] > [self.dataModel items].count;
+}
+
+- (void)configSearchField {
+    UIImageView *fieldBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 186, 28)];
+    fieldBgView.userInteractionEnabled = YES;
+    fieldBgView.image = [[UIImage imageNamed:@"bg_search_bar"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 15, 10, 15)];
+    
+    UITextField *searchField = [[UITextField alloc] initWithFrame:CGRectMake(13, 0, 143, 28)];
+    self.searchField = searchField;
+    searchField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    searchField.font = [UIFont systemFontOfSize:14];
+    searchField.returnKeyType = UIReturnKeySearch;
+    searchField.delegate = self;
+    searchField.text = self.keyword;
+    [fieldBgView addSubview:searchField];
+    
+    self.navigationItem.titleView = fieldBgView;
 }
 
 @end

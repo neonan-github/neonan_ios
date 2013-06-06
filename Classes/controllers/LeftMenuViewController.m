@@ -16,7 +16,9 @@
 @interface LeftMenuViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *searchBgView;
+@property (weak, nonatomic) IBOutlet UITextField *searchField;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
+@property (weak, nonatomic) IBOutlet UIButton *clearButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, readonly) NSArray *channelTexts;
@@ -43,6 +45,9 @@
     
     self.searchBgView.image = [[UIImage imageNamed:@"bg_search_bar"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 15, 10, 15)];
     
+    self.clearButton.hidden = _searchField.text.length < 1;
+    [self.clearButton addTarget:self action:@selector(clearSearchText) forControlEvents:UIControlEventTouchUpInside];
+    
     UIImageView *firstSeparatorView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -2, CompatibleScreenWidth, 2)];
     firstSeparatorView.image = [UIImage imageFromFile:@"img_menu_separator.png"];
     [self.tableView addSubview:firstSeparatorView];
@@ -51,6 +56,21 @@
                                                             inSection:0]
                                 animated:NO
                           scrollPosition:UITableViewScrollPositionNone];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardDidHideNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,8 +81,15 @@
 - (void)cleanUp {
     [super cleanUp];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     self.searchBgView = nil;
     self.searchButton = nil;
+    
+    self.searchField.delegate = nil;
+    self.searchField = nil;
+    
+    self.clearButton = nil;
     
     self.tableView.dataSource = nil;
     self.tableView.delegate = nil;
@@ -104,9 +131,38 @@
 
 #pragma mark - UITextFieldDelegate methods
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.clearButton.hidden = textField.text.length < 1;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *newText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    self.clearButton.hidden = newText.length < 1;
+    return YES;
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [self doSearch:[textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
     return YES;
+}
+
+#pragma mark - Private Event Handle
+
+- (void)keyboardWillShow:(NSNotification *)note {
+    
+}
+
+- (void)keyboardWillHide:(NSNotification *)note {
+}
+
+- (void)keyboardDidHide:(NSNotification *)note {
+    [self clearSearchText];
+    [self.searchField resignFirstResponder];
+}
+
+- (void)clearSearchText {
+    self.searchField.text = @"";
+    self.clearButton.hidden = YES;
 }
 
 #pragma mark - Private methods
