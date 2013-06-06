@@ -16,34 +16,26 @@
 #import "ShareHelper.h"
 #import "SessionManager.h"
 
-#import "SMPageControl.h"
 #import "EncourageView.h"
 #import "FunctionFlowView.h"
 #import "GalleryOverView.h"
 #import "GalleryOverViewCell.h"
 
+#import "MarqueeLabel.h"
+
 #import <UIImageView+WebCache.h>
 #import <SDImageCache.h>
-
-static const float kDescriptionShrinkedLines = 4;
-static const float kDescriptionStretchedLines = 7;
-
-static const CGFloat kTitleLabelOriginalHeight = 30;
 
 static const NSUInteger kTagSSImageView = 1000;
 static const NSUInteger kTagSSprogressView = 1001;
 
 @interface GalleryDetailController () <SlideShowViewDataSource, SlideShowViewDelegate,
-FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
+UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
 
-@property (nonatomic, unsafe_unretained) UIView *titleBox;
-@property (nonatomic, unsafe_unretained) UILabel *titleLabel;
-@property (nonatomic, unsafe_unretained) UIButton *likeButton;
-@property (nonatomic, unsafe_unretained) UIButton *actionButton;
+@property (nonatomic, weak) MarqueeLabel *titleLabel;
+@property (nonatomic, weak) UIButton *actionButton;
 
-@property (nonatomic, unsafe_unretained) SlideShowView *slideShowView;
-@property (nonatomic, unsafe_unretained) SMPageControl *pageControl;
-@property (nonatomic, unsafe_unretained) FoldableTextBox *textBox;
+@property (nonatomic, weak) SlideShowView *slideShowView;
 @property (nonatomic, weak) GalleryOverView *overView;
 @property (nonatomic, readonly) FunctionFlowView *moreActionView;
 
@@ -53,7 +45,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
 
 @property (nonatomic, strong) SlideShowDetailModel *dataModel;
 
-@property (nonatomic, unsafe_unretained) CALayer *cacheLayer;
+@property (nonatomic, weak) CALayer *cacheLayer;
 @property (nonatomic, assign) BOOL isAnimating;
 
 // 放大后的图片可能滚动到边界的判断条件
@@ -74,10 +66,24 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    self.view.backgroundColor = DarkThemeColor;
+    
+    MarqueeLabel *titleLabel = [UIHelper createNavMarqueeLabel];
+    self.titleLabel = titleLabel;
+    titleLabel.text = self.contentTitle;
+    self.navigationItem.titleView = titleLabel;
+    
     UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    SlideShowView *slideShowView = self.slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, -NavBarHeight, CompatibleScreenWidth, CompatibleScreenHeight - StatusBarHeight)];
+    UIButton *navRightButton = [UIHelper createRightBarButton:@"icon_nav_flow.png"];
+    self.actionButton = navRightButton;
+    [navRightButton addTarget:self action:@selector(showMoreAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
+
+    SlideShowView *slideShowView = [[SlideShowView alloc] initWithFrame:CGRectMake(0, -NavBarHeight, CompatibleScreenWidth,
+                                                                                   CompatibleScreenHeight - StatusBarHeight)];
+    self.slideShowView = slideShowView;
     slideShowView.wrap = NO;
     slideShowView.dataSource = self;
     slideShowView.delegate = self;
@@ -85,60 +91,6 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     [slideShowView addGestureRecognizer:tapRecognizer];
     [self.view addSubview:slideShowView];
-    
-    UIImageView *navBottomLine = [[UIImageView alloc] initWithImage:[UIImage imageFromFile:@"img_nav_bottom_line.png"]];
-    CGRect frame = navBottomLine.frame;
-    frame.origin.y = -4;
-    navBottomLine.frame = frame;
-    
-    UILabel *titleLabel = self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 250, 20)];
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
-    titleLabel.numberOfLines = 0;
-    titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    titleLabel.font = [UIFont systemFontOfSize:13];
-    
-    UIButton *likeButton = self.likeButton = [[UIButton alloc] initWithFrame:CGRectMake(245, 5, 35, 25)];
-    likeButton.contentEdgeInsets = UIEdgeInsetsMake(5, 10, 5, 10);
-//    likeButton.backgroundColor = RGBA(255, 0, 0, 0.3);
-    [likeButton setImage:[UIImage imageFromFile:@"icon_love_normal.png"] forState:UIControlStateNormal];
-    [likeButton setImage:[UIImage imageFromFile:@"icon_love_highlighted.png"] forState:UIControlStateHighlighted];
-    [likeButton setImage:[UIImage imageFromFile:@"icon_love_highlighted.png"] forState:UIControlStateDisabled];
-    [likeButton addTarget:self action:@selector(vote) forControlEvents:UIControlEventTouchUpInside];
-    likeButton.enabled = !_voted;
-    likeButton.hidden = ![_contentType isEqualToString:@"baby"];
-    
-    UIButton *actionButton = self.actionButton = [[UIButton alloc] initWithFrame:CGRectMake(280, 2, 40, 38)];
-    actionButton.contentEdgeInsets = UIEdgeInsetsMake(10, 12, 10, 0);
-//    shareButton.backgroundColor = RGBA(0, 255, 0, 0.3);
-    [actionButton setImage:[UIImage imageFromFile:@"icon_over_flow_normal.png"] forState:UIControlStateNormal];
-    [actionButton setImage:[UIImage imageFromFile:@"icon_over_flow_highlighted.png"] forState:UIControlStateHighlighted];
-    [actionButton addTarget:self action:@selector(showMoreAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIView *titleBox = self.titleBox = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 35)];
-    titleBox.backgroundColor = DarkThemeColor;
-    titleBox.clipsToBounds = YES;
-    [titleBox addSubview:navBottomLine];
-    [titleBox addSubview:titleLabel];
-    [titleBox addSubview:likeButton];
-    [titleBox addSubview:actionButton];
-    [self.view addSubview:titleBox];
-    
-    frame = CGRectMake(0, CompatibleContainerHeight - 32, CompatibleScreenWidth, 0);
-    FoldableTextBox *textBox = self.textBox = [[FoldableTextBox alloc] initWithFrame:frame];
-    frame.size.height = [textBox getSuggestedHeight];
-    textBox.frame = frame;
-    textBox.delegate = self;
-    textBox.insets = UIEdgeInsetsMake(0, 10, 25, 20);
-    [self.view addSubview:textBox];
-    
-    SMPageControl *pageControl = self.pageControl = [[SMPageControl alloc] initWithFrame:CGRectMake(0, CompatibleContainerHeight - 18, CompatibleScreenWidth, 16)];
-    pageControl.indicatorDiameter = 5;
-    pageControl.indicatorMargin = 4;
-    pageControl.currentPageIndicatorTintColor = HEXCOLOR(0x00a9ff);
-    pageControl.userInteractionEnabled = NO;
-    [self.view addSubview:pageControl];
     
     GalleryOverView *overView = [[GalleryOverView alloc] initWithFrame:self.view.bounds];
     self.overView = overView;
@@ -151,9 +103,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
     self.cacheLayer = nil;
     
     self.titleLabel = nil;
-    self.likeButton = nil;
     self.actionButton = nil;
-    self.titleBox = nil;
     
     self.overView.gridView.dataSource = nil;
     self.overView.gridView.delegate = nil;
@@ -162,11 +112,6 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
     self.slideShowView.dataSource = nil;
     self.slideShowView.delegate = nil;
     self.slideShowView = nil;
-    
-    self.pageControl = nil;
-    
-    self.textBox.delegate = nil;
-    self.textBox = nil;
     
     self.progressView = nil;
     
@@ -185,9 +130,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
         [self requestForSlideShow];
     }
     
-    [self adjustLayout:_contentTitle];
     _titleLabel.text = _contentTitle;
-    _textBox.expanded = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -264,7 +207,6 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
 - (NSUInteger)numberOfItemsInSlideShowView:(SlideShowView *)slideShowView {
     NSUInteger count = _dataModel.imgUrls.count;
     [self.overView setCurrentPage:slideShowView.carousel.currentItemIndex + 1 totalPage:count];
-    [self.pageControl setNumberOfPages:count];
     return count;
 }
 
@@ -333,7 +275,6 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
         scrollView.zoomScale = 1.0;
         [UIView commitAnimations];
     }
-    [self.pageControl setCurrentPage:currentIndex];
     [self.overView setCurrentPage:currentIndex + 1 totalPage:slideShowView.carousel.numberOfItems];
     
     NSArray *descriptions = _dataModel.descriptions;
@@ -410,13 +351,6 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
     [self.overView setExpanded:NO animated:YES];
 }
 
-#pragma mark - FoldableTextBoxDelegate methods
-
-- (void)onFrameChanged:(CGRect)frame {
-    frame.origin.y = self.navigationController.navigationBarHidden ? (CompatibleScreenHeight - StatusBarHeight) : (CompatibleContainerHeight - frame.size.height);
-    self.textBox.frame = frame;
-}
-
 #pragma mark - Private methods
 
 - (void)tap:(UITapGestureRecognizer *)recognizer {
@@ -429,19 +363,11 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
     frame.origin.y = hidden ? 0 : -NavBarHeight;
     self.slideShowView.frame = frame;
     
-    frame = self.titleBox.frame;
-    frame.origin.y = hidden ? -frame.size.height : 0;
-    self.titleBox.frame = frame;
-    
-    frame = self.textBox.frame;
-    frame.origin.y = hidden ? (CompatibleScreenHeight - StatusBarHeight) : (CompatibleContainerHeight - frame.size.height);
-    self.textBox.frame = frame;
 //    方法一
 //    frame = self.pageControl.frame;
 //    frame.origin.y = hidden ? (390 + 44) : 390;
 //    self.pageControl.frame = frame;
     //方法二
-    self.pageControl.transform = CGAffineTransformMakeTranslation(0, hidden ? NavBarHeight : 0);
     [UIView commitAnimations];
 }
 
@@ -651,29 +577,11 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
     }
 }
 
-- (CGFloat)adjustLayout:(NSString *)title {
-    CGFloat titleOriginalHeight = _titleLabel.frame.size.height;
-    CGFloat titleAdjustedHeight = [UIHelper computeHeightForLabel:_titleLabel withText:title];
-    CGFloat delta = titleAdjustedHeight - titleOriginalHeight;
-    
-    CGRect frame = _titleLabel.frame;
-    frame.size.height = titleAdjustedHeight;
-    _titleLabel.frame = frame;
-    
-    frame = _titleBox.frame;
-    frame.size.height += delta;
-    _titleBox.frame = frame;
-
-    return delta;
-}
 
 - (void)updateData {
     [_slideShowView reloadData];
     [self slideShowViewItemIndexDidChange:_slideShowView];
     
-    _likeButton.enabled = !_dataModel.voted;
-    
-    [self adjustLayout:_dataModel.title];
     _titleLabel.text = self.contentTitle = _dataModel.title;
     _titleLabel.hidden = NO;
     
@@ -686,11 +594,8 @@ FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewD
     self.dataModel = nil;
     
     _titleLabel.hidden = YES;
-    _likeButton.enabled = YES;
     
     [_slideShowView reloadData];
-    
-    _textBox.text = @"";
 }
 
 - (void)performBounce:(BOOL)left {
