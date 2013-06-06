@@ -43,10 +43,8 @@
 
 - (void)setExpanded:(BOOL)expanded animated:(BOOL)animated {
     void (^block)() = ^{
-        self.frame = CGRectMake(0, 0, self.width, expanded ? self.superview.height : 50);
-        self.textView.frame = CGRectMake(0, 0, self.width - (expanded ? 0 : 87), expanded ? 120 : 40);
-        
-        self.arrowButton.transform = CGAffineTransformMakeRotation(expanded ? 0 : M_PI);
+        self.frame = CGRectMake(0, 0, self.width, expanded ? self.superview.height : 38);
+        self.textView.frame = CGRectMake(0, 0, self.width - (expanded ? 0 : 87), expanded ? 120 : 25);
     };
     
     if (animated) {
@@ -65,6 +63,8 @@
         block();
     }
     
+    self.arrowButton.transform = CGAffineTransformMakeRotation(expanded ? 0 : M_PI);
+    
     _expanded = expanded;
 }
 
@@ -79,11 +79,26 @@
     [self setExpanded:!self.expanded animated:YES];
 }
 
+- (void)swipe:(UISwipeGestureRecognizer *)gesture {
+    if (gesture.direction == UISwipeGestureRecognizerDirectionUp) {
+        [self setExpanded:NO animated:YES];
+    } else {
+        [self setExpanded:YES animated:YES];
+    }
+}
+
 #pragma mark - Private methods
 
 - (void)setUp {
     self.clipsToBounds = YES;
     self.backgroundColor = RGBA(0, 0, 0, 0.5);
+    
+    UISwipeGestureRecognizer *swipeUpGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    swipeUpGesture.direction = UISwipeGestureRecognizerDirectionUp;
+    [self addGestureRecognizer:swipeUpGesture];
+    UISwipeGestureRecognizer *swipeDownGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    swipeDownGesture.direction = UISwipeGestureRecognizerDirectionDown;
+    [self addGestureRecognizer:swipeDownGesture];
     
     self.tmpView.bounds = self.bounds;
     [self.tmpView.subviews enumerateObjectsUsingBlock:^(UIView *subview, NSUInteger idx, BOOL *stop) {
@@ -92,11 +107,11 @@
     }];
     self.tmpView = nil;
     
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, self.width - (self.expanded ? 0 : 87), self.expanded ? 120 : 40)];
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, self.width - (self.expanded ? 0 : 87), self.expanded ? 120 : 25)];
     self.textView = textView;
     textView.userInteractionEnabled = NO;
-    textView.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
-    textView.font = [UIFont systemFontOfSize:15];
+    textView.contentInset = UIEdgeInsetsMake(2, 0, 0, 0);
+    textView.font = [UIFont fontWithName:@"Heiti SC" size:15];
     textView.textColor = [UIColor whiteColor];
     textView.backgroundColor = [UIColor clearColor];
     [self addSubview:textView];

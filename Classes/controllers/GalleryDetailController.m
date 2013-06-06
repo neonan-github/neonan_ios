@@ -584,7 +584,9 @@ UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
     [_slideShowView reloadData];
     [self slideShowViewItemIndexDidChange:_slideShowView];
     
-    _titleLabel.text = self.contentTitle = _dataModel.title;
+    self.titleLabel.text = self.contentTitle = _dataModel.title;
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.titleLabel performSelector:@selector(setTapToScroll:) withObject:@(YES) afterDelay:5];
     _titleLabel.hidden = NO;
     
     self.moreActionView.favorited = _dataModel.favorited;
@@ -595,7 +597,9 @@ UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
 - (void)clearContents {
     self.dataModel = nil;
     
-    _titleLabel.hidden = YES;
+    self.titleLabel.hidden = YES;
+    [self.titleLabel canPerformAction:@selector(setTapToScroll:) withSender:@(YES)];
+    self.titleLabel.tapToScroll = NO;
     
     [_slideShowView reloadData];
 }
