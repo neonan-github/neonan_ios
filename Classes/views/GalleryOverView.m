@@ -104,6 +104,12 @@
     [self.arrowButton addTarget:self
                          action:@selector(shrinkOrExpand)
                forControlEvents:UIControlEventTouchUpInside];
+    
+    self.gridView.clipsToBounds = YES;
+    self.gridView.cellPadding = CGSizeMake(2, 2);
+    self.gridView.cellSize = CGSizeMake(58, 58);
+    self.gridView.backgroundView = nil;
+    self.gridView.backgroundColor = [UIColor clearColor];
 }
 
 @end

@@ -20,6 +20,7 @@
 #import "EncourageView.h"
 #import "FunctionFlowView.h"
 #import "GalleryOverView.h"
+#import "GalleryOverViewCell.h"
 
 #import <UIImageView+WebCache.h>
 #import <SDImageCache.h>
@@ -33,7 +34,7 @@ static const NSUInteger kTagSSImageView = 1000;
 static const NSUInteger kTagSSprogressView = 1001;
 
 @interface GalleryDetailController () <SlideShowViewDataSource, SlideShowViewDelegate,
-FoldableTextBoxDelegate, UIScrollViewDelegate>
+FoldableTextBoxDelegate, UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
 
 @property (nonatomic, unsafe_unretained) UIView *titleBox;
 @property (nonatomic, unsafe_unretained) UILabel *titleLabel;
@@ -141,6 +142,8 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     
     GalleryOverView *overView = [[GalleryOverView alloc] initWithFrame:self.view.bounds];
     self.overView = overView;
+    overView.gridView.dataSource = self;
+    overView.gridView.delegate = self;
     [self.view addSubview:overView];
 }
 
@@ -152,6 +155,8 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     self.actionButton = nil;
     self.titleBox = nil;
     
+    self.overView.gridView.dataSource = nil;
+    self.overView.gridView.delegate = nil;
     self.overView = nil;
     
     self.slideShowView.dataSource = nil;
@@ -338,7 +343,7 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
 }
 
 - (void)slideShowView:(SlideShowView *)slideShowView overSwipWithDirection:(UISwipeGestureRecognizerDirection)direction {
-    if (_isAnimating || !_dataModel) {
+    if (_isAnimating || !_dataModel || self.overView.expanded) {
         return;
     }
     
@@ -375,8 +380,34 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
             [self.view.layer addAnimation:animation forKey:@"position"];
         }];
     }];
+}
+
+#pragma mark - KKGridViewDataSource methods
+
+- (NSUInteger)gridView:(KKGridView *)gridView numberOfItemsInSection:(NSUInteger)section {
+    return self.dataModel.imgUrls.count;
+}
+
+- (KKGridViewCell *)gridView:(KKGridView *)gridView cellForItemAtIndexPath:(KKIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"Cell";
     
- 
+    GalleryOverViewCell * cell = (GalleryOverViewCell *)[gridView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[GalleryOverViewCell alloc] initWithFrame:CGRectMake(0.0, 0.0, 59.0, 59.0) reuseIdentifier:CellIdentifier];
+    }
+    
+    [cell.imageView setImageWithURL:[URLHelper imageURLWithString:self.dataModel.imgUrls[indexPath.index]]
+                   placeholderImage:nil];
+    
+    return cell;
+}
+
+#pragma mark - KKGridViewDelegate methods
+
+- (void)gridView:(KKGridView *)gridView didSelectItemAtIndexPath:(KKIndexPath *)indexPath {
+    [gridView deselectAll:YES];
+    [self.slideShowView.carousel scrollToItemAtIndex:indexPath.index animated:NO];
+    [self.overView setExpanded:NO animated:YES];
 }
 
 #pragma mark - FoldableTextBoxDelegate methods
@@ -647,6 +678,8 @@ FoldableTextBoxDelegate, UIScrollViewDelegate>
     _titleLabel.hidden = NO;
     
     self.moreActionView.favorited = _dataModel.favorited;
+    
+    [self.overView.gridView reloadData];
 }
 
 - (void)clearContents {
