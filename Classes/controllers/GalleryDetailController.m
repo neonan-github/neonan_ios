@@ -368,12 +368,14 @@ UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
 //    frame.origin.y = hidden ? (390 + 44) : 390;
 //    self.pageControl.frame = frame;
     //方法二
+    self.overView.transform = CGAffineTransformMakeTranslation(0, hidden ? -NavBarHeight : 0);
+    
     [UIView commitAnimations];
 }
 
 - (FunctionFlowView *)moreActionView {
     if (!_moreActionView) {
-        _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(245, 40, 68, 53)];
+        _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(CompatibleScreenWidth - 73, 5, 68, 53)];
         [_moreActionView.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
         [_moreActionView.favButton addTarget:self action:@selector(doFav) forControlEvents:UIControlEventTouchUpInside];
     }

@@ -18,7 +18,10 @@
         self.backgroundColor = [UIColor clearColor];
         self.contentView.backgroundColor = [UIColor clearColor];
         self.backgroundView.backgroundColor = [UIColor clearColor];
+        
         self.imageView.backgroundColor = RGBA(0, 0, 0, 0.7);
+        self.imageView.clipsToBounds = YES;
+        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     
     return self;
