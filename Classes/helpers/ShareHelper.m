@@ -98,7 +98,7 @@ static const NSUInteger kWCTimelineIndex = 4;
         controller.shareUrl = _shareUrl;
         controller.shareImage = _shareImage;
         controller.sharer = sharer;
-//        controller.title = [NSString stringWithFormat:@"分享到%@", sharer.name];
+        controller.title = [NSString stringWithFormat:@"分享到%@", sharer.name];
         [_rootViewController.navigationController pushViewController:controller animated:YES];
     }
 }
