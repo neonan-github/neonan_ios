@@ -307,6 +307,7 @@
 		34B70E5E176063A80032D2FF /* icon_checkbox_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B70E5C176063A80032D2FF /* icon_checkbox_selected.png */; };
 		34B70E61176069520032D2FF /* SearchResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B70E60176069520032D2FF /* SearchResultViewController.m */; };
 		34B70E63176087490032D2FF /* icon_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B70E62176087490032D2FF /* icon_clear.png */; };
+		34B70E6517609B610032D2FF /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34B70E6417609B610032D2FF /* PushConfig.plist */; };
 		34B8337D17560C02004BF79B /* bg_menu_cell.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B8337C17560C02004BF79B /* bg_menu_cell.png */; };
 		34B8338017560C31004BF79B /* SideMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B8337F17560C31004BF79B /* SideMenuCell.m */; };
 		34B83382175610EB004BF79B /* img_menu_separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B83381175610EB004BF79B /* img_menu_separator.png */; };
@@ -385,7 +386,6 @@
 		34E8CF8116E9EC0D000079E6 /* PurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E8CF8016E9EC0D000079E6 /* PurchaseManager.m */; };
 		34E9FDD716646E8E00F90A88 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD616646E8E00F90A88 /* CFNetwork.framework */; };
 		34E9FDD916646EA500F90A88 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34E9FDD816646EA500F90A88 /* CoreTelephony.framework */; };
-		34E9FDDB16646F4700F90A88 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 34E9FDDA16646F4700F90A88 /* PushConfig.plist */; };
 		34F1B783175C8D7E00AC3733 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F1B782175C8D7E00AC3733 /* SettingViewController.m */; };
 		34F1B78E175C8DA300AC3733 /* JMStaticContentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F1B787175C8DA300AC3733 /* JMStaticContentTableViewCell.m */; };
 		34F1B78F175C8DA300AC3733 /* JMStaticContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34F1B789175C8DA300AC3733 /* JMStaticContentTableViewController.m */; };
@@ -778,7 +778,6 @@
 		346614EC1635489B00B1FF5A /* FoldableTextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoldableTextBox.h; sourceTree = "<group>"; };
 		346614ED1635489B00B1FF5A /* FoldableTextBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoldableTextBox.m; sourceTree = "<group>"; };
 		346C7069167EBAF000EA0057 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
-		346C706A167EBAF000EA0057 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
 		346C706B167EBAF000EA0057 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		346F7490175DF3C5005C31B8 /* GalleryOverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryOverView.h; sourceTree = "<group>"; };
 		346F7491175DF3C5005C31B8 /* GalleryOverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryOverView.m; sourceTree = "<group>"; };
@@ -866,6 +865,7 @@
 		34B70E5F176069520032D2FF /* SearchResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultViewController.h; sourceTree = "<group>"; };
 		34B70E60176069520032D2FF /* SearchResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultViewController.m; sourceTree = "<group>"; };
 		34B70E62176087490032D2FF /* icon_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_clear.png; sourceTree = "<group>"; };
+		34B70E6417609B610032D2FF /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		34B8337C17560C02004BF79B /* bg_menu_cell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_menu_cell.png; sourceTree = "<group>"; };
 		34B8337E17560C31004BF79B /* SideMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuCell.h; sourceTree = "<group>"; };
 		34B8337F17560C31004BF79B /* SideMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuCell.m; sourceTree = "<group>"; };
@@ -976,7 +976,6 @@
 		34E8CF8016E9EC0D000079E6 /* PurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PurchaseManager.m; sourceTree = "<group>"; };
 		34E9FDD616646E8E00F90A88 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		34E9FDD816646EA500F90A88 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		34E9FDDA16646F4700F90A88 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		34F1B781175C8D7E00AC3733 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		34F1B782175C8D7E00AC3733 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		34F1B785175C8DA300AC3733 /* JMStaticContentTableViewBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMStaticContentTableViewBlocks.h; sourceTree = "<group>"; };
@@ -1606,8 +1605,8 @@
 			isa = PBXGroup;
 			children = (
 				346C7069167EBAF000EA0057 /* APService.h */,
-				346C706A167EBAF000EA0057 /* libPushSDK-Simulator.a */,
 				346C706B167EBAF000EA0057 /* libPushSDK.a */,
+				34B70E6417609B610032D2FF /* PushConfig.plist */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -1951,7 +1950,6 @@
 				53816B0C16265E9400B0672C /* Default.png */,
 				53816B0E16265E9400B0672C /* Default@2x.png */,
 				53816B1016265E9400B0672C /* Default-568h@2x.png */,
-				34E9FDDA16646F4700F90A88 /* PushConfig.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2130,7 +2128,6 @@
 				34268EF7165B209E00DEEF63 /* icon.png in Resources */,
 				34268EF9165B20A500DEEF63 /* icon@2x.png in Resources */,
 				341CB04C165B59DA00BF1D76 /* Localizable.strings in Resources */,
-				34E9FDDB16646F4700F90A88 /* PushConfig.plist in Resources */,
 				349EF606167590CA0086A7F1 /* icon_config_highlighted.png in Resources */,
 				349EF607167590CA0086A7F1 /* icon_config_normal.png in Resources */,
 				349EF61F1675D6CC0086A7F1 /* icon_feedback_normal.png in Resources */,
@@ -2301,6 +2298,7 @@
 				34B70E5D176063A80032D2FF /* icon_checkbox_normal.png in Resources */,
 				34B70E5E176063A80032D2FF /* icon_checkbox_selected.png in Resources */,
 				34B70E63176087490032D2FF /* icon_clear.png in Resources */,
+				34B70E6517609B610032D2FF /* PushConfig.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

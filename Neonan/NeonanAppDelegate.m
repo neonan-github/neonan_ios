@@ -19,6 +19,8 @@
 
 #import "ChannelListViewController.h"
 
+#import "CommonListModel.h"
+
 #import "NNURLCache.h"
 #import "EncourageHelper.h"
 
@@ -47,13 +49,6 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
-#ifndef DEBUG
-    // JPush
-    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeSound |
-                                                   UIRemoteNotificationTypeAlert)];
-    [APService setupWithOption:launchOptions];
-#endif
-    
     // http://www.iwangke.me/2012/06/14/tips_for_mkstorekit/
 #ifdef DEBUG
     [[MKStoreManager sharedManager] removeAllKeychainData];
@@ -78,10 +73,18 @@
     self.window.rootViewController = panelController;
     [self.window makeKeyAndVisible];
     
-//    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-//    if (remoteNotif) {
-//        [self enterControllerByType:[remoteNotif objectForKey:@"content_type"] andId:[remoteNotif objectForKey:@"content_id"]];
-//    }
+//#ifndef DEBUG
+    // JPush
+    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeSound |
+                                                   UIRemoteNotificationTypeAlert)];
+    [APService setupWithOption:launchOptions];
+//#endif
+    
+    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remoteNotif) {
+        DLog(@"remote notif: %@", remoteNotif);
+//        [self navigationController:<#(UINavigationController *)#> pushViewControllerByType:<#(id)#> andChannel:<#(NSString *)#>];
+    }
     
     return YES;
 }
@@ -107,17 +110,18 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-#ifndef DEBUG
+//#ifndef DEBUG
     // JPush
     [APService registerDeviceToken:deviceToken];
-#endif
+//#endif
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-#ifndef DEBUG
+//#ifndef DEBUG
     // JPush
     [APService handleRemoteNotification:userInfo];
-#endif
+    DLog(@"userInfo:%@", userInfo);
+    //#endif
     
 //    if (application.applicationState == UIApplicationStateActive) {
 //        return;
@@ -215,6 +219,16 @@
             [EncourageHelper doEncourage:@{@"token": token, @"type_id": @(2)} success:nil];
         }];
     }
+}
+
+- (CommonItem *)parseNotifictionInfo:(NSDictionary *)info {
+    CommonItem *item = [[CommonItem alloc] init];
+    item.contentType = info[@"content_type"];
+    item.contentId = info[@"content_id"];
+    item.videoUrl = info[@"video_url"];
+    item.title = info[@"title"];
+    
+    return item;
 }
 
 @end
