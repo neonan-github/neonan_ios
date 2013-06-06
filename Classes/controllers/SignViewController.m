@@ -35,17 +35,26 @@
 @property (weak, nonatomic) IBOutlet UIButton *signUpButton;
 @property (weak, nonatomic) IBOutlet UIButton *signInButton;
 
+@property (weak, nonatomic) IBOutlet UIButton *checkBox;
+@property (weak, nonatomic) IBOutlet UILabel *hintLabel;
+
+@property (nonatomic, assign) BOOL checkBoxSelected;
 @property (nonatomic, assign) SignType signType;
 
 @end
 
 @implementation SignViewController
 
+- (id)init {
+    return [self initWithType:SignTypeIn];
+}
+
 - (id)initWithType:(SignType)type {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization
         self.signType = type;
+        self.checkBoxSelected = YES;
     }
     return self;
 }
@@ -80,6 +89,7 @@
     self.passwordBgView1.image = normalBgImage;
     self.passwordBgView1.highlightedImage = highlightedBgImage;
     
+    self.checkBox.selected = self.checkBoxSelected;
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reset)];
     [self.view addGestureRecognizer:tapGesture];
@@ -107,6 +117,9 @@
     
     self.signUpButton = nil;
     self.signInButton = nil;
+    
+    self.checkBox = nil;
+    self.hintLabel = nil;
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -166,6 +179,11 @@
 
 #pragma mark - Private Event Handle
 
+- (IBAction)onCheckBoxClicked:(id)sender {
+    self.checkBoxSelected = !self.checkBoxSelected;
+    self.checkBox.selected = self.checkBoxSelected;
+}
+
 - (IBAction)onSignUpButtonClicked:(id)sender {
     if (self.signType == SignTypeUp) {
         [self sign];
@@ -203,6 +221,8 @@
         [UIView beginAnimations:nil context:NULL];
         self.signUpButton.frame = CGRectMake(-28, 295, 100, 34);
         self.signInButton.frame = CGRectMake(158, 295, 100, 34);
+        self.checkBox.x = self.signUpButton.x + 97;
+        self.hintLabel.x = self.signUpButton.x + 125;
         [UIView commitAnimations];
     } else {
         [self.flipView scrollRectToVisible:CGRectMake(0, 0, CompatibleScreenWidth, self.flipView.height)
@@ -210,6 +230,8 @@
         [UIView beginAnimations:nil context:NULL];
         self.signUpButton.frame = CGRectMake(64, 295, 100, 34);
         self.signInButton.frame = CGRectMake(248, 295, 100, 34);
+        self.checkBox.x = self.signUpButton.x + 97;
+        self.hintLabel.x = self.signUpButton.x + 125;
         [UIView commitAnimations];
     }
     
@@ -293,7 +315,7 @@
     password = [password md5];
     
     SessionManager *sessionManager = [SessionManager sharedManager];
-//    sessionManager.allowAutoLogin = _rememberSwitch.isOn;
+    sessionManager.allowAutoLogin = self.checkBox.selected;
     [sessionManager signWithEmail:email andPassword:password atPath:path success:^(NSString *token) {
         if (_success) {
             _success(token);

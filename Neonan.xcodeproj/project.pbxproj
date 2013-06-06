@@ -303,6 +303,8 @@
 		34B5591A16E20BE5001D378A /* EncourageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B5591916E20BE5001D378A /* EncourageHelper.m */; };
 		34B618A3164A0DFE00842F15 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3432926C1647B2140070B66A /* SystemConfiguration.framework */; };
 		34B70E5A17603DA20032D2FF /* GalleryOverViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B70E5917603DA20032D2FF /* GalleryOverViewCell.m */; };
+		34B70E5D176063A80032D2FF /* icon_checkbox_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B70E5B176063A80032D2FF /* icon_checkbox_normal.png */; };
+		34B70E5E176063A80032D2FF /* icon_checkbox_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B70E5C176063A80032D2FF /* icon_checkbox_selected.png */; };
 		34B8337D17560C02004BF79B /* bg_menu_cell.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B8337C17560C02004BF79B /* bg_menu_cell.png */; };
 		34B8338017560C31004BF79B /* SideMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B8337F17560C31004BF79B /* SideMenuCell.m */; };
 		34B83382175610EB004BF79B /* img_menu_separator.png in Resources */ = {isa = PBXBuildFile; fileRef = 34B83381175610EB004BF79B /* img_menu_separator.png */; };
@@ -857,6 +859,8 @@
 		34B5591916E20BE5001D378A /* EncourageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncourageHelper.m; sourceTree = "<group>"; };
 		34B70E5817603DA20032D2FF /* GalleryOverViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryOverViewCell.h; sourceTree = "<group>"; };
 		34B70E5917603DA20032D2FF /* GalleryOverViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryOverViewCell.m; sourceTree = "<group>"; };
+		34B70E5B176063A80032D2FF /* icon_checkbox_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_checkbox_normal.png; sourceTree = "<group>"; };
+		34B70E5C176063A80032D2FF /* icon_checkbox_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_checkbox_selected.png; sourceTree = "<group>"; };
 		34B8337C17560C02004BF79B /* bg_menu_cell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_menu_cell.png; sourceTree = "<group>"; };
 		34B8337E17560C31004BF79B /* SideMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideMenuCell.h; sourceTree = "<group>"; };
 		34B8337F17560C31004BF79B /* SideMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideMenuCell.m; sourceTree = "<group>"; };
@@ -1619,8 +1623,8 @@
 				34E8CF6616E9C669000079E6 /* PurchaseVIPViewController.xib */,
 				34358920175349AC0040F370 /* LeftMenuViewController.xib */,
 				34CFE1D417560C6D004518AC /* RightMenuViewController.xib */,
-				34B06866175B20D60024AA80 /* SignViewController.xib */,
 				346F7493175DF3EB005C31B8 /* GalleryOverView.xib */,
+				34B06866175B20D60024AA80 /* SignViewController.xib */,
 			);
 			name = Layouts;
 			sourceTree = "<group>";
@@ -1743,6 +1747,8 @@
 				34D3B913175C3E6B00C89F8C /* icon_password_field.png */,
 				34F1B795175C934B00AC3733 /* icon_default_accessory.png */,
 				346F7495175DF58D005C31B8 /* icon_up_arrow.png */,
+				34B70E5B176063A80032D2FF /* icon_checkbox_normal.png */,
+				34B70E5C176063A80032D2FF /* icon_checkbox_selected.png */,
 				3435891C175349AC0040F370 /* img_logo.png */,
 				34D3B91A175C480A00C89F8C /* img_logo_big.png */,
 				34CB8FE8163FB1B80001AD87 /* img_nav_bottom_line.png */,
@@ -2284,6 +2290,8 @@
 				34F1B796175C934B00AC3733 /* icon_default_accessory.png in Resources */,
 				346F7494175DF3EB005C31B8 /* GalleryOverView.xib in Resources */,
 				346F7496175DF58D005C31B8 /* icon_up_arrow.png in Resources */,
+				34B70E5D176063A80032D2FF /* icon_checkbox_normal.png in Resources */,
+				34B70E5E176063A80032D2FF /* icon_checkbox_selected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
