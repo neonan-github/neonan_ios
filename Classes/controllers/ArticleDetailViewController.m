@@ -167,13 +167,12 @@ static NSString * const kDirectionRight = @"1";
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-//   [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName(\"a\").removeAttribute(\"href\");"];
 }
 
 #pragma mark - Keyboard events handle
 
 //Code from Brett Schumann
--(void) keyboardWillShow:(NSNotification *)note {
+- (void)keyboardWillShow:(NSNotification *)note {
 //    _commentBox.rightView = nil;
     
     // get keyboard size and loctaion
@@ -206,7 +205,7 @@ static NSString * const kDirectionRight = @"1";
 	[UIView commitAnimations];
 }
 
--(void) keyboardWillHide:(NSNotification *)note {
+- (void)keyboardWillHide:(NSNotification *)note {
 //    _commentBox.rightView = _commentButton;
     
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
@@ -261,7 +260,6 @@ static NSString * const kDirectionRight = @"1";
                                 parameters:parameters
                              responseClass:[ArticleDetailModel class]
                                    success:^(id<Jsonable> response) {
-                                       [MBProgressHUD hideHUDForView:self.view animated:YES];
                                        
                                        if (response) {
                                            if (success) {
@@ -290,8 +288,6 @@ static NSString * const kDirectionRight = @"1";
     }
     
     [[NNHttpClient sharedClient] getAtPath:kPathWorkInfo parameters:parameters responseClass:[ArticleDetailModel class] success:^(id<Jsonable> response) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        
         [self onDetailFetched:response];
     } failure:^(ResponseError *error) {
         DLog(@"error:%@", error.message);
@@ -374,8 +370,7 @@ static NSString * const kDirectionRight = @"1";
     _commentBox.countButton.enabled = _dataModel.commentNum > 0;
     
     [self renderHtml:_dataModel.content];
-    [_textView performSelector:@selector(setHidden:) withObject:nil afterDelay:0.5];
-//    _textView.hidden = NO;
+    [self checkLoadedAfterDelay:0.5];
 }
 
 - (void)clearContents {
@@ -389,8 +384,9 @@ static NSString * const kDirectionRight = @"1";
     [_commentBox.countButton setTitle:@"" forState:UIControlStateNormal];
     _commentBox.countButton.enabled = NO;
     
-    [_textView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];
-    _textView.hidden = YES;
+    [self.textView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]]];
+    [self.textView reload];
+    self.textView.layer.opacity = 0;
 }
 
 - (void)performBounce:(BOOL)left {
@@ -546,6 +542,18 @@ static NSString * const kDirectionRight = @"1";
         }];
     }];
     
+}
+
+- (void)checkLoadedAfterDelay:(double)seconds {
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        if (self.textView.loading) {
+            [self checkLoadedAfterDelay:0.2];
+        } else {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            self.textView.layer.opacity = 1;
+        }
+    });
 }
 
 #pragma mark - CAAnimationDelegate methods
