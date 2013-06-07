@@ -1,4 +1,5 @@
 //
+
 //  NeonanAppDelegate.m
 //  Neonan
 //
@@ -83,7 +84,8 @@
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
         DLog(@"remote notif: %@", remoteNotif);
-//        [self navigationController:<#(UINavigationController *)#> pushViewControllerByType:<#(id)#> andChannel:<#(NSString *)#>];
+        [self whenNotificationArrive:remoteNotif];
+        application.applicationIconBadgeNumber = 0;
     }
     
     return YES;
@@ -120,18 +122,14 @@
 //#ifndef DEBUG
     // JPush
     [APService handleRemoteNotification:userInfo];
-    DLog(@"userInfo:%@", userInfo);
+    DLog(@"userInfo:%d %@", application.applicationState, userInfo);
     //#endif
     
-//    if (application.applicationState == UIApplicationStateActive) {
-//        return;
-//    }
-//    
-//    [self.navController popToRootViewControllerAnimated:NO];
-//    [self.navController dismissModalViewControllerAnimated:NO];
-//    
-//    NSLog(@"userInfo:%@", userInfo);
-//    [self enterControllerByType:[userInfo objectForKey:@"content_type"] andId:[userInfo objectForKey:@"content_id"]];
+    if (application.applicationState != UIApplicationStateActive) {
+        [self whenNotificationArrive:userInfo];
+    }
+    
+    application.applicationIconBadgeNumber = 0;
 }
 
 #pragma mark - Public methods
@@ -229,6 +227,14 @@
     item.title = info[@"title"];
     
     return item;
+}
+
+- (void)whenNotificationArrive:(NSDictionary *)info {
+    [self.containerController dismissModalViewControllerAnimated:YES];
+    self.containerController.sidePanelController.centerPanel = self.containerController.sidePanelController.centerPanel;
+    
+    NNNavigationController *topNavController = (NNNavigationController *)self.containerController.currentViewController;
+    [self navigationController:topNavController pushViewControllerByType:[self parseNotifictionInfo:info] andChannel:nil];
 }
 
 @end
