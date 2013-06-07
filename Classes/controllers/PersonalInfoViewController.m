@@ -124,7 +124,7 @@
     [self displayExperience:_userInfoModel.exp];
     [self displayRank:_userInfoModel.rank];
     
-    _expirationHintLabel.text = _userInfoModel.isVip ?  [NSString stringWithFormat:@"到期时间：%@", _userInfoModel.expirationText] : @"";
+    _expirationHintLabel.text = _userInfoModel.isVip ?  [NSString stringWithFormat:@"有效期到：%@", _userInfoModel.expirationText] : @"";
     [_buyButton setBackgroundImage:[UIImage imageFromFile:_userInfoModel.isVip ? @"bg_btn_renew_vip.png" : @"bg_btn_buy_vip.png"]
                           forState:UIControlStateNormal];
     _buyButton.hidden = NO;

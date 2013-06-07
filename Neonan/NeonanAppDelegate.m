@@ -81,12 +81,18 @@
     [APService setupWithOption:launchOptions];
 #endif
     
-    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (remoteNotif) {
-        DLog(@"remote notif: %@", remoteNotif);
-        [self whenNotificationArrive:remoteNotif];
-        application.applicationIconBadgeNumber = 0;
-    }
+    SplashViewController *splashViewController = self.splashViewController = [[SplashViewController alloc] init];
+    splashViewController.done = ^{
+        NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+        if (remoteNotif) {
+            DLog(@"remote notif: %@", remoteNotif);
+            [self whenNotificationArrive:remoteNotif];
+            application.applicationIconBadgeNumber = 0;
+        }
+        
+        self.splashViewController = nil;
+    };
+    [self.containerController presentModalViewController:splashViewController animated:NO];
     
     return YES;
 }

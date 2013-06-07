@@ -10,4 +10,6 @@
 
 @interface SplashViewController : NNViewController
 
+@property (nonatomic, copy) void ((^done)());
+
 @end
