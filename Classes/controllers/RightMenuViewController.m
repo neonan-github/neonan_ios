@@ -54,9 +54,9 @@
     firstSeparatorView.image = [UIImage imageFromFile:@"img_menu_separator.png"];
     [self.tableView addSubview:firstSeparatorView];
     
-    [self.powerButton setBackgroundImage:[[UIImage imageFromFile:@"bg_btn_power_normal.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:15]
+    [self.powerButton setBackgroundImage:[[UIImage imageNamed:@"bg_btn_power_normal"] stretchableImageWithLeftCapWidth:15 topCapHeight:15]
                       forState:UIControlStateNormal];
-    [self.powerButton setBackgroundImage:[[UIImage imageFromFile:@"bg_btn_power_highlighted.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:15]
+    [self.powerButton setBackgroundImage:[[UIImage imageNamed:@"bg_btn_power_highlighted"] stretchableImageWithLeftCapWidth:15 topCapHeight:15]
                       forState:UIControlStateHighlighted];
     
     [self updateStatus:[[SessionManager sharedManager] canAutoLogin]];

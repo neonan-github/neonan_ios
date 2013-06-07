@@ -29,7 +29,7 @@
 static NSString *kHtmlTemplate = @"<html> \n"
 "<head> \n"
 "<style type=\"text/css\"> \n"
-"body {font-family: \"%@\"; font-size: %@em; color: white; padding: 1em;}\n"
+"body {font-family: \"%@\"; font-size: 2.7em; color: white; padding: 1em; line-height: 1.5em;}\n"
 //"img {width: 300px;}\n"
 "a:link {color: white; text-decoration: none;}\n"
 "a:visited {color: white; text-decoration: none;}\n"
@@ -352,7 +352,7 @@ static NSString * const kDirectionRight = @"1";
     //	NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"article_sample.html" ofType:nil];
     //	NSString *html = [NSString stringWithContentsOfFile:htmlPath encoding:NSUTF8StringEncoding error:NULL];
     
-    NSString *formattedHTML = [NSString stringWithFormat:kHtmlTemplate, @"helvetica", [NSNumber numberWithInt:2], html];
+    NSString *formattedHTML = [NSString stringWithFormat:kHtmlTemplate, @"helvetica", html];
     //filter video,href,style
     formattedHTML = [formattedHTML stringByReplacingOccurrencesOfString:@"href=\"[^\"]+\"|<object.+<embed.+?>|style=\"[^\"]+\"" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, formattedHTML.length)];
     //adjust image width

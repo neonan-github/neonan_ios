@@ -71,18 +71,18 @@
     
     self.flipView.contentSize = CGSizeMake(CompatibleScreenWidth * 2, self.flipView.height);
     
-    UIImage *normalBgImage = [[UIImage imageFromFile:@"bg_left_sign_field_normal.png"] stretchableImageWithLeftCapWidth:35
+    UIImage *normalBgImage = [[UIImage imageNamed:@"bg_left_sign_field_normal"] stretchableImageWithLeftCapWidth:35
                                                                                                                topCapHeight:27];
-    UIImage *highlightedBgImage = [[UIImage imageFromFile:@"bg_left_sign_field_highlighted.png"] stretchableImageWithLeftCapWidth:35
+    UIImage *highlightedBgImage = [[UIImage imageNamed:@"bg_left_sign_field_highlighted"] stretchableImageWithLeftCapWidth:35
                                                                                                                          topCapHeight:27];
     self.nameBgView0.image = normalBgImage;
     self.nameBgView0.highlightedImage = highlightedBgImage;
     self.passwordBgView0.image = normalBgImage;
     self.passwordBgView0.highlightedImage = highlightedBgImage;
     
-    normalBgImage = [[UIImage imageFromFile:@"bg_right_sign_field_normal.png"] stretchableImageWithLeftCapWidth:35
+    normalBgImage = [[UIImage imageNamed:@"bg_right_sign_field_normal"] stretchableImageWithLeftCapWidth:35
                                                                                                    topCapHeight:27];
-    highlightedBgImage = [[UIImage imageFromFile:@"bg_right_sign_field_highlighted.png"] stretchableImageWithLeftCapWidth:35
+    highlightedBgImage = [[UIImage imageNamed:@"bg_right_sign_field_highlighted"] stretchableImageWithLeftCapWidth:35
                                                                                                              topCapHeight:27];
     self.nameBgView1.image = normalBgImage;
     self.nameBgView1.highlightedImage = highlightedBgImage;
@@ -235,11 +235,9 @@
         [UIView commitAnimations];
     }
     
-    [self.signUpButton setBackgroundImage:[[UIImage imageFromFile:signType == SignTypeUp ? @"bg_btn_sign_normal.png" : @"bg_btn_sign_disabled.png"]
-                                           stretchableImageWithLeftCapWidth:27 topCapHeight:17]
+    [self.signInButton setBackgroundImage:[UIImage imageFromFile:signType ==  SignTypeIn ? @"bg_btn_sign_normal.png" : @"bg_btn_sign_disabled.png"]
                                  forState:UIControlStateNormal];
-    [self.signInButton setBackgroundImage:[[UIImage imageFromFile:signType == SignTypeIn ? @"bg_btn_sign_normal.png" : @"bg_btn_sign_disabled.png"]
-                                           stretchableImageWithLeftCapWidth:27 topCapHeight:17]
+    [self.signUpButton setBackgroundImage:[UIImage imageFromFile:signType ==  SignTypeUp ? @"bg_btn_sign_normal.png" : @"bg_btn_sign_disabled.png"]
                                  forState:UIControlStateNormal];
 
 }

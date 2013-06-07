@@ -56,7 +56,7 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
         
         TTTAttributedLabel *dateLabel = [[TTTAttributedLabel alloc] init];
         self.dateLabel = dateLabel;
-        dateLabel.textAlignment = NSTextAlignmentRight;
+        dateLabel.textAlignment = NSTextAlignmentLeft;
         dateLabel.backgroundColor = [UIColor clearColor];
         dateLabel.textColor = HEXCOLOR(0x777777);
         dateLabel.font = [UIFont systemFontOfSize:9];
@@ -120,7 +120,7 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
     
     x += thumbnailWidth + kCellMarginLeft;
     self.titleLabel.frame = CGRectMake(x, kCellMarginTop, cellWidth - x - 5, contentHeight * 2 / 3);
-    self.dateLabel.frame = CGRectMake(x, kCellMarginTop + contentHeight * 2 / 3 + 3, 55, contentHeight / 3);
+    self.dateLabel.frame = CGRectMake(x + 2, kCellMarginTop + contentHeight * 2 / 3 + 3, 55, contentHeight / 3);
     self.contentTypeView.frame = CGRectMake(cellWidth - 20, cellHeight - 14, 12, 12);
     
 //    self.tagImageView.center = self.thumbnail.center;
