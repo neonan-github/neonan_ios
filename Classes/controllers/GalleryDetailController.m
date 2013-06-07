@@ -284,7 +284,8 @@ UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
 }
 
 - (void)slideShowView:(SlideShowView *)slideShowView overSwipWithDirection:(UISwipeGestureRecognizerDirection)direction {
-    if (_isAnimating || !_dataModel || self.overView.expanded) {
+    if (_isAnimating || !_dataModel || self.overView.expanded ||
+        !self.channel || [self.channel isEqualToString:@"search"]) {
         return;
     }
     

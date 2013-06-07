@@ -508,7 +508,7 @@ static NSString * const kDirectionRight = @"1";
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer {
-    if (_isAnimating || !_dataModel) {
+    if (_isAnimating || !_dataModel || !self.channel || [self.channel isEqualToString:@"search"]) {
         return;
     }
     

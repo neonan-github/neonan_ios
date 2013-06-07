@@ -74,12 +74,12 @@
     self.window.rootViewController = panelController;
     [self.window makeKeyAndVisible];
     
-//#ifndef DEBUG
+#ifndef DEBUG
     // JPush
     [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeSound |
                                                    UIRemoteNotificationTypeAlert)];
     [APService setupWithOption:launchOptions];
-//#endif
+#endif
     
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
@@ -112,18 +112,19 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-//#ifndef DEBUG
+#ifndef DEBUG
     // JPush
     [APService registerDeviceToken:deviceToken];
-//#endif
+#endif
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-//#ifndef DEBUG
+#ifndef DEBUG
     // JPush
     [APService handleRemoteNotification:userInfo];
-    DLog(@"userInfo:%d %@", application.applicationState, userInfo);
-    //#endif
+#endif
+    
+    DLog(@"userInfo:%@", userInfo);
     
     if (application.applicationState != UIApplicationStateActive) {
         [self whenNotificationArrive:userInfo];
