@@ -124,7 +124,7 @@ KKGridViewDataSource, KKGridViewDelegate>
         gridView.cellSize = CGSizeMake(145.0, 116.0);
         gridView.cellPadding = CGSizeMake(10, 10);
         gridView.gridHeaderView = [self createHeaderView];
-        gridView.gridFooterView = [self createFooterView];
+//        gridView.gridFooterView = [self createFooterView];
         
         [gridView addPullToRefreshWithActionHandler:^{
             [self requestData];
@@ -325,7 +325,7 @@ KKGridViewDataSource, KKGridViewDelegate>
 #pragma mark - Private methods
 
 - (UIView *)createHeaderView {
-    NNButton *headerView = [[NNButton alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 182)];
+    NNButton *headerView = [[NNButton alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 176)];
     [headerView addTarget:self action:@selector(onHeaderViewClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 300, 166)];
@@ -334,7 +334,7 @@ KKGridViewDataSource, KKGridViewDelegate>
     imageView.tag = kTagHeaderImageView;
     [headerView addSubview:imageView];
     
-    TTTAttributedLabel *label = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(10, 177 - 28, 300, 28)];
+    TTTAttributedLabel *label = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(10, 176 - 28, 300, 28)];
     label.textInsets = UIEdgeInsetsMake(0, 8, 0, 0);
     label.clipsToBounds = YES;
     label.font = [UIFont systemFontOfSize:16];
