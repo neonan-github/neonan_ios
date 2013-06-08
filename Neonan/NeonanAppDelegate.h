@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MainController.h"
 #import "Constants.h"
 #import "NNNavigationController.h"
 #import "NNContainerViewController.h"

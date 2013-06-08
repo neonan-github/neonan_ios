@@ -22,7 +22,6 @@
 		340A134A1631419600E8D594 /* CommentBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A13491631419600E8D594 /* CommentBox.m */; };
 		340A1372163170BE00E8D594 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A1371163170BE00E8D594 /* CommentCell.m */; };
 		340E020A165F4B860094DCCE /* NearWorksModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E0209165F4B860094DCCE /* NearWorksModel.m */; };
-		341565F916BA18CB0012B2C7 /* GridListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 341565F816BA18CB0012B2C7 /* GridListController.m */; };
 		3415660716BA1C7F0012B2C7 /* GridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3415660616BA1C7F0012B2C7 /* GridCell.m */; };
 		34197637174E0A4600D301C8 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34197634174E0A4600D301C8 /* JASidePanelController.m */; };
 		34197638174E0A4600D301C8 /* UIViewController+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34197636174E0A4600D301C8 /* UIViewController+JASidePanel.m */; };
@@ -237,7 +236,6 @@
 		34632AD516BBCFB100396AC1 /* icon_criticise_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 34632AD316BBCFB100396AC1 /* icon_criticise_highlighted.png */; };
 		34648C401627E74E00115082 /* HotListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C3F1627E74E00115082 /* HotListCell.m */; };
 		34648C68162833C000115082 /* SlideShowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34648C67162833C000115082 /* SlideShowView.m */; };
-		3466147F1634EE4B00B1FF5A /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3466147E1634EE4B00B1FF5A /* MainController.m */; };
 		346614D51635138700B1FF5A /* GalleryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614D41635138700B1FF5A /* GalleryDetailViewController.m */; };
 		346614DB163521C500B1FF5A /* CommentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614DA163521C500B1FF5A /* CommentListViewController.m */; };
 		346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 346614ED1635489B00B1FF5A /* FoldableTextBox.m */; };
@@ -253,7 +251,6 @@
 		3484365B172BBF54000B10F3 /* ROBaseDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34843654172BBF54000B10F3 /* ROBaseDialogViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3484365E172BBF54000B10F3 /* ROWebDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3484365A172BBF54000B10F3 /* ROWebDialogViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		348983D216BA5FCD001CFFB6 /* NNTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 348983D116BA5FCD001CFFB6 /* NNTableView.m */; };
-		348983D716BA691C001CFFB6 /* TopicDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = 348983D516BA691C001CFFB6 /* TopicDetailController.m */; };
 		348983D816BA691C001CFFB6 /* TopicDetailController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 348983D616BA691C001CFFB6 /* TopicDetailController.xib */; };
 		348983E016BA7093001CFFB6 /* icon_big_left_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DB16BA7093001CFFB6 /* icon_big_left_arrow.png */; };
 		348983E116BA7093001CFFB6 /* icon_big_right_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 348983DC16BA7093001CFFB6 /* icon_big_right_arrow.png */; };
@@ -438,8 +435,6 @@
 		340A1371163170BE00E8D594 /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
 		340E0208165F4B860094DCCE /* NearWorksModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearWorksModel.h; sourceTree = "<group>"; };
 		340E0209165F4B860094DCCE /* NearWorksModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearWorksModel.m; sourceTree = "<group>"; };
-		341565F716BA18CB0012B2C7 /* GridListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridListController.h; sourceTree = "<group>"; };
-		341565F816BA18CB0012B2C7 /* GridListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridListController.m; sourceTree = "<group>"; };
 		3415660516BA1C7F0012B2C7 /* GridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridCell.h; sourceTree = "<group>"; };
 		3415660616BA1C7F0012B2C7 /* GridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridCell.m; sourceTree = "<group>"; };
 		34197633174E0A4600D301C8 /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASidePanelController.h; sourceTree = "<group>"; };
@@ -771,8 +766,6 @@
 		34648C3F1627E74E00115082 /* HotListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotListCell.m; sourceTree = "<group>"; };
 		34648C66162833C000115082 /* SlideShowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideShowView.h; sourceTree = "<group>"; };
 		34648C67162833C000115082 /* SlideShowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideShowView.m; sourceTree = "<group>"; };
-		3466147D1634EE4B00B1FF5A /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
-		3466147E1634EE4B00B1FF5A /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
 		346614D31635138700B1FF5A /* GalleryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryDetailViewController.h; sourceTree = "<group>"; };
 		346614D41635138700B1FF5A /* GalleryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryDetailViewController.m; sourceTree = "<group>"; };
 		346614D9163521C500B1FF5A /* CommentListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentListViewController.h; sourceTree = "<group>"; };
@@ -801,8 +794,6 @@
 		3484365A172BBF54000B10F3 /* ROWebDialogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ROWebDialogViewController.m; sourceTree = "<group>"; };
 		348983D016BA5FCD001CFFB6 /* NNTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNTableView.h; sourceTree = "<group>"; };
 		348983D116BA5FCD001CFFB6 /* NNTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNTableView.m; sourceTree = "<group>"; };
-		348983D416BA691C001CFFB6 /* TopicDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicDetailController.h; sourceTree = "<group>"; };
-		348983D516BA691C001CFFB6 /* TopicDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicDetailController.m; sourceTree = "<group>"; };
 		348983D616BA691C001CFFB6 /* TopicDetailController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TopicDetailController.xib; path = ../Classes/controllers/TopicDetailController.xib; sourceTree = "<group>"; };
 		348983DB16BA7093001CFFB6 /* icon_big_left_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_big_left_arrow.png; sourceTree = "<group>"; };
 		348983DC16BA7093001CFFB6 /* icon_big_right_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_big_right_arrow.png; sourceTree = "<group>"; };
@@ -1060,8 +1051,6 @@
 				343EBA4216E09C7E00501101 /* SNAuthorizeViewController.m */,
 				343EBB1716E0AD5A00501101 /* RRAuthorizeViewController.h */,
 				343EBB1816E0AD5A00501101 /* RRAuthorizeViewController.m */,
-				3466147D1634EE4B00B1FF5A /* MainController.h */,
-				3466147E1634EE4B00B1FF5A /* MainController.m */,
 				346614D31635138700B1FF5A /* GalleryDetailViewController.h */,
 				346614D41635138700B1FF5A /* GalleryDetailViewController.m */,
 				346614D9163521C500B1FF5A /* CommentListViewController.h */,
@@ -1080,10 +1069,6 @@
 				349EF62B1675E92E0086A7F1 /* AboutViewController.m */,
 				34C56BEE1676CEE00013ECE6 /* FeedbackViewController.h */,
 				34C56BEF1676CEE00013ECE6 /* FeedbackViewController.m */,
-				341565F716BA18CB0012B2C7 /* GridListController.h */,
-				341565F816BA18CB0012B2C7 /* GridListController.m */,
-				348983D416BA691C001CFFB6 /* TopicDetailController.h */,
-				348983D516BA691C001CFFB6 /* TopicDetailController.m */,
 				3442AAC716E0B6AC000C8F72 /* ShareEditViewController.h */,
 				3442AAC816E0B6AC000C8F72 /* ShareEditViewController.m */,
 				342DA8A316E3308200404730 /* PersonalInfoViewController.h */,
@@ -2353,7 +2338,6 @@
 				340A13471631331900E8D594 /* CommentModel.m in Sources */,
 				340A134A1631419600E8D594 /* CommentBox.m in Sources */,
 				340A1372163170BE00E8D594 /* CommentCell.m in Sources */,
-				3466147F1634EE4B00B1FF5A /* MainController.m in Sources */,
 				346614D51635138700B1FF5A /* GalleryDetailViewController.m in Sources */,
 				346614DB163521C500B1FF5A /* CommentListViewController.m in Sources */,
 				346614EE1635489B00B1FF5A /* FoldableTextBox.m in Sources */,
@@ -2380,10 +2364,8 @@
 				34C56BF11676CEE00013ECE6 /* FeedbackViewController.m in Sources */,
 				34C56C3E16770BCD0013ECE6 /* SSTextView.m in Sources */,
 				34FB6A0816B7D7E10020C6A2 /* TopicCell.m in Sources */,
-				341565F916BA18CB0012B2C7 /* GridListController.m in Sources */,
 				3415660716BA1C7F0012B2C7 /* GridCell.m in Sources */,
 				348983D216BA5FCD001CFFB6 /* NNTableView.m in Sources */,
-				348983D716BA691C001CFFB6 /* TopicDetailController.m in Sources */,
 				34632A9E16BB98E500396AC1 /* FMDatabase.m in Sources */,
 				34632A9F16BB98E500396AC1 /* FMDatabaseAdditions.m in Sources */,
 				34632AA016BB98E500396AC1 /* FMDatabasePool.m in Sources */,

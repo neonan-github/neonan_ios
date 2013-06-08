@@ -9,7 +9,6 @@
 
 #import "NeonanAppDelegate.h"
 
-#import "MainController.h"
 #import "ArticleDetailViewController.h"
 #import "VideoPlayViewController.h"
 #import "GalleryDetailViewController.h"
