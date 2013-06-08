@@ -21,6 +21,8 @@ static const CGFloat kLabelHeight = 23;
         
         self.imageView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height - kLabelHeight);
         self.imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.imageView.clipsToBounds = YES;
         
         UIImageView *tagImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
         self.tagImageView = tagImageView;

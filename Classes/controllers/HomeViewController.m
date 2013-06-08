@@ -330,6 +330,8 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 300, 166)];
     imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.clipsToBounds = YES;
     imageView.backgroundColor = [UIColor blackColor];
     imageView.tag = kTagHeaderImageView;
     [headerView addSubview:imageView];
