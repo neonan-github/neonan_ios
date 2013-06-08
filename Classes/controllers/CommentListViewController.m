@@ -111,7 +111,9 @@ HPGrowingTextViewDelegate>
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    [self.tableView triggerPullToRefresh];
+    if (!self.dataModel && self.tableView.pullToRefreshView.state == SVPullToRefreshStateStopped) {
+        [self.tableView triggerPullToRefresh];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -165,7 +167,7 @@ HPGrowingTextViewDelegate>
 #pragma mark - Keyboard events handle
 
 //Code from Brett Schumann
--(void) keyboardWillShow:(NSNotification *)note {
+- (void)keyboardWillShow:(NSNotification *)note {
 //    _commentBox.rightView = nil;
     
     // get keyboard size and loctaion
@@ -198,7 +200,7 @@ HPGrowingTextViewDelegate>
 	[UIView commitAnimations];
 }
 
--(void) keyboardWillHide:(NSNotification *)note{
+- (void)keyboardWillHide:(NSNotification *)note{
 //    _commentBox.rightView = _commentButton;
     
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
@@ -254,7 +256,11 @@ HPGrowingTextViewDelegate>
             self.dataModel = response;
         }
         
-        [self updateTableView:requestType];
+        double delayInSeconds = 1.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self updateTableView:requestType];
+        });
     } failure:^(ResponseError *error) {
         DLog(@"error:%@", error.message);
         if (self.isVisible) {
@@ -271,8 +277,7 @@ HPGrowingTextViewDelegate>
     
     SessionManager *sessionManager = [SessionManager sharedManager];
     [sessionManager requsetToken:self success:^(NSString *token) {
-        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:token, @"token",
-                                    contentId, @"content_id", comment, @"content", nil];
+        NSDictionary *parameters = @{@"token": token, @"content_id": contentId, @"content": comment};
         
         [[NNHttpClient sharedClient] postAtPath:kPathPublishComment parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -280,10 +285,7 @@ HPGrowingTextViewDelegate>
             [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_articleInfo.commentNum].description forState:UIControlStateNormal];
             _commentBox.text = @"";
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView triggerPullToRefresh];
-            });
-            
+            [self.tableView triggerPullToRefresh];
         } failure:^(ResponseError *error) {
             DLog(@"error:%@", error.message);
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -304,6 +306,7 @@ HPGrowingTextViewDelegate>
         return;
     }
     
+    [self.commentBox.textView resignFirstResponder];
     [self publishComment:_commentBox.text withContentId:_articleInfo.contentId];
 }
 
