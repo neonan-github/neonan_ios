@@ -35,6 +35,8 @@ static const CGFloat kThumbNailRatio = 320.f / 185.f;
         self.selectionGradientEndColor = HEXCOLOR(0x1e1e1e);
         
         self.thumbnail = self.imageView;
+        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.imageView.clipsToBounds = YES;
         
         UIImageView *tagImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
         self.tagImageView = tagImageView;
