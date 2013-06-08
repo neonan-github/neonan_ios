@@ -23,7 +23,7 @@
         NSRange range = [URLString rangeOfString:@".(?:jpg|gif|png)_\\d+$" options:NSRegularExpressionSearch];
         if (range.location != NSNotFound) {
             NSString *suffix = [URLString substringWithRange:range];
-            DLog(@"image url suffix: %@", suffix);
+//            DLog(@"image url suffix: %@", suffix);
             
             NSString *sizeInfo = [suffix substringWithRange:[suffix rangeOfString:@"d+$" options:NSRegularExpressionSearch]];
             if (sizeInfo.integerValue > 320) {

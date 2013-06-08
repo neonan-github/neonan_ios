@@ -41,7 +41,7 @@ NSUInteger NNTotalMemory () {
                           vm_stat.wire_count) * pagesize;
     natural_t mem_free = vm_stat.free_count * pagesize;
     natural_t mem_total = mem_used + mem_free;
-    DLog(@"used: %u free: %u total: %u", mem_used, mem_free, mem_total);
+//    DLog(@"used: %u free: %u total: %u", mem_used, mem_free, mem_total);
     
     return mem_total;
 }

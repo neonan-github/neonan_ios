@@ -21,13 +21,14 @@
 #import <KKGridView.h>
 #import <TTTAttributedLabel.h>
 #import <UIImageView+WebCache.h>
-#import <MBProgressHUD.h>
+#import <SVPullToRefresh.h>
 
 static const NSInteger kPageCount = 6;
 static const NSInteger kItemPerPageCount = 6;
 
 static const NSInteger kTagHeaderImageView = 1000;
 static const NSInteger kTagHeaderLabel = 1001;
+static const NSInteger kTagHeaderBottomLine = 1002;
 
 static NSString *const kHeaderBottomLineName = @"bottomLine";
 static NSString *const kLastUpdateKey = @"home_last_update";
@@ -73,8 +74,7 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     self.swipeView.dataSource = self;
     self.swipeView.delegate = self;
-    
-    self.currentPageIndex = self.swipeView.currentPage;
+    [self.swipeView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -97,10 +97,10 @@ KKGridViewDataSource, KKGridViewDelegate>
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    NSDate *lastUpdateDate = [NSDate dateWithTimeIntervalSince1970:[UserDefaults integerForKey:kLastUpdateKey]];
-    if (!self.slideShowModel || !self.listDataModel ||
-        [[NSDate date] timeIntervalSinceDate:lastUpdateDate] > 10 * kMinuteSeconds) {
-        [self requestData];
+    [self.swipeView scrollToItemAtIndex:self.currentPageIndex duration:0];
+    
+    if (!self.slideShowModel || !self.listDataModel) {
+        [self refreshAfterDelay:0.5];
     } else {
         KKGridView *currentPageView = ((KKGridView *)[self.swipeView itemViewAtIndex:self.currentPageIndex]);
         [currentPageView reloadData];
@@ -125,6 +125,11 @@ KKGridViewDataSource, KKGridViewDelegate>
         gridView.cellPadding = CGSizeMake(10, 10);
         gridView.gridHeaderView = [self createHeaderView];
         gridView.gridFooterView = [self createFooterView];
+        
+        [gridView addPullToRefreshWithActionHandler:^{
+            [self requestData];
+        }];
+        gridView.pullToRefreshView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
     }
     
     KKGridView *currentPageView = ((KKGridView *)[swipeView itemViewAtIndex:self.currentPageIndex]);
@@ -132,15 +137,14 @@ KKGridViewDataSource, KKGridViewDelegate>
     gridView.tag = index;
     gridView.gridHeaderView.tag = index;
     gridView.contentOffset = currentPageView.contentOffset;
-    
-    CALayer *headerBottomLineLayer = [UIHelper layerWithName:kHeaderBottomLineName
-                                                      inView:[gridView.gridHeaderView viewWithTag:kTagHeaderLabel]];
-    CGRect frame = headerBottomLineLayer.frame;
-    frame.size.width = 50 * (index + 1);
-    headerBottomLineLayer.frame = frame;
+    [gridView reloadData];
     
     [self fillDataInHeaderView:gridView.gridHeaderView];
-    [gridView reloadData];
+    
+    UIView *headerBottomLineView = [gridView.gridHeaderView viewWithTag:kTagHeaderBottomLine];
+    CGRect frame = headerBottomLineView.frame;
+    frame.size.width = 50 * (index + 1);
+    headerBottomLineView.frame = frame;
     
     return gridView;
 }
@@ -213,16 +217,15 @@ KKGridViewDataSource, KKGridViewDelegate>
 
 #pragma mark - Private Request methods
 
-- (void)requestForSlideShow:(NSString *)channel success:(void (^)())success failure:(void (^)())failure {
+- (void)requestForSlideShow:(NSString *)channel success:(void (^)(MainSlideShowModel *model))success failure:(void (^)())failure {
     NSDictionary *parameters = @{@"channel": channel, @"count": @(6)};
     
     [[NNHttpClient sharedClient] getAtPath:kPathSlideShow
                                 parameters:parameters
                              responseClass:[MainSlideShowModel class]
                                    success:^(id<Jsonable> response) {
-                                       self.slideShowModel = response;
                                        if (success) {
-                                           success();
+                                           success(response);
                                        }
                                    }
                                    failure:^(ResponseError *error) {
@@ -233,7 +236,7 @@ KKGridViewDataSource, KKGridViewDelegate>
                                    }];
 }
 
-- (void)requestForList:(NSString *)channel success:(void (^)())success failure:(void (^)())failure {
+- (void)requestForList:(NSString *)channel success:(void (^)(CommonListModel *model))success failure:(void (^)())failure {
     NSDictionary *parameters = @{@"channel": channel, @"sort_type": @"new", @"count": @(36),
                                  @"offset": @(0)};
     
@@ -241,9 +244,8 @@ KKGridViewDataSource, KKGridViewDelegate>
                                 parameters:parameters
                              responseClass:[CommonListModel class]
                                    success:^(id<Jsonable> response) {
-                                       self.listDataModel = response;
                                        if (success) {
-                                           success();
+                                           success(response);
                                        }
                                    }
                                    failure:^(ResponseError *error) {
@@ -255,13 +257,17 @@ KKGridViewDataSource, KKGridViewDelegate>
 }
 
 - (void)requestData {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.swipeView.scrollEnabled = NO;
+    
+    __block MainSlideShowModel *slideShowModel = nil;
+    __block CommonListModel *listDataModel = nil;
     
     void (^done)() = ^ {
         double delayInSeconds = 0.5;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+            KKGridView *gridView = (KKGridView *)[self.swipeView itemViewAtIndex:self.currentPageIndex];
+            [gridView.pullToRefreshView stopAnimating];
             
             [self.swipeView reloadItemAtIndex:self.currentPageIndex];
             self.swipeView.scrollEnabled = YES;
@@ -269,9 +275,12 @@ KKGridViewDataSource, KKGridViewDelegate>
     };
     
     void (^success)() = ^{
-        if (self.listDataModel && self.slideShowModel) {
+        if (listDataModel && slideShowModel) {
             [UserDefaults setInteger:[[NSDate date] timeIntervalSince1970] forKey:kLastUpdateKey];
             [UserDefaults synchronize];
+            
+            self.listDataModel = listDataModel;
+            self.slideShowModel = slideShowModel;
             
             if (self.visible) {
                 done();
@@ -280,7 +289,7 @@ KKGridViewDataSource, KKGridViewDelegate>
     };
     
     void (^failure)() = ^{
-        if (self.responseError && (!self.listDataModel || !self.slideShowModel)) {
+        if (self.responseError && (!listDataModel || !slideShowModel)) {
             self.listDataModel = nil;
             self.slideShowModel = nil;
             
@@ -295,7 +304,8 @@ KKGridViewDataSource, KKGridViewDelegate>
     };
 
     [self requestForSlideShow:@"home"
-                      success:^{
+                      success:^(MainSlideShowModel *model){
+                          slideShowModel = model;
                           success();
                       }
                       failure:^{
@@ -303,7 +313,8 @@ KKGridViewDataSource, KKGridViewDelegate>
                       }];
     
     [self requestForList:@"home"
-                 success:^{
+                 success:^(CommonListModel *model){
+                     listDataModel = model;
                      success();
                  }
                  failure:^{
@@ -332,14 +343,12 @@ KKGridViewDataSource, KKGridViewDelegate>
     label.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
     label.backgroundColor = RGBA(0, 0, 0, 0.5);
     label.tag = kTagHeaderLabel;
-    
-    CALayer *bottomLineLayer = [CALayer layer];
-    bottomLineLayer.name = kHeaderBottomLineName;
-    bottomLineLayer.frame = CGRectMake(0, 26, 50, 2);
-    bottomLineLayer.backgroundColor = HEXCOLOR(0x0096ff).CGColor;
-    [label.layer addSublayer:bottomLineLayer];
-    
     [headerView addSubview:label];
+    
+    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(label.x, label.y + 26, 50, 2)];
+    bottomLineView.tag = kTagHeaderBottomLine;
+    bottomLineView.backgroundColor = HEXCOLOR(0x0096ff);
+    [headerView addSubview:bottomLineView];
     
     return headerView;
 }
@@ -363,6 +372,18 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     TTTAttributedLabel *label = (TTTAttributedLabel *)[headerView viewWithTag:kTagHeaderLabel];
     label.text = model.title;
+}
+
+- (void)refreshAfterDelay:(double)seconds {
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        KKGridView *currentPageView = ((KKGridView *)[self.swipeView itemViewAtIndex:self.currentPageIndex]);
+        if (currentPageView) {
+            [currentPageView triggerPullToRefresh];
+        } else {
+            [self refreshAfterDelay:0.5];
+        }
+    });
 }
 
 @end

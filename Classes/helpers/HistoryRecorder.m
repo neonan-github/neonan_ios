@@ -60,7 +60,7 @@ static NSString *const kTypeKey = @"contentType";
     [rs close];
     [db close];
     
-    DLog(@"sql:%@ %d", sql, ret);
+//    DLog(@"sql:%@ %d", sql, ret);
     
     return ret;
 }
