@@ -8,7 +8,7 @@
 
 #import "MainController.h"
 #import "NNNavigationController.h"
-#import "GalleryDetailController.h"
+#import "GalleryDetailViewController.h"
 #import "ArticleDetailViewController.h"
 #import "VideoPlayViewController.h"
 #import "GridListController.h"
@@ -735,7 +735,7 @@ headerView = _headerView;
             break;
             
         case ContentTypeSlide:
-            controller = [[GalleryDetailController alloc] init];
+            controller = [[GalleryDetailViewController alloc] init];
             [controller setContentType:[dataItem contentType]];
             [controller setContentId:[dataItem contentId]];
             [controller setSortType:_type];

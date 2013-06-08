@@ -12,7 +12,7 @@
 #import "MainController.h"
 #import "ArticleDetailViewController.h"
 #import "VideoPlayViewController.h"
-#import "GalleryDetailController.h"
+#import "GalleryDetailViewController.h"
 
 #import "LeftMenuViewController.h"
 #import "RightMenuViewController.h"
@@ -166,7 +166,7 @@
             break;
             
         case ContentTypeSlide:
-            controller = [[GalleryDetailController alloc] init];
+            controller = [[GalleryDetailViewController alloc] init];
             [controller setContentType:[dataItem contentType]];
             [controller setContentId:[dataItem contentId]];
             [controller setContentTitle:[dataItem title]];

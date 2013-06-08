@@ -10,7 +10,7 @@
 #import "SlideShowView.h"
 #import "FoldableTextBox.h"
 
-@interface GalleryDetailController : NNViewController
+@interface GalleryDetailViewController : NNViewController
 
 @property (assign, nonatomic) SortType sortType;
 @property (copy, nonatomic) NSString *channel;

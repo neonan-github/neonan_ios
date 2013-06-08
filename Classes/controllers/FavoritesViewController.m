@@ -7,7 +7,7 @@
 //
 
 #import "FavoritesViewController.h"
-#import "GalleryDetailController.h"
+#import "GalleryDetailViewController.h"
 #import "ArticleDetailViewController.h"
 #import "VideoPlayViewController.h"
 
@@ -221,7 +221,7 @@ static NSString *const kChannel = @"fav";
             break;
             
         case ContentTypeSlide:
-            controller = [[GalleryDetailController alloc] init];
+            controller = [[GalleryDetailViewController alloc] init];
             [controller setContentType:[dataItem contentType]];
             [controller setContentId:[dataItem contentId]];
             [controller setChannel:kChannel];

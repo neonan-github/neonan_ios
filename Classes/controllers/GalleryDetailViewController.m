@@ -6,7 +6,7 @@
 //  Copyright (c) 2012年 neonan. All rights reserved.
 //
 
-#import "GalleryDetailController.h"
+#import "GalleryDetailViewController.h"
 #import "NNNavigationController.h"
 
 #import "SlideShowDetailModel.h"
@@ -29,7 +29,7 @@
 static const NSUInteger kTagSSImageView = 1000;
 static const NSUInteger kTagSSprogressView = 1001;
 
-@interface GalleryDetailController () <SlideShowViewDataSource, SlideShowViewDelegate,
+@interface GalleryDetailViewController () <SlideShowViewDataSource, SlideShowViewDelegate,
 UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
 
 @property (nonatomic, weak) MarqueeLabel *titleLabel;
@@ -59,7 +59,7 @@ UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
 - (void)updateData;
 @end
 
-@implementation GalleryDetailController
+@implementation GalleryDetailViewController
 @synthesize moreActionView = _moreActionView;
 
 - (void)viewDidLoad {
@@ -431,7 +431,7 @@ UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
     record.contentId = _contentId;
     [[HistoryRecorder sharedRecorder] saveRecord:record];
     
-    __weak GalleryDetailController *weakSelf = self;
+    __weak GalleryDetailViewController *weakSelf = self;
     [EncourageHelper check:_contentId contentType:_contentType afterDelay:5
                     should:^BOOL{
                         return [[contentId description] isEqualToString:[_contentId description]] &&

@@ -8,7 +8,7 @@
 
 #import "HomeViewController.h"
 #import "ArticleDetailViewController.h"
-#import "GalleryDetailController.h"
+#import "GalleryDetailViewController.h"
 #import "VideoPlayViewController.h"
 
 #import "NNButton.h"
