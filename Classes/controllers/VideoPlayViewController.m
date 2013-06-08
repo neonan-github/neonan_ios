@@ -77,6 +77,7 @@
                        success:nil];
         
         [self parseVideoUrl:url done:^(NSString *newUrl) {
+            DLog(@"new url:%@", newUrl);
             NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:newUrl]
                                                      cachePolicy:NSURLRequestReloadIgnoringCacheData
                                                  timeoutInterval:20];
@@ -132,7 +133,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [MBProgressHUD hideHUDForView:self.webView animated:YES];
     
-    [self performSelector:@selector(autoPlay) withObject:nil afterDelay:1];
+    [self autoPlayAfterDelay:1];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -182,10 +183,11 @@
     static NSString *tudou1 = @"http://www.tudou.com/v/";
     static NSString *tudou1_1 = @"http://www.tudou.com/programs/view/";
     static NSString *tudou2 = @"http://www.tudou.com/programs/view/html5embed.action?code=";
-    static NSString *youku1 = @"http://player.youku.com/player.php/sid/";
+    static NSString *youku1 = @"http://player.youku.com/player.php/.*sid/";
     static NSString *youku1_1 = @"http://v.youku.com/v_show/id_";
     static NSString *youku2 = @"http://player.youku.com/embed/";
     
+    NSRange range;
     
     if (url == nil || url.length == 0) {
         
@@ -199,10 +201,10 @@
         if (location < url.length && location > tudou1_1.length) {
             done([NSString stringWithFormat:@"%@%@", tudou2, [url substringWithRange:NSMakeRange(tudou1_1.length, location - tudou1_1.length)]]);
         }
-    } else if ([url rangeOfString:youku1].location == 0) {
-        int location = [url rangeOfString:@"/" options:NSCaseInsensitiveSearch range:NSMakeRange(youku1.length, url.length - youku1.length)].location;
-        if (location < url.length && location > youku1.length) {
-            done([NSString stringWithFormat:@"%@%@", youku2, [url substringWithRange:NSMakeRange(youku1.length, location - youku1.length)]]);
+    } else if ((range = [url rangeOfString:youku1 options:NSRegularExpressionSearch]).location == 0) {
+        int location = [url rangeOfString:@"/" options:NSCaseInsensitiveSearch range:NSMakeRange(range.length, url.length - range.length)].location;
+        if (location < url.length && location > range.length) {
+            done([NSString stringWithFormat:@"%@%@", youku2, [url substringWithRange:NSMakeRange(range.length, location - range.length)]]);
         }
     } else if ([url rangeOfString:youku1_1].location == 0) {
         int location = [url rangeOfString:@"." options:NSCaseInsensitiveSearch range:NSMakeRange(youku1_1.length, url.length - youku1_1.length)].location;
@@ -263,9 +265,16 @@
     return button;
 }
 
-- (void)autoPlay {
-    UIButton *playButton = [self findButtonInView:_webView];
-    [playButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+- (void)autoPlayAfterDelay:(double)seconds {
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(seconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        UIButton *playButton = [self findButtonInView:_webView];
+        if (playButton) {
+            [playButton sendActionsForControlEvents:UIControlEventTouchUpInside];
+        } else {
+            [self autoPlayAfterDelay:0.5];
+        }
+    });
 }
 
 - (void)playbackStateDidChange:(NSNotification *)note {
