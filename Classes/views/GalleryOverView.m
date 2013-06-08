@@ -42,9 +42,12 @@
 }
 
 - (void)setExpanded:(BOOL)expanded animated:(BOOL)animated {
+    self.textView.scrollEnabled = expanded;
+    [self.textView setContentOffset:CGPointMake(0, 0) animated:NO];
+    
     void (^block)() = ^{
         self.frame = CGRectMake(0, 0, self.width, expanded ? self.superview.height : 38);
-        self.textView.frame = CGRectMake(0, 0, self.width - (expanded ? 0 : 87), expanded ? 120 : 25);
+        self.textView.frame = CGRectMake(0, 2, self.width - (expanded ? 0 : 87), expanded ? 120 : 23);
     };
     
     if (animated) {
@@ -107,10 +110,9 @@
     }];
     self.tmpView = nil;
     
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, self.width - (self.expanded ? 0 : 87), self.expanded ? 120 : 25)];
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 2, self.width - (self.expanded ? 0 : 87), self.expanded ? 120 : 23)];
     self.textView = textView;
-    textView.userInteractionEnabled = NO;
-    textView.contentInset = UIEdgeInsetsMake(2, 0, 0, 0);
+    textView.editable = NO;
     textView.font = [UIFont fontWithName:@"Heiti SC" size:15];
     textView.textColor = [UIColor whiteColor];
     textView.backgroundColor = [UIColor clearColor];
