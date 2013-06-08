@@ -19,6 +19,8 @@
 #import <UIImageView+WebCache.h>
 #import <UIAlertView+Blocks.h>
 
+static NSString *const kSidePanelStateKey = @"state";
+
 @interface RightMenuViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarView;
@@ -60,10 +62,14 @@
                       forState:UIControlStateHighlighted];
     
     [self updateStatus:[[SessionManager sharedManager] canAutoLogin]];
+    
+    [self.sidePanelController addObserver:self forKeyPath:kSidePanelStateKey options:NSKeyValueObservingOptionInitial context:NULL];
 }
 
 - (void)cleanUp {
     [super cleanUp];
+    
+    [self.sidePanelController removeObserver:self forKeyPath:kSidePanelStateKey];
     
     self.avatarView = nil;
     self.nameLabel = nil;
@@ -76,12 +82,6 @@
     self.tableView = nil;
     
     _menuTexts = nil;
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    DLog(@"viewDidAppear");
 }
 
 #pragma mark － UITableViewDataSource methods
@@ -214,6 +214,17 @@
                                                 
                                             }];
     
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:kSidePanelStateKey]) {
+        JASidePanelState state = [[object valueForKeyPath:kSidePanelStateKey] integerValue];
+        if (state == JASidePanelRightVisible) {
+            [self updateStatus:[[SessionManager sharedManager] canAutoLogin]];
+        }
+    }
 }
 
 @end
