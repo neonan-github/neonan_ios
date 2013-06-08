@@ -35,7 +35,7 @@
     
     self.view.backgroundColor = DarkThemeColor;
     
-    _descriptionView.text = [NSString stringWithFormat:_descriptionView.text, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+    _descriptionView.text = [NSString stringWithFormat:_descriptionView.text, [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
     _rightLabel.text = @"牛朝（上海）信息科技有限公司 版权所有\nCopyright © 2012 牛男NEO.com Inc.\nAll Rights Reserved.";
 }
 
