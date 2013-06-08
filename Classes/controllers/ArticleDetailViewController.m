@@ -235,6 +235,7 @@ static NSString * const kDirectionRight = @"1";
 #pragma mark - Private Request methods
 
 - (void)fetchDetailInfo:(void (^)(NSString *token))requestBlock {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:NO];
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     if ([[SessionManager sharedManager] canAutoLogin]) {
@@ -323,7 +324,7 @@ static NSString * const kDirectionRight = @"1";
                                     contentId, @"content_id", comment, @"content", nil];
         
         [[NNHttpClient sharedClient] postAtPath:kPathPublishComment parameters:parameters responseClass:nil success:^(id<Jsonable> response) {
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             _dataModel.commentNum++;
             [_commentBox.countButton setTitle:[NSNumber numberWithInteger:_dataModel.commentNum].description forState:UIControlStateNormal];
             _commentBox.countButton.enabled = _dataModel.commentNum > 0;
@@ -332,7 +333,7 @@ static NSString * const kDirectionRight = @"1";
             [EncourageView displayScore:EncourageScoreComment at:CGPointMake(CompatibleScreenWidth / 2, 100)];
         } failure:^(ResponseError *error) {
             DLog(@"error:%@", error.message);
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             if (self.isVisible) {
                 [UIHelper alertWithMessage:error.message];
             }

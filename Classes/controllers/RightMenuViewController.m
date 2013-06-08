@@ -187,7 +187,7 @@ static NSString *const kSidePanelStateKey = @"state";
     self.emblemView1.hidden = !loggined;
     
     CGRect frame = self.powerButton.frame;
-    frame.size.width = loggined ? 30 : 80;
+    frame.size.width = loggined ? 29 : 80;
     frame.origin.x = 315 - frame.size.width;
     self.powerButton.frame = frame;
     
