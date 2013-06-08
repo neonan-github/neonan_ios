@@ -63,6 +63,8 @@
 #define HideNetworkActivityIndicator()      [UIApplication sharedApplication].networkActivityIndicatorVisible = NO
 #define NetworkActivityIndicatorVisible(x)  [UIApplication sharedApplication].networkActivityIndicatorVisible = x
 
+#define _(s) NSLocalizedString(@#s, nil)
+
 #ifdef DEBUG
 #   define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #else
@@ -75,3 +77,6 @@
 #   define ULog(...)
 #endif
 
+FOUNDATION_EXPORT NSUInteger NNUsedMemory(void);
+FOUNDATION_EXPORT NSUInteger NNFreeMemory(void);
+FOUNDATION_EXPORT NSUInteger NNTotalMemory(void);

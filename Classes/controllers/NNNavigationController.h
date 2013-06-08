@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface NNNavigationController : UINavigationController
-@property (assign, nonatomic) BOOL logoHidden;
+//@property (assign, nonatomic) BOOL logoHidden;
 @property (assign, nonatomic) BOOL autoRotate;
 @end

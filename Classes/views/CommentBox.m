@@ -15,8 +15,6 @@
 @property (unsafe_unretained, nonatomic) UIImageView *entryImageView;
 @property (assign, nonatomic, getter = isActive) BOOL active;
 
-- (UIButton *)setUpDoneButton;
-- (void)alignParentCenter:(UIView *)view;
 @end
 
 @implementation CommentBox
@@ -24,8 +22,9 @@
 @synthesize rightView = _rightView;
 
 - (void)setUp:(CGRect)frame {
-    HPGrowingTextView *textView = self.textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(48, 3, 198, 24)];
-    textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    HPGrowingTextView *textView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(50, 7, 208, 30)];
+    self.textView = textView;
+    textView.contentInset = UIEdgeInsetsMake(0, 5, 0, 0);
     textView.minNumberOfLines = 1;
     textView.maxNumberOfLines = 4;
     textView.returnKeyType = UIReturnKeyDefault;
@@ -33,41 +32,45 @@
     textView.font = [UIFont systemFontOfSize:12];
     textView.delegate = self;
     textView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    textView.backgroundColor = [UIColor whiteColor];
+    textView.backgroundColor = [UIColor clearColor];
     
-    UIImageView *placeHolderView = self.placeHolderView = [[UIImageView alloc] initWithFrame:CGRectMake(5, (textView.frame.size.height - 16) / 2 , 56, 16)];
+    UIImageView *placeHolderView = [[UIImageView alloc] initWithFrame:CGRectMake(5, (textView.frame.size.height - 16) / 2 , 56, 16)];
+    self.placeHolderView = placeHolderView;
     NSString *fileLocation = [[NSBundle mainBundle] pathForResource:@"img_comment_placeholder" ofType:@"png"];
     NSData *imageData = [NSData dataWithContentsOfFile:fileLocation];
     placeHolderView.image = [UIImage imageWithData:imageData];
     [textView addSubview:placeHolderView];
     
-    UIImage *rawEntryBackground = [UIImage imageFromFile:@"bg_comment_input.png"];
-    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:8 topCapHeight:12];
+    UIImage *rawEntryBackground = [UIImage imageNamed:@"bg_comment_input"];
+    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:21 topCapHeight:15];
     UIImageView *entryImageView = self.entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-    entryImageView.frame = CGRectMake(47, 0, 248, frame.size.height);
+    entryImageView.frame = CGRectMake(50, 7, 208, 30);
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     UIImage *rawBackground = [UIImage imageFromFile:@"bg_comment_box.png"];
-    UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+    UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:10 topCapHeight:22];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
     imageView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
     imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     // view hierachy
     [self addSubview:imageView];
-    [self addSubview:textView];
     [self addSubview:entryImageView];
+    [self addSubview:textView];
     
-    UIButton *doneButton = self.doneButton = [self setUpDoneButton];
+    UIButton *doneButton = [self setUpDoneButton];
+    self.doneButton = doneButton;
     doneButton.enabled = NO;
     [self addSubview:doneButton];
     
-    UIButton *countButton = self.countButton = [[UIButton alloc] initWithFrame:CGRectMake(10, (frame.size.height - 22) / 2, 28, 22)];
+    UIButton *countButton = [[UIButton alloc] initWithFrame:CGRectMake(4, (frame.size.height - 40) / 2, 40, 40)];
+    self.countButton =countButton;
     [countButton setBackgroundImage:[UIImage imageFromFile:@"bg_comment_count.png"] forState:UIControlStateNormal];
     countButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 4, 0);
-    countButton.titleLabel.font = [UIFont systemFontOfSize:9];
+    countButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
     countButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [countButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [countButton setTitleShadowColor:RGBA(0, 0, 0, 0.75) forState:UIControlStateNormal];
+    [countButton setTitleColor:HEXCOLOR(0x555555) forState:UIControlStateNormal];
     [self addSubview:countButton];
     
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -124,7 +127,7 @@
         }
         
         CGRect frame = self.textView.frame;
-        CGFloat textViewWidth = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x - /*gap*/5;
+        CGFloat textViewWidth = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x;
         frame.size.width = textViewWidth;
         self.textView.frame = frame;
     }
@@ -136,14 +139,15 @@
     [super layoutSubviews];
     
     CGRect frame = self.textView.frame;
-    CGFloat textViewWidth = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x - /*gap*/5;
+    CGFloat textViewWidth = (_rightView ? _rightView : _doneButton).frame.origin.x - frame.origin.x;
     frame.size.width = textViewWidth;
     self.textView.frame = frame;
     
     frame = self.entryImageView.frame;
-    frame.size.width = textViewWidth + 8;
+    frame.size.width = textViewWidth;
     self.entryImageView.frame = frame;
     
+    [self alignParentCenter:self.entryImageView];
     [self alignParentCenter:_countButton];
     [self alignParentCenter:_rightView];
     [self alignParentCenter:_doneButton];
@@ -161,8 +165,7 @@
 
 #pragma mark - HPGrowingTextViewDelegate methods
 
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
-{
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height {
     float diff = (growingTextView.frame.size.height - height);
     
 	CGRect r = self.frame;
@@ -179,24 +182,16 @@
 #pragma mark - Private methods
 
 - (UIButton *)setUpDoneButton {
-//   UIImage *sendBtnBackground = [[UIImage imageFromFile:@"bg_comment_commit_normal.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-//   UIImage *selectedSendBtnBackground = [[UIImage imageFromFile:@"bg_comment_commit_highlighted.png"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-    
-    UIImage* buttonImage = [[UIImage imageFromFile:@"bg_bar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0.0];
-    
-    // Create a custom button
     UIButton* doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [doneBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [doneBtn setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateHighlighted];
-    [doneBtn setTitleColor:HEXCOLOR(0x16a1e8) forState:UIControlStateSelected];
-    [doneBtn setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    doneBtn.frame = CGRectMake(self.frame.size.width - 54, 7, 44, 24);
+    doneBtn.frame = CGRectMake(self.width - 64, 0, 64, self.height);
     doneBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    [doneBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 5)];
+    
+    [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [doneBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+    [doneBtn setTitleColor:HEXCOLOR(0x0096ff) forState:UIControlStateHighlighted];
+    doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
     [doneBtn setTitle:@"发表" forState:UIControlStateNormal];
-        
-//   [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
-//   doneBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
-    doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12.0f];
     
     [doneBtn addTarget:self action:@selector(resignTextView) forControlEvents:UIControlEventTouchUpInside];
 //   [doneBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];

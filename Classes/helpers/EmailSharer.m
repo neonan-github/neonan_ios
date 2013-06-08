@@ -9,7 +9,7 @@
 #import "EmailSharer.h"
 #import <MessageUI/MessageUI.h>
 
-#import "CustomNavigationBar.h"
+#import "NNNavigationBar.h"
 
 @interface EmailSharer () <MFMailComposeViewControllerDelegate>
 
@@ -40,8 +40,11 @@
         self.shareFailureBlock = failure;
         
         MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
-        CustomNavigationBar *navigationBar = [[CustomNavigationBar alloc] init];
-        [navigationBar setBackgroundWith:[UIImage imageFromFile:@"bg_navigation_bar.png"]];
+        NNNavigationBar *navigationBar = [[NNNavigationBar alloc] init];
+        navigationBar.topLineColor = RGB(32, 32, 32);
+        navigationBar.bottomLineColor = RGB(32, 32, 32);
+        navigationBar.gradientStartColor = RGB(32, 32, 32);
+        navigationBar.gradientEndColor = RGB(32, 32, 32);
         navigationBar.tintColor = RGB(32, 32, 32);
         navigationBar.navigationController = mailController;
         [mailController setValue:navigationBar forKeyPath:@"navigationBar"];

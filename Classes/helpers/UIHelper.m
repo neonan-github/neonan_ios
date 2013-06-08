@@ -67,7 +67,7 @@
 }
 
 + (UIButton *)createBackButton:(UINavigationBar *)navigationBar {
-    UIButton *button = [UIHelper createLeftBarButton:@"icon_back_normal.png"];
+    UIButton *button = [UIHelper createLeftBarButton:@"icon_nav_back.png"];
     [button addTarget:navigationBar action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
     
     return button;
@@ -101,6 +101,40 @@
     }
     
     return button;
+}
+
++ (UIView *)createLogoView {
+    UIView *logoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, NavBarHeight)];
+    
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 107, 25)];
+    imgView.center = logoView.center;
+    imgView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin |
+    UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
+    imgView.image = [UIImage imageFromFile:@"img_logo.png"];
+    [logoView addSubview:imgView];
+    
+    return logoView;
+}
+
++ (MarqueeLabel *)createNavMarqueeLabel {
+    MarqueeLabel *titleLabel = [[MarqueeLabel alloc] initWithFrame:CGRectMake(0, 0, 240, 20) duration:5 andFadeLength:8];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont systemFontOfSize:16];
+    titleLabel.animationDelay = 0.5;
+    titleLabel.animationCurve = UIViewAnimationCurveLinear;
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.marqueeType = MLContinuous;
+    [titleLabel performSelector:@selector(setTapToScroll:) withObject:@(YES) afterDelay:5]; // only auto scroll once
+    
+    return titleLabel;
+}
+
++ (UIView *)defaultAccessoryView {
+    UIView *accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_default_accessory.png"]];
+    accessoryView.width = 30;
+    accessoryView.height = 30;
+    
+    return accessoryView;
 }
 
 + (void)alertWithMessage:(NSString *)message {
@@ -167,6 +201,17 @@
 	animation.autoreverses = NO;
 
     return animation;
+}
+
++ (CALayer *)layerWithName:(NSString *)name inView:(UIView *)view {
+    for (CALayer *layer in [view.layer sublayers]) {
+        DLog(@"layer name: %@", layer.name);
+        if ([[layer name] isEqualToString:name]) {
+            return layer;
+        }
+    }
+        
+    return nil;
 }
 
 @end

@@ -46,7 +46,11 @@
     [super viewDidAppear:animated];
     
     [[PurchaseManager sharedManager] commitUnnotifiedInfo:^{
-        [self dismissModalViewControllerAnimated:NO];
+        [self dismissViewControllerAnimated:NO completion:^{
+            if (self.done) {
+                self.done();
+            }
+        }];
     }];
 }
 

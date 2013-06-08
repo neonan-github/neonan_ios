@@ -44,14 +44,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-//    self.title = @"授权";
+    self.title = @"授权";
     
     if (_showType == ShowTypePush) {
-        CustomNavigationBar *customNavigationBar = (CustomNavigationBar *)self.navigationController.navigationBar;
-        UIButton* backButton = [UIHelper createBackButton:customNavigationBar];
+        UIButton* backButton = [UIHelper createBackButton:self.navigationController.navigationBar];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     } else {
-        UIButton *cancelButton = [UIHelper createLeftBarButton:@"icon_close_normal.png"];
+        UIButton *cancelButton = [UIHelper createLeftBarButton:@"icon_nav_close.png"];
         [cancelButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     }

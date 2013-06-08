@@ -1,4 +1,5 @@
 //
+
 //  NeonanAppDelegate.m
 //  Neonan
 //
@@ -7,20 +8,29 @@
 //
 
 #import "NeonanAppDelegate.h"
-#import "MainController.h"
+
+#import "ArticleDetailViewController.h"
+#import "VideoPlayViewController.h"
+#import "GalleryDetailViewController.h"
+
+#import "LeftMenuViewController.h"
+#import "RightMenuViewController.h"
+#import "HomeViewController.h"
+
+#import "ChannelListViewController.h"
+
+#import "CommonListModel.h"
 
 #import "NNURLCache.h"
 #import "EncourageHelper.h"
-
-#import "ArticleDetailController.h"
-#import "VideoPlayController.h"
-#import "GalleryDetailController.h"
 
 #import "APService.h"
 //#import "Flurry.h"
 #import "MobClick.h"
 #import "Harpy.h"
 #import "MKStoreManager.h"
+
+#import "JASidePanelController.h"
 
 #import <AFNetworkActivityIndicatorManager.h>
 
@@ -39,13 +49,6 @@
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
-#ifndef DEBUG
-    // JPush
-    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeSound |
-                                                   UIRemoteNotificationTypeAlert)];
-    [APService setupWithOption:launchOptions];
-#endif
-    
     // http://www.iwangke.me/2012/06/14/tips_for_mkstorekit/
 #ifdef DEBUG
     [[MKStoreManager sharedManager] removeAllKeychainData];
@@ -54,20 +57,41 @@
     
     [self notifyServerOnActive];
     
-    self.navController = [[NNNavigationController alloc] init];
-    self.navController.logoHidden = NO;
-    self.window.rootViewController = self.navController;
-       
-    MainController *controller = [[MainController alloc] init];
-    controller.showSplash = YES;
-    [self.navController pushViewController:controller animated:NO];
+    NNContainerViewController *containerController = [[NNContainerViewController alloc] init];
+    containerController.viewControllers = [self createSubControllers];
+    self.containerController = containerController;
     
-//    NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-//    if (remoteNotif) {
-//        [self enterControllerByType:[remoteNotif objectForKey:@"content_type"] andId:[remoteNotif objectForKey:@"content_id"]];
-//    }
+    JASidePanelController *panelController = [[JASidePanelController alloc] init];
+    panelController.shouldDelegateAutorotateToVisiblePanel = YES;
+    panelController.recognizesPanGesture = NO;
+    panelController.leftFixedWidth = 200;
+    panelController.leftPanel = [[LeftMenuViewController alloc] init];
+    panelController.rightFixedWidth = 200;
+    panelController.rightPanel = [[RightMenuViewController alloc] init];
+    panelController.centerPanel = containerController;
     
+    self.window.rootViewController = panelController;
     [self.window makeKeyAndVisible];
+    
+#ifndef DEBUG
+    // JPush
+    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeSound |
+                                                   UIRemoteNotificationTypeAlert)];
+    [APService setupWithOption:launchOptions];
+#endif
+    
+    SplashViewController *splashViewController = self.splashViewController = [[SplashViewController alloc] init];
+    splashViewController.done = ^{
+        NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+        if (remoteNotif) {
+            DLog(@"remote notif: %@", remoteNotif);
+            [self whenNotificationArrive:remoteNotif];
+            application.applicationIconBadgeNumber = 0;
+        }
+        
+        self.splashViewController = nil;
+    };
+    [self.containerController presentModalViewController:splashViewController animated:NO];
     
     return YES;
 }
@@ -105,40 +129,78 @@
     [APService handleRemoteNotification:userInfo];
 #endif
     
-//    if (application.applicationState == UIApplicationStateActive) {
-//        return;
-//    }
-//    
-//    [self.navController popToRootViewControllerAnimated:NO];
-//    [self.navController dismissModalViewControllerAnimated:NO];
-//    
-//    NSLog(@"userInfo:%@", userInfo);
-//    [self enterControllerByType:[userInfo objectForKey:@"content_type"] andId:[userInfo objectForKey:@"content_id"]];
+    DLog(@"userInfo:%@", userInfo);
+    
+    if (application.applicationState != UIApplicationStateActive) {
+        [self whenNotificationArrive:userInfo];
+    }
+    
+    application.applicationIconBadgeNumber = 0;
+}
+
+#pragma mark - Public methods
+
+- (ContentType)judgeContentType:(id)item {
+    NSString *type = [item contentType];
+    if ([type isEqualToString:@"article"]) {
+        return ContentTypeArticle;
+    }
+    
+    if ([type isEqualToString:@"video"]) {
+        return ContentTypeVideo;
+    }
+    
+    return ContentTypeSlide;
+}
+
+- (void)navigationController:(UINavigationController *)navigationController pushViewControllerByType:(id)dataItem andChannel:(NSString *)channel {
+    id controller;
+    
+    switch ([self judgeContentType:dataItem]) {
+        case ContentTypeArticle:
+            controller = [[ArticleDetailViewController alloc] init];
+            [controller setContentId:[dataItem contentId]];
+            [controller setContentTitle:[dataItem title]];
+            [controller setChannel:channel];
+            break;
+            
+        case ContentTypeSlide:
+            controller = [[GalleryDetailViewController alloc] init];
+            [controller setContentType:[dataItem contentType]];
+            [controller setContentId:[dataItem contentId]];
+            [controller setContentTitle:[dataItem title]];
+            [controller setChannel:channel];
+            break;
+            
+        case ContentTypeVideo:
+            controller = [[VideoPlayViewController alloc] init];
+            [controller setContentId:[dataItem contentId]];
+            [controller setVideoUrl:[dataItem videoUrl]];
+            [controller setTitle:[dataItem title]];
+    }
+    
+    [navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Private methods
 
-- (void)enterControllerByType:(NSString *)contentType andId:(NSString *)contentId {
-    Class controllerClass;
-    if ([contentType isEqualToString:@"article"]) {
-        controllerClass = [ArticleDetailController class];
-    } else if ([contentType isEqualToString:@"video"]) {
-        controllerClass = [VideoPlayController class];
-    } else {
-        controllerClass = [GalleryDetailController class];
-    }
+- (NSArray *)createSubControllers {
+    NSMutableArray *subControllers = [NSMutableArray array];
     
-    id controller = [[controllerClass alloc] init];
-    [controller setContentId:contentId];
-    if ([controller respondsToSelector:@selector(setChannel:)]) {
-        [controller setChannel:@"home"];
-    }
+    HomeViewController *viewController0 = [[HomeViewController alloc] init];
+    [subControllers addObject:[[NNNavigationController alloc] initWithRootViewController:viewController0]];
     
-    if ([controller respondsToSelector:@selector(setContentType:)]) {
-        [controller setContentType:contentType];
-    }
+    NSArray *channels = @[@"women", @"know", @"play", @"video"];
+    NSArray *titles = @[@"女人", @"知道", @"爱玩", @"视频"];
+    [channels enumerateObjectsUsingBlock:^(NSString *channel, NSUInteger idx, BOOL *stop) {
+        ChannelListViewController *viewController = [[ChannelListViewController alloc] init];
+        viewController.channel = channel;
+        viewController.title = titles[idx];
+        
+        [subControllers addObject:[[NNNavigationController alloc] initWithRootViewController:viewController]];
+    }];
     
-    [self.navController pushViewController:controller animated:YES];
+    return [NSArray arrayWithArray:subControllers];
 }
 
 - (NSURLCache *)createURLCache {
@@ -161,6 +223,24 @@
             [EncourageHelper doEncourage:@{@"token": token, @"type_id": @(2)} success:nil];
         }];
     }
+}
+
+- (CommonItem *)parseNotifictionInfo:(NSDictionary *)info {
+    CommonItem *item = [[CommonItem alloc] init];
+    item.contentType = info[@"content_type"];
+    item.contentId = info[@"content_id"];
+    item.videoUrl = info[@"video_url"];
+    item.title = info[@"title"];
+    
+    return item;
+}
+
+- (void)whenNotificationArrive:(NSDictionary *)info {
+    [self.containerController dismissModalViewControllerAnimated:YES];
+    self.containerController.sidePanelController.centerPanel = self.containerController.sidePanelController.centerPanel;
+    
+    NNNavigationController *topNavController = (NNNavigationController *)self.containerController.currentViewController;
+    [self navigationController:topNavController pushViewControllerByType:[self parseNotifictionInfo:info] andChannel:nil];
 }
 
 @end

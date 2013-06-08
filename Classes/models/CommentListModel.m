@@ -42,7 +42,6 @@
     return [self formateDate:adjustedDate withDifference:timeDifference];
 }
 
-
 @end
 
 @implementation CommentListModel

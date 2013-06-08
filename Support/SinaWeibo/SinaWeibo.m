@@ -340,7 +340,7 @@
                 [_rootViewController.navigationController pushViewController:controller animated:YES];
             } else {
                 NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
-                navController.logoHidden = NO;
+//                navController.logoHidden = NO;
                 [_rootViewController presentModalViewController:navController animated:YES];
             }
             

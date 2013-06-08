@@ -65,4 +65,29 @@
     self.visible = NO;
 }
 
+#pragma mark - Side Panel Related
+
+- (void)showLeftPanel {
+    [self.sidePanelController toggleLeftPanel:nil];
+}
+
+- (void)showRightPanel {
+    [self.sidePanelController toggleRightPanel:nil];
+}
+
+#pragma mark - Rotation Related
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+// pre-iOS 6 support
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
 @end

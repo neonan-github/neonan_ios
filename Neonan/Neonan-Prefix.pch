@@ -17,6 +17,7 @@
     #import "NNViewController.h"
     #import "AppHelper.h"
     #import "UIHelper.h"
+    #import "URLHelper.h"
     #import "NeonanAppDelegate.h"
     #import "NNHttpClient.h"
     #import "SessionManager.h"

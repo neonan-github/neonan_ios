@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UserInfoModel : NSObject <Jsonable>
+@interface UserInfoModel : NSObject <Jsonable, NSCoding>
 
 @property (nonatomic, strong) NSString *uid;
 @property (nonatomic, strong) NSString *username;

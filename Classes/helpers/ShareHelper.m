@@ -8,7 +8,7 @@
 
 #import "ShareHelper.h"
 
-#import "ShareEditController.h"
+#import "ShareEditViewController.h"
 
 #import "SinaSharer.h"
 #import "TencentSharer.h"
@@ -68,7 +68,7 @@ static const NSUInteger kWCTimelineIndex = 4;
     
     [actionSheet addButtonWithTitle:@"取消"];
     [actionSheet setCancelButtonIndex:actionSheet.numberOfButtons - 1];
-    [actionSheet showInView:_rootViewController.view];
+    [actionSheet showInView:SharedApplication.keyWindow];
 }
 
 #pragma mark- UIActionSheetDelegate
@@ -91,14 +91,14 @@ static const NSUInteger kWCTimelineIndex = 4;
             [SVProgressHUD showErrorWithStatus:@"分享失败"];
         }];
     }  else {
-        ShareEditController *controller = [[ShareEditController alloc] init];
+        ShareEditViewController *controller = [[ShareEditViewController alloc] init];
         sharer.rootViewController = controller;
         
         controller.shareText = _shareText;
         controller.shareUrl = _shareUrl;
         controller.shareImage = _shareImage;
         controller.sharer = sharer;
-//        controller.title = [NSString stringWithFormat:@"分享到%@", sharer.name];
+        controller.title = [NSString stringWithFormat:@"分享到%@", sharer.name];
         [_rootViewController.navigationController pushViewController:controller animated:YES];
     }
 }

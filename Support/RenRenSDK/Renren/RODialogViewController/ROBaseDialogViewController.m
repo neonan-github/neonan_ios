@@ -9,7 +9,7 @@
 #import "ROBaseDialogViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ROUtility.h"
-#import "RenrenPay.h"
+//#import "RenrenPay.h"
 
 #define kPadding 10
 
