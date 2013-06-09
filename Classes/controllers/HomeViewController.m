@@ -290,9 +290,6 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     void (^failure)() = ^{
         if (self.responseError && (!listDataModel || !slideShowModel)) {
-            self.listDataModel = nil;
-            self.slideShowModel = nil;
-            
             if (self.visible) {
                 [UIHelper alertWithMessage:self.responseError.message];
                 
