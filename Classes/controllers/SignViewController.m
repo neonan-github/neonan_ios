@@ -17,7 +17,7 @@
 
 #import <SVProgressHUD.h>
 
-@interface SignViewController () <UITextFieldDelegate>
+@interface SignViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *flipView;
 
@@ -92,9 +92,10 @@
     self.checkBox.selected = self.checkBoxSelected;
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reset)];
+    tapGesture.delegate = self;
     [self.view addGestureRecognizer:tapGesture];
     
-    [self updateLayout:self.signType];
+    [self updateLayout:self.signType animated:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -177,6 +178,16 @@
     return YES;
 }
 
+#pragma mark - UIGestureRecognizerDelegate methods
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if ([touch.view isKindOfClass:[UIControl class]]) {
+        // we touched a button, slider, or other UIControl
+        return NO; // ignore the touch
+    }
+    return YES; // handle the touch
+}
+
 #pragma mark - Private Event Handle
 
 - (IBAction)onCheckBoxClicked:(id)sender {
@@ -188,7 +199,7 @@
     if (self.signType == SignTypeUp) {
         [self sign];
     } else {
-        [self updateLayout:SignTypeUp];
+        [self updateLayout:SignTypeUp animated:YES];
     }
 }
 
@@ -196,7 +207,7 @@
     if (self.signType == SignTypeIn) {
         [self sign];
     } else {
-        [self updateLayout:SignTypeIn];
+        [self updateLayout:SignTypeIn animated:YES];
     }
 }
 
@@ -212,12 +223,12 @@
     [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
 }
 
-- (void)updateLayout:(SignType)signType {
+- (void)updateLayout:(SignType)signType animated:(BOOL)animated {
     self.signType = signType;
     
     if (signType == SignTypeIn) {
         [self.flipView scrollRectToVisible:CGRectMake(CompatibleScreenWidth, 0, CompatibleScreenWidth, self.flipView.height)
-                                  animated:YES];
+                                  animated:animated];
         [UIView beginAnimations:nil context:NULL];
         self.signUpButton.frame = CGRectMake(-28, 295, 100, 34);
         self.signInButton.frame = CGRectMake(158, 295, 100, 34);
@@ -226,7 +237,7 @@
         [UIView commitAnimations];
     } else {
         [self.flipView scrollRectToVisible:CGRectMake(0, 0, CompatibleScreenWidth, self.flipView.height)
-                                  animated:YES];
+                                  animated:animated];
         [UIView beginAnimations:nil context:NULL];
         self.signUpButton.frame = CGRectMake(64, 295, 100, 34);
         self.signInButton.frame = CGRectMake(248, 295, 100, 34);
