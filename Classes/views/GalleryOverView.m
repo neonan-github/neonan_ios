@@ -44,6 +44,7 @@
 - (void)setExpanded:(BOOL)expanded animated:(BOOL)animated {
     self.textView.scrollEnabled = expanded;
     [self.textView setContentOffset:CGPointMake(0, 0) animated:NO];
+    [self.gridView setContentOffset:CGPointMake(0, 0) animated:NO];
     
     void (^block)() = ^{
         self.frame = CGRectMake(0, 0, self.width, expanded ? self.superview.height : 38);

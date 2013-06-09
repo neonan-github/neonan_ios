@@ -157,6 +157,7 @@
         [self.passwordField1 becomeFirstResponder];
     } else {
         [self reset];
+        [self sign];
     }
     
     return YES;
