@@ -226,6 +226,10 @@
 }
 
 - (CommonItem *)parseNotifictionInfo:(NSDictionary *)info {
+    if (!info[@"content_id"]) {
+        return nil;
+    }
+    
     CommonItem *item = [[CommonItem alloc] init];
     item.contentType = info[@"content_type"];
     item.contentId = info[@"content_id"];
@@ -236,11 +240,14 @@
 }
 
 - (void)whenNotificationArrive:(NSDictionary *)info {
-    [self.containerController dismissModalViewControllerAnimated:YES];
-    self.containerController.sidePanelController.centerPanel = self.containerController.sidePanelController.centerPanel;
-    
-    NNNavigationController *topNavController = (NNNavigationController *)self.containerController.currentViewController;
-    [self navigationController:topNavController pushViewControllerByType:[self parseNotifictionInfo:info] andChannel:nil];
+    CommonItem *item = [self parseNotifictionInfo:info];
+    if (item) {
+        [self.containerController dismissModalViewControllerAnimated:YES];
+        self.containerController.sidePanelController.centerPanel = self.containerController.sidePanelController.centerPanel;
+        
+        NNNavigationController *topNavController = (NNNavigationController *)self.containerController.currentViewController;
+        [self navigationController:topNavController pushViewControllerByType:item andChannel:nil];
+    }
 }
 
 @end
