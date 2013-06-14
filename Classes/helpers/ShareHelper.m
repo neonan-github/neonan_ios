@@ -15,6 +15,7 @@
 #import "RenRenSharer.h"
 #import "EmailSharer.h"
 #import "SmsSharer.h"
+#import "WeChatSharer.h"
 
 #import <SVProgressHUD.h>
 
@@ -51,11 +52,11 @@ static const NSUInteger kWCTimelineIndex = 4;
 }
 
 - (NSArray *)menuItems {
-    return @[@"新浪微博", @"腾讯微博", @"人人网", @"短信分享", @"电子邮件"];
+    return [WXApi isWXAppInstalled] ? @[@"新浪微博", @"腾讯微博", @"人人网", @"微信好友", @"微信朋友圈", @"短信分享", @"电子邮件"] : @[@"新浪微博", @"腾讯微博", @"人人网", @"短信分享", @"电子邮件"];
 }
 
 - (NSArray *)sharerClasses {
-    return @[[SinaSharer class], [TencentSharer class], [RenRenSharer class], [SmsSharer class], [EmailSharer class]];
+    return [WXApi isWXAppInstalled] ? @[[SinaSharer class], [TencentSharer class], [RenRenSharer class], [WeChatSharer class], [WeChatSharer class], [SmsSharer class], [EmailSharer class]] : @[[SinaSharer class], [TencentSharer class], [RenRenSharer class], [SmsSharer class], [EmailSharer class]];
 }
 
 - (void)showShareView {
@@ -81,7 +82,21 @@ static const NSUInteger kWCTimelineIndex = 4;
     Class sharerClass = self.sharerClasses[buttonIndex];
     NNSharer *sharer = [sharerClass performSelector:@selector(sharedSharer)];
     
-    if ([sharer isMemberOfClass:[SmsSharer class]] ||
+    if ([sharer isMemberOfClass:[WeChatSharer class]]) {
+        self.sharer = sharer;
+        ((WeChatSharer *)sharer).scene = buttonIndex == 3 ? WXSceneSession : WXSceneTimeline;
+        [SVProgressHUD showWithStatus:@"连接微信中……" maskType:SVProgressHUDMaskTypeClear];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [sharer shareText:self.shareText
+                        image:self.shareImage
+                          url:self.shareUrl success:^{
+                              [SVProgressHUD showSuccessWithStatus:@"分享成功"];
+                          } failure:^(NSError *error) {
+                              [SVProgressHUD showErrorWithStatus:@"分享失败"];
+                          }];
+        });
+    } else if ([sharer isMemberOfClass:[SmsSharer class]] ||
         [sharer isMemberOfClass:[EmailSharer class]]) {
         self.sharer = sharer;
         sharer.rootViewController = _rootViewController;

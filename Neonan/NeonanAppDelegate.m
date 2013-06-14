@@ -23,9 +23,10 @@
 
 #import "NNURLCache.h"
 #import "EncourageHelper.h"
+#import "WeChatSharer.h"
 
 #import "APService.h"
-//#import "Flurry.h"
+#import "WXApi.h"
 #import "MobClick.h"
 #import "Harpy.h"
 #import "MKStoreManager.h"
@@ -37,9 +38,9 @@
 @implementation NeonanAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    [Flurry startSession:@"VKBQM8MR7GP8V94YR43B"];
     [MobClick startWithAppkey:UMengAppKey];
     
+    application.applicationIconBadgeNumber = 0;
     [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -86,14 +87,24 @@
         if (remoteNotif) {
             DLog(@"remote notif: %@", remoteNotif);
             [self whenNotificationArrive:remoteNotif];
-            application.applicationIconBadgeNumber = 0;
         }
         
         self.splashViewController = nil;
     };
     [self.containerController presentModalViewController:splashViewController animated:NO];
     
+    //向微信注册
+    [WXApi registerApp:WeChatAppKey];
+    
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return  [WXApi handleOpenURL:url delegate:(WeChatSharer *)[WeChatSharer sharedSharer]];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return  [WXApi handleOpenURL:url delegate:(WeChatSharer *)[WeChatSharer sharedSharer]];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -10,6 +10,8 @@
 
 #define UMengAppKey @"50c1b8545270150f81000018"
 
+#define WeChatAppKey @"wx8d651cffce9128fb"
+
 #define kSinaWeiboSource          @"weibo"
 #define kSinaWeiboKey             @"2189669888"
 #define kSinaWeiboSecret          @"b8301d46c49e7af13efebc42193665eb"
