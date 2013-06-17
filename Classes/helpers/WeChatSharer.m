@@ -47,7 +47,7 @@
     
     if (self.isVerified) {
         WXMediaMessage *message = [WXMediaMessage message];
-        message.title = @"NeoNan分享";
+        message.title = self.scene == WXSceneSession ? @"NeoNan分享" : text;
         message.description = text;
         
         CGFloat imageSize = MIN(image.size.width, image.size.height);
