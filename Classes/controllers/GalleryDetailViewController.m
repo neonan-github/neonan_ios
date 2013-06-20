@@ -376,7 +376,7 @@ UIScrollViewDelegate, KKGridViewDataSource, KKGridViewDelegate>
 
 - (FunctionFlowView *)moreActionView {
     if (!_moreActionView) {
-        _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(CompatibleScreenWidth - 73, 5, 68, 53)];
+        _moreActionView = [[FunctionFlowView alloc] initWithFrame:CGRectMake(CompatibleScreenWidth - 73, 5, 68, 73)];
         [_moreActionView.shareButton addTarget:self action:@selector(share) forControlEvents:UIControlEventTouchUpInside];
         [_moreActionView.favButton addTarget:self action:@selector(doFav) forControlEvents:UIControlEventTouchUpInside];
     }
