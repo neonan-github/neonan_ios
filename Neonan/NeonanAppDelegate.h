@@ -11,6 +11,7 @@
 #import "NNNavigationController.h"
 #import "NNContainerViewController.h"
 #import "SplashViewController.h"
+#import "TourViewController.h"
 
 @interface NeonanAppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -18,6 +19,7 @@
 @property (nonatomic, strong) NNNavigationController *navController;
 @property (nonatomic, strong) NNContainerViewController *containerController;
 @property (nonatomic, strong) SplashViewController *splashViewController;
+@property (nonatomic, strong) TourViewController *tourViewController;
 
 - (ContentType)judgeContentType:(id)item;
 - (void)navigationController:(UINavigationController *)navigationController pushViewControllerByType:(id)dataItem andChannel:(NSString *)channel;

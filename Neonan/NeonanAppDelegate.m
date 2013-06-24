@@ -35,6 +35,8 @@
 
 #import <AFNetworkActivityIndicatorManager.h>
 
+static NSString *const kTouredKey = @"toured";
+
 @implementation NeonanAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -87,6 +89,12 @@
         if (remoteNotif) {
             DLog(@"remote notif: %@", remoteNotif);
             [self whenNotificationArrive:remoteNotif];
+        } else if (YES/*![UserDefaults boolForKey:kTouredKey]*/) {
+            TourViewController *tourViewController = [[TourViewController alloc] init];
+            [self.containerController presentModalViewController:tourViewController animated:NO];
+            
+            [UserDefaults setBool:YES forKey:kTouredKey];
+            [UserDefaults synchronize];
         }
         
         self.splashViewController = nil;

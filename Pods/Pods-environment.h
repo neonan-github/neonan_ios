@@ -91,6 +91,12 @@
 #define COCOAPODS_VERSION_MINOR_SDWebImage_Main 7
 #define COCOAPODS_VERSION_PATCH_SDWebImage_Main 4
 
+// SMPageControl
+#define COCOAPODS_POD_AVAILABLE_SMPageControl
+#define COCOAPODS_VERSION_MAJOR_SMPageControl 1
+#define COCOAPODS_VERSION_MINOR_SMPageControl 0
+#define COCOAPODS_VERSION_PATCH_SMPageControl 0
+
 // SSKeychain
 #define COCOAPODS_POD_AVAILABLE_SSKeychain
 #define COCOAPODS_VERSION_MAJOR_SSKeychain 0

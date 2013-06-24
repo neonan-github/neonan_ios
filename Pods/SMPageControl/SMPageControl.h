@@ -30,6 +30,7 @@ typedef NS_ENUM(NSUInteger, SMPageControlVerticalAlignment) {
 @property (nonatomic) SMPageControlVerticalAlignment verticalAlignment	UI_APPEARANCE_SELECTOR;	// deafult is Middle
 
 @property (nonatomic, strong) UIImage *pageIndicatorImage				UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIImage *pageIndicatorMaskImage			UI_APPEARANCE_SELECTOR; // ignored if pageIndicatorImage is set
 @property (nonatomic, strong) UIColor *pageIndicatorTintColor			UI_APPEARANCE_SELECTOR; // ignored if pageIndicatorImage is set
 @property (nonatomic, strong) UIImage *currentPageIndicatorImage		UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor *currentPageIndicatorTintColor	UI_APPEARANCE_SELECTOR; // ignored if currentPageIndicatorImage is set
@@ -51,5 +52,17 @@ typedef NS_ENUM(NSUInteger, SMPageControlVerticalAlignment) {
 - (UIImage *)imageMaskForPage:(NSInteger)pageIndex;
 
 - (void)updatePageNumberForScrollView:(UIScrollView *)scrollView;
+- (void)setScrollViewContentOffsetForCurrentPage:(UIScrollView *)scrollView animated:(BOOL)animated;
+
+#pragma UIAccessibility
+
+// SMPageControl mirrors UIPageControl's standard accessibility functionality by default.
+// Basically, the accessibility label is set to "[current page index + 1] of [page count]".
+
+// SMPageControl extends UIPageControl's functionality by allowing you to name specific pages. This is especially useful when using
+// the per-page indicator images, and allows you to provide more context to the user.
+
+- (void)setName:(NSString *)name forPage:(NSInteger)pageIndex;
+- (NSString *)nameForPage:(NSInteger)pageIndex;
 
 @end 

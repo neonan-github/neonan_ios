@@ -24,10 +24,16 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 };
 
 @interface SMPageControl ()
+@property (nonatomic, readonly) NSMutableDictionary *pageNames;
 @property (nonatomic, readonly) NSMutableDictionary *pageImages;
 @property (nonatomic, readonly) NSMutableDictionary *currentPageImages;
 @property (nonatomic, readonly) NSMutableDictionary *pageImageMasks;
 @property (nonatomic, readonly) NSMutableDictionary *cgImageMasks;
+
+// Page Control used for stealing page number localizations for accessibility labels
+// I'm not sure I love this technique, but it's the best way to get exact translations for all the languages
+// that Apple supports out of the box
+@property (nonatomic, strong) UIPageControl *accessibilityPageControl;
 @end
 
 @implementation SMPageControl
@@ -36,8 +42,10 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
     NSInteger			_displayedPage;
 	CGFloat				_measuredIndicatorWidth;
 	CGFloat				_measuredIndicatorHeight;
+	CGImageRef			_pageImageMask;
 }
 
+@synthesize pageNames = _pageNames;
 @synthesize pageImages = _pageImages;
 @synthesize currentPageImages = _currentPageImages;
 @synthesize pageImageMasks = _pageImageMasks;
@@ -54,6 +62,10 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 	_indicatorMargin = DEFAULT_INDICATOR_MARGIN;
 	_alignment = SMPageControlAlignmentCenter;
 	_verticalAlignment = SMPageControlVerticalAlignmentMiddle;
+	
+	self.isAccessibilityElement = YES;
+	self.accessibilityTraits = UIAccessibilityTraitUpdatesFrequently;
+	self.accessibilityPageControl = [[UIPageControl alloc] init];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -71,6 +83,13 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 {
 	[super awakeFromNib];
 	[self _initialize];
+}
+
+- (void)dealloc
+{
+	if (_pageImageMask) {
+		CGImageRelease(_pageImageMask);
+	}	
 }
 
 - (void)drawRect:(CGRect)rect
@@ -92,10 +111,10 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 	UIColor *fillColor = nil;
 	UIImage *image = nil;
 	CGImageRef maskingImage = nil;
+	CGSize maskSize = CGSizeZero;
 	
 	for (NSUInteger i = 0; i < _numberOfPages; i++) {
 		NSNumber *indexNumber = @(i);
-		
 		
 		if (i == _displayedPage) {
 			fillColor = _currentPageIndicatorTintColor ? _currentPageIndicatorTintColor : [UIColor whiteColor];
@@ -114,21 +133,31 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 		// If no finished images have been set, try a masking image
 		if (nil == image) {
 			maskingImage = (__bridge CGImageRef)_cgImageMasks[indexNumber];
+			UIImage *originalImage = _pageImageMasks[indexNumber];
+			maskSize = originalImage.size;
+
+			// If no per page mask is set, try for a global page mask!
+			if (nil == maskingImage) {
+				maskingImage = _pageImageMask;
+				maskSize = _pageIndicatorMaskImage.size;
+			}
 		}
-		
+				
 		[fillColor set];
 		
 		if (image) {
 			yOffset = [self _topOffsetForHeight:image.size.height rect:rect];
-			[image drawAtPoint:CGPointMake(xOffset, yOffset)];
+			CGFloat centeredXOffset = xOffset + floorf((_measuredIndicatorWidth - image.size.width) / 2.0f);
+			[image drawAtPoint:CGPointMake(centeredXOffset, yOffset)];
 		} else if (maskingImage) {
-			UIImage *originalImage = _pageImageMasks[indexNumber];
-			yOffset = [self _topOffsetForHeight:originalImage.size.height rect:rect];
-			CGRect imageRect = CGRectMake(xOffset, yOffset, originalImage.size.width, originalImage.size.height);
+			yOffset = [self _topOffsetForHeight:maskSize.height rect:rect];
+			CGFloat centeredXOffset = xOffset + floorf((_measuredIndicatorWidth - maskSize.width) / 2.0f);
+			CGRect imageRect = CGRectMake(centeredXOffset, yOffset, maskSize.width, maskSize.height);
 			CGContextDrawImage(context, imageRect, maskingImage);
 		} else {
 			yOffset = [self _topOffsetForHeight:_indicatorDiameter rect:rect];
-			CGContextFillEllipseInRect(context, CGRectMake(xOffset, yOffset, _indicatorDiameter, _indicatorDiameter));
+			CGFloat centeredXOffset = xOffset + floorf((_measuredIndicatorWidth - _indicatorDiameter) / 2.0f);
+			CGContextFillEllipseInRect(context, CGRectMake(centeredXOffset, yOffset, _indicatorDiameter, _indicatorDiameter));
 		}
 		
 		maskingImage = NULL;
@@ -219,13 +248,17 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 		default:
 			break;
 	}
-
-	dictionary[@(pageIndex)] = image;
+    
+    if (image) {
+        dictionary[@(pageIndex)] = image;
+    } else {
+        [dictionary removeObjectForKey:@(pageIndex)];
+    }
 }
 
 - (void)setImage:(UIImage *)image forPage:(NSInteger)pageIndex;
 {
-	[self _setImage:image forPage:pageIndex type:SMPageControlImageTypeNormal];
+    [self _setImage:image forPage:pageIndex type:SMPageControlImageTypeNormal];
 	[self _updateMeasuredIndicatorSizes];
 }
 
@@ -244,24 +277,14 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 		return;
 	}
 	
-	[self _updateMeasuredIndicatorSizes];
-
-	size_t pixelsWide = image.size.width * image.scale;
-	size_t pixelsHigh = image.size.height * image.scale;
-	int bitmapBytesPerRow = (pixelsWide * 1);
-	CGContextRef context = CGBitmapContextCreate(NULL, pixelsWide, pixelsHigh, CGImageGetBitsPerComponent(image.CGImage), bitmapBytesPerRow, NULL, kCGImageAlphaOnly);
-	CGContextTranslateCTM(context, 0.f, pixelsHigh);
-	CGContextScaleCTM(context, 1.0f, -1.0f);
-
-	CGContextDrawImage(context, CGRectMake(0, 0, pixelsWide, pixelsHigh), image.CGImage);
-	CGImageRef maskImage = CGBitmapContextCreateImage(context);
-	CGContextRelease(context);
+	CGImageRef maskImage = [self createMaskForImage:image];
 
 	if (maskImage) {
 		self.cgImageMasks[@(pageIndex)] = (__bridge id)maskImage;
+		CGImageRelease(maskImage);
+		[self _updateMeasuredIndicatorSizeWithSize:image.size];
+		[self setNeedsDisplay];
 	}
-	
-	CGImageRelease(maskImage);
 }
 
 - (id)_imageForPage:(NSInteger)pageIndex type:(SMPageControlImageType)type
@@ -314,11 +337,40 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 
 - (void)updatePageNumberForScrollView:(UIScrollView *)scrollView
 {
-	NSInteger page = (int)floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
+	NSInteger page = (int)floorf(scrollView.contentOffset.x / scrollView.bounds.size.width);
 	self.currentPage = page;
 }
 
+- (void)setScrollViewContentOffsetForCurrentPage:(UIScrollView *)scrollView animated:(BOOL)animated
+{
+	CGPoint offset = scrollView.contentOffset;
+	offset.x = scrollView.bounds.size.width * self.currentPage;
+	[scrollView setContentOffset:offset animated:animated];
+}
+
 #pragma mark -
+
+- (CGImageRef)createMaskForImage:(UIImage *)image CF_RETURNS_RETAINED
+{
+	size_t pixelsWide = image.size.width * image.scale;
+	size_t pixelsHigh = image.size.height * image.scale;
+	int bitmapBytesPerRow = (pixelsWide * 1);
+	CGContextRef context = CGBitmapContextCreate(NULL, pixelsWide, pixelsHigh, CGImageGetBitsPerComponent(image.CGImage), bitmapBytesPerRow, NULL, kCGImageAlphaOnly);
+	CGContextTranslateCTM(context, 0.f, pixelsHigh);
+	CGContextScaleCTM(context, 1.0f, -1.0f);
+	
+	CGContextDrawImage(context, CGRectMake(0, 0, pixelsWide, pixelsHigh), image.CGImage);
+	CGImageRef maskImage = CGBitmapContextCreateImage(context);
+	CGContextRelease(context);
+
+	return maskImage;
+}
+
+- (void)_updateMeasuredIndicatorSizeWithSize:(CGSize)size
+{
+	_measuredIndicatorWidth = MAX(_measuredIndicatorWidth, size.width);
+	_measuredIndicatorHeight = MAX(_measuredIndicatorHeight, size.height);
+}
 
 - (void)_updateMeasuredIndicatorSizes
 {
@@ -326,29 +378,30 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 	_measuredIndicatorHeight = _indicatorDiameter;
 	
 	// If we're only using images, ignore the _indicatorDiameter
-	if (self.pageIndicatorImage && self.currentPageIndicatorImage) {
+	if ( (self.pageIndicatorImage || self.pageIndicatorMaskImage) && self.currentPageIndicatorImage )
+	{
 		_measuredIndicatorWidth = 0;
 		_measuredIndicatorHeight = 0;
 	}
 	
 	if (self.pageIndicatorImage) {
-		CGSize imageSize = self.pageIndicatorImage.size;
-		_measuredIndicatorWidth = MAX(_indicatorDiameter, imageSize.width);
-		_measuredIndicatorHeight = MAX(_indicatorDiameter, imageSize.height);
+		[self _updateMeasuredIndicatorSizeWithSize:self.pageIndicatorImage.size];
 	}
 	
 	if (self.currentPageIndicatorImage) {
-		CGSize imageSize = self.currentPageIndicatorImage.size;
-		_measuredIndicatorWidth = MAX(_indicatorDiameter, imageSize.width);
-		_measuredIndicatorHeight = MAX(_indicatorDiameter, imageSize.height);
-	}	
+		[self _updateMeasuredIndicatorSizeWithSize:self.currentPageIndicatorImage.size];
+	}
+	
+	if (self.pageIndicatorMaskImage) {
+		[self _updateMeasuredIndicatorSizeWithSize:self.pageIndicatorMaskImage.size];
+	}
 }
 
 
 #pragma mark - Tap Gesture
 
 // We're using touchesEnded: because we want to mimick UIPageControl as close as possible
-// As of iOS 6, UIPageControl still does not use a tap gesture recognizer. This means that actions like
+// As of iOS 6, UIPageControl still (as far as we know) does not use a tap gesture recognizer. This means that actions like
 // touching down, sliding around, and releasing, still results in the page incrementing or decrementing.
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -399,7 +452,10 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 		return;
 	}
 	
+	self.accessibilityPageControl.numberOfPages = numberOfPages;
+	
 	_numberOfPages = MAX(0, numberOfPages);
+	[self updateAccessibilityValue];
 	[self setNeedsDisplay];
 }
 
@@ -409,12 +465,12 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 }
 
 - (void)setCurrentPage:(NSInteger)currentPage sendEvent:(BOOL)sendEvent canDefer:(BOOL)defer
-{
-	if (currentPage < 0 || currentPage >= _numberOfPages) {
-		return;
-	}
+{	
+	_currentPage = MIN(MAX(0, currentPage), _numberOfPages - 1);
+	self.accessibilityPageControl.currentPage = self.currentPage;
 	
-	_currentPage = currentPage;
+	[self updateAccessibilityValue];
+	
 	if (NO == self.defersCurrentPageDisplay || NO == defer) {
 		_displayedPage = _currentPage;
 		[self setNeedsDisplay];
@@ -445,6 +501,34 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 	_pageIndicatorImage = pageIndicatorImage;
 	[self _updateMeasuredIndicatorSizes];
 	[self setNeedsDisplay];
+}
+
+- (void)setPageIndicatorMaskImage:(UIImage *)pageIndicatorMaskImage
+{
+	if ([pageIndicatorMaskImage isEqual:_pageIndicatorMaskImage]) {
+		return;
+	}
+	
+	_pageIndicatorMaskImage = pageIndicatorMaskImage;
+	
+	if (_pageImageMask) {
+		CGImageRelease(_pageImageMask);
+	}
+	
+	_pageImageMask = [self createMaskForImage:_pageIndicatorMaskImage];
+	
+	[self _updateMeasuredIndicatorSizes];
+	[self setNeedsDisplay];
+}
+
+- (NSMutableDictionary *)pageNames
+{
+	if (nil != _pageNames) {
+		return _pageNames;
+	}
+	
+	_pageNames = [[NSMutableDictionary alloc] init];
+	return _pageNames;
 }
 
 - (NSMutableDictionary *)pageImages
@@ -485,6 +569,39 @@ typedef NS_ENUM(NSUInteger, SMPageControlImageType) {
 	
 	_cgImageMasks = [[NSMutableDictionary alloc] init];
 	return _cgImageMasks;
+}
+
+#pragma mark - UIAccessibility
+
+- (void)setName:(NSString *)name forPage:(NSInteger)pageIndex
+{
+	if (pageIndex < 0 || pageIndex >= _numberOfPages) {
+		return;
+	}
+	
+	self.pageNames[@(pageIndex)] = name;
+	
+}
+
+- (NSString *)nameForPage:(NSInteger)pageIndex
+{
+	if (pageIndex < 0 || pageIndex >= _numberOfPages) {
+		return nil;
+	}
+	
+	return self.pageNames[@(pageIndex)];
+}
+
+- (void)updateAccessibilityValue
+{
+	NSString *pageName = [self nameForPage:self.currentPage];
+	NSString *accessibilityValue = self.accessibilityPageControl.accessibilityValue;
+	
+	if (pageName) {
+		self.accessibilityValue = [NSString stringWithFormat:@"%@ - %@", pageName, accessibilityValue];
+	} else {
+		self.accessibilityValue = accessibilityValue;
+	}
 }
 
 @end
