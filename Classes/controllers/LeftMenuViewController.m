@@ -23,11 +23,14 @@
 
 @property (nonatomic, readonly) NSArray *channelTexts;
 @property (nonatomic, readonly) NSArray *channelTypes;
+@property (nonatomic, readonly) NSArray *channelIcons;
+@property (nonatomic, strong) NSArray *videoSubChannelTypes;
+@property (nonatomic, strong) NSArray *videoSubChannelTexts;
 
 @end
 
 @implementation LeftMenuViewController
-@synthesize channelTexts = _channelTexts, channelTypes = _channelTypes;
+@synthesize channelTexts = _channelTexts, channelTypes = _channelTypes, channelIcons = _channelIcons;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -102,7 +105,7 @@
 #pragma mark － UITableViewDataSource methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.channelTexts.count;
+    return self.channelTexts.count + self.videoSubChannelTexts.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -113,7 +116,15 @@
         cell = [[SideMenuCell alloc] initWithReuseIdentifier:cellIdentifier];
     }
     
-    cell.textLabel.text = self.channelTexts[indexPath.row];
+    NSUInteger row = indexPath.row;
+    NSUInteger channelCount = self.channelTexts.count;
+    BOOL isSubChannel = row >= channelCount;
+    
+    cell.imageView.image = isSubChannel ? nil : [UIImage imageNamed:self.channelIcons[row]];
+    cell.textLabel.text = isSubChannel ? self.videoSubChannelTexts[row - channelCount] : self.channelTexts[row];
+    ((UIImageView *)cell.backgroundView).image = [[UIImage imageFromFile:isSubChannel ? @"bg_menu_cell.png" : @"bg_menu_1level_cell.png"]
+                                                  resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 1, 0)];
+
     
     return cell;
 }
@@ -169,7 +180,7 @@
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = @[@"首页", @"女人", @"知道", @"爱玩", @"视频"];
+        _channelTexts = @[@"精选", @"女人", @"知道", @"爱玩", @"牛男TV"];
     }
     
     return  _channelTexts;
@@ -181,6 +192,31 @@
     }
     
     return _channelTypes;
+}
+
+- (NSArray *)channelIcons {
+    if (!_channelIcons) {
+        _channelIcons = @[@"icon_menu_top", @"icon_menu_women", @"icon_menu_know", @"icon_menu_play", @"icon_menu_video"];
+    }
+    
+    return _channelIcons;
+}
+
+- (NSArray *)videoSubChannelTypes {
+    if (!_videoSubChannelTypes) {
+#warning TODO
+        _videoSubChannelTypes = @[];
+    }
+    
+    return _videoSubChannelTypes;
+}
+
+- (NSArray *)videoSubChannelTexts {
+    if (!_videoSubChannelTexts) {
+        _videoSubChannelTexts = @[@"酷车世界", @"户外健身", @"性感地带", @"科技玩物", @"火爆游戏", @"财富励志"];
+    }
+    
+    return _videoSubChannelTexts;
 }
 
 - (void)changeController:(NSNumber *)index {
