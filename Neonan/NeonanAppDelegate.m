@@ -13,6 +13,7 @@
 #import "VideoPlayViewController.h"
 #import "GalleryDetailViewController.h"
 
+#import "MottoViewController.h"
 #import "LeftMenuViewController.h"
 #import "RightMenuViewController.h"
 #import "HomeViewController.h"
@@ -43,7 +44,7 @@ static NSString *const kTouredKey = @"toured";
     [MobClick startWithAppkey:UMengAppKey];
     
     application.applicationIconBadgeNumber = 0;
-    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+//    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
@@ -89,8 +90,8 @@ static NSString *const kTouredKey = @"toured";
         if (remoteNotif) {
             DLog(@"remote notif: %@", remoteNotif);
             [self whenNotificationArrive:remoteNotif];
-        } else if (NO/*![UserDefaults boolForKey:kTouredKey]*/) {
-            TourViewController *tourViewController = [[TourViewController alloc] init];
+        } else if (YES/*![UserDefaults boolForKey:kTouredKey]*/) {
+            MottoViewController *tourViewController = [[MottoViewController alloc] init];
             [self.containerController presentModalViewController:tourViewController animated:NO];
             
             [UserDefaults setBool:YES forKey:kTouredKey];

@@ -26,6 +26,10 @@
 		3417726B1779495E000F6082 /* icon_menu_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 341772661779495E000F6082 /* icon_menu_top.png */; };
 		3417726C1779495E000F6082 /* icon_menu_video.png in Resources */ = {isa = PBXBuildFile; fileRef = 341772671779495E000F6082 /* icon_menu_video.png */; };
 		3417726D1779495E000F6082 /* icon_menu_women.png in Resources */ = {isa = PBXBuildFile; fileRef = 341772681779495E000F6082 /* icon_menu_women.png */; };
+		3417727117799C1B000F6082 /* MottoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3417726F17799C1B000F6082 /* MottoViewController.m */; };
+		3417727217799C1B000F6082 /* MottoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3417727017799C1B000F6082 /* MottoViewController.xib */; };
+		341772751779A105000F6082 /* Yuanti.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 341772741779A105000F6082 /* Yuanti.ttc */; };
+		341772781779A6FC000F6082 /* MottoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 341772771779A6FC000F6082 /* MottoModel.m */; };
 		34197637174E0A4600D301C8 /* JASidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34197634174E0A4600D301C8 /* JASidePanelController.m */; };
 		34197638174E0A4600D301C8 /* UIViewController+JASidePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 34197636174E0A4600D301C8 /* UIViewController+JASidePanel.m */; };
 		3419763B174E0EE300D301C8 /* NNContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3419763A174E0EE300D301C8 /* NNContainerViewController.m */; };
@@ -431,6 +435,12 @@
 		341772661779495E000F6082 /* icon_menu_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_menu_top.png; sourceTree = "<group>"; };
 		341772671779495E000F6082 /* icon_menu_video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_menu_video.png; sourceTree = "<group>"; };
 		341772681779495E000F6082 /* icon_menu_women.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_menu_women.png; sourceTree = "<group>"; };
+		3417726E17799C1B000F6082 /* MottoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MottoViewController.h; sourceTree = "<group>"; };
+		3417726F17799C1B000F6082 /* MottoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MottoViewController.m; sourceTree = "<group>"; };
+		3417727017799C1B000F6082 /* MottoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MottoViewController.xib; path = ../Classes/controllers/MottoViewController.xib; sourceTree = "<group>"; };
+		341772741779A105000F6082 /* Yuanti.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yuanti.ttc; sourceTree = "<group>"; };
+		341772761779A6FC000F6082 /* MottoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MottoModel.h; sourceTree = "<group>"; };
+		341772771779A6FC000F6082 /* MottoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MottoModel.m; sourceTree = "<group>"; };
 		34197633174E0A4600D301C8 /* JASidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JASidePanelController.h; sourceTree = "<group>"; };
 		34197634174E0A4600D301C8 /* JASidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JASidePanelController.m; sourceTree = "<group>"; };
 		34197635174E0A4600D301C8 /* UIViewController+JASidePanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+JASidePanel.h"; sourceTree = "<group>"; };
@@ -1083,6 +1093,8 @@
 				34B70E60176069520032D2FF /* SearchResultViewController.m */,
 				349B0B381777FB3C00F971F7 /* TourViewController.h */,
 				349B0B391777FB3C00F971F7 /* TourViewController.m */,
+				3417726E17799C1B000F6082 /* MottoViewController.h */,
+				3417726F17799C1B000F6082 /* MottoViewController.m */,
 			);
 			name = Controllers;
 			path = controllers;
@@ -1130,9 +1142,19 @@
 				34CA181A16EDEFA5000654AC /* EncourageModel.m */,
 				3448826B16EECD2D00203846 /* UserInfoModel.h */,
 				3448826C16EECD2D00203846 /* UserInfoModel.m */,
+				341772761779A6FC000F6082 /* MottoModel.h */,
+				341772771779A6FC000F6082 /* MottoModel.m */,
 			);
 			name = Models;
 			path = models;
+			sourceTree = "<group>";
+		};
+		341772731779A0FA000F6082 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				341772741779A105000F6082 /* Yuanti.ttc */,
+			);
+			name = Others;
 			sourceTree = "<group>";
 		};
 		34197632174E0A4600D301C8 /* JASidePanels */ = {
@@ -1607,14 +1629,15 @@
 				34CB8FF3163FDFD40001AD87 /* CommentListViewController.xib */,
 				34071702164133C3006E40FE /* VideoPlayViewController.xib */,
 				342DA8A516E3308300404730 /* PersonalInfoViewController.xib */,
-				342DA8B416E3505000404730 /* FunctionFlowView.xib */,
 				34E8CF6116E9BDCC000079E6 /* InfoEditViewController.xib */,
 				34E8CF6616E9C669000079E6 /* PurchaseVIPViewController.xib */,
 				34358920175349AC0040F370 /* LeftMenuViewController.xib */,
 				34CFE1D417560C6D004518AC /* RightMenuViewController.xib */,
-				346F7493175DF3EB005C31B8 /* GalleryOverView.xib */,
 				34B06866175B20D60024AA80 /* SignViewController.xib */,
 				349B0B3A1777FB3C00F971F7 /* TourViewController.xib */,
+				3417727017799C1B000F6082 /* MottoViewController.xib */,
+				346F7493175DF3EB005C31B8 /* GalleryOverView.xib */,
+				342DA8B416E3505000404730 /* FunctionFlowView.xib */,
 				349B0B4117785C7800F971F7 /* tour4.xib */,
 			);
 			name = Layouts;
@@ -1634,6 +1657,7 @@
 		3499BEC01626DAAF0084B838 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				341772731779A0FA000F6082 /* Others */,
 				347AAB60163672FC00D243BA /* Layouts */,
 				34C8A66816E70B3200DF79A0 /* Images */,
 			);
@@ -2269,6 +2293,8 @@
 				3417726B1779495E000F6082 /* icon_menu_top.png in Resources */,
 				3417726C1779495E000F6082 /* icon_menu_video.png in Resources */,
 				3417726D1779495E000F6082 /* icon_menu_women.png in Resources */,
+				3417727217799C1B000F6082 /* MottoViewController.xib in Resources */,
+				341772751779A105000F6082 /* Yuanti.ttc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2474,6 +2500,8 @@
 				34B70E61176069520032D2FF /* SearchResultViewController.m in Sources */,
 				34A1B952176B1A5B006907A2 /* WeChatSharer.m in Sources */,
 				349B0B3B1777FB3C00F971F7 /* TourViewController.m in Sources */,
+				3417727117799C1B000F6082 /* MottoViewController.m in Sources */,
+				341772781779A6FC000F6082 /* MottoModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

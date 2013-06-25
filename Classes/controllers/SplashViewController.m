@@ -9,6 +9,10 @@
 #import "SplashViewController.h"
 
 #import "PurchaseManager.h"
+#import "MottoModel.h"  
+
+#import <UIImageView+WebCache.h>
+#import <SDImageCache.h>
 
 @interface SplashViewController ()
 
@@ -45,13 +49,42 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [[PurchaseManager sharedManager] commitUnnotifiedInfo:^{
+    void ((^done)(MottoModel *motto)) = ^(MottoModel *motto) {
         [self dismissViewControllerAnimated:NO completion:^{
             if (self.done) {
                 self.done();
             }
         }];
-    }];
+    };
+    
+    [[NNHttpClient sharedClient] getAtPath:@"latest_quote"
+                                parameters:nil
+                             responseClass:[MottoModel class]
+                                   success:^(id<Jsonable> response) {
+                                       MottoModel *motto = response;
+                                       NSURL *imgUrl = [NSURL URLWithString:motto.imageUrl];
+                                       
+                                       UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromKey:[imgUrl absoluteString]];
+                                       if (cachedImage) {
+                                           done(motto);
+                                       } else {
+                                           [[SDWebImageManager sharedManager] downloadWithURL:imgUrl
+                                                                                     delegate:self
+                                                                                      options:0
+                                                                                      success:^(UIImage *image, BOOL cached) {
+                                                                                          done(motto);
+                                                                                      }
+                                                                                      failure:^(NSError *error) {
+                                                                                          done(nil);
+                                                                                      }];
+                                       }
+                                       
+                                   }
+                                   failure:^(ResponseError *error) {
+                                       done(nil);
+                                   }];
+    
+    [[PurchaseManager sharedManager] commitUnnotifiedInfo:nil];
 }
 
 @end
