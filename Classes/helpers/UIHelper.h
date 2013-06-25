@@ -60,6 +60,7 @@ typedef enum {
 
 + (void)view:(UIView *)view alignBottomTo:(float)bottom;
 
++ (CGFloat)widthOfString:(NSString *)string withFont:(UIFont *)font;
 + (NSUInteger)computeContentLines:(NSString *)content withWidth:(CGFloat)width andFont:(UIFont *)font;
 + (CGFloat)computeHeightForLabel:(UILabel *)label withText:(NSString *)text;
 
