@@ -89,6 +89,13 @@
     self.tableView = nil;
 }
 
+- (void)setSubChannel:(NSString *)subChannel {
+    if (![_subChannel isEqualToString:subChannel]) {
+        _subChannel = [subChannel copy];
+        [self.tableView triggerPullToRefresh];
+    }
+}
+
 #pragma mark － UITableViewDataSource methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -142,8 +149,11 @@
 
 - (void)requestForList:(NSString *)channel requestType:(RequestType)requestType {
     NSUInteger offset = (requestType == RequestTypeRefresh ? 0 : [self.dataModel items].count);
-    NSDictionary *parameters = @{@"channel": channel, @"sort_type": @"new", @"count": @(20),
-                                 @"offset": @(offset)};
+    NSMutableDictionary *parameters = [@{@"channel": channel, @"sort_type": @"new", @"count": @(20),
+                                 @"offset": @(offset)} mutableCopy];
+    if (self.subChannel) {
+        [parameters setObject:self.subChannel forKey:@"sub_channel"];
+    }
     
     void (^done)() = ^{
         double delayInSeconds = 0.5;

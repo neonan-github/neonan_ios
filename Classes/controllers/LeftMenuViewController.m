@@ -8,12 +8,15 @@
 
 #import "LeftMenuViewController.h"
 #import "SearchResultViewController.h"
+#import "ChannelListViewController.h"
 
 #import "SideMenuCell.h"
 
 #import <UIAlertView+Blocks.h>
 
 @interface LeftMenuViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+
+@property (nonatomic, assign) NSInteger selectedIndex;
 
 @property (weak, nonatomic) IBOutlet UIImageView *searchBgView;
 @property (weak, nonatomic) IBOutlet UITextField *searchField;
@@ -36,6 +39,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.selectedIndex = -1;
     }
     return self;
 }
@@ -55,8 +59,8 @@
     firstSeparatorView.image = [UIImage imageFromFile:@"img_menu_separator.png"];
     [self.tableView addSubview:firstSeparatorView];
     
-    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:((NeonanAppDelegate *)ApplicationDelegate).containerController.selectedIndex
-                                                            inSection:0]
+    self.selectedIndex = self.selectedIndex < 0 ? ((NeonanAppDelegate *)ApplicationDelegate).containerController.selectedIndex : self.selectedIndex;
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:self.selectedIndex inSection:0]
                                 animated:NO
                           scrollPosition:UITableViewScrollPositionNone];
     
@@ -204,8 +208,7 @@
 
 - (NSArray *)videoSubChannelTypes {
     if (!_videoSubChannelTypes) {
-#warning TODO
-        _videoSubChannelTypes = @[];
+        _videoSubChannelTypes = @[@"car", @"outdoor", @"sexy", @"gadget", @"game", @"money", @"babes"];
     }
     
     return _videoSubChannelTypes;
@@ -213,18 +216,36 @@
 
 - (NSArray *)videoSubChannelTexts {
     if (!_videoSubChannelTexts) {
-        _videoSubChannelTexts = @[@"酷车世界", @"户外健身", @"性感地带", @"科技玩物", @"火爆游戏", @"财富励志"];
+        _videoSubChannelTexts = @[@"酷车世界", @"户外健身", @"性感地带", @"科技玩物", @"火爆游戏", @"财富励志", @"牛男宝贝"];
     }
     
     return _videoSubChannelTexts;
 }
 
-- (void)changeController:(NSNumber *)index {
-    NNContainerViewController *containerController = ((NeonanAppDelegate *)ApplicationDelegate).containerController;
-    if (containerController.selectedIndex == index.integerValue) {
+- (void)changeController:(NSNumber *)indexNumber {
+    NSInteger index = indexNumber.integerValue;
+    
+    if (self.selectedIndex == index) {
         return;
     }
-    containerController.selectedIndex = index.integerValue;
+    
+    BOOL isVideoChannel = index >= self.channelTypes.count - 1;
+    NNContainerViewController *containerController = ((NeonanAppDelegate *)ApplicationDelegate).containerController;
+    if (isVideoChannel && self.selectedIndex >= self.channelTypes.count - 1) {
+    } else {
+        containerController.selectedIndex = MIN(self.channelTypes.count - 1, index);
+    }
+    
+    if (isVideoChannel) {
+        NSString *title = index == self.channelTypes.count - 1 ? @"牛男TV" : self.videoSubChannelTexts[index - self.channelTypes.count];
+        NSString *subChannel = index == self.channelTypes.count - 1 ? nil : self.videoSubChannelTypes[index - self.channelTypes.count];
+        DLog(@"subChannel %@", subChannel);
+        ChannelListViewController *viewController = (ChannelListViewController *)[(NNNavigationController *)containerController.currentViewController topViewController];
+        viewController.title = title;
+        viewController.subChannel = subChannel;
+    }
+    
+    self.selectedIndex = index;
 }
 
 - (void)doSearch:(NSString *)text {
