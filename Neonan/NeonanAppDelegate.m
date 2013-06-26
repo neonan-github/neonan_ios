@@ -91,13 +91,16 @@ static NSString *const kTouredKey = @"toured";
         if (remoteNotif) {
             DLog(@"remote notif: %@", remoteNotif);
             [self whenNotificationArrive:remoteNotif];
-        } else if (motto/*![UserDefaults boolForKey:kTouredKey]*/) {
-            MottoViewController *tourViewController = [[MottoViewController alloc] init];
-            tourViewController.motto = motto;
-            [self.containerController presentModalViewController:tourViewController animated:NO];
+        } else if (YES/*![UserDefaults boolForKey:kTouredKey]*/) {
+            TourViewController *viewController = [[TourViewController alloc] init];
+            [self.containerController presentModalViewController:viewController animated:NO];
             
             [UserDefaults setBool:YES forKey:kTouredKey];
             [UserDefaults synchronize];
+        } else if (motto) {
+            MottoViewController *viewController = [[MottoViewController alloc] init];
+            viewController.motto = motto;
+            [self.containerController presentModalViewController:viewController animated:NO];
         }
         
         self.splashViewController = nil;

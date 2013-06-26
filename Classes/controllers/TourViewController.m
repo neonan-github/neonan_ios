@@ -18,6 +18,12 @@ static const NSUInteger kPageCount = 5;
 @property (weak, nonatomic) IBOutlet SwipeView *swipeView;
 @property (weak, nonatomic) IBOutlet SMPageControl *pageControl;
 
+@property (nonatomic, strong) IBOutlet UIView *tourView0;
+@property (nonatomic, strong) IBOutlet UIView *tourView1;
+@property (nonatomic, strong) IBOutlet UIView *tourView2;
+@property (nonatomic, strong) IBOutlet UIView *tourView3;
+@property (nonatomic, strong) IBOutlet UIView *tourView4;
+
 @end
 
 @implementation TourViewController
@@ -64,22 +70,64 @@ static const NSUInteger kPageCount = 5;
 }
 
 - (UIView *)swipeView:(SwipeView *)swipeView viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view {
-    if (!view) {
-        view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, CompatibleContainerHeight)];
-        view.backgroundColor = [UIColor clearColor];
-        
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 504)];
-        imageView.image = [UIImage imageFromFile:@"img_tour1.png"];
-        [view addSubview:imageView];
-    }
-    
-    return view;
+    return [self tourViewAtPage:index];
 }
 
 #pragma mark - SwipeViewDelegate methods
 
 - (void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView {
     self.pageControl.currentPage = swipeView.currentPage;
+}
+
+#pragma mark - Private Event Handle
+
+- (IBAction)enter:(id)sender {
+}
+
+#pragma mark - Private methods
+
+- (UIView *)tourView0 {
+    if (!_tourView0) {
+        [[NSBundle mainBundle] loadNibNamed:IS_IPHONE_5 ? @"tour0-iphone5" : @"tour0" owner:self options:nil];
+    }
+    
+    return _tourView0;
+}
+
+- (UIView *)tourView1 {
+    if (!_tourView1) {
+        [[NSBundle mainBundle] loadNibNamed:@"tour1" owner:self options:nil];
+    }
+    
+    return _tourView1;
+}
+
+- (UIView *)tourView2 {
+    if (!_tourView2) {
+        [[NSBundle mainBundle] loadNibNamed:@"tour2" owner:self options:nil];
+    }
+    
+    return _tourView2;
+}
+
+- (UIView *)tourView3 {
+    if (!_tourView3) {
+        [[NSBundle mainBundle] loadNibNamed:@"tour3" owner:self options:nil];
+    }
+    
+    return _tourView3;
+}
+
+- (UIView *)tourView4 {
+    if (!_tourView4) {
+        [[NSBundle mainBundle] loadNibNamed:IS_IPHONE_5 ? @"tour4-iphone5" : @"tour4" owner:self options:nil];
+    }
+    
+    return _tourView4;
+}
+
+- (UIView *)tourViewAtPage:(NSUInteger)page {
+    return [self valueForKey:[NSString stringWithFormat:@"tourView%d", page]];
 }
 
 @end
