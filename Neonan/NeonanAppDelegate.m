@@ -14,6 +14,7 @@
 #import "GalleryDetailViewController.h"
 
 #import "MottoViewController.h"
+#import "TourViewController.h"
 #import "LeftMenuViewController.h"
 #import "RightMenuViewController.h"
 #import "HomeViewController.h"
@@ -91,7 +92,7 @@ static NSString *const kTouredKey = @"toured";
         if (remoteNotif) {
             DLog(@"remote notif: %@", remoteNotif);
             [self whenNotificationArrive:remoteNotif];
-        } else if (YES/*![UserDefaults boolForKey:kTouredKey]*/) {
+        } else if (NO/*![UserDefaults boolForKey:kTouredKey]*/) {
             TourViewController *viewController = [[TourViewController alloc] init];
             [self.containerController presentModalViewController:viewController animated:NO];
             

@@ -36,7 +36,7 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIButton" id="887912291">
+					<object class="IBUIButton" id="979634869">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">293</int>
 						<string key="NSFrame">{{79, 438}, {148, 35}}</string>
@@ -48,11 +48,11 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUINormalTitle">立即开启</string>
-						<object class="NSColor" key="IBUIHighlightedTitleColor" id="944245584">
+						<object class="NSColor" key="IBUIHighlightedTitleColor" id="262017055">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
 						</object>
-						<reference key="IBUINormalTitleColor" ref="944245584"/>
+						<reference key="IBUINormalTitleColor" ref="262017055"/>
 						<object class="NSColor" key="IBUINormalTitleShadowColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
@@ -71,13 +71,13 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="524907966">
+					<object class="IBUIImageView" id="29775609">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{-50, 11}, {407, 281}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="616160103"/>
+						<reference key="NSNextKeyView" ref="902591093"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -86,13 +86,13 @@
 							<string key="NSResourceName">img_tour4_background.png</string>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="616160103">
+					<object class="IBUIImageView" id="902591093">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">293</int>
 						<string key="NSFrame">{{67, 85}, {186, 346}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="887912291"/>
+						<reference key="NSNextKeyView" ref="979634869"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -105,7 +105,7 @@
 				<string key="NSFrameSize">{320, 568}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="524907966"/>
+				<reference key="NSNextKeyView" ref="29775609"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MCAwAA</bytes>
@@ -141,6 +141,31 @@
 					</object>
 					<int key="connectionID">22</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">enterButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="979634869"/>
+					</object>
+					<int key="connectionID">23</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">tour4OverlayView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="902591093"/>
+					</object>
+					<int key="connectionID">24</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">enter:</string>
+						<reference key="source" ref="979634869"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">25</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -154,9 +179,9 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="524907966"/>
-							<reference ref="887912291"/>
-							<reference ref="616160103"/>
+							<reference ref="29775609"/>
+							<reference ref="979634869"/>
+							<reference ref="902591093"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -173,19 +198,19 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">3</int>
-						<reference key="object" ref="887912291"/>
+						<reference key="object" ref="979634869"/>
 						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">4</int>
-						<reference key="object" ref="524907966"/>
+						<reference key="object" ref="29775609"/>
 						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
-						<reference key="object" ref="616160103"/>
+						<reference key="object" ref="902591093"/>
 						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -205,7 +230,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">22</int>
+			<int key="maxID">25</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -262,8 +287,13 @@
 						</object>
 					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="enterButton">UIButton</string>
 						<string key="pageControl">SMPageControl</string>
 						<string key="swipeView">SwipeView</string>
+						<string key="tour1OverlayView">UIImageView</string>
+						<string key="tour2OverlayView">UIImageView</string>
+						<string key="tour3OverlayView">UIImageView</string>
+						<string key="tour4OverlayView">UIImageView</string>
 						<string key="tourView0">UIView</string>
 						<string key="tourView1">UIView</string>
 						<string key="tourView2">UIView</string>
@@ -271,6 +301,10 @@
 						<string key="tourView4">UIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="enterButton">
+							<string key="name">enterButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="pageControl">
 							<string key="name">pageControl</string>
 							<string key="candidateClassName">SMPageControl</string>
@@ -278,6 +312,22 @@
 						<object class="IBToOneOutletInfo" key="swipeView">
 							<string key="name">swipeView</string>
 							<string key="candidateClassName">SwipeView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="tour1OverlayView">
+							<string key="name">tour1OverlayView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="tour2OverlayView">
+							<string key="name">tour2OverlayView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="tour3OverlayView">
+							<string key="name">tour3OverlayView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="tour4OverlayView">
+							<string key="name">tour4OverlayView</string>
+							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="tourView0">
 							<string key="name">tourView0</string>

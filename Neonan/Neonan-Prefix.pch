@@ -15,6 +15,7 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import "NNViewController.h"
+    #import "NNNavigationController.h"
     #import "AppHelper.h"
     #import "UIHelper.h"
     #import "URLHelper.h"
