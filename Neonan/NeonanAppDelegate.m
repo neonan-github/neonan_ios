@@ -92,7 +92,7 @@ static NSString *const kTouredKey = @"toured";
         if (remoteNotif) {
             DLog(@"remote notif: %@", remoteNotif);
             [self whenNotificationArrive:remoteNotif];
-        } else if (YES/*![UserDefaults boolForKey:kTouredKey]*/) {
+        } else if ([UserDefaults boolForKey:kTouredKey]) {
             TourViewController *viewController = [[TourViewController alloc] init];
             [self.containerController presentModalViewController:viewController animated:NO];
             
