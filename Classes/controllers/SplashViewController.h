@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import "MottoModel.h"  
+
 @interface SplashViewController : NNViewController
 
-@property (nonatomic, copy) void ((^done)());
+@property (nonatomic, copy) void ((^done)(MottoModel *motto));
 
 @end

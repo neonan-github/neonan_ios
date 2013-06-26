@@ -9,7 +9,6 @@
 #import "SplashViewController.h"
 
 #import "PurchaseManager.h"
-#import "MottoModel.h"  
 
 #import <UIImageView+WebCache.h>
 #import <SDImageCache.h>
@@ -49,15 +48,20 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self requestMotto];
+    [[PurchaseManager sharedManager] commitUnnotifiedInfo:nil];
+}
+
+- (void)requestMotto {
     void ((^done)(MottoModel *motto)) = ^(MottoModel *motto) {
         [self dismissViewControllerAnimated:NO completion:^{
             if (self.done) {
-                self.done();
+                self.done(motto);
             }
         }];
     };
     
-    [[NNHttpClient sharedClient] getAtPath:@"latest_quote"
+    [[NNHttpClient sharedClient] getAtPath:kPathMotto
                                 parameters:nil
                              responseClass:[MottoModel class]
                                    success:^(id<Jsonable> response) {
@@ -83,8 +87,6 @@
                                    failure:^(ResponseError *error) {
                                        done(nil);
                                    }];
-    
-    [[PurchaseManager sharedManager] commitUnnotifiedInfo:nil];
 }
 
 @end

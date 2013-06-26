@@ -31,6 +31,7 @@
 #import "MobClick.h"
 #import "Harpy.h"
 #import "MKStoreManager.h"
+#import "PurchaseManager.h"
 
 #import "JASidePanelController.h"
 
@@ -85,13 +86,14 @@ static NSString *const kTouredKey = @"toured";
 #endif
     
     SplashViewController *splashViewController = self.splashViewController = [[SplashViewController alloc] init];
-    splashViewController.done = ^{
+    splashViewController.done = ^(MottoModel *motto){
         NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
         if (remoteNotif) {
             DLog(@"remote notif: %@", remoteNotif);
             [self whenNotificationArrive:remoteNotif];
-        } else if (YES/*![UserDefaults boolForKey:kTouredKey]*/) {
+        } else if (motto/*![UserDefaults boolForKey:kTouredKey]*/) {
             MottoViewController *tourViewController = [[MottoViewController alloc] init];
+            tourViewController.motto = motto;
             [self.containerController presentModalViewController:tourViewController animated:NO];
             
             [UserDefaults setBool:YES forKey:kTouredKey];
@@ -130,6 +132,8 @@ static NSString *const kTouredKey = @"toured";
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [[PurchaseManager sharedManager] commitUnnotifiedInfo:nil];
+    
     [Harpy checkVersionDaily];
 }
 

@@ -8,10 +8,10 @@
 
 #import "NNViewController.h"
 
+#import "MottoModel.h"
+
 @interface MottoViewController : NNViewController
 
-@property (nonatomic, copy) NSString *imgUrl;
-@property (nonatomic, copy) NSString *motto;
-@property (nonatomic, copy) NSString *author;
+@property (nonatomic, strong) MottoModel *motto;
 
 @end

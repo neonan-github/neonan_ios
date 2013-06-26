@@ -32,12 +32,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.imageView setImageWithURL:[NSURL URLWithString:self.imgUrl]];
+    [self.imageView setImageWithURL:[NSURL URLWithString:self.motto.imageUrl]];
     
     self.textLabel.font = [UIFont fontWithName:@"STYuanti-SC-Regular" size:17];
     self.textLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
-    self.textLabel.text = [NSString stringWithFormat:@"%@\n\n ——%@", self.motto, self.author];
-    
+    self.textLabel.text = [NSString stringWithFormat:@"%@\n\n ——%@", self.motto.content, self.motto.name];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,7 +59,7 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [[UIApplication sharedApplication] setStatusBarHidden:NO
                                                 withAnimation:UIStatusBarAnimationFade];
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissModalViewControllerAnimated:NO];
     });
 }
 
