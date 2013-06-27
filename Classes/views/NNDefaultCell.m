@@ -19,7 +19,7 @@
         self.selectionGradientEndColor = HEXCOLOR(0x1e1e1e);
         
         self.textLabel.textColor = [UIColor whiteColor];
-        self.textLabel.font = [UIFont systemFontOfSize:15];
+        self.textLabel.font = [UIFont systemFontOfSize:17];
     }
     return self;
 }

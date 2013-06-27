@@ -11,5 +11,6 @@
 @interface ChannelListViewController : NNViewController
 
 @property (nonatomic, copy) NSString *channel;
+@property (nonatomic, copy) NSString *subChannel;
 
 @end

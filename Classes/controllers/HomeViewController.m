@@ -22,6 +22,7 @@
 #import <TTTAttributedLabel.h>
 #import <UIImageView+WebCache.h>
 #import <SVPullToRefresh.h>
+#import <SMPageControl.h>
 
 static const NSInteger kPageCount = 6;
 static const NSInteger kItemPerPageCount = 6;
@@ -34,11 +35,14 @@ static NSString *const kHeaderBottomLineName = @"bottomLine";
 static NSString *const kLastUpdateKey = @"home_last_update";
 
 @interface HomeViewController () <SwipeViewDelegate, SwipeViewDataSource,
-KKGridViewDataSource, KKGridViewDelegate>
+KKGridViewDataSource, KKGridViewDelegate, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet SwipeView *swipeView;
+@property (weak, nonatomic) IBOutlet SMPageControl *pageControl;
+@property (weak, nonatomic) UILabel *currentPageLabel;
 
 @property (nonatomic, assign) NSInteger currentPageIndex;
+@property (nonatomic, assign) CGFloat lastScrollOffset;
 
 @property (nonatomic, strong) MainSlideShowModel *slideShowModel;
 @property (nonatomic, strong) CommonListModel *listDataModel;
@@ -72,9 +76,32 @@ KKGridViewDataSource, KKGridViewDelegate>
     [navRightButton addTarget:self action:@selector(showRightPanel) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:navRightButton];
     
+    self.lastScrollOffset = 0;
+    
     self.swipeView.dataSource = self;
     self.swipeView.delegate = self;
     [self.swipeView reloadData];
+    
+    self.pageControl.hidden = NO;
+    self.pageControl.indicatorMargin = 5;
+    self.pageControl.numberOfPages = kPageCount;
+    self.pageControl.pageIndicatorTintColor = [UIColor whiteColor];
+    self.pageControl.currentPageIndicatorTintColor = [UIColor clearColor];
+    self.pageControl.backgroundColor = RGBA(0, 0, 0, 0.77);
+    
+    UILabel *currentPageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 7, 16)];
+    self.currentPageLabel = currentPageLabel;
+    [currentPageLabel setCenterX:CGRectGetMinX([self.pageControl rectForPageIndicator:0]) + 4];
+    currentPageLabel.textAlignment = NSTextAlignmentCenter;
+    currentPageLabel.backgroundColor = [UIColor clearColor];
+    currentPageLabel.textColor = [UIColor whiteColor];
+    currentPageLabel.font = [UIFont systemFontOfSize:11];
+    currentPageLabel.text = @"1";
+    [self.pageControl addSubview:currentPageLabel];
+    
+//    for (NSUInteger i = 0; i < kPageCount; i++) {
+//        [self.pageControl setCurrentImage:[HomeViewController indicatorImageForPage:i] forPage:i];
+//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -92,6 +119,8 @@ KKGridViewDataSource, KKGridViewDelegate>
     self.swipeView.dataSource = nil;
     self.swipeView.delegate = nil;
     self.swipeView = nil;
+    self.pageControl = nil;
+    self.currentPageLabel = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -141,10 +170,10 @@ KKGridViewDataSource, KKGridViewDelegate>
     
     [self fillDataInHeaderView:gridView.gridHeaderView];
     
-    UIView *headerBottomLineView = [gridView.gridHeaderView viewWithTag:kTagHeaderBottomLine];
-    CGRect frame = headerBottomLineView.frame;
-    frame.size.width = 50 * (index + 1);
-    headerBottomLineView.frame = frame;
+//    UIView *headerBottomLineView = [gridView.gridHeaderView viewWithTag:kTagHeaderBottomLine];
+//    CGRect frame = headerBottomLineView.frame;
+//    frame.size.width = 50 * (index + 1);
+//    headerBottomLineView.frame = frame;
     
     return gridView;
 }
@@ -153,6 +182,11 @@ KKGridViewDataSource, KKGridViewDelegate>
 
 - (void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView {
     self.currentPageIndex = swipeView.currentPage;
+    self.pageControl.currentPage = swipeView.currentPage;
+    self.pageControl.hidden = NO;
+    
+    [self.currentPageLabel setCenterX:CGRectGetMinX([self.pageControl rectForPageIndicator:swipeView.currentPage]) + 4];
+    self.currentPageLabel.text = [NSString stringWithFormat:@"%d", swipeView.currentPage + 1];
 }
 
 #pragma mark - KKGridViewDataSource methods
@@ -201,6 +235,26 @@ KKGridViewDataSource, KKGridViewDelegate>
     [(NeonanAppDelegate *)ApplicationDelegate navigationController:self.navigationController
                                           pushViewControllerByType:self.listDataModel.items[index]
                                                         andChannel:@"home"];
+}
+
+#pragma mark - UIScrollViewDelegate methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    BOOL hidden;
+    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.height || (scrollView.contentOffset.y > self.lastScrollOffset && scrollView.contentOffset.y > 0)) {
+        hidden = YES;
+    } else {
+        hidden = NO;
+    }
+    
+    if (hidden != self.pageControl.hidden) {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:1];
+        self.pageControl.hidden = hidden;
+        [UIView commitAnimations];
+    }
+    
+    self.lastScrollOffset = scrollView.contentOffset.y;
 }
 
 #pragma mark - Private Event Handle
@@ -344,7 +398,7 @@ KKGridViewDataSource, KKGridViewDelegate>
     label.tag = kTagHeaderLabel;
     [headerView addSubview:label];
     
-    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(label.x, label.y + 26, 50, 2)];
+    UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(label.x, label.y + 26, 300, 2)];
     bottomLineView.tag = kTagHeaderBottomLine;
     bottomLineView.backgroundColor = HEXCOLOR(0x0096ff);
     [headerView addSubview:bottomLineView];
@@ -354,6 +408,26 @@ KKGridViewDataSource, KKGridViewDelegate>
 
 - (UIView *)createFooterView {
     return [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, 5)];
+}
+
++ (UIImage *)indicatorImageForPage:(NSUInteger)page {
+    CGFloat width = IS_RETINA ? 10 : 5;
+    CGFloat height = IS_RETINA ? 32 : 16;
+    UIGraphicsBeginImageContext(CGSizeMake(width, height));
+    
+    UIFont *font = [UIFont systemFontOfSize:11];
+    NSString *pageText = [NSString stringWithFormat:@"%d", page + 1];
+    
+    CGFloat textWidth = [UIHelper widthOfString:pageText withFont:font];
+    CGRect rect = CGRectMake((width - textWidth) / 2, (height - font.lineHeight) / 2, textWidth, font.lineHeight);
+    
+    [[UIColor whiteColor] set];
+    [pageText drawInRect:CGRectIntegral(rect) withFont:font];
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
 }
 
 - (void)fillDataInHeaderView:(UIView *)headerView {

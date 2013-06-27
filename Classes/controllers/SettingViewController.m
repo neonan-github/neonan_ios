@@ -97,7 +97,7 @@
 #pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 40;
+    return 48;
 }
 
 #pragma mark - Private methods

@@ -19,7 +19,6 @@
     if (self) {
         // Initialization code
         UIImageView *bgImageView = [[UIImageView alloc] initWithFrame:self.frame];
-        bgImageView.image = [[UIImage imageFromFile:@"bg_menu_cell.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 1, 0)];
         self.backgroundView = bgImageView;
         
         self.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -32,7 +31,12 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    self.textLabel.x -= self.cellStyle == SideMenuCellStyleLeft ? 60 : -60;
+    self.imageView.x = 20;
+    self.imageView.width = 30;
+    self.imageView.height = 30;
+    [self.imageView setCenterY:self.contentView.center.y];
+    
+    self.textLabel.x -= self.cellStyle == SideMenuCellStyleLeft ? (self.imageView.image ? 80 : 60) : -60;
 }
 
 @end

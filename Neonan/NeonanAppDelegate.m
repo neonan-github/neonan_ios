@@ -13,6 +13,8 @@
 #import "VideoPlayViewController.h"
 #import "GalleryDetailViewController.h"
 
+#import "MottoViewController.h"
+#import "TourViewController.h"
 #import "LeftMenuViewController.h"
 #import "RightMenuViewController.h"
 #import "HomeViewController.h"
@@ -30,10 +32,13 @@
 #import "MobClick.h"
 #import "Harpy.h"
 #import "MKStoreManager.h"
+#import "PurchaseManager.h"
 
 #import "JASidePanelController.h"
 
 #import <AFNetworkActivityIndicatorManager.h>
+
+static NSString *const kTouredKey = @"toured";
 
 @implementation NeonanAppDelegate
 
@@ -41,7 +46,7 @@
     [MobClick startWithAppkey:UMengAppKey];
     
     application.applicationIconBadgeNumber = 0;
-    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+//    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
@@ -82,11 +87,21 @@
 #endif
     
     SplashViewController *splashViewController = self.splashViewController = [[SplashViewController alloc] init];
-    splashViewController.done = ^{
+    splashViewController.done = ^(MottoModel *motto){
         NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
         if (remoteNotif) {
             DLog(@"remote notif: %@", remoteNotif);
             [self whenNotificationArrive:remoteNotif];
+        } else if (![UserDefaults boolForKey:kTouredKey]) {
+            TourViewController *viewController = [[TourViewController alloc] init];
+            [self.containerController presentModalViewController:viewController animated:NO];
+            
+            [UserDefaults setBool:YES forKey:kTouredKey];
+            [UserDefaults synchronize];
+        } else if (motto) {
+            MottoViewController *viewController = [[MottoViewController alloc] init];
+            viewController.motto = motto;
+            [self.containerController presentModalViewController:viewController animated:NO];
         }
         
         self.splashViewController = nil;
@@ -121,6 +136,8 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [[PurchaseManager sharedManager] commitUnnotifiedInfo:nil];
+    
     [Harpy checkVersionDaily];
 }
 

@@ -19,6 +19,7 @@
 
 #import <MBProgressHUD.h>
 #import <SVPullToRefresh.h>
+#import <UIImageView+WebCache.h>
 
 #define CELL_CONTENT_WIDTH 320.0f
 #define CELL_CONTENT_MARGIN 10.0f
@@ -142,6 +143,7 @@ HPGrowingTextViewDelegate>
     }
     
     CommentItem *comment = [_dataModel.items objectAtIndex:indexPath.row];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:comment.avatar] placeholderImage:[UIImage imageNamed:@"img_default_avatar.jpg"]];
     cell.commentLabel.text = comment.content;
     cell.userNameLabel.text = comment.visitor;
     cell.timeLabel.text = comment.date;

@@ -98,7 +98,7 @@ UIActionSheetDelegate>
     [[SessionManager sharedManager] requsetToken:self success:^(NSString *token) {
         NSMutableDictionary *parameters = [@{@"token" : token, @"screen_name" : _nameField.text} mutableCopy];
         
-        if (_avatarView.image) {
+        if (_avatarView.image && _avatarImage != _avatarView.image) {
             [parameters setObject:[self imageToBase64String:[self adjustAvatarImage:_avatarView.image]]
                            forKey:@"avatar"];
         }
