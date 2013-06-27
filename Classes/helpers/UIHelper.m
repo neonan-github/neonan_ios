@@ -111,7 +111,7 @@
 + (UIView *)createLogoView {
     UIView *logoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CompatibleScreenWidth, NavBarHeight)];
     
-    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 177, 25)];
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 107, 25)];
     imgView.center = logoView.center;
     imgView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin |
     UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
