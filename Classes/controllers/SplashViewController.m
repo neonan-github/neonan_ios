@@ -48,6 +48,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self validateContentLock];
     [self requestMotto];
     [[PurchaseManager sharedManager] commitUnnotifiedInfo:nil];
 }
@@ -87,6 +88,11 @@
                                    failure:^(ResponseError *error) {
                                        done(nil);
                                    }];
+}
+
+- (void)validateContentLock {
+#warning OnlyForTest
+    [(NeonanAppDelegate *)ApplicationDelegate setContentLocked:YES];
 }
 
 @end
