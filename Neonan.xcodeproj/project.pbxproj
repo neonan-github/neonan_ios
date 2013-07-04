@@ -41,6 +41,7 @@
 		341CB053165B744300BF1D76 /* NNURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 341CB052165B744300BF1D76 /* NNURLCache.m */; };
 		34268EF7165B209E00DEEF63 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 34268EF6165B209E00DEEF63 /* icon.png */; };
 		34268EF9165B20A500DEEF63 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34268EF8165B20A500DEEF63 /* icon@2x.png */; };
+		342854E517854DBC009216F7 /* LockManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 342854E417854DBC009216F7 /* LockManager.m */; };
 		342DA89C16E321C200404730 /* icon_nav_close.png in Resources */ = {isa = PBXBuildFile; fileRef = 342DA89616E321C200404730 /* icon_nav_close.png */; };
 		342DA89F16E321C200404730 /* icon_menu_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 342DA89916E321C200404730 /* icon_menu_normal.png */; };
 		342DA8A616E3308300404730 /* PersonalInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342DA8A416E3308200404730 /* PersonalInfoViewController.m */; };
@@ -476,6 +477,8 @@
 		341CB052165B744300BF1D76 /* NNURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNURLCache.m; sourceTree = "<group>"; };
 		34268EF6165B209E00DEEF63 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
 		34268EF8165B20A500DEEF63 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../icon@2x.png"; sourceTree = "<group>"; };
+		342854E317854DBC009216F7 /* LockManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockManager.h; sourceTree = "<group>"; };
+		342854E417854DBC009216F7 /* LockManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockManager.m; sourceTree = "<group>"; };
 		342DA89616E321C200404730 /* icon_nav_close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_nav_close.png; sourceTree = "<group>"; };
 		342DA89916E321C200404730 /* icon_menu_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_menu_normal.png; sourceTree = "<group>"; };
 		342DA8A316E3308200404730 /* PersonalInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalInfoViewController.h; sourceTree = "<group>"; };
@@ -1875,6 +1878,8 @@
 				34B5591916E20BE5001D378A /* EncourageHelper.m */,
 				34E2D02917584AD5009FE9B1 /* URLHelper.h */,
 				34E2D02A17584AD5009FE9B1 /* URLHelper.m */,
+				342854E317854DBC009216F7 /* LockManager.h */,
+				342854E417854DBC009216F7 /* LockManager.m */,
 			);
 			name = Helpers;
 			path = helpers;
@@ -2554,6 +2559,7 @@
 				349B0B3B1777FB3C00F971F7 /* TourViewController.m in Sources */,
 				3417727117799C1B000F6082 /* MottoViewController.m in Sources */,
 				341772781779A6FC000F6082 /* MottoModel.m in Sources */,
+				342854E517854DBC009216F7 /* LockManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

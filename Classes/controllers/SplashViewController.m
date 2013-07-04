@@ -9,6 +9,7 @@
 #import "SplashViewController.h"
 
 #import "PurchaseManager.h"
+#import "LockManager.h"
 
 #import <UIImageView+WebCache.h>
 #import <SDImageCache.h>
@@ -48,9 +49,9 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [self validateContentLock];
     [self requestMotto];
     [[PurchaseManager sharedManager] commitUnnotifiedInfo:nil];
+    [[LockManager sharedManager] validateContentLock];
 }
 
 - (void)requestMotto {
@@ -88,11 +89,6 @@
                                    failure:^(ResponseError *error) {
                                        done(nil);
                                    }];
-}
-
-- (void)validateContentLock {
-#warning OnlyForTest
-    [(NeonanAppDelegate *)ApplicationDelegate setContentLocked:YES];
 }
 
 @end

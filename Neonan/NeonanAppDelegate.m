@@ -33,6 +33,7 @@
 #import "Harpy.h"
 #import "MKStoreManager.h"
 #import "PurchaseManager.h"
+#import "LockManager.h"
 
 #import "JASidePanelController.h"
 
@@ -44,8 +45,6 @@ static NSString *const kTouredKey = @"toured";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [MobClick startWithAppkey:UMengAppKey];
-    
-    self.contentLocked = YES;
     
     application.applicationIconBadgeNumber = 0;
 //    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
@@ -220,8 +219,8 @@ static NSString *const kTouredKey = @"toured";
     HomeViewController *viewController0 = [[HomeViewController alloc] init];
     [subControllers addObject:[[NNNavigationController alloc] initWithRootViewController:viewController0]];
     
-    NSArray *channels = self.contentLocked ? @[@"know", @"play", @"video"] : @[@"women", @"know", @"play", @"video"];
-    NSArray *titles = self.contentLocked ? @[@"知道", @"爱玩", @"视频"] : @[@"女人", @"知道", @"爱玩", @"视频"];
+    NSArray *channels = [LockManager sharedManager].isContentLocked ? @[@"know", @"play", @"video"] : @[@"women", @"know", @"play", @"video"];
+    NSArray *titles = [LockManager sharedManager].isContentLocked ? @[@"知道", @"爱玩", @"视频"] : @[@"女人", @"知道", @"爱玩", @"视频"];
     [channels enumerateObjectsUsingBlock:^(NSString *channel, NSUInteger idx, BOOL *stop) {
         ChannelListViewController *viewController = [[ChannelListViewController alloc] init];
         viewController.channel = channel;
