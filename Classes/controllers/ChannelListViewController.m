@@ -92,6 +92,7 @@
 - (void)setSubChannel:(NSString *)subChannel {
     if (![_subChannel isEqualToString:subChannel]) {
         _subChannel = [subChannel copy];
+        self.tableView.contentOffset = CGPointMake(0, 0);
         [self.tableView triggerPullToRefresh];
     }
 }

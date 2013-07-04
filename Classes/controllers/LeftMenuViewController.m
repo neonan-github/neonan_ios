@@ -184,7 +184,9 @@
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = @[@"精选", @"女人", @"知道", @"爱玩", @"牛男TV"];
+        _channelTexts = [(NeonanAppDelegate *)ApplicationDelegate contentLocked] ?
+                        @[@"精选", @"知道", @"爱玩", @"牛男TV"] :
+                        @[@"精选", @"女人", @"知道", @"爱玩", @"牛男TV"];
     }
     
     return  _channelTexts;
@@ -192,7 +194,9 @@
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = @[@"home", @"women", @"know", @"play", @"video"];
+        _channelTypes = [(NeonanAppDelegate *)ApplicationDelegate contentLocked] ?
+                        @[@"home", @"know", @"play", @"video"] :
+                        @[@"home", @"women", @"know", @"play", @"video"];
     }
     
     return _channelTypes;
@@ -200,7 +204,9 @@
 
 - (NSArray *)channelIcons {
     if (!_channelIcons) {
-        _channelIcons = @[@"icon_menu_top", @"icon_menu_women", @"icon_menu_know", @"icon_menu_play", @"icon_menu_video"];
+        _channelIcons = [(NeonanAppDelegate *)ApplicationDelegate contentLocked] ?
+                        @[@"icon_menu_top", @"icon_menu_know", @"icon_menu_play", @"icon_menu_video"] :
+                        @[@"icon_menu_top", @"icon_menu_women", @"icon_menu_know", @"icon_menu_play", @"icon_menu_video"];
     }
     
     return _channelIcons;
@@ -208,7 +214,9 @@
 
 - (NSArray *)videoSubChannelTypes {
     if (!_videoSubChannelTypes) {
-        _videoSubChannelTypes = @[@"car", @"outdoor", @"sexy", @"gadget", @"game", @"money", @"babes"];
+        _videoSubChannelTypes = [(NeonanAppDelegate *)ApplicationDelegate contentLocked] ?
+                                @[@"car", @"outdoor", @"gadget", @"game", @"money"] :
+                                @[@"car", @"outdoor", @"sexy", @"gadget", @"game", @"money", @"babes"];
     }
     
     return _videoSubChannelTypes;
@@ -216,7 +224,9 @@
 
 - (NSArray *)videoSubChannelTexts {
     if (!_videoSubChannelTexts) {
-        _videoSubChannelTexts = @[@"酷车世界", @"户外健身", @"性感地带", @"科技玩物", @"火爆游戏", @"财富励志", @"牛男宝贝"];
+        _videoSubChannelTexts = [(NeonanAppDelegate *)ApplicationDelegate contentLocked] ?
+                                @[@"酷车世界", @"户外健身", @"科技玩物", @"火爆游戏", @"财富励志"] :
+                                @[@"酷车世界", @"户外健身", @"性感地带", @"科技玩物", @"火爆游戏", @"财富励志", @"牛男宝贝"];
     }
     
     return _videoSubChannelTexts;
