@@ -33,6 +33,7 @@
 #import "Harpy.h"
 #import "MKStoreManager.h"
 #import "PurchaseManager.h"
+#import "LockManager.h"
 
 #import "JASidePanelController.h"
 
@@ -40,12 +41,16 @@
 
 static NSString *const kTouredKey = @"toured";
 
+@interface NeonanAppDelegate ()
+
+@property (nonatomic, strong) HomeViewController *homeViewController;
+
+@end
+
 @implementation NeonanAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [MobClick startWithAppkey:UMengAppKey];
-    
-    self.contentLocked = YES;
     
     application.applicationIconBadgeNumber = 0;
 //    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
@@ -87,6 +92,8 @@ static NSString *const kTouredKey = @"toured";
     [APService setupWithOption:launchOptions];
 #endif
     
+    [self.homeViewController performSelector:@selector(requestData)];
+    
     SplashViewController *splashViewController = self.splashViewController = [[SplashViewController alloc] init];
     splashViewController.done = ^(MottoModel *motto){
         NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -106,6 +113,8 @@ static NSString *const kTouredKey = @"toured";
         }
         
         containerController.viewControllers = [self createSubControllers];
+        
+        self.homeViewController = nil;
         self.splashViewController = nil;
     };
     [self.containerController presentModalViewController:splashViewController animated:NO];
@@ -117,11 +126,11 @@ static NSString *const kTouredKey = @"toured";
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    return  [WXApi handleOpenURL:url delegate:(WeChatSharer *)[WeChatSharer sharedSharer]];
+    return [WXApi handleOpenURL:url delegate:(WeChatSharer *)[WeChatSharer sharedSharer]];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    return  [WXApi handleOpenURL:url delegate:(WeChatSharer *)[WeChatSharer sharedSharer]];
+    return [WXApi handleOpenURL:url delegate:(WeChatSharer *)[WeChatSharer sharedSharer]];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -214,14 +223,22 @@ static NSString *const kTouredKey = @"toured";
 
 #pragma mark - Private methods
 
+- (HomeViewController *)homeViewController {
+    if (!_homeViewController) {
+        _homeViewController = [[HomeViewController alloc] init];
+    }
+    
+    return _homeViewController;
+}
+
 - (NSArray *)createSubControllers {
     NSMutableArray *subControllers = [NSMutableArray array];
     
-    HomeViewController *viewController0 = [[HomeViewController alloc] init];
+    HomeViewController *viewController0 = self.homeViewController;
     [subControllers addObject:[[NNNavigationController alloc] initWithRootViewController:viewController0]];
     
-    NSArray *channels = self.contentLocked ? @[@"know", @"play", @"video"] : @[@"women", @"know", @"play", @"video"];
-    NSArray *titles = self.contentLocked ? @[@"知道", @"爱玩", @"视频"] : @[@"女人", @"知道", @"爱玩", @"视频"];
+    NSArray *channels = [LockManager sharedManager].isContentLocked ? @[@"know", @"play", @"video"] : @[@"women", @"know", @"play", @"video"];
+    NSArray *titles = [LockManager sharedManager].isContentLocked ? @[@"知道", @"爱玩", @"视频"] : @[@"女人", @"知道", @"爱玩", @"视频"];
     [channels enumerateObjectsUsingBlock:^(NSString *channel, NSUInteger idx, BOOL *stop) {
         ChannelListViewController *viewController = [[ChannelListViewController alloc] init];
         viewController.channel = channel;

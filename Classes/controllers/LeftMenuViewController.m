@@ -12,6 +12,8 @@
 
 #import "SideMenuCell.h"
 
+#import "LockManager.h"
+
 #import <UIAlertView+Blocks.h>
 
 @interface LeftMenuViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
@@ -184,7 +186,7 @@
 
 - (NSArray *)channelTexts {
     if (!_channelTexts) {
-        _channelTexts = [(NeonanAppDelegate *)ApplicationDelegate contentLocked] ?
+        _channelTexts = [LockManager sharedManager].isContentLocked ?
                         @[@"精选", @"知道", @"爱玩", @"牛男TV"] :
                         @[@"精选", @"女人", @"知道", @"爱玩", @"牛男TV"];
     }
@@ -194,7 +196,7 @@
 
 - (NSArray *)channelTypes {
     if (!_channelTypes) {
-        _channelTypes = [(NeonanAppDelegate *)ApplicationDelegate contentLocked] ?
+        _channelTypes = [LockManager sharedManager].isContentLocked ?
                         @[@"home", @"know", @"play", @"video"] :
                         @[@"home", @"women", @"know", @"play", @"video"];
     }
@@ -204,7 +206,7 @@
 
 - (NSArray *)channelIcons {
     if (!_channelIcons) {
-        _channelIcons = [(NeonanAppDelegate *)ApplicationDelegate contentLocked] ?
+        _channelIcons = [LockManager sharedManager].isContentLocked ?
                         @[@"icon_menu_top", @"icon_menu_know", @"icon_menu_play", @"icon_menu_video"] :
                         @[@"icon_menu_top", @"icon_menu_women", @"icon_menu_know", @"icon_menu_play", @"icon_menu_video"];
     }
@@ -214,7 +216,7 @@
 
 - (NSArray *)videoSubChannelTypes {
     if (!_videoSubChannelTypes) {
-        _videoSubChannelTypes = [(NeonanAppDelegate *)ApplicationDelegate contentLocked] ?
+        _videoSubChannelTypes = [LockManager sharedManager].isContentLocked ?
                                 @[@"car", @"outdoor", @"gadget", @"game", @"money"] :
                                 @[@"car", @"outdoor", @"sexy", @"gadget", @"game", @"money", @"babes"];
     }
@@ -224,7 +226,7 @@
 
 - (NSArray *)videoSubChannelTexts {
     if (!_videoSubChannelTexts) {
-        _videoSubChannelTexts = [(NeonanAppDelegate *)ApplicationDelegate contentLocked] ?
+        _videoSubChannelTexts = [LockManager sharedManager].isContentLocked ?
                                 @[@"酷车世界", @"户外健身", @"科技玩物", @"火爆游戏", @"财富励志"] :
                                 @[@"酷车世界", @"户外健身", @"性感地带", @"科技玩物", @"火爆游戏", @"财富励志", @"牛男宝贝"];
     }

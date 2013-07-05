@@ -16,7 +16,6 @@
 @property (nonatomic, strong) UIWindow *window;
 @property (nonatomic, strong) NNContainerViewController *containerController;
 @property (nonatomic, strong) SplashViewController *splashViewController;
-@property (nonatomic, assign) BOOL contentLocked;// 是否屏蔽女人、性感地带，审核期间
 
 - (ContentType)judgeContentType:(id)item;
 - (void)navigationController:(UINavigationController *)navigationController pushViewControllerByType:(id)dataItem andChannel:(NSString *)channel;

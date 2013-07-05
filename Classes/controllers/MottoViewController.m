@@ -35,7 +35,7 @@
     [self.imageView setImageWithURL:[NSURL URLWithString:self.motto.imageUrl]];
     
     self.textLabel.font = [UIFont fontWithName:@"STYuanti-SC-Regular" size:17];
-    self.textLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentTop;
+    self.textLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentCenter;
     self.textLabel.text = [NSString stringWithFormat:@"%@\n\n ——%@", self.motto.content, self.motto.name];
     
     double delayInSeconds = 2;
