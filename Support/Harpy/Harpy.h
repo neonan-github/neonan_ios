@@ -40,4 +40,6 @@
  */
 + (void)checkVersionWeekly;
 
++ (void)checkVersion:(void (^)(NSString *currentAppStoreVersion))done;
+
 @end

@@ -26,6 +26,16 @@ static NSDate *lastVersionCheckPerformedOnDate;
 #pragma mark - Public Methods
 + (void)checkVersion
 {
+    [[self class] checkVersion:^(NSString *currentAppStoreVersion) {
+        if ( [kHarpyCurrentVersion compare:currentAppStoreVersion options:NSNumericSearch] == NSOrderedAscending ) {
+            [self showAlertIfCurrentAppStoreVersionNotSkipped:currentAppStoreVersion];
+        } else {
+            // Current installed version is the newest public version or newer (e.g., dev version)
+        }
+    }];
+}
+
++ (void)checkVersion:(void (^)(NSString *currentAppStoreVersion))done {
     
     // Asynchronously query iTunes AppStore for publically available version
     NSString *storeString = [NSString stringWithFormat:@"http://itunes.apple.com/lookup?id=%@", kHarpyAppID];
@@ -49,25 +59,13 @@ static NSDate *lastVersionCheckPerformedOnDate;
                 NSArray *versionsInAppStore = [[appData valueForKey:@"results"] valueForKey:@"version"];
                 
                 if ( ![versionsInAppStore count] ) { // No versions of app in AppStore
-                    
                     return;
-                    
                 } else {
-                    
                     NSString *currentAppStoreVersion = [versionsInAppStore objectAtIndex:0];
-                    
-                    if ( [kHarpyCurrentVersion compare:currentAppStoreVersion options:NSNumericSearch] == NSOrderedAscending ) {
-                        
-                        [self showAlertIfCurrentAppStoreVersionNotSkipped:currentAppStoreVersion];
-                        
-                    } else {
-                        
-                        // Current installed version is the newest public version or newer (e.g., dev version)	
-                        
+                    if (done) {
+                        done(currentAppStoreVersion);
                     }
-                    
                 }
-                
             });
         }
         

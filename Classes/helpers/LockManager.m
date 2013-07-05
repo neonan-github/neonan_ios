@@ -6,6 +6,7 @@
 //  Copyright (c) 2013年 neonan. All rights reserved.
 //
 
+#import "Harpy.h"
 #import "LockManager.h"
 
 static NSString *const kVersionKey = @"version";
@@ -34,17 +35,9 @@ static NSString *const kVersionKey = @"version";
 }
 
 - (void)validateContentLock {
-    NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-#warning OnlyForTest
-    [[NNHttpClient sharedClient] getAtPath:kPath3rdLogin
-                                parameters:nil
-                             responseClass:nil
-                                   success:^(id<Jsonable> response) {
-                                       [UserDefaults setObject:currentVersion forKey:kVersionKey];
-                                   }
-                                   failure:^(ResponseError *error) {
-                                    
-                                   }];
+    [Harpy checkVersion:^(NSString *currentAppStoreVersion) {
+        [UserDefaults setObject:currentAppStoreVersion forKey:kVersionKey];
+    }];
 }
 
 @end
