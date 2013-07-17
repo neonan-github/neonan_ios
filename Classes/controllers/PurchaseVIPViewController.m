@@ -79,7 +79,11 @@ static const NSInteger kDefaultRetryTimes = 2;
 #pragma mark - Private methods
 
 - (NSArray *)itemTexts {
-    return @[@"年费会员 30 元", @"六个月会员 18 元", @"三个月会员 12 元", @"一个月会员 6 元"];
+    NSDictionary *pricesDict = [MKStoreManager sharedManager].pricesDictionary;
+    return @[[NSString stringWithFormat:@"年费会员 %@ 元", [self formatPrice:pricesDict[self.productIds[0]]]],
+             [NSString stringWithFormat:@"六个月会员 %@ 元", [self formatPrice:pricesDict[self.productIds[1]]]],
+             [NSString stringWithFormat:@"三个月会员 %@ 元", [self formatPrice:pricesDict[self.productIds[2]]]],
+             [NSString stringWithFormat:@"一个月会员 %@ 元", [self formatPrice:pricesDict[self.productIds[3]]]]];
 }
 
 - (NSArray *)productIds {
@@ -88,6 +92,11 @@ static const NSInteger kDefaultRetryTimes = 2;
 
 - (NSDictionary *)productIdsMapping {
     return @{@"com.neonan.Neonan.vip12months": @"1", @"com.neonan.Neonan.vip6months": @"3", @"com.neonan.Neonan.vip3months": @"2", @"com.neonan.Neonan.vip1month": @"8"};
+}
+
+- (NSString *)formatPrice:(NSString *)priceString {
+    priceString = [priceString substringFromIndex:1];
+    return [NSString stringWithFormat:@"%d", priceString.integerValue];
 }
 
 - (void)close {

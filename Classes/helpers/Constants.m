@@ -1,5 +1,7 @@
 #import "Constants.h"
 
+NSString *const kMottoSaveKey = @"motto_save";
+
 NSString *const kPathSlideShow = @"neonan/image_list";
 NSString *const kPathWorkList = @"neonan/work_list";
 NSString *const kPathWorkInfo = @"neonan/work_info";

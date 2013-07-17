@@ -18,6 +18,7 @@
 
 #import <UIImageView+WebCache.h>
 #import <UIAlertView+Blocks.h>
+#import <TTTAttributedLabel.h>
 
 static NSString *const kSidePanelStateKey = @"state";
 
@@ -29,7 +30,9 @@ static NSString *const kSidePanelStateKey = @"state";
 @property (weak, nonatomic) IBOutlet UIButton *emblemView1;
 @property (weak, nonatomic) IBOutlet UIButton *powerButton;
 
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *mottoLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *bgImageView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic, readonly) NSArray *menuTexts;
 
@@ -63,6 +66,14 @@ static NSString *const kSidePanelStateKey = @"state";
     
     [self updateStatus:[[SessionManager sharedManager] canAutoLogin]];
     
+    NSData *mottoData = [UserDefaults objectForKey:kMottoSaveKey];
+    MottoModel *motto = (MottoModel *)[NSKeyedUnarchiver unarchiveObjectWithData:mottoData];
+    [self.bgImageView setImageWithURL:[NSURL URLWithString:motto.imageUrl]];
+    
+    self.mottoLabel.font = [UIFont fontWithName:@"STYuanti-SC-Regular" size:15];
+    self.mottoLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentCenter;
+    self.mottoLabel.text = [NSString stringWithFormat:@"%@\n\n ——%@", motto.content, motto.name];
+    
     [self.sidePanelController addObserver:self forKeyPath:kSidePanelStateKey options:NSKeyValueObservingOptionInitial context:NULL];
 }
 
@@ -76,6 +87,8 @@ static NSString *const kSidePanelStateKey = @"state";
     self.emblemView0 = nil;
     self.emblemView1 = nil;
     self.powerButton = nil;
+    
+    self.bgImageView = nil;
     
     self.tableView.dataSource = nil;
     self.tableView.delegate = nil;
@@ -100,6 +113,8 @@ static NSString *const kSidePanelStateKey = @"state";
     }
     
     cell.textLabel.text = self.menuTexts[indexPath.row];
+    ((UIImageView *)cell.backgroundView).image = [[UIImage imageFromFile:@"bg_translucent_menu_cell.png"]
+                                                  resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 1, 0)];
     
     return cell;
 }
@@ -188,7 +203,7 @@ static NSString *const kSidePanelStateKey = @"state";
     
     CGRect frame = self.powerButton.frame;
     frame.size.width = loggined ? 29 : 80;
-    frame.origin.x = 315 - frame.size.width;
+    frame.origin.x = (loggined ? 300 : 278) - frame.size.width;
     self.powerButton.frame = frame;
     
     [self.powerButton setTitle:loggined ? @"" : @"登录" forState:UIControlStateNormal];
@@ -227,4 +242,8 @@ static NSString *const kSidePanelStateKey = @"state";
     }
 }
 
+- (void)viewDidUnload {
+    [self setMottoLabel:nil];
+    [super viewDidUnload];
+}
 @end

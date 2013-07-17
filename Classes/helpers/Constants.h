@@ -82,6 +82,8 @@ typedef enum {
 //MainController
 #define MainSlideShowCount 6
 
+FOUNDATION_EXPORT NSString *const kMottoSaveKey;
+
 FOUNDATION_EXPORT NSString *const kPathSlideShow;
 FOUNDATION_EXPORT NSString *const kPathWorkList;
 FOUNDATION_EXPORT NSString *const kPathWorkInfo;

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Jsonable.h"
 
-@interface MottoModel : NSObject <Jsonable>
+@interface MottoModel : NSObject <Jsonable, NSCoding>
 
 @property (nonatomic, strong) NSString *imageUrl;
 @property (nonatomic, strong) NSString *name;

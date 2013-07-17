@@ -36,7 +36,7 @@
     self.imageView.height = 30;
     [self.imageView setCenterY:self.contentView.center.y];
     
-    self.textLabel.x -= self.cellStyle == SideMenuCellStyleLeft ? (self.imageView.image ? 80 : 60) : -60;
+    self.textLabel.x -= self.cellStyle == SideMenuCellStyleLeft ? (self.imageView.image ? 80 : 60) : -35;
 }
 
 @end

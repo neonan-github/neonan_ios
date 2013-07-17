@@ -78,7 +78,7 @@ static NSString *const kTouredKey = @"toured";
     panelController.recognizesPanGesture = NO;
     panelController.leftFixedWidth = 200;
     panelController.leftPanel = [[LeftMenuViewController alloc] init];
-    panelController.rightFixedWidth = 200;
+    panelController.rightFixedWidth = 250;
     panelController.rightPanel = [[RightMenuViewController alloc] init];
     panelController.centerPanel = containerController;
     

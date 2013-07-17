@@ -67,7 +67,11 @@
                                 parameters:nil
                              responseClass:[MottoModel class]
                                    success:^(id<Jsonable> response) {
-                                       MottoModel *motto = response;
+                                       MottoModel *motto = (MottoModel *)response;
+                                       NSData *mottoData = [NSKeyedArchiver archivedDataWithRootObject:motto];
+                                       [UserDefaults setObject:mottoData forKey:kMottoSaveKey];
+                                       [UserDefaults synchronize];
+                                       
                                        NSURL *imgUrl = [NSURL URLWithString:motto.imageUrl];
                                        
                                        UIImage *cachedImage = [[SDImageCache sharedImageCache] imageFromKey:[imgUrl absoluteString]];

@@ -20,4 +20,21 @@
     return [parser parseDictionary:JSON];
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if (self) {
+        self.imageUrl = [aDecoder decodeObjectForKey:@"url"];
+        self.name = [aDecoder decodeObjectForKey:@"name"];
+        self.content = [aDecoder decodeObjectForKey:@"content"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.imageUrl forKey:@"url"];
+    [aCoder encodeObject:self.name forKey:@"name"];
+    [aCoder encodeObject:self.content forKey:@"content"];
+}
+
 @end
