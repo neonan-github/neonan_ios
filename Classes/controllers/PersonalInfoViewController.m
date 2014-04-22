@@ -106,7 +106,8 @@
 #pragma mark - Private methods 
 
 - (void)close {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)updateData {
@@ -190,7 +191,8 @@
 
 - (IBAction)buyVIP:(id)sender {
     PurchaseVIPViewController *controller = [[PurchaseVIPViewController alloc] init];
-    [self presentModalViewController:[[NNNavigationController alloc] initWithRootViewController:controller] animated:YES];
+    
+    [self presentViewController:[[NNNavigationController alloc] initWithRootViewController:controller] animated:YES completion:nil];
 }
 
 @end

@@ -12,7 +12,7 @@
 #import <MBProgressHUD.h>
 #import <ActionSheetStringPicker.h>
 
-#import <SSTextView.h>
+#import "SSTextView.h"
 
 @interface FeedbackViewController () <UMFeedbackDataDelegate>
 
@@ -128,7 +128,7 @@
 }
 
 - (void)close {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (BOOL)checkContent:(NSString *)content {

@@ -367,7 +367,7 @@ static Renren *sharedRenren = nil;
         viewController.delegate = self;
         viewController.serverURL = kAuthBaseURL;
         
-        [_rootViewController presentModalViewController:viewController animated:YES];
+        [_rootViewController presentViewController:viewController animated:YES completion:nil];
     }
 }
 
@@ -409,7 +409,7 @@ static Renren *sharedRenren = nil;
         
         if (_showType == ShowTypeModal) {
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-            [_rootViewController presentModalViewController:navController animated:YES];
+            [_rootViewController presentViewController:navController animated:YES completion:nil];
         } else {
             [_rootViewController.navigationController pushViewController:viewController animated:YES];
         }

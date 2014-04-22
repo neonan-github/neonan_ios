@@ -15,15 +15,15 @@ static const float kCellMarginBottom = 7;
 
 static const float kThumbnailWidth = 50;
 static const float kTextAreaWidth = 54;
-static const float kTextAreaMargin = 10;
+//static const float kTextAreaMargin = 10;
 static const float kLeftPartWidth = 160;
 
 // 图片长宽比
 static const CGFloat kVideoShotRatio = 300.f / 190.f;
 static const CGFloat kPhotoRatio = 246.f / 320.f;
 
-static const NSInteger kTagItemImgView = 2000;
-static const NSInteger kTagItemPlayButton = 2001;
+//static const NSInteger kTagItemImgView = 2000;
+//static const NSInteger kTagItemPlayButton = 2001;
 
 @interface BabyCell () <SDWebImageManagerDelegate>
 @property (nonatomic, unsafe_unretained) UIImageView *centerDivider;

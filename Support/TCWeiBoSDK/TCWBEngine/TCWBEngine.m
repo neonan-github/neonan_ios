@@ -1168,7 +1168,8 @@ static BOOL G_LOGOUT = NO;
     } else {
         NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:authViewController];
 //        navController.logoHidden = NO;
-        [rootViewController presentModalViewController:navController animated:YES];
+        [rootViewController presentViewController:navController animated:YES completion:nil];
+//        [rootViewController presentModalViewController:navController animated:YES];
     }
     
     [authViewController release];
@@ -1419,7 +1420,7 @@ static BOOL G_LOGOUT = NO;
         CFRunLoopRef currentRunLoop = CFRunLoopGetCurrent();
         AuthorizeDelegate *authDelegate = [[AuthorizeDelegate alloc] initWithRunLoop:currentRunLoop];
         [authViewController setDelegate:authDelegate];    
-        [rootViewController presentModalViewController:nav animated:YES]; 
+        [rootViewController presentViewController:nav animated:YES completion:nil];
         [authViewController release];
         [nav release];
         CFRunLoopRun();
@@ -1454,7 +1455,7 @@ static BOOL G_LOGOUT = NO;
         }
         TCWBRebroadcastMsgViewController *tCWBRebroadcastMsgViewController = [[TCWBRebroadcastMsgViewController alloc] initWithEngine:self parameter:dic];
         UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:tCWBRebroadcastMsgViewController];
-        [self.rootViewController presentModalViewController:nvc animated:YES];
+        [self.rootViewController presentViewController:nvc animated:YES completion:nil];
         [tCWBRebroadcastMsgViewController release];
         [nvc release];
     }
@@ -1486,8 +1487,9 @@ static BOOL G_LOGOUT = NO;
         authViewController.requestURLString = urlString;
         CFRunLoopRef currentRunLoop = CFRunLoopGetCurrent();
         AuthorizeDelegate *authDelegate = [[AuthorizeDelegate alloc] initWithRunLoop:currentRunLoop];
-        [authViewController setDelegate:authDelegate];    
-        [rootViewController presentModalViewController:nav animated:YES]; 
+        [authViewController setDelegate:authDelegate];
+        [rootViewController presentViewController:nav animated:YES completion:nil];
+//        [rootViewController presentModalViewController:nav animated:YES]; 
         [authViewController release];
         [nav release];
         CFRunLoopRun();
@@ -1525,7 +1527,8 @@ static BOOL G_LOGOUT = NO;
         }
         TCWBRepeatViewController *tCWBRebroadcastMsgViewController = [[TCWBRepeatViewController alloc] initWithEngine:self parameter:dic];
         UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:tCWBRebroadcastMsgViewController];
-        [self.rootViewController presentModalViewController:nvc animated:YES];
+        [self.rootViewController presentViewController:nvc animated:YES completion:nil];
+//        [self.rootViewController presentModalViewController:nvc animated:YES];
         [tCWBRebroadcastMsgViewController release];
         [nvc release];
         

@@ -418,8 +418,7 @@
         [rebroadcastviewController insertTextAtCurrentIndex:text];
     }
     
-    
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -459,8 +458,7 @@
 #pragma mark 按钮响应函数
 
 - (void)onButtonBack {
-    
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -705,7 +703,7 @@
         
         char c = pinyinFirstLetter([strNick characterAtIndex:0]);
         c = toupper(c);
-        NSString  *strIndex = [NSString stringWithFormat:@"%C",c];
+        NSString  *strIndex = [NSString stringWithFormat:@"%c",c];
         
         
         // 当 arrFriend 为空时

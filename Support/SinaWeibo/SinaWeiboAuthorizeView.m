@@ -14,8 +14,8 @@
 
 //static CGFloat kBorderGray[4] = {0.3, 0.3, 0.3, 0.8};
 //static CGFloat kBorderBlack[4] = {0.3, 0.3, 0.3, 1};
-static CGFloat kTransitionDuration = 0.3;
-static CGFloat kPadding = 0;
+//static CGFloat kTransitionDuration = 0.3;
+//static CGFloat kPadding = 0;
 //static CGFloat kBorderWidth = 10;
 
 @implementation SinaWeiboAuthorizeView

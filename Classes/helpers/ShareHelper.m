@@ -19,8 +19,8 @@
 
 #import <SVProgressHUD.h>
 
-static const NSUInteger kWCSessionIndex = 3;
-static const NSUInteger kWCTimelineIndex = 4;
+//static const NSUInteger kWCSessionIndex = 3;
+//static const NSUInteger kWCTimelineIndex = 4;
 
 @interface ShareHelper () <UIActionSheetDelegate>
 

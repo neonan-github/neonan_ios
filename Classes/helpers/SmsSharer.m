@@ -57,7 +57,7 @@
             smsController.body = shareContent;
             
             if(self.rootViewController) {
-                [self.rootViewController presentModalViewController:smsController animated:YES];
+                [self.rootViewController presentViewController:smsController animated:YES completion:nil];
             }
         }
         else {
@@ -74,7 +74,8 @@
 #pragma mark - MFMessageComposeViewControllerDelegate methods
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
-    [controller dismissModalViewControllerAnimated:YES];
+    [controller dismissViewControllerAnimated:YES completion:nil];
+//    [controller dismissModalViewControllerAnimated:YES];
     
     if(result == MessageComposeResultSent) {
         if (self.shareSuccessBlock) {

@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import <JASidePanelController.h>
-#import <UIViewController+JASidePanel.h>
+#import "JASidePanelController.h"
+#import "UIViewController+JASidePanel.h"
 
 @interface NNViewController : UIViewController 
 

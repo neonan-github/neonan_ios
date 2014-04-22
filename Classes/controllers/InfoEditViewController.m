@@ -86,8 +86,8 @@ UIActionSheetDelegate>
     imgPickerController.sourceType = buttonIndex ? UIImagePickerControllerSourceTypePhotoLibrary : UIImagePickerControllerSourceTypeCamera;
     imgPickerController.delegate = self;
     imgPickerController.allowsEditing = YES;
-    
-    [self presentModalViewController:imgPickerController animated:YES];
+    [self presentViewController:imgPickerController animated:YES completion:nil];
+//    [self presentModalViewController:imgPickerController animated:YES];
 }
 
 
@@ -169,7 +169,8 @@ UIActionSheetDelegate>
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.8f];
     [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.view.window cache:NO];
-    [self dismissModalViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:NO completion:nil];
+//    [self dismissModalViewControllerAnimated:NO];
     [UIView commitAnimations];
 }
 

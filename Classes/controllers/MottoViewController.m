@@ -45,7 +45,7 @@
         UIViewController *toViewController = [(NeonanAppDelegate *)ApplicationDelegate containerController];
         [[UIApplication sharedApplication] setStatusBarHidden:NO
                                                 withAnimation:UIStatusBarAnimationFade];
-        [self dismissModalViewControllerAnimated:NO];
+        [self dismissViewControllerAnimated:NO completion:nil];
         
         [toViewController.view.window addSubview:fromViewController.view];
         fromViewController.view.alpha = 1;

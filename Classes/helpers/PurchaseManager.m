@@ -18,7 +18,7 @@
 #import <RNEncryptor.h>
 #import <RNDecryptor.h>
 
-#import <NSData+MKBase64.h>
+#import "NSData+MKBase64.h"
 
 static NSString *const kDBName = @"purchase.db";
 static NSString *const kTableName = @"purchase";

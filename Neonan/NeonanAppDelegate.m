@@ -20,7 +20,7 @@
 #import "HomeViewController.h"
 
 #import "ChannelListViewController.h"
-
+#import "NNContainerViewController.h"
 #import "CommonListModel.h"
 
 #import "NNURLCache.h"
@@ -102,14 +102,14 @@ static NSString *const kTouredKey = @"toured";
             [self whenNotificationArrive:remoteNotif];
         } else if (![UserDefaults boolForKey:kTouredKey]) {
             TourViewController *viewController = [[TourViewController alloc] init];
-            [self.containerController presentModalViewController:viewController animated:NO];
+            [self.containerController presentViewController:viewController animated:NO completion:nil];
             
             [UserDefaults setBool:YES forKey:kTouredKey];
             [UserDefaults synchronize];
         } else if (motto) {
             MottoViewController *viewController = [[MottoViewController alloc] init];
             viewController.motto = motto;
-            [self.containerController presentModalViewController:viewController animated:NO];
+            [self.containerController presentViewController:viewController animated:NO completion:nil];
         }
         
         containerController.viewControllers = [self createSubControllers];
@@ -117,7 +117,7 @@ static NSString *const kTouredKey = @"toured";
         self.homeViewController = nil;
         self.splashViewController = nil;
     };
-    [self.containerController presentModalViewController:splashViewController animated:NO];
+    [self.containerController presentViewController:splashViewController animated:NO completion:nil];
     
     //向微信注册
     [WXApi registerApp:WeChatAppKey];
@@ -289,7 +289,7 @@ static NSString *const kTouredKey = @"toured";
 - (void)whenNotificationArrive:(NSDictionary *)info {
     CommonItem *item = [self parseNotifictionInfo:info];
     if (item) {
-        [self.containerController dismissModalViewControllerAnimated:YES];
+        [self.containerController dismissViewControllerAnimated:YES completion:nil];
         self.containerController.sidePanelController.centerPanel = self.containerController.sidePanelController.centerPanel;
         
         NNNavigationController *topNavController = (NNNavigationController *)self.containerController.currentViewController;

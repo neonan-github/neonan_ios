@@ -54,7 +54,7 @@
         [mailController setMessageBody:[NSString stringWithFormat:@"%@\n%@", text, url] isHTML:NO];
         
         if(self.rootViewController) {
-            [self.rootViewController presentModalViewController:mailController animated:YES];
+            [self.rootViewController presentViewController:mailController animated:YES completion:nil];
         }
     }
     else {
@@ -66,7 +66,7 @@
 #pragma mark - MFMailComposeViewControllerDelegate methods
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    [controller dismissModalViewControllerAnimated:YES];
+    [controller dismissViewControllerAnimated:YES completion:nil];
     
     if (error || result == MFMailComposeResultFailed) {
         if (self.shareFailureBlock) {

@@ -188,7 +188,8 @@ static NSString *const kChannel = @"fav";
 }
 
 - (void)close {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    //    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)updateData:(RequestType)requestType {

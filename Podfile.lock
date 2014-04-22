@@ -1,25 +1,25 @@
 PODS:
-  - ActionSheetPicker (0.0.1)
+  - ActionSheetPicker (0.0.2)
   - AFNetworking (0.10.1)
   - DCKeyValueObjectMapping (1.1)
   - DCRoundSwitch (0.0.1)
   - DDURLParser (0.0.1)
   - HPGrowingTextView (0.0.1)
-  - iCarousel (1.7.4)
+  - iCarousel (1.7.6)
   - KKGridView (0.6.8.2)
-  - MBProgressHUD (0.6)
+  - MBProgressHUD (0.8)
   - NYXImagesKit (2.1.2)
   - PrettyKit (0.2.0)
-  - Reachability (3.1.0)
-  - RNCryptor (2.1)
+  - Reachability (3.1.1)
+  - RNCryptor (2.2)
   - SDWebImage (2.7.4):
     - SDWebImage/Main
   - SDWebImage/Main (2.7.4)
-  - SMPageControl (1.0)
+  - SMPageControl (1.2)
   - SSKeychain (0.1.4)
   - SVProgressHUD (0.9)
   - SVPullToRefresh (0.4.1)
-  - SwipeView (1.2.9)
+  - SwipeView (1.2.10)
   - TTTAttributedLabel (1.4.1)
   - UIAlertView-Blocks (0.0.1)
   - UIWebViewRemoveShadow (0.0.1)
@@ -49,27 +49,27 @@ DEPENDENCIES:
   - UIWebViewRemoveShadow (~> 0.0.1)
 
 SPEC CHECKSUMS:
-  ActionSheetPicker: f47931cfb6bc65230b323326964fccb4ad339f37
-  AFNetworking: df1042246c17373b96f12f04bf5c6e1c25992cd4
+  ActionSheetPicker: 16e212011d5c2e92b3e38609a58b93919b4056aa
+  AFNetworking: 860f165f6dec289e482b76986ff1950e6214a210
   DCKeyValueObjectMapping: bc71bbada9d5d100daf75169c3f29060ebcfa530
-  DCRoundSwitch: c08f58330d242f182450b5e4ad32e5238f53d6d4
+  DCRoundSwitch: b62d4ce14c722eedb7763c986dcbddea8c27bef6
   DDURLParser: faee54f8d9baeed3e8cc33ef7ca372e284d89bae
   HPGrowingTextView: 42fee2f684a8c98e61bc19579d274d7fc12b48ca
-  iCarousel: 7f260b9f829005bb32d72ad19376a2a32ae3e418
+  iCarousel: e23a26d7ba722215a42144e80adb0dcb59bebc41
   KKGridView: ca91fc93e91ddbeab8b46d07af1efda289f324e7
-  MBProgressHUD: 9b55a90566fb5d07df0602f6fd9fa04510ad5d52
+  MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
   NYXImagesKit: 2f36d489ec32826b58a41d75833602dd13558769
-  PrettyKit: 44b8f06f3719579880d2e11cd6498b7464b3b0fa
-  Reachability: ba94ecd4eaa037be3d0588b38956672588530c5b
-  RNCryptor: e8a818cb161113795cf32efa4d3ebfca16016882
-  SDWebImage: 06f076026fe7867ab0100fce95d943f7bff981eb
-  SMPageControl: 9d100f9aa8ca0cf10222666ff31d4d1cbfdac674
-  SSKeychain: bae692a4354f48691ca3463a121dc8060f781a7d
+  PrettyKit: f53ce373d4803116c3e956b589544d64b78c8867
+  Reachability: be4883bb93f31e38266ae3365e5600a317aae735
+  RNCryptor: 1420380792b33758d2414cf37af160ea2495e15c
+  SDWebImage: 3260c6594137f13586ffa8165da6061f77799b73
+  SMPageControl: 0c5c5d7e142c1ce6ef5b0d7182d6ad3b2af8f2e3
+  SSKeychain: 2ad57d29a6ce6572cb14b3a4377482f58f4085d7
   SVProgressHUD: 03d4845ec8e64591726428a08236c6a5489d45f8
   SVPullToRefresh: 61a0e4bd12bd6f8e3465909810b0fbeb1a28d5f2
-  SwipeView: 4b05b28f0a2ea1c143459257e73a907912794700
+  SwipeView: 0218f1fe1a271a610279815101b808a054fe631a
   TTTAttributedLabel: 14873436523cdbe45784c404161e4575fa22706a
   UIAlertView-Blocks: 7689ad7dd941417e7a7da81507482bc6f4f15bcd
-  UIWebViewRemoveShadow: 552ab017bc84263a56f339f6039c94ddec43cd37
+  UIWebViewRemoveShadow: b195369e5fecd54874b84145e795fd8757f1dde5
 
-COCOAPODS: 0.19.1
+COCOAPODS: 0.32.1

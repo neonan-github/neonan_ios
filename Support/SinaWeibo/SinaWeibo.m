@@ -341,7 +341,8 @@
             } else {
                 NNNavigationController *navController = [[NNNavigationController alloc] initWithRootViewController:controller];
 //                navController.logoHidden = NO;
-                [_rootViewController presentModalViewController:navController animated:YES];
+                [_rootViewController presentViewController:navController animated:YES completion:nil];
+//                [_rootViewController presentModalViewController:navController animated:YES];
             }
             
 //            SinaWeiboAuthorizeView *authorizeView = \

@@ -16,7 +16,7 @@
 #define COCOAPODS_POD_AVAILABLE_ActionSheetPicker
 #define COCOAPODS_VERSION_MAJOR_ActionSheetPicker 0
 #define COCOAPODS_VERSION_MINOR_ActionSheetPicker 0
-#define COCOAPODS_VERSION_PATCH_ActionSheetPicker 1
+#define COCOAPODS_VERSION_PATCH_ActionSheetPicker 2
 
 // DCKeyValueObjectMapping
 #define COCOAPODS_POD_AVAILABLE_DCKeyValueObjectMapping
@@ -52,7 +52,7 @@
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD
 #define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
-#define COCOAPODS_VERSION_MINOR_MBProgressHUD 6
+#define COCOAPODS_VERSION_MINOR_MBProgressHUD 8
 #define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
 
 // NYXImagesKit
@@ -70,14 +70,14 @@
 // RNCryptor
 #define COCOAPODS_POD_AVAILABLE_RNCryptor
 #define COCOAPODS_VERSION_MAJOR_RNCryptor 2
-#define COCOAPODS_VERSION_MINOR_RNCryptor 1
+#define COCOAPODS_VERSION_MINOR_RNCryptor 2
 #define COCOAPODS_VERSION_PATCH_RNCryptor 0
 
 // Reachability
 #define COCOAPODS_POD_AVAILABLE_Reachability
 #define COCOAPODS_VERSION_MAJOR_Reachability 3
 #define COCOAPODS_VERSION_MINOR_Reachability 1
-#define COCOAPODS_VERSION_PATCH_Reachability 0
+#define COCOAPODS_VERSION_PATCH_Reachability 1
 
 // SDWebImage
 #define COCOAPODS_POD_AVAILABLE_SDWebImage
@@ -94,7 +94,7 @@
 // SMPageControl
 #define COCOAPODS_POD_AVAILABLE_SMPageControl
 #define COCOAPODS_VERSION_MAJOR_SMPageControl 1
-#define COCOAPODS_VERSION_MINOR_SMPageControl 0
+#define COCOAPODS_VERSION_MINOR_SMPageControl 2
 #define COCOAPODS_VERSION_PATCH_SMPageControl 0
 
 // SSKeychain
@@ -119,7 +119,7 @@
 #define COCOAPODS_POD_AVAILABLE_SwipeView
 #define COCOAPODS_VERSION_MAJOR_SwipeView 1
 #define COCOAPODS_VERSION_MINOR_SwipeView 2
-#define COCOAPODS_VERSION_PATCH_SwipeView 9
+#define COCOAPODS_VERSION_PATCH_SwipeView 10
 
 // TTTAttributedLabel
 #define COCOAPODS_POD_AVAILABLE_TTTAttributedLabel
@@ -143,5 +143,5 @@
 #define COCOAPODS_POD_AVAILABLE_iCarousel
 #define COCOAPODS_VERSION_MAJOR_iCarousel 1
 #define COCOAPODS_VERSION_MINOR_iCarousel 7
-#define COCOAPODS_VERSION_PATCH_iCarousel 4
+#define COCOAPODS_VERSION_PATCH_iCarousel 6
 

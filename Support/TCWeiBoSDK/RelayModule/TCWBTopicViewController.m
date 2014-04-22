@@ -248,8 +248,8 @@
         [rebroadcastviewController insertTextAtCurrentIndex:strTopic];
 
     }
-    
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -291,7 +291,7 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     
     [searchBar resignFirstResponder];
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

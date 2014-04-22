@@ -60,7 +60,7 @@ static const NSUInteger kPageCount = 5;
     
     NSInteger currentPage = self.swipeView.currentPage;
     for (NSInteger i = 0; i < kPageCount && i != currentPage; i++) {
-        [self setValue:nil forKey:[NSString stringWithFormat:@"tourView%d", i]];
+        [self setValue:nil forKey:[NSString stringWithFormat:@"tourView%ld", (long)i]];
     }
 }
 
@@ -76,11 +76,11 @@ static const NSUInteger kPageCount = 5;
     self.enterButton = nil;
     
     for (NSInteger i = 0; i < kPageCount; i++) {
-        [self setValue:nil forKey:[NSString stringWithFormat:@"tourView%d", i]];
+        [self setValue:nil forKey:[NSString stringWithFormat:@"tourView%ld", (long)i]];
     }
     
     for (NSInteger i = 1; i < kPageCount; i++) {
-        [self setValue:nil forKey:[NSString stringWithFormat:@"tour%dOverlayView", i]];
+        [self setValue:nil forKey:[NSString stringWithFormat:@"tour%ldOverlayView", (long)i]];
     }
 }
 
@@ -99,7 +99,7 @@ static const NSUInteger kPageCount = 5;
 - (void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView {
     self.pageControl.currentPage = swipeView.currentPage;
     if (!swipeView.currentItemView.tag) {
-        SEL selector = NSSelectorFromString([NSString stringWithFormat:@"displayPage%d", swipeView.currentPage]);
+        SEL selector = NSSelectorFromString([NSString stringWithFormat:@"displayPage%ld", (long)swipeView.currentPage]);
         if ([self respondsToSelector:selector]) {
             [self performSelector:selector];
         }
@@ -154,7 +154,8 @@ static const NSUInteger kPageCount = 5;
     UIViewController *toViewController = [(NeonanAppDelegate *)ApplicationDelegate containerController];
     [[UIApplication sharedApplication] setStatusBarHidden:NO
                                             withAnimation:UIStatusBarAnimationFade];
-    [self dismissModalViewControllerAnimated:NO];
+//    [self dismissModalViewControllerAnimated:NO];
+    [self dismissViewControllerAnimated:NO completion:nil];
     
     [toViewController.view.window addSubview:fromViewController.view];
     fromViewController.view.alpha = 1;
@@ -215,7 +216,7 @@ static const NSUInteger kPageCount = 5;
 }
 
 - (UIView *)tourViewAtPage:(NSUInteger)page {
-    return [self valueForKey:[NSString stringWithFormat:@"tourView%d", page]];
+    return [self valueForKey:[NSString stringWithFormat:@"tourView%lu", (unsigned long)page]];
 }
 
 @end

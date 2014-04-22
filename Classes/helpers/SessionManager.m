@@ -102,7 +102,7 @@ static NSString *const kUserInfoKey = @"user_info";
         } else {
             SignViewController *signController = [[SignViewController alloc] init];
             signController.success = success;
-            [controller presentModalViewController:signController animated:YES];
+            [controller presentViewController:signController animated:YES completion:nil];
         }
         
         return;
@@ -121,7 +121,7 @@ static NSString *const kUserInfoKey = @"user_info";
     } else {
         SignViewController *signController = [[SignViewController alloc] init];
         signController.success = success;
-        [controller presentModalViewController:signController animated:YES];
+        [controller presentViewController:signController animated:YES completion:nil];
     }
 }
 

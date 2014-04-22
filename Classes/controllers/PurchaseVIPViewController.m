@@ -100,7 +100,8 @@ static const NSInteger kDefaultRetryTimes = 2;
 }
 
 - (void)close {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)buyVIP:(NSString *)productId {
